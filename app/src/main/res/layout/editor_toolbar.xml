@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="handlers" type="elamien.abdullah.socialnote.ui.AddNoteActivity"/>
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="wrap_content"
+                  android:fadingEdge="horizontal"
+                  android:fadingEdgeLength="20dp"
+                  android:requiresFadingEdge="horizontal"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+
+        <Button
+                android:id="@+id/action_h1"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:width="@dimen/format_button_width"
+                android:height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:text="@string/header_one_label"
+                android:onClick="@{handlers::onHeading1Click}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/format_text_size"
+                android:textStyle="bold"/>
+
+        <Button
+                android:id="@+id/action_h2"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:width="@dimen/format_button_width"
+                android:height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:text="@string/header_two_label"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/format_text_size"
+                android:textStyle="bold"
+                android:onClick="@{handlers::onHeading2Click}"
+        />
+
+        <Button
+                android:id="@+id/action_h3"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:width="@dimen/format_button_width"
+                android:height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:text="@string/header_three_label"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/format_text_size"
+                android:textStyle="bold"
+                android:onClick="@{handlers::onHeading3Click}"
+        />
+
+        <ImageButton
+                android:id="@+id/action_bold"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                app:srcCompat="@drawable/bold"
+                android:onClick="@{handlers::onBoldClick}"
+        />
+
+        <ImageButton
+                android:id="@+id/action_Italic"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onItalicClick}"
+                app:srcCompat="@drawable/italic"/>
+
+        <ImageButton
+                android:id="@+id/action_indent"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onIndentClick}"
+                app:srcCompat="@drawable/indent"/>
+
+        <ImageButton
+                android:id="@+id/action_outdent"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:onClick="@{handlers::onOutdentClick}"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                app:srcCompat="@drawable/outdent"/>
+
+        <ImageButton
+                android:id="@+id/action_blockquote"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onBlockQuoteClick}"
+                app:srcCompat="@drawable/quote_block"/>
+
+
+        <ImageButton
+                android:id="@+id/action_color"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:scaleType="centerInside"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onHighlightClick}"
+                app:srcCompat="@drawable/highlight"/>
+
+
+        <ImageButton
+                android:id="@+id/action_bulleted"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onBulletsClick}"
+                app:srcCompat="@drawable/bullets"/>
+
+        <ImageButton
+                android:id="@+id/action_unordered_numbered"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:onClick="@{handlers::onNumbersClick}"
+                android:maxWidth="@dimen/format_button_max_width"
+                app:srcCompat="@drawable/numbers"/>
+
+        <ImageButton
+                android:id="@+id/action_hr"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onAddDividerClick}"
+                app:srcCompat="@drawable/divider"/>
+
+
+        <ImageButton
+                android:id="@+id/action_insert_image"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onInsertImageClick}"
+                app:srcCompat="@drawable/insert_image"/>
+
+
+        <ImageButton
+                android:id="@+id/action_insert_link"
+                android:layout_width="@dimen/format_button_width"
+                android:layout_height="@dimen/format_button_height"
+                android:background="@android:color/transparent"
+                android:maxHeight="@dimen/format_button_max_height"
+                android:maxWidth="@dimen/format_button_max_width"
+                android:onClick="@{handlers::onInsertLickClick}"
+                app:srcCompat="@drawable/insert_link"/>
+
+    </LinearLayout>
+</layout>
