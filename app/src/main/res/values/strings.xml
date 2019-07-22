@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Social Note</string>
-    <string name="header_one_label">H1</string>
-    <string name="header_two_label">H2</string>
-    <string name="header_three_label">H3</string>
+	<string name="app_name">Social Note</string>
+	<string name="save_note_menu_title">SAVE</string>
+	<string name="add_note_label">Create a Note</string>
 </resources>

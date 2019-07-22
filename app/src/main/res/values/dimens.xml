@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="format_button_width">40dp</dimen>
-    <dimen name="format_button_height">40dp</dimen>
-    <dimen name="format_button_max_height">20dp</dimen>
-    <dimen name="format_button_max_width">20dp</dimen>
-    <dimen name="format_text_size">16sp</dimen>
+	<dimen name="editor_padding">16dp</dimen>
+	<dimen name="editor_text_size">14sp</dimen>
 </resources>

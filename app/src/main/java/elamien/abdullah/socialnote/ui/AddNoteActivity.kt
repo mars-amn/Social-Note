@@ -1,78 +1,78 @@
 package elamien.abdullah.socialnote.ui
 
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.github.irshulx.models.EditorTextStyle
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
+import org.wordpress.aztec.Aztec
+import org.wordpress.aztec.AztecText
+import org.wordpress.aztec.ITextFormat
+import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 
 
-class AddNoteActivity : AppCompatActivity() {
+class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
+    override fun onToolbarCollapseButtonClicked() {
+    }
 
+    override fun onToolbarExpandButtonClicked() {
+    }
+
+    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {
+    }
+
+    override fun onToolbarHeadingButtonClicked() {
+    }
+
+    override fun onToolbarHtmlButtonClicked() {
+        val uploadingPredicate = object : AztecText.AttributePredicate {
+            override fun matches(attrs: org.xml.sax.Attributes): Boolean {
+                return attrs.getIndex("uploading") > -1
+            }
+        }
+
+        val mediaPending = mBinding.aztec.getAllElementAttributes(uploadingPredicate).isNotEmpty()
+
+        if (mediaPending) {
+        } else {
+            mBinding.formattingToolbar.toggleEditorMode()
+        }
+    }
+
+    override fun onToolbarListButtonClicked() {
+    }
+
+    override fun onToolbarMediaButtonClicked(): Boolean {
+        return false
+    }
 
     private lateinit var mBinding: ActivityAddNoteBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
-        mBinding.editorToolbar.handlers = this
-        mBinding.editor.render()
+        Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
+        setupToolbar()
     }
 
-    fun onBoldClick(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.BOLD)
+    private fun setupToolbar() {
+        supportActionBar?.title = getString(R.string.add_note_label)
     }
 
-    fun onItalicClick(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.add_note_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
-    fun onHeading1Click(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.H1)
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.saveNoteMenuItem -> onSaveMenuItemClick()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
-    fun onHeading2Click(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.H2)
+    private fun onSaveMenuItemClick() {
     }
 
-    fun onHeading3Click(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.H3)
-    }
-
-
-    fun onIndentClick(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.INDENT)
-    }
-
-    fun onOutdentClick(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT)
-    }
-
-    fun onBulletsClick(view: View) {
-        mBinding.editor.insertList(false)
-    }
-
-    fun onNumbersClick(view: View) {
-        mBinding.editor.insertList(true)
-    }
-
-    fun onAddDividerClick(view: View) {
-        mBinding.editor.insertDivider()
-    }
-
-    fun onBlockQuoteClick(view: View) {
-        mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE)
-    }
-
-    fun onHighlightClick(view: View) {
-        mBinding.editor.updateTextColor("#8e0000")
-    }
-
-    fun onInsertImageClick(view: View) {
-    }
-
-    fun onInsertLickClick(view: View) {
-        mBinding.editor.insertLink()
-    }
 }

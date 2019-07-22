@@ -19,10 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'https://jitpack.io' } // For latest SNAPSHOT
-        maven {
-            url "https://s3.amazonaws.com/repo.commonsware.com"
-        }
+        maven { url 'https://jitpack.io' }
     }
 }
 
