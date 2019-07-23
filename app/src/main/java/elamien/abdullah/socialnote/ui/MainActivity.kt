@@ -27,14 +27,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadNotes() {
-        mViewModel.loadPagedNotes().observe(this, object : Observer<PagedList<Note>> {
-            override fun onChanged(t : PagedList<Note>?) {
+        mViewModel.loadPagedNotes().observe(this,
+            Observer<PagedList<Note>> { t ->
                 val adapter = PagedNoteListAdapter(this@MainActivity)
                 adapter.submitList(t)
                 mBinding.notesRecyclerView.adapter = adapter
-            }
-
-        })
+            })
     }
 
     private fun setupToolbar() {

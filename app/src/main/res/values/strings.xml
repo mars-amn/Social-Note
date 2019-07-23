@@ -3,5 +3,4 @@
 	<string name="save_note_menu_title">SAVE</string>
 	<string name="add_note_label">Create a Note</string>
 	<string name="format">%1$td/%1$tm/%1$tY</string>
-
 </resources>

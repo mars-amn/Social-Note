@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto">
 	
 	<data>
+		
+		<import type="android.text.Html"/>
 		
 		<variable
 				name="note"
 				type="elamien.abdullah.socialnote.database.Note"/>
 	</data>
 	
-	<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-									   xmlns:app="http://schemas.android.com/apk/res-auto"
-									   android:layout_width="200dp"
-									   android:layout_margin="4dp"
-									   android:layout_height="wrap_content"
-									   app:cardCornerRadius="4dp"
-									   app:cardElevation="1dp">
+	<androidx.cardview.widget.CardView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_margin="8dp"
+			app:cardCornerRadius="4dp"
+			app:elevation="3dp">
 		
 		<LinearLayout
 				android:layout_width="match_parent"
@@ -22,9 +24,12 @@
 				android:layout_height="match_parent">
 			
 			<TextView
-					android:text="@{note.note}"
+					android:text="@{Html.fromHtml(note.note)}"
 					android:layout_width="match_parent"
 					android:id="@+id/listItemNoteBody"
+					android:textSize="14sp"
+					android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+					android:padding="2dp"
 					android:layout_height="120dp"/>
 			
 			<View
@@ -34,16 +39,20 @@
 					android:layout_height="1.5dp"/>
 			
 			<TextView
-					android:text="@{@string/format(note.dateCreated)}"
+					android:text="@{`Date Created: `+@string/format(note.dateCreated)}"
 					android:layout_width="wrap_content"
+					android:textSize="12sp"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
 					android:layout_height="wrap_content"
 					android:layout_gravity="end"
 					android:layout_margin="2dp"
 					android:id="@+id/listItemNoteCreateAt"/>
 			
 			<TextView
-					android:text="@{@string/format(note.dateModified)}"
+					android:text="@{`Date Modified: `+@string/format(note.dateModified)}"
 					android:layout_margin="2dp"
+					android:textSize="12sp"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="end"

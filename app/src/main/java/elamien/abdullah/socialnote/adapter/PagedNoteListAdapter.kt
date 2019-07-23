@@ -17,7 +17,7 @@ class PagedNoteListAdapter(private val context : Context) :
     PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : NotesViewHolder {
         val inflater = LayoutInflater.from(context)
-        val binding = ListItemNotesBinding.inflate(inflater)
+        val binding = ListItemNotesBinding.inflate(inflater, parent, false)
         return NotesViewHolder(binding)
     }
 
