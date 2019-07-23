@@ -2,6 +2,7 @@ package elamien.abdullah.socialnote.database
 
 import androidx.room.*
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 /**
  * Created by AbdullahAtta on 7/19/2019.
@@ -10,7 +11,7 @@ import io.reactivex.Flowable
 interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNote(note: Note): Long
+    fun insertNote(note: Note): Single<Long>
 
     @Query("SELECT * FROM Notes ORDER BY date_created DESC")
     fun getNotes(): Flowable<List<Note>>

@@ -3,17 +3,26 @@ package elamien.abdullah.socialnote.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import elamien.abdullah.socialnote.R
+import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
+import elamien.abdullah.socialnote.viewmodel.NoteViewModel
+import org.koin.android.ext.android.inject
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.AztecText
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
+import org.xml.sax.Attributes
+import java.util.*
 
 
 class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
+    private val mViewModel: NoteViewModel by inject()
+
     override fun onToolbarCollapseButtonClicked() {
     }
 
@@ -28,7 +37,7 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
 
     override fun onToolbarHtmlButtonClicked() {
         val uploadingPredicate = object : AztecText.AttributePredicate {
-            override fun matches(attrs: org.xml.sax.Attributes): Boolean {
+            override fun matches(attrs: Attributes): Boolean {
                 return attrs.getIndex("uploading") > -1
             }
         }
@@ -73,6 +82,12 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     private fun onSaveMenuItemClick() {
+        val currentDate = Date()
+        val note = Note("", mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+        mViewModel.insertNewNote(note).observe(
+            this, Observer<Long> {
+                Toast.makeText(this@AddNoteActivity, "" + it, Toast.LENGTH_LONG).show()
+            })
     }
 
 }

@@ -20,7 +20,7 @@ abstract class NotesDatabase : RoomDatabase() {
                 synchronized(NotesDatabase::class) {
                     sInstance = Room.databaseBuilder(
                         context.applicationContext,
-                        NotesDatabase::class.java, "chapter.db"
+                        NotesDatabase::class.java, "notes.db"
                     )
                         .build()
                 }
