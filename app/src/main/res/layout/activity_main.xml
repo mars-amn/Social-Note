@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools">
 	
 	<data>
 		
@@ -10,7 +11,6 @@
 	
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
 			xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 		
@@ -30,6 +30,24 @@
 					app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 					/>
 		</com.google.android.material.appbar.AppBarLayout>
+		
+		<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				app:layout_behavior="@string/appbar_scrolling_view_behavior"
+				android:layout_height="match_parent">
+			
+			<androidx.recyclerview.widget.RecyclerView
+					android:layout_width="match_parent"
+					android:id="@+id/notesRecyclerView"
+					android:layout_height="match_parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent"
+					app:spanCount="2"
+					tools:listitem="@layout/list_item_notes"
+					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+					app:layout_constraintEnd_toEndOf="parent"
+					/>
+		</androidx.constraintlayout.widget.ConstraintLayout>
 		
 		<com.google.android.material.floatingactionbutton.FloatingActionButton
 				android:id="@+id/addNewNoteFAB"

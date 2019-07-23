@@ -21,7 +21,7 @@ import java.util.*
 
 
 class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
-    private val mViewModel: NoteViewModel by inject()
+    private val mViewModel : NoteViewModel by inject()
 
     override fun onToolbarCollapseButtonClicked() {
     }
@@ -29,7 +29,7 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     override fun onToolbarExpandButtonClicked() {
     }
 
-    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {
+    override fun onToolbarFormatButtonClicked(format : ITextFormat, isKeyboardShortcut : Boolean) {
     }
 
     override fun onToolbarHeadingButtonClicked() {
@@ -37,7 +37,7 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
 
     override fun onToolbarHtmlButtonClicked() {
         val uploadingPredicate = object : AztecText.AttributePredicate {
-            override fun matches(attrs: Attributes): Boolean {
+            override fun matches(attrs : Attributes) : Boolean {
                 return attrs.getIndex("uploading") > -1
             }
         }
@@ -53,12 +53,12 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     override fun onToolbarListButtonClicked() {
     }
 
-    override fun onToolbarMediaButtonClicked(): Boolean {
+    override fun onToolbarMediaButtonClicked() : Boolean {
         return false
     }
 
-    private lateinit var mBinding: ActivityAddNoteBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private lateinit var mBinding : ActivityAddNoteBinding
+    override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
         Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
@@ -69,12 +69,12 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
         supportActionBar?.title = getString(R.string.add_note_label)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu : Menu?) : Boolean {
         menuInflater.inflate(R.menu.add_note_menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item : MenuItem) : Boolean {
         when (item.itemId) {
             R.id.saveNoteMenuItem -> onSaveMenuItemClick()
         }

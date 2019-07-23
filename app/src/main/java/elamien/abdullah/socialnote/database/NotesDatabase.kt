@@ -14,8 +14,8 @@ import androidx.room.TypeConverters
 abstract class NotesDatabase : RoomDatabase() {
 
     companion object {
-        private var sInstance: NotesDatabase? = null
-        fun getDatabase(context: Context): NotesDatabase? {
+        private var sInstance : NotesDatabase? = null
+        fun getDatabase(context : Context) : NotesDatabase? {
             if (sInstance == null) {
                 synchronized(NotesDatabase::class) {
                     sInstance = Room.databaseBuilder(
@@ -29,6 +29,6 @@ abstract class NotesDatabase : RoomDatabase() {
         }
     }
 
-    abstract fun notesDao(): NoteDao
+    abstract fun notesDao() : NoteDao
 
 }

@@ -1,5 +1,6 @@
 package elamien.abdullah.socialnote.database
 
+import androidx.paging.DataSource
 import androidx.room.*
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -11,17 +12,17 @@ import io.reactivex.Single
 interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertNote(note: Note): Single<Long>
+    fun insertNote(note : Note) : Single<Long>
 
     @Query("SELECT * FROM Notes ORDER BY date_created DESC")
-    fun getNotes(): Flowable<List<Note>>
+    fun getNotes() : DataSource.Factory<Int, Note>
 
     @Query("SELECT * FROM Notes WHERE note_id =:id")
-    fun getNote(id: Long?): Flowable<Note>
+    fun getNote(id : Long?) : Flowable<Note>
 
     @Update
-    fun updateNote(note: Note): Int
+    fun updateNote(note : Note) : Int
 
     @Delete
-    fun deleteNote(note: Note): Int
+    fun deleteNote(note : Note) : Int
 }
