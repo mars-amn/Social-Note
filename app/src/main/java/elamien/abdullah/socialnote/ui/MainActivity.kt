@@ -12,6 +12,7 @@ import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ActivityMainBinding
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
+import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
@@ -29,10 +30,30 @@ class MainActivity : AppCompatActivity() {
     private fun loadNotes() {
         mViewModel.loadPagedNotes().observe(this,
             Observer<PagedList<Note>> { t ->
-                val adapter = PagedNoteListAdapter(this@MainActivity)
-                adapter.submitList(t)
-                mBinding.notesRecyclerView.adapter = adapter
+                if (t.isNotEmpty()) {
+                    addNotesToRecyclerView(t)
+                } else {
+                    hideRecyclerView()
+                }
             })
+    }
+
+    private fun hideRecyclerView() {
+        mBinding.notesRecyclerView.visibility = View.GONE
+        mBinding.noteEmptyStateLayout.visibility = View.VISIBLE
+    }
+
+    private fun addNotesToRecyclerView(t : PagedList<Note>?) {
+        showRecyclerView()
+        val adapter = PagedNoteListAdapter(this@MainActivity)
+        adapter.submitList(t)
+        mBinding.notesRecyclerView.adapter = AlphaInAnimationAdapter(adapter)
+    }
+
+    private fun showRecyclerView() {
+        mBinding.lottieAnimationView.pauseAnimation()
+        mBinding.noteEmptyStateLayout.visibility = View.GONE
+        mBinding.notesRecyclerView.visibility = View.VISIBLE
     }
 
     private fun setupToolbar() {

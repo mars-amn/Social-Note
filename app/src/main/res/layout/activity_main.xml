@@ -23,8 +23,6 @@
 			
 			<androidx.appcompat.widget.Toolbar
 					android:id="@+id/toolbar"
-					app:titleTextColor="@color/colorPrimaryDark"
-					android:background="@color/colorAccent"
 					android:layout_width="match_parent"
 					android:layout_height="?attr/actionBarSize"
 					app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
@@ -43,10 +41,42 @@
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toTopOf="parent"
 					app:spanCount="2"
+					android:visibility="gone"
 					tools:listitem="@layout/list_item_notes"
 					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 					app:layout_constraintEnd_toEndOf="parent"
 					/>
+			
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:orientation="vertical"
+					android:visibility="visible"
+					android:id="@+id/noteEmptyStateLayout"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent">
+				
+				<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="Your note list is empty"
+						android:layout_gravity="center"
+						android:paddingTop="12dp"
+						android:gravity="center"
+						android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+				
+				<com.airbnb.lottie.LottieAnimationView
+						android:id="@+id/lottieAnimationView"
+						android:layout_width="match_parent"
+						app:lottie_autoPlay="true"
+						app:lottie_loop="true"
+						android:layout_weight="3"
+						android:layout_height="0dp"
+						app:lottie_rawRes="@raw/empty_state"
+						/>
+			</LinearLayout>
+		
 		</androidx.constraintlayout.widget.ConstraintLayout>
 		
 		<com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -57,5 +87,6 @@
 				android:layout_margin="16dp"
 				android:onClick="@{handlers::onNewNoteFabClick}"
 				app:srcCompat="@drawable/ic_author"/>
+	
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

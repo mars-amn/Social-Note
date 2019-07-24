@@ -39,7 +39,7 @@ dependencies {
     def koin_version = '2.0.1'
     def lifecycle_version = "2.0.0"
     def paging_version = "2.1.0"
-
+    def lottie_version = "3.0.7"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     /**
      * Android Architecture Components
@@ -86,5 +86,7 @@ dependencies {
      * Rich Editor
      */
     api('com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.28')
+    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
+    implementation "com.airbnb.android:lottie:$lottie_version"
 
 }
