@@ -3,6 +3,7 @@ package elamien.abdullah.socialnote.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
@@ -49,6 +50,8 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
 
     private fun setupToolbar(label : String) {
         supportActionBar?.title = label
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowHomeEnabled(true)
     }
 
     override fun onCreateOptionsMenu(menu : Menu?) : Boolean {
@@ -59,8 +62,34 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     override fun onOptionsItemSelected(item : MenuItem) : Boolean {
         when (item.itemId) {
             R.id.saveNoteMenuItem -> onSaveMenuItemClick()
+            android.R.id.home -> {
+                showUnsavedNoteDialog()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun showUnsavedNoteDialog() {
+        val alertDialog = AlertDialog.Builder(this)
+        alertDialog.setTitle("Unsaved Work")
+        alertDialog.setMessage(
+            "You didn't save what you wrote. \n" +
+                    "Do you want to quit?"
+        )
+        alertDialog.setPositiveButton("Yes") { p0, _ ->
+            p0.dismiss()
+            navigateUp()
+        }
+        alertDialog.setNegativeButton("No, Keep Writing") { p0, _
+            ->
+            p0.dismiss()
+        }
+        alertDialog.show()
+    }
+
+    override fun onBackPressed() {
+        showUnsavedNoteDialog()
     }
 
     private fun onSaveMenuItemClick() {
