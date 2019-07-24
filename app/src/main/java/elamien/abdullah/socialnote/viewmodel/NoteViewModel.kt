@@ -21,6 +21,14 @@ class NoteViewModel : ViewModel(), KoinComponent {
         return mNoteRepository.loadPagedNotes()
     }
 
+    fun getNote(noteId : Long) : LiveData<Note> {
+        return mNoteRepository.getNote(noteId)
+    }
+
+    fun updateNote(note : Note) {
+        mNoteRepository.updateNote(note)
+    }
+
     override fun onCleared() {
         super.onCleared()
         mNoteRepository.dispose()

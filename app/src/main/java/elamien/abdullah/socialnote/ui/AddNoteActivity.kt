@@ -3,13 +3,14 @@ package elamien.abdullah.socialnote.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
+import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
 import org.wordpress.aztec.Aztec
@@ -22,17 +23,65 @@ import java.util.*
 
 class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     private val mViewModel : NoteViewModel by inject()
+    private lateinit var mBinding : ActivityAddNoteBinding
+    private lateinit var editedNote : Note
 
-    override fun onToolbarCollapseButtonClicked() {
+    override fun onCreate(savedInstanceState : Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
+        Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
+        if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
+            setupToolbar(label = "Edit Note")
+            initEditorWithNote(intent.getLongExtra(Constants.NOTE_INTENT_KEY, -1))
+        } else {
+            setupToolbar(label = getString(R.string.add_note_label))
+        }
     }
 
-    override fun onToolbarExpandButtonClicked() {
+
+    private fun initEditorWithNote(noteId : Long) {
+        mViewModel.getNote(noteId).observe(this,
+            Observer<Note> {
+                editedNote = it
+                mBinding.aztec.fromHtml(editedNote.note.toString(), true)
+            })
     }
 
-    override fun onToolbarFormatButtonClicked(format : ITextFormat, isKeyboardShortcut : Boolean) {
+    private fun setupToolbar(label : String) {
+        supportActionBar?.title = label
     }
 
-    override fun onToolbarHeadingButtonClicked() {
+    override fun onCreateOptionsMenu(menu : Menu?) : Boolean {
+        menuInflater.inflate(R.menu.add_note_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item : MenuItem) : Boolean {
+        when (item.itemId) {
+            R.id.saveNoteMenuItem -> onSaveMenuItemClick()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun onSaveMenuItemClick() {
+        val currentDate = Date()
+        if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
+            editedNote.dateModified = currentDate
+            editedNote.note = mBinding.aztec.toFormattedHtml()
+            mViewModel.updateNote(editedNote)
+            navigateUp()
+        } else {
+            val note = Note("", mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+            mViewModel.insertNewNote(note).observe(
+                this, Observer<Long> {
+                    navigateUp()
+                })
+        }
+    }
+
+    private fun navigateUp() {
+        NavUtils.navigateUpFromSameTask(this@AddNoteActivity)
+        finish()
     }
 
     override fun onToolbarHtmlButtonClicked() {
@@ -57,37 +106,15 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
         return false
     }
 
-    private lateinit var mBinding : ActivityAddNoteBinding
-    override fun onCreate(savedInstanceState : Bundle?) {
-        super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
-        Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
-        setupToolbar()
+    override fun onToolbarCollapseButtonClicked() {
     }
 
-    private fun setupToolbar() {
-        supportActionBar?.title = getString(R.string.add_note_label)
+    override fun onToolbarExpandButtonClicked() {
     }
 
-    override fun onCreateOptionsMenu(menu : Menu?) : Boolean {
-        menuInflater.inflate(R.menu.add_note_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+    override fun onToolbarFormatButtonClicked(format : ITextFormat, isKeyboardShortcut : Boolean) {
     }
 
-    override fun onOptionsItemSelected(item : MenuItem) : Boolean {
-        when (item.itemId) {
-            R.id.saveNoteMenuItem -> onSaveMenuItemClick()
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onToolbarHeadingButtonClicked() {
     }
-
-    private fun onSaveMenuItemClick() {
-        val currentDate = Date()
-        val note = Note("", mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
-        mViewModel.insertNewNote(note).observe(
-            this, Observer<Long> {
-                Toast.makeText(this@AddNoteActivity, "" + it, Toast.LENGTH_LONG).show()
-            })
-    }
-
 }

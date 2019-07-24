@@ -21,7 +21,7 @@ interface NoteDao {
     fun getNote(id : Long?) : Flowable<Note>
 
     @Update
-    fun updateNote(note : Note) : Int
+    fun updateNote(note : Note)
 
     @Delete
     fun deleteNote(note : Note) : Int

@@ -9,6 +9,10 @@
 		<variable
 				name="note"
 				type="elamien.abdullah.socialnote.database.Note"/>
+		
+		<variable
+				name="handlers"
+				type="elamien.abdullah.socialnote.adapter.PagedNoteListAdapter.NotesViewHolder"/>
 	</data>
 	
 	<androidx.cardview.widget.CardView
@@ -16,6 +20,7 @@
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
 			android:clickable="true"
+			android:onClick="@{handlers::onNoteClick}"
 			android:focusable="true"
 			app:cardCornerRadius="4dp"
 			android:stateListAnimator="@animator/card_left_on_touch"

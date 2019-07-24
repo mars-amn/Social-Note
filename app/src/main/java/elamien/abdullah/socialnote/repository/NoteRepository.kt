@@ -8,6 +8,8 @@ import androidx.paging.RxPagedListBuilder
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.database.NoteDao
 import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
@@ -19,6 +21,7 @@ import org.koin.core.inject
  * Created by AbdullahAtta on 7/23/2019.
  */
 class NoteRepository : INoteRepository, KoinComponent {
+
 
     private val mNotesDao : NoteDao by inject()
     private val mDisposables = CompositeDisposable()
@@ -66,7 +69,29 @@ class NoteRepository : INoteRepository, KoinComponent {
         return id
     }
 
+    override fun getNote(noteId : Long) : LiveData<Note> {
+        val note = MutableLiveData<Note>()
+        mDisposables.add(
+            Flowable.fromPublisher(
+                mNotesDao.getNote(noteId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+            )
+                .subscribe {
+                    note.value = it
+                })
+        return note
+    }
+
+    override fun updateNote(note : Note) {
+        mDisposables.add(Observable
+            .fromCallable { mNotesDao.updateNote(note) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe())
+    }
+
     override fun dispose() {
-        mDisposables.clear()
+        mDisposables.dispose()
     }
 }

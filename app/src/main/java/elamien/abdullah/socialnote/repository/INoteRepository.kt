@@ -11,4 +11,6 @@ interface INoteRepository {
     fun insertNote(note : Note) : LiveData<Long>
     fun dispose()
     fun loadPagedNotes() : LiveData<PagedList<Note>>
+    fun getNote(noteId : Long) : LiveData<Note>
+    fun updateNote(note : Note)
 }
