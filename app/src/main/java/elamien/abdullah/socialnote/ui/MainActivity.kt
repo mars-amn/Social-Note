@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
+
     private fun addNotesToRecyclerView(t : PagedList<Note>?) {
         showRecyclerView()
         val adapter = PagedNoteListAdapter(this@MainActivity)
@@ -74,6 +75,14 @@ class MainActivity : AppCompatActivity() {
                     // ..todo( will be implemented )
                 }
             })
+    }
+
+    override fun onBackPressed() {
+        if (tracker!!.hasSelection()) {
+            tracker?.clearSelection()
+        } else {
+            super.onBackPressed()
+        }
     }
 
     private fun hideRecyclerView() {
