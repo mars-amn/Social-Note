@@ -15,56 +15,75 @@
 				type="elamien.abdullah.socialnote.adapter.PagedNoteListAdapter.NotesViewHolder"/>
 	</data>
 	
-	<androidx.cardview.widget.CardView
+	<FrameLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="8dp"
-			android:clickable="true"
-			android:onClick="@{handlers::onNoteClick}"
-			android:focusable="true"
-			app:cardCornerRadius="4dp"
-			android:stateListAnimator="@animator/card_left_on_touch"
-			app:elevation="1dp">
+			android:id="@+id/parent"
+			android:layout_height="wrap_content">
 		
-		<LinearLayout
+		<FrameLayout
 				android:layout_width="match_parent"
-				android:orientation="vertical"
-				android:layout_height="match_parent">
+				android:layout_height="wrap_content">
 			
-			<TextView
-					android:text="@{Html.fromHtml(note.note)}"
+			<androidx.cardview.widget.CardView
 					android:layout_width="match_parent"
-					android:id="@+id/listItemNoteBody"
-					android:textSize="14sp"
-					android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-					android:padding="2dp"
-					android:layout_height="120dp"/>
-			
-			<View
-					android:layout_width="match_parent"
-					android:layout_margin="1.5dp"
-					android:background="#eeeeee"
-					android:layout_height="1.5dp"/>
-			
-			<TextView
-					android:text="@{`Date Created: `+@string/format(note.dateCreated)}"
-					android:layout_width="wrap_content"
-					android:textSize="12sp"
-					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
 					android:layout_height="wrap_content"
-					android:layout_gravity="end"
-					android:layout_margin="2dp"
-					android:id="@+id/listItemNoteCreateAt"/>
-			
-			<TextView
-					android:text="@{`Date Modified: `+@string/format(note.dateModified)}"
-					android:layout_margin="2dp"
-					android:textSize="12sp"
-					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_gravity="end"
-					android:id="@+id/listItemNoteModifiedAt"/>
-		</LinearLayout>
-	</androidx.cardview.widget.CardView>
+					android:layout_margin="8dp"
+					android:clickable="true"
+					android:onClick="@{handlers::onNoteClick}"
+					android:focusable="true"
+					app:cardCornerRadius="4dp"
+					android:stateListAnimator="@animator/card_left_on_touch"
+					app:cardElevation="1dp">
+				
+				<LinearLayout
+						android:layout_width="match_parent"
+						android:orientation="vertical"
+						android:layout_height="match_parent">
+					
+					
+					<TextView
+							android:text="@{Html.fromHtml(note.note)}"
+							android:layout_width="match_parent"
+							android:id="@+id/listItemNoteBody"
+							android:textSize="14sp"
+							android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+							android:padding="2dp"
+							android:layout_height="120dp"/>
+					
+					<View
+							android:layout_width="match_parent"
+							android:layout_margin="1.5dp"
+							android:background="#eeeeee"
+							android:layout_height="1.5dp"/>
+					
+					<TextView
+							android:text="@{`Date Created: `+@string/format(note.dateCreated)}"
+							android:layout_width="wrap_content"
+							android:textSize="12sp"
+							android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+							android:layout_height="wrap_content"
+							android:layout_gravity="end"
+							android:layout_margin="2dp"
+							android:id="@+id/listItemNoteCreateAt"/>
+					
+					<TextView
+							android:text="@{`Date Modified: `+@string/format(note.dateModified)}"
+							android:layout_margin="2dp"
+							android:textSize="12sp"
+							android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="end"
+							android:id="@+id/listItemNoteModifiedAt"/>
+				</LinearLayout>
+			</androidx.cardview.widget.CardView>
+		</FrameLayout>
+		
+		<ImageView
+				android:id="@+id/selectionIcon"
+				android:layout_width="wrap_content"
+				app:srcCompat="@drawable/ic_tick"
+				android:layout_gravity="end"
+				android:layout_height="wrap_content"/>
+	</FrameLayout>
 </layout>
