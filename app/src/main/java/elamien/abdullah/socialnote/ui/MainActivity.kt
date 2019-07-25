@@ -2,8 +2,11 @@ package elamien.abdullah.socialnote.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
@@ -20,16 +23,29 @@ import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity() {
+
+
     var tracker : SelectionTracker<Long>? = null
 
     private lateinit var mBinding : ActivityMainBinding
     private val mViewModel : NoteViewModel by inject()
-    override fun onCreate(savedInstanceState : Bundle?) {
+    private var mActionMode : ActionMode? = null
+    override
+
+    fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         mBinding.handlers = this
         setupToolbar()
         loadNotes()
+        if (savedInstanceState != null) {
+            tracker?.onRestoreInstanceState(savedInstanceState)
+        }
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(mBinding.toolbar)
+        title = getString(R.string.app_name)
     }
 
     private fun loadNotes() {
@@ -43,14 +59,12 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-
     private fun addNotesToRecyclerView(t : PagedList<Note>?) {
         showRecyclerView()
         val adapter = PagedNoteListAdapter(this@MainActivity)
         adapter.setHasStableIds(true)
         adapter.submitList(t)
         mBinding.notesRecyclerView.adapter = adapter
-        // AlphaInAnimationAdapter(adapter) it doesn't work properly with recyclerview selection library
         setupTracker(adapter)
     }
 
@@ -72,17 +86,48 @@ class MainActivity : AppCompatActivity() {
             object : SelectionTracker.SelectionObserver<Long>() {
                 override fun onSelectionChanged() {
                     super.onSelectionChanged()
-                    // ..todo( will be implemented )
+                    if (tracker!!.hasSelection() && mActionMode == null) {
+                        mActionMode = this@MainActivity.startSupportActionMode(ActionMenuCallbacks())!!
+                    } else if (!tracker!!.hasSelection() && mActionMode != null) {
+                        mActionMode!!.finish()
+                        mActionMode = null
+                    }
                 }
             })
     }
 
-    override fun onBackPressed() {
-        if (tracker!!.hasSelection()) {
-            tracker?.clearSelection()
-        } else {
-            super.onBackPressed()
+    inner class ActionMenuCallbacks : ActionMode.Callback {
+        override fun onActionItemClicked(mode : ActionMode?, item : MenuItem?) : Boolean {
+            when (item?.itemId) {
+                R.id.deleteNotesActionMenuItem -> deleteNotes()
+            }
+            return true
         }
+
+        override fun onCreateActionMode(mode : ActionMode?, menu : Menu?) : Boolean {
+            mode?.menuInflater?.inflate(R.menu.main_menu_action_items, menu)
+            return true
+        }
+
+        override fun onPrepareActionMode(mode : ActionMode?, menu : Menu?) : Boolean {
+            mode?.title = getString(R.string.action_mode_delete_label)
+            mode?.subtitle = getString(R.string.action_mode_delete_subtitle)
+            return true
+        }
+
+        override fun onDestroyActionMode(mode : ActionMode?) {
+            tracker?.clearSelection()
+        }
+
+    }
+
+    private fun deleteNotes() {
+        // todo (will be implemented)
+    }
+
+    override fun onSaveInstanceState(outState : Bundle) {
+        super.onSaveInstanceState(outState)
+        tracker?.onSaveInstanceState(outState)
     }
 
     private fun hideRecyclerView() {
@@ -97,13 +142,9 @@ class MainActivity : AppCompatActivity() {
         mBinding.notesRecyclerView.visibility = View.VISIBLE
     }
 
-    private fun setupToolbar() {
-        setSupportActionBar(mBinding.toolbar)
-        title = getString(R.string.app_name)
-    }
-
     fun onNewNoteFabClick(view : View) {
         val intent = Intent(this@MainActivity, AddNoteActivity::class.java)
         startActivity(intent)
     }
+
 }
