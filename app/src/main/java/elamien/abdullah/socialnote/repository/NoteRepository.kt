@@ -22,10 +22,8 @@ import org.koin.core.inject
  */
 class NoteRepository : INoteRepository, KoinComponent {
 
-
     private val mNotesDao : NoteDao by inject()
     private val mDisposables = CompositeDisposable()
-
 
     override fun loadPagedNotes() : LiveData<PagedList<Note>> {
         val factory : DataSource.Factory<Int, Note> = mNotesDao.getNotes()

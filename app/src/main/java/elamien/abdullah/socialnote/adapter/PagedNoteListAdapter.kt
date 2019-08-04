@@ -28,9 +28,7 @@ import elamien.abdullah.socialnote.utils.NotesDiffCallback
  */
 class PagedNoteListAdapter(private val context : Context) :
     PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
-    var tracker : SelectionTracker<Long>? = null
 
-    override fun getItemId(position : Int) : Long = getNoteId(position)!!
 
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : NotesViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -39,14 +37,7 @@ class PagedNoteListAdapter(private val context : Context) :
     }
 
     override fun onBindViewHolder(holder : NotesViewHolder, position : Int) {
-        tracker?.let {
-            holder.bind(getItem(position), it.isSelected(getNoteId(position)))
-        }
-
-    }
-
-    fun getNoteId(position : Int) : Long? {
-        return getItem(position)?.id
+            holder.bind(getItem(position))
     }
 
     inner class NotesViewHolder(var mBinding : ListItemNotesBinding) : RecyclerView.ViewHolder(mBinding.root) {
@@ -54,32 +45,9 @@ class PagedNoteListAdapter(private val context : Context) :
             mBinding.handlers = this
         }
 
-        fun getItemDetails() : ItemDetailsLookup.ItemDetails<Long> =
-            object : ItemDetailsLookup.ItemDetails<Long>() {
-                override fun getPosition() : Int = adapterPosition
-                override fun getSelectionKey() : Long? = getNoteId(adapterPosition)
-            }
 
         fun bind(note : Note?, isActivated : Boolean = false) {
             mBinding.note = note
-            mBinding.root.isActivated = isActivated
-
-            if (isActivated) {
-                setTransition(FastOutLinearInInterpolator())
-                mBinding.selectionIcon.visibility = View.VISIBLE
-
-            } else {
-                mBinding.selectionIcon.visibility = View.GONE
-                setTransition(LinearOutSlowInInterpolator())
-            }
-        }
-
-        private fun setTransition(interpolator : TimeInterpolator?) {
-            val set = TransitionSet()
-                .addTransition(Scale(0.9f))
-                .addTransition(Fade())
-                .setInterpolator(interpolator)
-            TransitionManager.beginDelayedTransition(mBinding.parent, set)
         }
 
         fun onNoteClick(view : View) {
