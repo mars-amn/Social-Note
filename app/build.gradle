@@ -89,7 +89,7 @@ dependencies {
     implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
     implementation "com.airbnb.android:lottie:$lottie_version"
-    
+
     implementation "com.andkulikov:transitionseverywhere:2.0.0"
 
 }

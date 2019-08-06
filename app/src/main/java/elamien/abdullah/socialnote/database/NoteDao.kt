@@ -25,4 +25,12 @@ interface NoteDao {
 
     @Delete
     fun deleteNote(note : Note) : Int
+
+    /**
+     * DANGER!
+     * DO NOT call this function
+     * calling it probably will make you regret
+     */
+    @Query("DELETE FROM Notes")
+    fun nukeTable()
 }

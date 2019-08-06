@@ -29,8 +29,13 @@ class NoteViewModel : ViewModel(), KoinComponent {
         mNoteRepository.updateNote(note)
     }
 
+    fun deleteNote(note : Note?) {
+        mNoteRepository.deleteNote(note!!)
+    }
+
     override fun onCleared() {
         super.onCleared()
         mNoteRepository.dispose()
     }
+
 }

@@ -22,7 +22,7 @@ import org.xml.sax.Attributes
 import java.util.*
 
 
-class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
+class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     private val mViewModel : NoteViewModel by inject()
     private lateinit var mBinding : ActivityAddNoteBinding
     private lateinit var editedNote : Note
@@ -109,7 +109,7 @@ class AddNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     private fun navigateUp() {
-        NavUtils.navigateUpFromSameTask(this@AddNoteActivity)
+        NavUtils.navigateUpFromSameTask(this@AddEditNoteActivity)
         finish()
     }
 

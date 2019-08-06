@@ -13,4 +13,6 @@ interface INoteRepository {
     fun loadPagedNotes() : LiveData<PagedList<Note>>
     fun getNote(noteId : Long) : LiveData<Note>
     fun updateNote(note : Note)
+    fun deleteNote(note : Note)
+    fun deleteAllRows()
 }

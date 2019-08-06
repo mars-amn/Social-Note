@@ -22,6 +22,7 @@ import org.koin.core.inject
  */
 class NoteRepository : INoteRepository, KoinComponent {
 
+
     private val mNotesDao : NoteDao by inject()
     private val mDisposables = CompositeDisposable()
 
@@ -86,6 +87,18 @@ class NoteRepository : INoteRepository, KoinComponent {
             .fromCallable { mNotesDao.updateNote(note) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .subscribe())
+    }
+
+    override fun deleteNote(note : Note) {
+        mDisposables.add(Observable.fromCallable { mNotesDao.deleteNote(note) }
+            .subscribeOn(Schedulers.io())
+            .subscribe())
+    }
+
+    override fun deleteAllRows() {
+        mDisposables.add(Observable.fromCallable { mNotesDao.nukeTable() }
+            .subscribeOn(Schedulers.io())
             .subscribe())
     }
 

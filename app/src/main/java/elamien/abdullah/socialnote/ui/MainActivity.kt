@@ -65,8 +65,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onNewNoteFabClick(view : View) {
-        val intent = Intent(this@MainActivity, AddNoteActivity::class.java)
+        val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
         startActivity(intent)
+    }
+
+    fun deleteNote(note : Note?) {
+        mViewModel.deleteNote(note)
     }
 
 }

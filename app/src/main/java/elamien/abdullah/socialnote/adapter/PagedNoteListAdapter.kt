@@ -1,24 +1,18 @@
 package elamien.abdullah.socialnote.adapter
 
-import android.animation.TimeInterpolator
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator
-import androidx.interpolator.view.animation.LinearOutSlowInInterpolator
 import androidx.paging.PagedListAdapter
-import androidx.recyclerview.selection.ItemDetailsLookup
-import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Fade
-import androidx.transition.TransitionManager
-import androidx.transition.TransitionSet
-import com.transitionseverywhere.extra.Scale
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ListItemNotesBinding
-import elamien.abdullah.socialnote.ui.AddNoteActivity
+import elamien.abdullah.socialnote.ui.AddEditNoteActivity
+import elamien.abdullah.socialnote.ui.MainActivity
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotesDiffCallback
 
@@ -37,7 +31,7 @@ class PagedNoteListAdapter(private val context : Context) :
     }
 
     override fun onBindViewHolder(holder : NotesViewHolder, position : Int) {
-            holder.bind(getItem(position))
+        holder.bind(getItem(position))
     }
 
     inner class NotesViewHolder(var mBinding : ListItemNotesBinding) : RecyclerView.ViewHolder(mBinding.root) {
@@ -46,12 +40,34 @@ class PagedNoteListAdapter(private val context : Context) :
         }
 
 
-        fun bind(note : Note?, isActivated : Boolean = false) {
+        fun bind(note : Note?) {
             mBinding.note = note
+
+        }
+
+        fun onNoteLongClick(view : View) : Boolean {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.delete_note_dialog_title))
+                .setMessage(context.getString(R.string.delete_note_dialog_message))
+                .setPositiveButton(context.getString(R.string.delete_note_dialog_positive_button_label)) { dialog, _ ->
+                    deleteNote()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
+
+            return true
+        }
+
+        private fun deleteNote() {
+            val mainActivity = context as MainActivity
+            mainActivity.deleteNote(getItem(adapterPosition))
         }
 
         fun onNoteClick(view : View) {
-            val noteIntent = Intent(context, AddNoteActivity::class.java)
+            val noteIntent = Intent(context, AddEditNoteActivity::class.java)
             noteIntent.putExtra(Constants.NOTE_INTENT_KEY, getItem(adapterPosition)?.id)
             context.startActivity(noteIntent)
         }

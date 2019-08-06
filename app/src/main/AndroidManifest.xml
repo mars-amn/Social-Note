@@ -12,7 +12,7 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
 		<activity
-				android:name=".ui.AddNoteActivity"
+				android:name=".ui.AddEditNoteActivity"
 				android:parentActivityName=".ui.MainActivity"
 				android:theme="@style/EditorTheme">
 		</activity>
