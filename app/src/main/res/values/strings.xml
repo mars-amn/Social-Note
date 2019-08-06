@@ -9,4 +9,6 @@
 	<string name="delete_note_dialog_message">Do you want to delete this note?</string>
 	<string name="delete_note_dialog_positive_button_label">Yes</string>
 	<string name="delete_note_dialog_negative_button_label">Dismiss</string>
+	<string name="app_social_word_label">Social</string>
+	<string name="app_note_word_label">NOTE</string>
 </resources>

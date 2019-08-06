@@ -1,51 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools">
+		xmlns:tools="http://schemas.android.com/tools"
+		xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<data>
 		
 		<variable
 				name="handlers"
-				type="elamien.abdullah.socialnote.ui.MainActivity"/>
+				type="elamien.abdullah.socialnote.ui.HomeActivity"/>
 	</data>
 	
 	<androidx.coordinatorlayout.widget.CoordinatorLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 		
-		<com.google.android.material.appbar.AppBarLayout
-				android:id="@+id/appBar"
-				android:layout_width="match_parent"
-				android:layout_height="?attr/actionBarSize"
-				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-				android:fitsSystemWindows="true">
-			
-			<androidx.appcompat.widget.Toolbar
-					android:id="@+id/toolbar"
-					android:layout_width="match_parent"
-					android:layout_height="?attr/actionBarSize"
-					app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-					/>
-		</com.google.android.material.appbar.AppBarLayout>
-		
 		<androidx.constraintlayout.widget.ConstraintLayout
+				
 				android:layout_width="match_parent"
-				app:layout_behavior="@string/appbar_scrolling_view_behavior"
 				android:layout_height="match_parent">
+			
+			<LinearLayout
+					android:layout_margin="@dimen/app_label_marginn"
+					android:id="@+id/appLabelParent"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					app:layout_constraintStart_toStartOf="parent"
+					>
+				
+				<TextView
+						android:layout_width="0dp"
+						android:layout_weight="1"
+						android:gravity="end"
+						android:text="@string/app_social_word_label"
+						android:textSize="@dimen/app_social_word_label_size"
+						android:textAppearance="@style/TextAppearance.AppCompat.Title"
+						android:layout_height="wrap_content"
+						android:fontFamily="@font/cabin_semibold"/>
+				
+				<TextView
+						android:layout_width="0dp"
+						android:layout_weight="1"
+						android:text="@string/app_note_word_label"
+						android:textAppearance="@style/TextAppearance.AppCompat.Title"
+						android:textSize="@dimen/app_note_word_label_size"
+						android:layout_height="wrap_content"
+						android:fontFamily="@font/cabin_medium"/>
+			</LinearLayout>
 			
 			<androidx.recyclerview.widget.RecyclerView
 					android:layout_width="match_parent"
 					android:id="@+id/notesRecyclerView"
-					android:layout_height="match_parent"
+					android:layout_height="wrap_content"
 					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent"
 					app:spanCount="2"
 					android:visibility="visible"
 					tools:listitem="@layout/list_item_notes"
 					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-					app:layout_constraintEnd_toEndOf="parent"
-					/>
+					app:layout_constraintTop_toBottomOf="@+id/appLabelParent"/>
 			
 			<LinearLayout
 					android:layout_width="match_parent"
@@ -89,4 +104,5 @@
 				app:srcCompat="@drawable/ic_author"/>
 	
 	</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

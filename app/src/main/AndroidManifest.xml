@@ -13,10 +13,10 @@
 			android:theme="@style/AppTheme">
 		<activity
 				android:name=".ui.AddEditNoteActivity"
-				android:parentActivityName=".ui.MainActivity"
+				android:parentActivityName=".ui.HomeActivity"
 				android:theme="@style/EditorTheme">
 		</activity>
-		<activity android:name=".ui.MainActivity">
+		<activity android:name=".ui.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				

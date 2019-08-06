@@ -12,7 +12,7 @@ import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ListItemNotesBinding
 import elamien.abdullah.socialnote.ui.AddEditNoteActivity
-import elamien.abdullah.socialnote.ui.MainActivity
+import elamien.abdullah.socialnote.ui.HomeActivity
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotesDiffCallback
 
@@ -62,7 +62,7 @@ class PagedNoteListAdapter(private val context : Context) :
         }
 
         private fun deleteNote() {
-            val mainActivity = context as MainActivity
+            val mainActivity = context as HomeActivity
             mainActivity.deleteNote(getItem(adapterPosition))
         }
 

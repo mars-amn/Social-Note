@@ -10,27 +10,21 @@ import androidx.paging.PagedList
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
 import elamien.abdullah.socialnote.database.Note
-import elamien.abdullah.socialnote.databinding.ActivityMainBinding
+import elamien.abdullah.socialnote.databinding.ActivityHomeBinding
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import org.koin.android.ext.android.inject
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
-    private lateinit var mBinding : ActivityMainBinding
+    private lateinit var mBinding : ActivityHomeBinding
     private val mViewModel : NoteViewModel by inject()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         mBinding.handlers = this
-        setupToolbar()
         loadNotes()
-    }
-
-    private fun setupToolbar() {
-        setSupportActionBar(mBinding.toolbar)
-        title = getString(R.string.app_name)
     }
 
     private fun loadNotes() {
@@ -46,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun addNotesToRecyclerView(t : PagedList<Note>?) {
         showRecyclerView()
-        val adapter = PagedNoteListAdapter(this@MainActivity)
+        val adapter = PagedNoteListAdapter(this@HomeActivity)
         adapter.setHasStableIds(true)
         adapter.submitList(t)
         mBinding.notesRecyclerView.adapter = AlphaInAnimationAdapter(adapter)
@@ -65,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onNewNoteFabClick(view : View) {
-        val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
+        val intent = Intent(this@HomeActivity, AddEditNoteActivity::class.java)
         startActivity(intent)
     }
 

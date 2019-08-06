@@ -2,4 +2,7 @@
 <resources>
 	<dimen name="editor_padding">16dp</dimen>
 	<dimen name="editor_text_size">14sp</dimen>
+	<dimen name="app_label_marginn">16dp</dimen>
+	<dimen name="app_social_word_label_size">26sp</dimen>
+	<dimen name="app_note_word_label_size">22sp</dimen>
 </resources>
