@@ -3,7 +3,7 @@
 	<string name="save_note_menu_title">SAVE</string>
 	<string name="add_note_label">Create a Note</string>
 	<string name="format">%1$td/%1$tm/%1$tY</string>
-	<string name="action_mode_delete_label">Delete</string>
+	<string name="home_menu">Delete</string>
 	<string name="action_mode_delete_subtitle">Delete Selected Notes</string>
 	<string name="delete_note_dialog_title">Delete Note</string>
 	<string name="delete_note_dialog_message">Do you want to delete this note?</string>
@@ -11,4 +11,13 @@
 	<string name="delete_note_dialog_negative_button_label">Dismiss</string>
 	<string name="app_social_word_label">Social</string>
 	<string name="app_note_word_label">NOTE</string>
+	<string name="menu_item_search_label">Search</string>
+	<string name="edit_note_toolbar_label">Edit Note</string>
+	<string name="text_title_label">Title ..</string>
+	<string name="search_view_hint_label">Search</string>
+	<string name="back_button_dialog_title">Unsaved Work</string>
+	<string name="back_button_dialog_msg_ptII">Do you want to quit?</string>
+	<string name="back_button_dialog_msg_ptI">You didn\'t save what you wrote.</string>
+	<string name="back_button_dialog_positive_button_label">Yes</string>
+	<string name="back_button_dialog_negative_button_label">No, Keep Writing</string>
 </resources>

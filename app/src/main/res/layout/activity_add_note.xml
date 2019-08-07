@@ -1,57 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:aztec="http://schemas.android.com/apk/res-auto">
 	
-	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-					xmlns:aztec="http://schemas.android.com/apk/res-auto"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent">
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:orientation="vertical"
+			android:focusableInTouchMode="true"
+			android:background="@color/white"
+			android:layout_height="match_parent">
 		
-		<org.wordpress.aztec.toolbar.AztecToolbar
-				android:id="@+id/formatting_toolbar"
+		<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/noteTitleInputText"
+				android:padding="@dimen/title_text_padding"
 				android:layout_width="match_parent"
-				android:layout_height="@dimen/aztec_format_bar_height"
-				android:layout_alignParentBottom="true">
-		</org.wordpress.aztec.toolbar.AztecToolbar>
+				android:background="@drawable/note_title_background"
+				android:hint="@string/text_title_label"
+				android:textColorHint="@color/text_color_hint"
+				android:textColor="@color/text_title_color"
+				android:layout_height="@dimen/title_text_height"/>
 		
-		<ScrollView
+		<RelativeLayout
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_above="@+id/formatting_toolbar"
-				android:layout_alignParentTop="true"
-				android:fillViewport="true">
+				android:layout_height="match_parent">
 			
-			<FrameLayout
+			<org.wordpress.aztec.toolbar.AztecToolbar
+					android:id="@+id/formatting_toolbar"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content">
-				
-				<org.wordpress.aztec.AztecText
-						android:id="@+id/aztec"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:gravity="top|start"
-						android:padding="@dimen/editor_padding"
-						android:scrollbars="vertical"
-						android:imeOptions="flagNoExtractUi"
-						aztec:historyEnable="true"
-						aztec:historySize="10"/>
-				
-				<org.wordpress.aztec.source.SourceViewEditText
-						android:id="@+id/source"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"
-						android:gravity="top|start"
-						android:inputType="textNoSuggestions|textMultiLine"
-						android:padding="@dimen/editor_padding"
-						android:scrollbars="vertical"
-						android:textSize="@dimen/editor_text_size"
-						android:visibility="gone"
-						android:imeOptions="flagNoExtractUi"
-						aztec:codeBackgroundColor="@android:color/transparent"
-						aztec:codeTextColor="@android:color/white"/>
+					android:layout_height="@dimen/aztec_format_bar_height"
+					android:layout_alignParentBottom="true">
+			</org.wordpress.aztec.toolbar.AztecToolbar>
 			
-			</FrameLayout>
+			<ScrollView
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_above="@+id/formatting_toolbar"
+					android:layout_alignParentTop="true"
+					android:fillViewport="true">
+				
+				<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					
+					<org.wordpress.aztec.AztecText
+							android:id="@+id/aztec"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:gravity="top|start"
+							android:padding="@dimen/editor_padding"
+							aztec:backgroundColor="#fff"
+							aztec:textColor="#000"
+							android:scrollbars="vertical"
+							android:imeOptions="flagNoExtractUi"
+							aztec:historyEnable="true"
+							aztec:historySize="10"/>
+					
+					<org.wordpress.aztec.source.SourceViewEditText
+							android:id="@+id/source"
+							android:layout_width="match_parent"
+							android:layout_height="match_parent"
+							android:gravity="top|start"
+							android:inputType="textNoSuggestions|textMultiLine"
+							android:padding="@dimen/editor_padding"
+							android:scrollbars="vertical"
+							android:textSize="@dimen/editor_text_size"
+							
+							android:visibility="gone"
+							android:imeOptions="flagNoExtractUi"
+							aztec:codeBackgroundColor="@android:color/transparent"
+							aztec:codeTextColor="@android:color/white"/>
+				
+				</FrameLayout>
+			
+			</ScrollView>
 		
-		</ScrollView>
+		</RelativeLayout>
 	
-	</RelativeLayout>
+	</LinearLayout>
 </layout>

@@ -12,4 +12,6 @@
 	<color name="primaryTextColor">#000000</color>
 	<color name="secondaryTextColor">#ffffff</color>
 	<color name="stated_color">#faca7a</color>
+	<color name="text_color_hint">#bdbdbd</color>
+	<color name="text_title_color">#000</color>
 </resources>

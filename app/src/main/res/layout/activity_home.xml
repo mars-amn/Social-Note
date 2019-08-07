@@ -15,52 +15,52 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent">
 		
-		<androidx.constraintlayout.widget.ConstraintLayout
+		<com.google.android.material.appbar.AppBarLayout
+				android:id="@+id/appBar"
+				android:layout_width="match_parent"
+				android:layout_height="?attr/actionBarSize"
+				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+				android:fitsSystemWindows="true">
+			
+			<FrameLayout
+					android:id="@+id/toolbar_container"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
 				
+				
+				<androidx.appcompat.widget.Toolbar
+						android:id="@+id/toolbar"
+						android:layout_width="match_parent"
+						android:layout_height="?attr/actionBarSize"
+						app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+				
+				<com.miguelcatalan.materialsearchview.MaterialSearchView
+						android:id="@+id/searchView"
+						android:hint="@string/search_view_hint_label"
+						android:textColorHint="@color/text_color_hint"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"/>
+			
+			</FrameLayout>
+		</com.google.android.material.appbar.AppBarLayout>
+		
+		<androidx.constraintlayout.widget.ConstraintLayout
+				app:layout_behavior="@string/appbar_scrolling_view_behavior"
 				android:layout_width="match_parent"
 				android:layout_height="match_parent">
 			
-			<LinearLayout
-					android:layout_margin="@dimen/app_label_marginn"
-					android:id="@+id/appLabelParent"
-					app:layout_constraintTop_toTopOf="parent"
-					app:layout_constraintEnd_toEndOf="parent"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					app:layout_constraintStart_toStartOf="parent"
-					>
-				
-				<TextView
-						android:layout_width="0dp"
-						android:layout_weight="1"
-						android:gravity="end"
-						android:text="@string/app_social_word_label"
-						android:textSize="@dimen/app_social_word_label_size"
-						android:textAppearance="@style/TextAppearance.AppCompat.Title"
-						android:layout_height="wrap_content"
-						android:fontFamily="@font/cabin_semibold"/>
-				
-				<TextView
-						android:layout_width="0dp"
-						android:layout_weight="1"
-						android:text="@string/app_note_word_label"
-						android:textAppearance="@style/TextAppearance.AppCompat.Title"
-						android:textSize="@dimen/app_note_word_label_size"
-						android:layout_height="wrap_content"
-						android:fontFamily="@font/cabin_medium"/>
-			</LinearLayout>
 			
 			<androidx.recyclerview.widget.RecyclerView
 					android:layout_width="match_parent"
 					android:id="@+id/notesRecyclerView"
 					android:layout_height="wrap_content"
+					app:layout_constraintTop_toTopOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
 					app:spanCount="2"
 					android:visibility="visible"
 					tools:listitem="@layout/list_item_notes"
 					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-					app:layout_constraintTop_toBottomOf="@+id/appLabelParent"/>
+					/>
 			
 			<LinearLayout
 					android:layout_width="match_parent"

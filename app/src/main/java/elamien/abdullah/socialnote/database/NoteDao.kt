@@ -20,6 +20,9 @@ interface NoteDao {
     @Query("SELECT * FROM Notes WHERE note_id =:id")
     fun getNote(id : Long?) : Flowable<Note>
 
+    @Query("SELECT * FROM Notes WHERE note_body LIKE :query OR note_title LIKE :query ORDER BY date_created DESC")
+    fun searchNotes(query : String) : DataSource.Factory<Int, Note>
+
     @Update
     fun updateNote(note : Note)
 

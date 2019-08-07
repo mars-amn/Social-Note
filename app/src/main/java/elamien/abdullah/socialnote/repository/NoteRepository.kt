@@ -48,6 +48,28 @@ class NoteRepository : INoteRepository, KoinComponent {
         return mNotesList
     }
 
+    override fun searchForNote(query : String) : LiveData<PagedList<Note>> {
+        val factory : DataSource.Factory<Int, Note> = mNotesDao.searchNotes(query)
+        val notes = MutableLiveData<PagedList<Note>>()
+
+        val notesList = RxPagedListBuilder(
+            factory, PagedList.Config
+                .Builder()
+                .setPageSize(20)
+                .setEnablePlaceholders(true)
+                .build()
+        )
+            .buildFlowable(BackpressureStrategy.LATEST)
+
+        mDisposables.add(
+            notesList.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    notes.value = it
+                }
+        )
+        return notes
+    }
 
     override fun insertNote(note : Note) : LiveData<Long> {
         val id = MutableLiveData<Long>()
@@ -95,6 +117,7 @@ class NoteRepository : INoteRepository, KoinComponent {
             .subscribeOn(Schedulers.io())
             .subscribe())
     }
+
 
     override fun deleteAllRows() {
         mDisposables.add(Observable.fromCallable { mNotesDao.nukeTable() }

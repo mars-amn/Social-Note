@@ -11,7 +11,7 @@
 	
 	</style>
 	
-	<style name="EditorTheme" parent="@style/Theme.AppCompat">
+	<style name="EditorTheme" parent="@style/Theme.MaterialComponents.Light.DarkActionBar">
 		<item name="android:fontFamily">@font/average_sans</item>
 		<item name="colorPrimary">@color/colorPrimary</item>
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>

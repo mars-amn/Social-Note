@@ -3,11 +3,11 @@ package elamien.abdullah.socialnote.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
@@ -32,7 +32,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
         Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
         if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
-            setupToolbar(label = "Edit Note")
+            setupToolbar(label = getString(R.string.edit_note_toolbar_label))
             initEditorWithNote(intent.getLongExtra(Constants.NOTE_INTENT_KEY, -1))
         } else {
             setupToolbar(label = getString(R.string.add_note_label))
@@ -71,21 +71,21 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     private fun showUnsavedNoteDialog() {
-        val alertDialog = AlertDialog.Builder(this)
-        alertDialog.setTitle("Unsaved Work")
-        alertDialog.setMessage(
-            "You didn't save what you wrote. \n" +
-                    "Do you want to quit?"
-        )
-        alertDialog.setPositiveButton("Yes") { p0, _ ->
-            p0.dismiss()
-            navigateUp()
-        }
-        alertDialog.setNegativeButton("No, Keep Writing") { p0, _
-            ->
-            p0.dismiss()
-        }
-        alertDialog.show()
+        MaterialAlertDialogBuilder(this@AddEditNoteActivity)
+            .setTitle(getString(R.string.back_button_dialog_title))
+            .setMessage(
+                getString(R.string.back_button_dialog_msg_ptI) + "\n" +
+                        getString(R.string.back_button_dialog_msg_ptII)
+            )
+            .setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
+                dialog.dismiss()
+                navigateUp()
+            }
+            .setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id
+                ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onBackPressed() {
@@ -97,16 +97,19 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
         if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
             editedNote.dateModified = currentDate
             editedNote.note = mBinding.aztec.toFormattedHtml()
+            editedNote.noteTitle = noteTitle()
             mViewModel.updateNote(editedNote)
             navigateUp()
         } else {
-            val note = Note("", mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+            val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
             mViewModel.insertNewNote(note).observe(
                 this, Observer<Long> {
                     navigateUp()
                 })
         }
     }
+
+    private fun noteTitle() = mBinding.noteTitleInputText.text.toString()
 
     private fun navigateUp() {
         NavUtils.navigateUpFromSameTask(this@AddEditNoteActivity)

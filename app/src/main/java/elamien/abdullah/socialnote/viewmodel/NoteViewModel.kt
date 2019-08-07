@@ -33,6 +33,10 @@ class NoteViewModel : ViewModel(), KoinComponent {
         mNoteRepository.deleteNote(note!!)
     }
 
+    fun searchForNote(query : String) : LiveData<PagedList<Note>> {
+        return mNoteRepository.searchForNote(query)
+    }
+
     override fun onCleared() {
         super.onCleared()
         mNoteRepository.dispose()
