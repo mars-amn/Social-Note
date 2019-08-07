@@ -17,8 +17,7 @@
 				android:theme="@style/EditorTheme">
 		</activity>
 		<activity
-				android:name=".ui.HomeActivity"
-				android:launchMode="singleTop">
+				android:name=".ui.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				
