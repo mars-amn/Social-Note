@@ -20,4 +20,10 @@
 	<string name="back_button_dialog_msg_ptI">You didn\'t save what you wrote.</string>
 	<string name="back_button_dialog_positive_button_label">Yes</string>
 	<string name="back_button_dialog_negative_button_label">No, Keep Writing</string>
+	<string name="note_notification_title">Note Reminder</string>
+	<string name="note_notification_open_action_label">Open Note</string>
+	<string name="note_notification_dismiss_action_label">Dismiss</string>
+	<string name="notification_id" translatable="false">Task-Reminder</string>
+	<string name="notification_channel_name">Task Reminder</string>
+	<string name="set_reminder_label">SET REMINDER</string>
 </resources>

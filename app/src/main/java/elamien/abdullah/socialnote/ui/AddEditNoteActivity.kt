@@ -1,16 +1,24 @@
 package elamien.abdullah.socialnote.ui
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.Note
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
+import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
@@ -30,6 +38,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
+        mBinding.handlers = this
         Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
         if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
             setupToolbar(label = getString(R.string.edit_note_toolbar_label))
@@ -37,6 +46,19 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
         } else {
             setupToolbar(label = getString(R.string.add_note_label))
         }
+
+        if (isOpenFromNotification()) {
+            dismissTheNotification()
+        }
+    }
+
+    private fun isOpenFromNotification() = intent.getBooleanExtra(Constants.ACTIVITY_NOTIFICATION_OPEN, false)
+
+    private fun dismissTheNotification() {
+        val intent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
+        intent.action = Constants.DISMISS_NOTIFICATION_ACTION
+        PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        sendBroadcast(intent)
     }
 
 
@@ -99,14 +121,32 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
             editedNote.note = mBinding.aztec.toFormattedHtml()
             editedNote.noteTitle = noteTitle()
             mViewModel.updateNote(editedNote)
+            if (mReminderDate != null) {
+                setupReminder(editedNote.id, editedNote.note!!)
+            }
             navigateUp()
         } else {
             val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
             mViewModel.insertNewNote(note).observe(
                 this, Observer<Long> {
+                    if (mReminderDate != null) {
+                        setupReminder(it, mBinding.aztec.toFormattedHtml())
+                    }
                     navigateUp()
                 })
         }
+    }
+
+    private fun setupReminder(id : Long?, body : String) {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
+            .let { intent ->
+                intent.action = Constants.OPEN_NOTE_INTENT_ACTION
+                intent.putExtra(Constants.NOTE_INTENT_ID, id)
+                intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
+                PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, 0)
+            }
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, mReminderDate?.time!!, alarmIntent)
     }
 
     private fun noteTitle() = mBinding.noteTitleInputText.text.toString()
@@ -114,6 +154,23 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     private fun navigateUp() {
         NavUtils.navigateUpFromSameTask(this@AddEditNoteActivity)
         finish()
+    }
+
+    private var mReminderDate : Date? = null
+
+    fun onSetReminderClick(view : View) {
+        SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity)
+            .title("Pick Date")
+            .displayYears(false)
+            .displayDays(true)
+            .displayHours(true)
+            .displayMinutes(true)
+            .minutesStep(1)
+            .mainColor(ContextCompat.getColor(this@AddEditNoteActivity, R.color.secondaryColor))
+            .mustBeOnFuture()
+            .listener {
+                mReminderDate = it
+            }.display()
     }
 
     override fun onToolbarHtmlButtonClicked() {

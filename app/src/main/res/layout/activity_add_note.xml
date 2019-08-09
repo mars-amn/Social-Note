@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
 		xmlns:aztec="http://schemas.android.com/apk/res-auto">
 	
+	<data>
+		
+		<variable
+				name="handlers"
+				type="elamien.abdullah.socialnote.ui.AddEditNoteActivity"/>
+	</data>
+	
 	<LinearLayout
 			android:layout_width="match_parent"
 			android:orientation="vertical"
@@ -9,15 +16,34 @@
 			android:background="@color/white"
 			android:layout_height="match_parent">
 		
-		<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/noteTitleInputText"
-				android:padding="@dimen/title_text_padding"
+		<LinearLayout
 				android:layout_width="match_parent"
-				android:background="@drawable/note_title_background"
-				android:hint="@string/text_title_label"
-				android:textColorHint="@color/text_color_hint"
-				android:textColor="@color/text_title_color"
-				android:layout_height="@dimen/title_text_height"/>
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+			
+			<com.google.android.material.textfield.TextInputEditText
+					android:id="@+id/noteTitleInputText"
+					android:padding="@dimen/title_text_padding"
+					android:layout_weight="2"
+					android:layout_width="0dp"
+					android:background="@drawable/note_title_background"
+					android:hint="@string/text_title_label"
+					android:textColorHint="@color/text_color_hint"
+					android:textColor="@color/text_title_color"
+					android:layout_height="@dimen/title_text_height"/>
+			
+			<TextView
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:focusable="true"
+					android:clickable="true"
+					android:onClick="@{handlers::onSetReminderClick}"
+					android:gravity="center"
+					android:text="@string/set_reminder_label"
+					android:textColor="@color/secondaryColor"
+					android:background="?android:attr/selectableItemBackground"
+					android:layout_height="match_parent"/>
+		</LinearLayout>
 		
 		<RelativeLayout
 				android:layout_width="match_parent"
