@@ -26,4 +26,5 @@
 	<string name="notification_id" translatable="false">Task-Reminder</string>
 	<string name="notification_channel_name">Task Reminder</string>
 	<string name="set_reminder_label">SET REMINDER</string>
+	<string name="empty_editor_msg">Nothing to save</string>
 </resources>

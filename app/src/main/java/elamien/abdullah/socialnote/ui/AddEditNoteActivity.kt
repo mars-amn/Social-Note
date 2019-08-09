@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
@@ -85,7 +86,11 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
         when (item.itemId) {
             R.id.saveNoteMenuItem -> onSaveMenuItemClick()
             android.R.id.home -> {
-                showUnsavedNoteDialog()
+                if (mBinding.aztec.toFormattedHtml() == "") {
+                    navigateUp()
+                } else {
+                    showUnsavedNoteDialog()
+                }
                 return true
             }
         }
@@ -111,10 +116,19 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     override fun onBackPressed() {
-        showUnsavedNoteDialog()
+        if (mBinding.aztec.toFormattedHtml() == "") {
+            super.onBackPressed()
+        } else {
+            showUnsavedNoteDialog()
+        }
     }
 
     private fun onSaveMenuItemClick() {
+        if (mBinding.aztec.toFormattedHtml() == "") {
+            Toast.makeText(this@AddEditNoteActivity, getString(R.string.empty_editor_msg), Toast.LENGTH_LONG).show()
+            return
+        }
+
         val currentDate = Date()
         if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
             editedNote.dateModified = currentDate

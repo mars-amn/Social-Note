@@ -26,7 +26,8 @@
 					android:padding="@dimen/title_text_padding"
 					android:layout_weight="2"
 					android:layout_width="0dp"
-					android:background="@drawable/note_title_background"
+					android:background="@color/white"
+					
 					android:hint="@string/text_title_label"
 					android:textColorHint="@color/text_color_hint"
 					android:textColor="@color/text_title_color"
