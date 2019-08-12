@@ -3,21 +3,24 @@
 		  package="elamien.abdullah.socialnote">
 	
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	
 	<application
-			android:allowBackup="true"
 			android:name=".base.NotesApplication"
+			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher"
 			android:label="@string/app_name"
 			android:roundIcon="@mipmap/ic_launcher_round"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
+		<activity android:name=".ui.RegisterActivity">
+		
+		</activity>
 		<activity
 				android:name=".ui.AddEditNoteActivity"
 				android:parentActivityName=".ui.HomeActivity"
 				android:theme="@style/EditorTheme">
 		</activity>
-		<activity
-				android:name=".ui.HomeActivity">
+		<activity android:name=".ui.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				
@@ -28,6 +31,7 @@
 		<meta-data
 				android:name="preloaded_fonts"
 				android:resource="@array/preloaded_fonts"/>
+		
 		<receiver
 				android:name=".receiver.NoteReminderReceiver"
 				android:enabled="true">

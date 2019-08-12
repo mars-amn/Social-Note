@@ -97,6 +97,8 @@
 		<com.google.android.material.floatingactionbutton.FloatingActionButton
 				android:id="@+id/addNewNoteFAB"
 				android:layout_width="wrap_content"
+				app:tint="#fff"
+				app:backgroundTint="@color/secondaryColor"
 				android:layout_height="wrap_content"
 				android:layout_gravity="bottom|end"
 				android:layout_margin="16dp"

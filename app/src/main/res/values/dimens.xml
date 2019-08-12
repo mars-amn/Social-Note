@@ -7,4 +7,7 @@
 	<dimen name="app_note_word_label_size">22sp</dimen>
 	<dimen name="title_text_padding">4dp</dimen>
 	<dimen name="title_text_height">40dp</dimen>
+	<dimen name="auth_button_width">70dp</dimen>
+	<dimen name="auth_button_height">70dp</dimen>
+	<dimen name="auth_button_margin">16dp</dimen>
 </resources>

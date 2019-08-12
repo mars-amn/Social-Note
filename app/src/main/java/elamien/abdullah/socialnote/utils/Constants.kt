@@ -5,12 +5,21 @@ package elamien.abdullah.socialnote.utils
  */
 class Constants {
     companion object {
+        /**
+         * Intent & Notification Keys
+         */
         const val NOTE_NOTIFICATION_TEXT_INTENT_KEY = "elamien.abdullah.socialnote.note_notification_body_intent_key"
         const val ACTIVITY_NOTIFICATION_OPEN = "elamien.abdullah.socialnote.notification_open_activity"
         const val OPEN_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.open_note_notification_action"
         const val DISMISS_NOTIFICATION_ACTION = "elamien.abdullah.socialnote.dimiss_notification"
         const val NOTE_INTENT_KEY = "elamien.abdullah.socialnote.note_intent_key"
         const val NOTE_INTENT_ID = "elamien.abdullah.socialnote.note_intent_id_key"
+
+        /**
+         * EventBust
+         */
+        const val AUTH_EVENT_FAIL = "elamien.abdullah.socialnote.auth_fail"
+        const val AUTH_EVENT_SUCCESS = "elamien.abdullah.socialnote.auth_success"
     }
 
 }

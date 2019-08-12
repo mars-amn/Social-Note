@@ -1,7 +1,5 @@
 package elamien.abdullah.socialnote.ui
 
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -124,9 +122,6 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-    private var alarmMgr : AlarmManager? = null
-    private lateinit var alarmIntent : PendingIntent
-
     override fun onStop() {
         mDisposables.dispose()
         super.onStop()
@@ -139,4 +134,7 @@ class HomeActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
+
+
 }
+

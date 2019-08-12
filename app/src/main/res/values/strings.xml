@@ -27,4 +27,7 @@
 	<string name="notification_channel_name">Task Reminder</string>
 	<string name="set_reminder_label">SET REMINDER</string>
 	<string name="empty_editor_msg">Nothing to save</string>
+	<string name="register_label_text">Register to continue ..</string>
+	<string name="web_api_key">412640265401-e0jhom2h5p8u0u16o98dv7nqg4hn8rv8.apps.googleusercontent.com</string>
+	<string name="auth_failed_msg">Authentication Failed!</string>
 </resources>
