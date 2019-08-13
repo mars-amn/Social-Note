@@ -30,4 +30,7 @@
 	<string name="register_label_text">Register to continue ..</string>
 	<string name="web_api_key"> </string>
 	<string name="auth_failed_msg">Authentication Failed!</string>
+	<string name="create_note_shortcut_short_label">Create a new Note</string>
+	<string name="create_note_shortcut_long_label">Tap to create a new Note</string>
+	<string name="create_note_shortcut_disabled_message">Disabled at the moment</string>
 </resources>
