@@ -15,6 +15,8 @@ import elamien.abdullah.socialnote.ui.AddEditNoteActivity
 import elamien.abdullah.socialnote.ui.HomeActivity
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotesDiffCallback
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -22,7 +24,7 @@ import elamien.abdullah.socialnote.utils.NotesDiffCallback
  */
 class PagedNoteListAdapter(private val context : Context) :
     PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
-
+    val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors).toCollection(ArrayList())
 
     override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : NotesViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -34,16 +36,29 @@ class PagedNoteListAdapter(private val context : Context) :
         holder.bind(getItem(position))
     }
 
+    var previousRandomColor = 0
+
     inner class NotesViewHolder(var mBinding : ListItemNotesBinding) : RecyclerView.ViewHolder(mBinding.root) {
         init {
             mBinding.handlers = this
         }
 
-
         fun bind(note : Note?) {
             mBinding.note = note
-
+            setNoteBackground()
         }
+
+        private fun setNoteBackground() {
+            var newRandomColor : Int
+            do {
+                newRandomColor = getRandomColor()
+            } while (newRandomColor == previousRandomColor)
+            mBinding.listItemNoteParent.setBackgroundColor(newRandomColor)
+            previousRandomColor = newRandomColor
+        }
+
+        private fun getRandomColor() = backgroundColors[Random().nextInt(backgroundColors.size)]
+
 
         fun onNoteLongClick(view : View) : Boolean {
             MaterialAlertDialogBuilder(context)

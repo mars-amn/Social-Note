@@ -1,8 +1,9 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
-	<color name="colorPrimary">#e91e63</color>
-	<color name="colorPrimaryDark">#b0003a</color>
-	<color name="colorAccent">#c51162</color>
+	<color name="colorPrimary">#ba68c8</color>
+	<color name="colorPrimaryDark">#883997</color>
+	<color name="colorAccent">#E13237</color>
+	
 	<color name="primaryColor">#e91e63</color>
 	<color name="primaryLightColor">#ff6090</color>
 	<color name="primaryDarkColor">#b0003a</color>
@@ -14,4 +15,15 @@
 	<color name="stated_color">#faca7a</color>
 	<color name="text_color_hint">#bdbdbd</color>
 	<color name="text_title_color">#000</color>
+	<!-- recycler view-->
+	<array name="recyclerViewBackgroundColors">
+		<item>@color/recyclerViewColor</item>
+		<item>@color/recyclerViewColor02</item>
+		<item>@color/recyclerViewColor03</item>
+		<item>@color/recyclerViewColor04</item>
+	</array>
+	<color name="recyclerViewColor">#F87BB4</color>
+	<color name="recyclerViewColor02">#90C6F8</color>
+	<color name="recyclerViewColor03">#F8F884</color>
+	<color name="recyclerViewColor04">#77F5F8</color>
 </resources>
