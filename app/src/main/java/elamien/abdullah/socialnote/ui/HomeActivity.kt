@@ -17,7 +17,6 @@ import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
-import jp.wasabeef.recyclerview.adapters.AlphaInAnimationAdapter
 import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
@@ -58,7 +57,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     private fun addNotesToRecyclerView(t : PagedList<Note>?) {
         showRecyclerView()
         adapter.submitList(t)
-        mBinding.notesRecyclerView.adapter = AlphaInAnimationAdapter(adapter)
+        mBinding.notesRecyclerView.adapter = adapter
     }
 
     private fun hideRecyclerView() {
