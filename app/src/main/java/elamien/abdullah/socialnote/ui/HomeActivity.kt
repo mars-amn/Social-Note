@@ -22,8 +22,9 @@ import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener {
 
+    private lateinit var adapter : PagedNoteListAdapter
     private lateinit var mBinding : ActivityHomeBinding
     private val mViewModel : NoteViewModel by inject()
     private val mDisposables = CompositeDisposable()
@@ -31,6 +32,7 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         mBinding.handlers = this
+        adapter = PagedNoteListAdapter(this@HomeActivity)
         setupToolbar()
         loadNotes()
         setupSearchView()
@@ -55,7 +57,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun addNotesToRecyclerView(t : PagedList<Note>?) {
         showRecyclerView()
-        val adapter = PagedNoteListAdapter(this@HomeActivity)
         adapter.setHasStableIds(true)
         adapter.submitList(t)
         adapter.notifyDataSetChanged()
@@ -91,35 +92,35 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setupSearchView() {
+        mBinding.searchView.setOnQueryTextListener(this@HomeActivity)
+    }
+
+    override fun onQueryTextSubmit(query : String?) : Boolean {
+        return false
+    }
+
+    override fun onQueryTextChange(newText : String?) : Boolean {
         val searchSubject = BehaviorSubject.create<String>()
-
-        mBinding.searchView.setOnQueryTextListener(object : MaterialSearchView.OnQueryTextListener {
-            override fun onQueryTextChange(newText : String?) : Boolean {
-                searchSubject.onNext(newText!!)
-                mDisposables.add(searchSubject
-                    .debounce(700, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { query ->
-                        searchNotes(query)
-                    })
-
-
-                return false
-            }
-
-            override fun onQueryTextSubmit(query : String?) : Boolean {
-                return false
-            }
-
-        })
+        searchSubject.onNext(newText!!)
+        mDisposables.add(searchSubject
+            .debounce(700, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { query ->
+                searchNotes(query)
+            })
+        return false
     }
 
     private fun searchNotes(query : String?) {
         mViewModel.searchForNote("%$query%").observe(this@HomeActivity, Observer<PagedList<Note>> {
             if (it.isNotEmpty()) {
-                addNotesToRecyclerView(it)
+                applySearchResults(it)
             }
         })
+    }
+
+    private fun applySearchResults(it : PagedList<Note>) {
+        adapter.submitList(it)
     }
 
     override fun onStop() {
