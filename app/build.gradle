@@ -92,7 +92,6 @@ dependencies {
      * Rich Editor
      */
     api('com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.28')
-    implementation 'jp.wasabeef:recyclerview-animators:3.0.0'
 
     implementation "com.airbnb.android:lottie:$lottie_version"
 

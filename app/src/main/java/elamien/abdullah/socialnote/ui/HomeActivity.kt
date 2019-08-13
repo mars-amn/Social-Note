@@ -57,9 +57,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun addNotesToRecyclerView(t : PagedList<Note>?) {
         showRecyclerView()
-        adapter.setHasStableIds(true)
         adapter.submitList(t)
-        adapter.notifyDataSetChanged()
         mBinding.notesRecyclerView.adapter = AlphaInAnimationAdapter(adapter)
     }
 
