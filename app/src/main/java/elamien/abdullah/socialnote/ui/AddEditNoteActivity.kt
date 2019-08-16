@@ -94,6 +94,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private fun dismissGeofenceNotification() {
 		val intent = Intent(this@AddEditNoteActivity, GeofenceReminderReceiver::class.java)
 		intent.action = Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION
+		intent.putExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION,
+				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
 		PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		sendBroadcast(intent)
 	}
@@ -207,7 +209,10 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		val intent = Intent(this@AddEditNoteActivity, GeofenceReminderReceiver::class.java)
 		intent.action = Constants.NOTE_GEOFENCE_REMINDER_ACTION
 		intent.putExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY, id)
-		return PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+		return PendingIntent.getBroadcast(this@AddEditNoteActivity,
+				id.toInt(),
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
 	}
 
 	private fun createGeofenceRequest(geofence : Geofence) : GeofencingRequest {

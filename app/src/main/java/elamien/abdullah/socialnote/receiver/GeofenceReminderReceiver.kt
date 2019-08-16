@@ -32,7 +32,7 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		if (context != null && intent != null) {
 			val action = intent.action
 			if (action == Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION) {
-				dismissNotification(context)
+				dismissNotification(context, intent.getLongExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION, -1))
 			} else if (action == Constants.NOTE_GEOFENCE_REMINDER_ACTION) {
 				sendNoteGeofenceNotification(context, intent)
 				removeGeofenceRequest(intent, context)
@@ -57,8 +57,8 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		})
 	}
 
-	private fun dismissNotification(context : Context) {
-		NotificationsUtils.getNotificationUtils().dismissNoteGeofenceReminderNotification(context)
+	private fun dismissNotification(context : Context, noteId : Long) {
+		NotificationsUtils.getNotificationUtils().dismissNoteGeofenceReminderNotification(context, noteId)
 	}
 
 	private fun removeGeofenceRequest(intent : Intent?, context : Context?) {
@@ -100,7 +100,7 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		val intent = Intent(context, GeofenceReminderReceiver::class.java)
 		intent.action = Constants.NOTE_GEOFENCE_REMINDER_ACTION
 		intent.putExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY, id)
-		return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+		return PendingIntent.getBroadcast(context, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
 	}
 
