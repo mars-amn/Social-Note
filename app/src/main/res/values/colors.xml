@@ -26,4 +26,9 @@
 	<color name="recyclerViewColor02">#90C6F8</color>
 	<color name="recyclerViewColor03">#F8F884</color>
 	<color name="recyclerViewColor04">#77F5F8</color>
+	
+	<color name="circle_map_color">#66ba68c8</color>
+	<color name="circle_stroke_color">#66E13237</color>
+	<color name="request_permission_dialog_ok_button_color">#388e3c</color>
+	<color name="request_permission_dialog_cancel_button_color">#c62828</color>
 </resources>

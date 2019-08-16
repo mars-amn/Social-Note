@@ -47,6 +47,7 @@ dependencies {
      * Android Architecture Components
      */
     implementation "androidx.room:room-runtime:$room_version"
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-rxjava2:$room_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -79,6 +80,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation 'com.google.firebase:firebase-analytics:17.0.1'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
 
     /**
      * RxJava & RxAndroid
@@ -97,16 +99,21 @@ dependencies {
      */
     api('com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.28')
 
-    implementation "com.airbnb.android:lottie:$lottie_version"
-
-    implementation "com.andkulikov:transitionseverywhere:2.0.0"
-    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
-    implementation 'com.github.florent37:singledateandtimepicker:2.1.5'
-
     /**
      * EventBus
      */
     implementation 'org.greenrobot:eventbus:3.1.1'
+
+    /**
+     * AirBnb Lottie
+     */
+    implementation "com.airbnb.android:lottie:$lottie_version"
+
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
+    implementation "com.andkulikov:transitionseverywhere:2.0.0"
+    implementation 'com.miguelcatalan:materialsearchview:1.4.0'
+    implementation 'com.github.florent37:singledateandtimepicker:2.1.5'
 
 }
 apply plugin: 'com.google.gms.google-services'

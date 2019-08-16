@@ -27,11 +27,22 @@
 					android:layout_weight="2"
 					android:layout_width="0dp"
 					android:background="@color/white"
-					
 					android:hint="@string/text_title_label"
 					android:textColorHint="@color/text_color_hint"
 					android:textColor="@color/text_title_color"
 					android:layout_height="@dimen/title_text_height"/>
+			
+			<TextView
+					android:layout_width="0dp"
+					android:layout_weight="1"
+					android:focusable="true"
+					android:clickable="true"
+					android:onClick="@{handlers::onLocationReminderClick}"
+					android:gravity="center"
+					android:text="@string/location_reminder_label"
+					android:textColor="@color/secondaryColor"
+					android:background="?android:attr/selectableItemBackground"
+					android:layout_height="match_parent"/>
 			
 			<TextView
 					android:layout_width="0dp"

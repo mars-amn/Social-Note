@@ -11,12 +11,13 @@ import org.koin.core.logger.Level
  * Created by AbdullahAtta on 7/23/2019.
  */
 class NotesApplication : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        startKoin {
-            androidContext(this@NotesApplication)
-            androidLogger(Level.DEBUG)
-            modules(listOf(appModules))
-        }
-    }
+
+	override fun onCreate() {
+		super.onCreate()
+		startKoin {
+			androidContext(this@NotesApplication)
+			androidLogger(Level.DEBUG)
+			modules(listOf(appModules))
+		}
+	}
 }

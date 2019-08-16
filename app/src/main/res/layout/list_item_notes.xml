@@ -8,7 +8,7 @@
 		
 		<variable
 				name="note"
-				type="elamien.abdullah.socialnote.database.Note"/>
+				type="elamien.abdullah.socialnote.database.notes.Note"/>
 		
 		<variable
 				name="handlers"

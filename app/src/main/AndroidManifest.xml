@@ -1,19 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+		  xmlns:tools="http://schemas.android.com/tools"
 		  package="elamien.abdullah.socialnote">
 	
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+	
 	
 	<application
+			android:fullBackupContent="true"
 			android:name=".base.NotesApplication"
 			android:allowBackup="true"
 			android:icon="@mipmap/ic_launcher"
 			android:label="@string/app_name"
 			android:roundIcon="@mipmap/ic_launcher_round"
 			android:supportsRtl="true"
-			android:theme="@style/AppTheme">
-		<activity android:name=".ui.RegisterActivity">
+			android:theme="@style/AppTheme"
+			tools:ignore="GoogleAppIndexingWarning">
 		
+		<meta-data
+				android:name="com.google.android.geo.API_KEY"
+				android:value="@string/google_maps_key"/>
+		
+		<receiver
+				android:name=".receiver.NoteReminderReceiver"
+				android:enabled="true">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+			</intent-filter>
+		</receiver>
+		<receiver
+				android:name=".receiver.GeofenceReminderReceiver"
+				android:directBootAware="true">
+			<intent-filter>
+				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+				
+				<action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+			</intent-filter>
+		</receiver>
+		
+		<activity
+				android:name=".ui.GeofencePickerActivity"
+				android:label="@string/title_activity_location_map_actitivty">
+			<meta-data
+					android:name="android.support.PARENT_ACTIVITY"
+					android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity"/>
+		</activity>
+		<activity android:name=".ui.RegisterActivity">
 		</activity>
 		<activity
 				android:name=".ui.AddEditNoteActivity"
@@ -26,6 +60,7 @@
 				
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
+			
 			<meta-data
 					android:name="android.app.shortcuts"
 					android:resource="@xml/app_shortcuts"/>
@@ -34,14 +69,8 @@
 		<meta-data
 				android:name="preloaded_fonts"
 				android:resource="@array/preloaded_fonts"/>
-		
-		<receiver
-				android:name=".receiver.NoteReminderReceiver"
-				android:enabled="true">
-			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED"/>
-			</intent-filter>
-		</receiver>
+	
+	
 	</application>
 
 </manifest>

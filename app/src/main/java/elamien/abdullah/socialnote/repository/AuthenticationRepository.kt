@@ -15,32 +15,32 @@ import org.koin.core.inject
  * Created by AbdullahAtta on 8/9/2019.
  */
 class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
-    private val mAuth by inject<FirebaseAuth>()
 
-    override fun registerGoogleUser(task : Task<GoogleSignInAccount>) {
-        try {
-            val account = task.result
-            authWithFirebase(account)
-        } catch (e : ApiException) {
-            postAuthEvent(Constants.AUTH_EVENT_FAIL)
-            e.printStackTrace()
-        }
+	private val mAuth by inject<FirebaseAuth>()
 
-    }
+	override fun registerGoogleUser(task : Task<GoogleSignInAccount>) {
+		try {
+			val account = task.result
+			authWithFirebase(account)
+		} catch (e : ApiException) {
+			postAuthEvent(Constants.AUTH_EVENT_FAIL)
+			e.printStackTrace()
+		}
 
-    private fun authWithFirebase(account : GoogleSignInAccount?) {
-        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    postAuthEvent(Constants.AUTH_EVENT_SUCCESS)
-                } else {
-                    postAuthEvent(Constants.AUTH_EVENT_FAIL)
-                }
-            }
-    }
+	}
 
-    private fun postAuthEvent(event : String) {
-        EventBus.getDefault().post(AuthenticationEvent(event))
-    }
+	private fun authWithFirebase(account : GoogleSignInAccount?) {
+		val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+		mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+			if (task.isSuccessful) {
+				postAuthEvent(Constants.AUTH_EVENT_SUCCESS)
+			} else {
+				postAuthEvent(Constants.AUTH_EVENT_FAIL)
+			}
+		}
+	}
+
+	private fun postAuthEvent(event : String) {
+		EventBus.getDefault().post(AuthenticationEvent(event))
+	}
 }

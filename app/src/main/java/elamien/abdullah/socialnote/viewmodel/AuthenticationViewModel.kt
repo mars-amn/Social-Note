@@ -11,8 +11,9 @@ import org.koin.core.inject
  * Created by AbdullahAtta on 8/9/2019.
  */
 class AuthenticationViewModel : ViewModel(), KoinComponent {
-    private val mAuthRepository : AuthenticationRepository by inject()
-    fun registerGoogleUser(task : Task<GoogleSignInAccount>) {
-        return mAuthRepository.registerGoogleUser(task)
-    }
+
+	private val mAuthRepository : AuthenticationRepository by inject()
+	fun registerGoogleUser(task : Task<GoogleSignInAccount>) {
+		return mAuthRepository.registerGoogleUser(task)
+	}
 }

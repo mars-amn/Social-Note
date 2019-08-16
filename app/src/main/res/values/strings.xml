@@ -20,11 +20,13 @@
 	<string name="back_button_dialog_msg_ptI">You didn\'t save what you wrote.</string>
 	<string name="back_button_dialog_positive_button_label">Yes</string>
 	<string name="back_button_dialog_negative_button_label">No, Keep Writing</string>
-	<string name="note_notification_title">Note Reminder</string>
+	<string name="note_time_reminder_notification_title">Note Reminder</string>
 	<string name="note_notification_open_action_label">Open Note</string>
 	<string name="note_notification_dismiss_action_label">Dismiss</string>
 	<string name="notification_id" translatable="false">Task-Reminder</string>
-	<string name="notification_channel_name">Task Reminder</string>
+	<string name="notification_note_time_reminder_channel_name">Note Time Reminder</string>
+	<string name="notification_note_geofence_reminder_channel_name">Note Location Reminder</string>
+	
 	<string name="set_reminder_label">SET REMINDER</string>
 	<string name="empty_editor_msg">Nothing to save</string>
 	<string name="register_label_text">Register to continue ..</string>
@@ -33,4 +35,11 @@
 	<string name="create_note_shortcut_short_label">Create a new Note</string>
 	<string name="create_note_shortcut_long_label">Tap to create a new Note</string>
 	<string name="create_note_shortcut_disabled_message">Disabled at the moment</string>
+	<string name="location_reminder_label">LOCATION REMINDER</string>
+	<string name="title_activity_location_map_actitivty">Map</string>
+	<string name="request_location_rational_dialog">To be able to use this feature, You should grant the Location permission. Proceed?</string>
+	<string name="note_geofence_notification_id">Note-Location-Reminder</string>
+	<string name="note_geofence_notification_name">Note Location Reminder</string>
+	<string name="note_geofence_notification_channel_name" translatable="false">Note-Location-Reminder</string>
+	<string name="note_geofence_notification_title">Note Location Reminder</string>
 </resources>
