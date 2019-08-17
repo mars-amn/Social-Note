@@ -7,10 +7,12 @@ import android.graphics.Canvas
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.DialogCallback
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
@@ -24,6 +26,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import elamien.abdullah.socialnote.R
+import elamien.abdullah.socialnote.databinding.ActivityLocationMapBinding
+import elamien.abdullah.socialnote.utils.ConnectionUtils
 import elamien.abdullah.socialnote.utils.Constants
 import java.io.IOException
 import java.util.*
@@ -33,17 +37,44 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 	private lateinit var fusedLocationClient : FusedLocationProviderClient
 	lateinit var geofencingClient : GeofencingClient
 	var mGeofenceLocation : LatLng? = null
+	lateinit var mBinding : ActivityLocationMapBinding
+	lateinit var mMapFragment : SupportMapFragment
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
 		setFullScreen()
-		setContentView(R.layout.activity_location_map)
+		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_location_map)
+		mBinding.handlers = this
 		if (intent != null && intent.hasExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)) {
 			mGeofenceLocation = intent.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
 		}
-		val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-		mapFragment.getMapAsync(this)
+		mMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+		mMapFragment.getMapAsync(this)
 		fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 		geofencingClient = LocationServices.getGeofencingClient(this)
+		checkForConnection()
+	}
+
+	private fun checkForConnection() {
+		if (ConnectionUtils.getConnectionUtils(this@GeofencePickerActivity).isDeviceNetworkAvailable()) {
+			showMap()
+		} else {
+			hideMap()
+		}
+	}
+
+	private fun showMap() {
+		mMapFragment.view?.visibility = View.VISIBLE
+		mBinding.networkStateGroup.visibility = View.GONE
+	}
+
+	private fun hideMap() {
+		mBinding.networkStateGroup.visibility = View.VISIBLE
+		mMapFragment.view?.visibility = View.GONE
+
+	}
+
+	fun onRetryButtonClick(view : View) {
+		checkForConnection()
 	}
 
 	private fun setFullScreen() {
@@ -159,6 +190,10 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 					val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
 					mMap.animateCamera(cameraUpdate)
 				}
+			} else if (mGeofenceLocation != null) {
+				val cameraUpdate = CameraUpdateFactory.newLatLngZoom(mGeofenceLocation, 15f)
+				mMap.animateCamera(cameraUpdate)
+				addMarker(mGeofenceLocation!!)
 			}
 		}
 	}

@@ -47,4 +47,6 @@
 	<string name="place_picker_dialog_message">Do you want to be notified whenever you enter</string>
 	<string name="place_picker_dialog_button_positive_label">Yes</string>
 	<string name="place_picker_dialog_button_negative_label">No, Change it</string>
+	<string name="network_error_label">Looks like you don\'t have an internet connection, enable your internet connection and press the retry button</string>
+	<string name="network_retry_button_text">Retry</string>
 </resources>

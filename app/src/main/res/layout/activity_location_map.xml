@@ -1,10 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-		  xmlns:tools="http://schemas.android.com/tools"
-		  xmlns:map="http://schemas.android.com/apk/res-auto"
-		  android:layout_width="match_parent"
-		  android:layout_height="match_parent"
-		  android:id="@+id/map"
-		  map:uiZoomControls="true"
-		  tools:context=".ui.GeofencePickerActivity"
-		  android:name="com.google.android.gms.maps.SupportMapFragment"/>
+<layout>
+	
+	<data>
+		
+		<variable
+				name="handlers"
+				type="elamien.abdullah.socialnote.ui.GeofencePickerActivity"/>
+	</data>
+	
+	<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+													   xmlns:tools="http://schemas.android.com/tools"
+													   xmlns:map="http://schemas.android.com/apk/res-auto"
+													   xmlns:app="http://schemas.android.com/apk/res-auto"
+													   android:background="#F1F1F6"
+													   android:layout_height="match_parent"
+													   android:layout_width="match_parent">
+		
+		
+		<fragment
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:id="@+id/map"
+				map:uiZoomControls="true"
+				tools:context=".ui.GeofencePickerActivity"
+				android:name="com.google.android.gms.maps.SupportMapFragment"
+				map:layout_constraintTop_toTopOf="parent"
+				map:layout_constraintStart_toStartOf="parent"
+				map:layout_constraintEnd_toEndOf="parent"
+				map:layout_constraintBottom_toBottomOf="parent"/>
+		
+		<TextView
+				android:layout_width="match_parent"
+				android:gravity="center"
+				android:id="@+id/networkStateLabel"
+				android:textColor="@color/recyclerViewColor03"
+				android:text="@string/network_error_label"
+				android:layout_height="wrap_content"
+				map:layout_constraintStart_toStartOf="parent"
+				android:layout_margin="@dimen/network_error_label_margin"
+				map:layout_constraintTop_toTopOf="@+id/lottieAnimationView"
+				map:layout_constraintEnd_toEndOf="parent"/>
+		
+		<Button
+				android:text="@string/network_retry_button_text"
+				android:textAllCaps="false"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				map:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
+				android:layout_margin="@dimen/network_retry_button_margin"
+				android:onClick="@{handlers::onRetryButtonClick}"
+				android:id="@+id/retryButton"
+				map:layout_constraintBottom_toBottomOf="@+id/lottieAnimationView"
+				map:layout_constraintEnd_toEndOf="parent"
+				/>
+		
+		<com.airbnb.lottie.LottieAnimationView
+				android:id="@+id/lottieAnimationView"
+				android:layout_width="match_parent"
+				app:lottie_autoPlay="true"
+				app:lottie_loop="true"
+				android:layout_height="match_parent"
+				map:lottie_rawRes="@raw/network_error"/>
+		
+		<androidx.constraintlayout.widget.Group
+				android:layout_width="match_parent"
+				android:id="@+id/networkStateGroup"
+				map:constraint_referenced_ids="lottieAnimationView,
+retryButton,
+networkStateLabel"
+				android:layout_height="match_parent"/>
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -10,5 +10,7 @@
 	<dimen name="auth_button_width">70dp</dimen>
 	<dimen name="auth_button_height">70dp</dimen>
 	<dimen name="auth_button_margin">16dp</dimen>
+	<dimen name="network_error_label_margin">8dp</dimen>
+	<dimen name="network_retry_button_margin">32dp</dimen>
 
 </resources>
