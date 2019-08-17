@@ -32,10 +32,14 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 	private lateinit var mMap : GoogleMap
 	private lateinit var fusedLocationClient : FusedLocationProviderClient
 	lateinit var geofencingClient : GeofencingClient
+	var mGeofenceLocation : LatLng? = null
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
 		setFullScreen()
 		setContentView(R.layout.activity_location_map)
+		if (intent != null && intent.hasExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)) {
+			mGeofenceLocation = intent.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+		}
 		val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
 		mapFragment.getMapAsync(this)
 		fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -53,6 +57,7 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 		getUserLocation()
 		mMap.setOnMapClickListener { latLng ->
 			if (latLng != null) {
+				mGeofenceLocation = latLng
 				addMarker(latLng)
 
 				try {
@@ -114,19 +119,23 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 				}
 				message(null, "${getString(R.string.place_picker_dialog_message)} $subAdminArea , $featureName ?")
 				cornerRadius(resources.getInteger(R.integer.place_picker_dialog_corner_radius).toFloat())
-				negativeButton(null, getString(R.string.place_picker_dialog_button_negative_label), object : DialogCallback {
-					override fun invoke(dialog : MaterialDialog) {
-						dialog.dismiss()
-					}
+				negativeButton(null,
+						getString(R.string.place_picker_dialog_button_negative_label),
+						object : DialogCallback {
+							override fun invoke(dialog : MaterialDialog) {
+								dialog.dismiss()
+							}
 
-				})
-				positiveButton(null, getString(R.string.place_picker_dialog_button_positive_label), object : DialogCallback {
-					override fun invoke(dialog : MaterialDialog) {
-						dialog.dismiss()
-						getUserPreferredLocation(latLng)
-					}
+						})
+				positiveButton(null,
+						getString(R.string.place_picker_dialog_button_positive_label),
+						object : DialogCallback {
+							override fun invoke(dialog : MaterialDialog) {
+								dialog.dismiss()
+								getUserPreferredLocation(latLng)
+							}
 
-				})
+						})
 			}
 		}
 	}
@@ -139,11 +148,17 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 
 	@SuppressLint("MissingPermission")
 	private fun getUserLocation() {
-		fusedLocationClient.lastLocation.addOnSuccessListener {
-			if (it != null) {
-				val latLng = LatLng(it.latitude, it.longitude)
-				val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
-				mMap.animateCamera(cameraUpdate)
+		fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+			if (location != null) {
+				if (mGeofenceLocation != null) {
+					val cameraUpdate = CameraUpdateFactory.newLatLngZoom(mGeofenceLocation, 15f)
+					mMap.animateCamera(cameraUpdate)
+					addMarker(mGeofenceLocation!!)
+				} else {
+					val latLng = LatLng(location.latitude, location.longitude)
+					val cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 15f)
+					mMap.animateCamera(cameraUpdate)
+				}
 			}
 		}
 	}

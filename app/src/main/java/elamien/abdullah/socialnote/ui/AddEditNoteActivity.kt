@@ -82,6 +82,10 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 				editedNote = note
 				mBinding.aztec.fromHtml(editedNote.note.toString(), true)
 				mBinding.noteTitleInputText.setText(note.noteTitle!!)
+				if (note.geofence != null) {
+					mGeofenceLocation =
+						LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
+				}
 			}
 
 		})
@@ -273,6 +277,9 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 
 	private fun startMapActivity() {
 		val intent = Intent(this@AddEditNoteActivity, GeofencePickerActivity::class.java)
+		if (mGeofenceLocation != null) {
+			intent.putExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY, mGeofenceLocation)
+		}
 		startActivityForResult(intent, GEOFENCE_NOTE_REMINDER_REQUEST_CODE)
 	}
 
