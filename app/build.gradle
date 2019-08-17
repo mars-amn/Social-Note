@@ -114,6 +114,8 @@ dependencies {
     implementation "com.andkulikov:transitionseverywhere:2.0.0"
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.florent37:singledateandtimepicker:2.1.5'
+    implementation 'com.afollestad.material-dialogs:core:3.1.0'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

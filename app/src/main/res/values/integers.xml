@@ -2,4 +2,5 @@
 <resources>
 	<integer name="note_reminder_notification_id">101</integer>
 	<integer name="note_geofence_reminder_notification_id">201</integer>
+	<integer name="place_picker_dialog_corner_radius">16</integer>
 </resources>

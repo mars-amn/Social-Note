@@ -42,4 +42,9 @@
 	<string name="note_geofence_notification_name">Note Location Reminder</string>
 	<string name="note_geofence_notification_channel_name" translatable="false">Note-Location-Reminder</string>
 	<string name="note_geofence_notification_title">Note Location Reminder</string>
+	<string name="error_msg">Something went wrong</string>
+	<string name="place_picker_dialog_title">Pick Location</string>
+	<string name="place_picker_dialog_message">Do you want to be notified whenever you enter</string>
+	<string name="place_picker_dialog_button_positive_label">Yes</string>
+	<string name="place_picker_dialog_button_negative_label">No, Change it</string>
 </resources>
