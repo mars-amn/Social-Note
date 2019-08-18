@@ -39,6 +39,12 @@ interface NoteDao {
 	fun getGeofenceNote(id : Long) : Note
 
 	/**
+	 * Time reminder related queries
+	 */
+	@Query("SELECT * FROM Notes WHERE preferred_timeReminder IS NOT NULL")
+	fun getTimeReminderNotes() : List<Note>
+
+	/**
 	 * DANGER!
 	 * DO NOT call this function
 	 * calling it probably will make you regret

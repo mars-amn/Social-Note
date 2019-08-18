@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import elamien.abdullah.socialnote.services.GeofenceService
+import elamien.abdullah.socialnote.services.TimeReminderService
 import elamien.abdullah.socialnote.utils.Constants
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -20,7 +21,17 @@ class RebootReceiver : BroadcastReceiver() {
 						*locationPermissions)) {
 				startAddingGeofencesService(context)
 			}
+			if (action == Intent.ACTION_BOOT_COMPLETED) {
+				startAddingTimeReminderNotes(context)
+			}
 		}
+	}
+
+	private fun startAddingTimeReminderNotes(context : Context) {
+		val timeReminderService = Intent(context.applicationContext, TimeReminderService::class.java)
+		timeReminderService.action = Constants.RE_ADD_TIME_REMINDER_INTENT_ACTION
+		TimeReminderService.getTimeReminderService()
+				.enqueueReminderNotes(context.applicationContext, timeReminderService)
 	}
 
 	private fun startAddingGeofencesService(context : Context) {

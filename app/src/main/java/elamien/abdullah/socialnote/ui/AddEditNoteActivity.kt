@@ -200,7 +200,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 			intent.action = Constants.NOTE_TIME_REMINDER_ACTION
 			intent.putExtra(Constants.NOTE_INTENT_ID, id)
 			intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
-			PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, 0)
+			PendingIntent.getBroadcast(this@AddEditNoteActivity, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}
 		alarmManager.setExact(AlarmManager.RTC_WAKEUP, mReminderDate?.time!!, alarmIntent)
 	}
