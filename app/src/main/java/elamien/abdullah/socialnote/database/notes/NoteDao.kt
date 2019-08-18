@@ -32,10 +32,10 @@ interface NoteDao {
 	/**
 	 * Geofence related queries
 	 */
-	@Query("SELECT * FROM Notes")
+	@Query("SELECT * FROM Notes WHERE location_noteGeofenceLongitude IS NOT NULL AND location_noteGeofenceLatitude IS NOT NULL")
 	fun getAllGeofencesNotes() : List<Note>
 
-	@Query("SELECT * FROM Notes WHERE note_id =:id")
+	@Query("SELECT * FROM Notes WHERE location_noteGeofenceLatitude IS NOT NULL AND location_noteGeofenceLongitude IS NOT NULL AND note_id =:id")
 	fun getGeofenceNote(id : Long) : Note
 
 	/**
