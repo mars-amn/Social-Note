@@ -15,7 +15,10 @@ import org.koin.dsl.module
  * Created by AbdullahAtta on 7/23/2019.
  */
 val appModules = module {
-	single { Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db").build() }
+	single {
+		Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db")
+				.build()
+	}
 	single { FirebaseAuth.getInstance() }
 	single { get<AppDatabase>().notesDao() }
 	single { NoteRepository() }

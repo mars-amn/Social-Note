@@ -45,13 +45,14 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	}
 
 	private fun loadNotes() {
-		mViewModel.loadPagedNotes().observe(this, Observer<PagedList<Note>> { list ->
-			if (list.isNotEmpty()) {
-				addNotesToRecyclerView(list)
-			} else {
-				hideRecyclerView()
-			}
-		})
+		mViewModel.loadPagedNotes()
+				.observe(this, Observer<PagedList<Note>> { list ->
+					if (list.isNotEmpty()) {
+						addNotesToRecyclerView(list)
+					} else {
+						hideRecyclerView()
+					}
+				})
 	}
 
 	private fun addNotesToRecyclerView(list : PagedList<Note>) {
@@ -107,11 +108,12 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	}
 
 	private fun searchNotes(query : String?) {
-		mViewModel.searchForNote("%$query%").observe(this@HomeActivity, Observer<PagedList<Note>> { list ->
-			if (list.isNotEmpty()) {
-				applySearchResults(list)
-			}
-		})
+		mViewModel.searchForNote("%$query%")
+				.observe(this@HomeActivity, Observer<PagedList<Note>> { list ->
+					if (list.isNotEmpty()) {
+						applySearchResults(list)
+					}
+				})
 	}
 
 	private fun applySearchResults(list : PagedList<Note>) {

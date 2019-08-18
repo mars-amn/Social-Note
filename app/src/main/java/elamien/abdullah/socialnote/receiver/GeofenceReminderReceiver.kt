@@ -26,7 +26,8 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 
 	private fun sendNoteGeofenceNotification(context : Context, intent : Intent) {
 		AsyncTask.execute {
-			val note = AppDatabase.getDatabase(context)?.notesDao()
+			val note = AppDatabase.getDatabase(context)
+					?.notesDao()
 					?.getGeofenceNote(intent.getLongExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY, -1))
 			if (note != null) {
 				NotificationsUtils.getNotificationUtils()
@@ -36,7 +37,8 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 	}
 
 	private fun dismissNotification(context : Context, noteId : Long) {
-		NotificationsUtils.getNotificationUtils().dismissNoteGeofenceReminderNotification(context, noteId)
+		NotificationsUtils.getNotificationUtils()
+				.dismissNoteGeofenceReminderNotification(context, noteId)
 	}
 
 	private fun removeGeofenceRequest(intent : Intent?, context : Context?) {
@@ -46,6 +48,7 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		for (geofence in triggeredGeofences) {
 			triggeredGeofencesRequestIds.add(geofence.requestId)
 		}
-		LocationServices.getGeofencingClient(context!!).removeGeofences(triggeredGeofencesRequestIds)
+		LocationServices.getGeofencingClient(context!!)
+				.removeGeofences(triggeredGeofencesRequestIds)
 	}
 }

@@ -25,11 +25,13 @@ class NoteReminderReceiver : BroadcastReceiver() {
 	}
 
 	private fun dismissNotification(context : Context, id : Long) {
-		NotificationsUtils.getNotificationUtils().dismissNoteReminderNotification(context, id.toInt())
+		NotificationsUtils.getNotificationUtils()
+				.dismissNoteReminderNotification(context, id.toInt())
 	}
 
 	private fun showNotification(context : Context?, noteBody : String?, noteId : Long) {
-		NotificationsUtils.getNotificationUtils().sendNoteTimeReminderNotification(context!!, noteBody!!, noteId)
+		NotificationsUtils.getNotificationUtils()
+				.sendNoteTimeReminderNotification(context!!, noteBody!!, noteId)
 	}
 
 }

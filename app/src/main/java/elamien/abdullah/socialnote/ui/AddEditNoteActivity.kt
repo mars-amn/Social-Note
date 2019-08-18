@@ -82,19 +82,20 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	}
 
 	private fun initEditorWithNote(noteId : Long) {
-		mViewModel.getNote(noteId).observe(this, Observer<Note> { note ->
-			if (note != null) {
-				editedNote = note
-				mBinding.aztec.fromHtml(editedNote.note.toString(), true)
-				mBinding.noteTitleInputText.setText(note.noteTitle!!)
-				if (note.geofence != null) {
-					isGeofence = true
-					mGeofenceLocation =
-						LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
-				}
-			}
+		mViewModel.getNote(noteId)
+				.observe(this, Observer<Note> { note ->
+					if (note != null) {
+						editedNote = note
+						mBinding.aztec.fromHtml(editedNote.note.toString(), true)
+						mBinding.noteTitleInputText.setText(note.noteTitle!!)
+						if (note.geofence != null) {
+							isGeofence = true
+							mGeofenceLocation =
+								LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
+						}
+					}
 
-		})
+				})
 	}
 
 	private fun isFromGeofenceReceiver() : Boolean {
@@ -144,7 +145,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 
 	private fun onSaveMenuItemClick() {
 		if (mBinding.aztec.toFormattedHtml() == "") {
-			Toast.makeText(this@AddEditNoteActivity, getString(R.string.empty_editor_msg), Toast.LENGTH_LONG).show()
+			Toast.makeText(this@AddEditNoteActivity, getString(R.string.empty_editor_msg), Toast.LENGTH_LONG)
+					.show()
 			return
 		}
 
@@ -173,17 +175,18 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 			if (isReminder) {
 				note.timeReminder = NoteReminder(mReminderDate?.time)
 			}
-			mViewModel.insertNewNote(note).observe(this, Observer<Long> { noteId ->
-				if (noteId != null) {
-					if (isReminder) {
-						setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
-					}
-					if (isGeofence) {
-						createNoteGeofence(noteId)
-					}
-				}
-				navigateUp()
-			})
+			mViewModel.insertNewNote(note)
+					.observe(this, Observer<Long> { noteId ->
+						if (noteId != null) {
+							if (isReminder) {
+								setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
+							}
+							if (isGeofence) {
+								createNoteGeofence(noteId)
+							}
+						}
+						navigateUp()
+					})
 		}
 	}
 
@@ -213,7 +216,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	@SuppressLint("MissingPermission")
 	fun addGeofence(geofencingRequest : GeofencingRequest, id : Long) {
 		val client = LocationServices.getGeofencingClient(this@AddEditNoteActivity)
-		client.addGeofences(geofencingRequest, createGeofencePendingIntent(id)).addOnSuccessListener { }
+		client.addGeofences(geofencingRequest, createGeofencePendingIntent(id))
+				.addOnSuccessListener { }
 				.addOnFailureListener { }
 	}
 
@@ -228,16 +232,21 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	}
 
 	private fun createGeofenceRequest(geofence : Geofence) : GeofencingRequest {
-		return GeofencingRequest.Builder().setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-				.addGeofence(geofence).build()
+		return GeofencingRequest.Builder()
+				.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+				.addGeofence(geofence)
+				.build()
 	}
 
 	private fun getGeofenceBuilder(id : Long) : Geofence {
-		return Geofence.Builder().setRequestId("geo_fence_reminder_$id")
+		return Geofence.Builder()
+				.setRequestId("geo_fence_reminder_$id")
 				.setCircularRegion(mGeofenceLocation?.latitude!!,
 						mGeofenceLocation?.longitude!!,
-						Constants.GEOFENCE_REMINDER_RADIUS).setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
-				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT).build()
+						Constants.GEOFENCE_REMINDER_RADIUS)
+				.setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
+				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+				.build()
 	}
 
 	private fun showUnsavedNoteDialog() {
@@ -246,9 +255,11 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 				.setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
 					dialog.dismiss()
 					navigateUp()
-				}.setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
+				}
+				.setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
 					dialog.dismiss()
-				}.show()
+				}
+				.show()
 	}
 
 	override fun onBackPressed() {
@@ -260,15 +271,22 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	}
 
 	fun onSetReminderClick(view : View) {
-		SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity).title("Pick Date").displayYears(false)
-				.displayDays(true).displayHours(true).displayMinutes(true).minutesStep(1)
-				.mainColor(ContextCompat.getColor(this@AddEditNoteActivity, R.color.secondaryColor)).mustBeOnFuture()
+		SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity)
+				.title("Pick Date")
+				.displayYears(false)
+				.displayDays(true)
+				.displayHours(true)
+				.displayMinutes(true)
+				.minutesStep(1)
+				.mainColor(ContextCompat.getColor(this@AddEditNoteActivity, R.color.secondaryColor))
+				.mustBeOnFuture()
 				.listener { pickedDate ->
 					if (pickedDate != null) {
 						isReminder = true
 						mReminderDate = pickedDate
 					}
-				}.display()
+				}
+				.display()
 	}
 
 	fun onLocationReminderClick(view : View) {
@@ -322,7 +340,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 			}
 		}
 
-		val mediaPending = mBinding.aztec.getAllElementAttributes(uploadingPredicate).isNotEmpty()
+		val mediaPending = mBinding.aztec.getAllElementAttributes(uploadingPredicate)
+				.isNotEmpty()
 
 		if (mediaPending) {
 		} else {

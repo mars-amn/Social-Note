@@ -28,7 +28,8 @@ class TimeReminderService : JobIntentService() {
 
 	private fun addNotesToTheAlarmManager() {
 		mDatabase = AppDatabase.getDatabase(applicationContext)
-		val noteReminderList = mDatabase?.notesDao()?.getTimeReminderNotes()
+		val noteReminderList = mDatabase?.notesDao()
+				?.getTimeReminderNotes()
 		noteReminderList?.forEach { note ->
 			addNoteToAlarmManager(note)
 		}

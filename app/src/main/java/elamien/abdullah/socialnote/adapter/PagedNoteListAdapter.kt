@@ -25,7 +25,8 @@ import kotlin.collections.ArrayList
 class PagedNoteListAdapter(private val context : Context) :
 	PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
 
-	val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors).toCollection(ArrayList())
+	val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors)
+			.toCollection(ArrayList())
 
 	override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : NotesViewHolder {
 		val inflater = LayoutInflater.from(context)
@@ -72,7 +73,8 @@ class PagedNoteListAdapter(private val context : Context) :
 					}
 					.setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
 						dialog.dismiss()
-					}.show()
+					}
+					.show()
 
 			return true
 		}

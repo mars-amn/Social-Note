@@ -31,16 +31,18 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
 
 	private fun authWithFirebase(account : GoogleSignInAccount?) {
 		val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-		mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
-			if (task.isSuccessful) {
-				postAuthEvent(Constants.AUTH_EVENT_SUCCESS)
-			} else {
-				postAuthEvent(Constants.AUTH_EVENT_FAIL)
-			}
-		}
+		mAuth.signInWithCredential(credential)
+				.addOnCompleteListener { task ->
+					if (task.isSuccessful) {
+						postAuthEvent(Constants.AUTH_EVENT_SUCCESS)
+					} else {
+						postAuthEvent(Constants.AUTH_EVENT_FAIL)
+					}
+				}
 	}
 
 	private fun postAuthEvent(event : String) {
-		EventBus.getDefault().post(AuthenticationEvent(event))
+		EventBus.getDefault()
+				.post(AuthenticationEvent(event))
 	}
 }

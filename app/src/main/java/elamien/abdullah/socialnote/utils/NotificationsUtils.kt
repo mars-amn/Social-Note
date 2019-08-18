@@ -45,7 +45,8 @@ class NotificationsUtils {
 				.setContentTitle(context.getString(R.string.note_geofence_notification_title))
 				.setContentText(getBody(noteBody))
 				.setContentIntent(getNoteGeofenceLocationPendingIntent(context, noteId))
-				.setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
+				.setPriority(NotificationCompat.PRIORITY_HIGH)
+				.setAutoCancel(true)
 				.addAction(getOpenNoteGeofenceAction(context, noteId))
 				.addAction(dismissNoteGeofenceNotificationAction(context, noteId))
 	}
@@ -79,10 +80,11 @@ class NotificationsUtils {
 		val noteIntent = Intent(context, AddEditNoteActivity::class.java)
 		noteIntent.putExtra(Constants.ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN, true)
 		noteIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
-		return TaskStackBuilder.create(context).run {
-			addNextIntentWithParentStack(noteIntent)
-			getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
-		}
+		return TaskStackBuilder.create(context)
+				.run {
+					addNextIntentWithParentStack(noteIntent)
+					getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+				}
 	}
 
 	fun sendNoteTimeReminderNotification(context : Context, noteBody : String, noteId : Long) {
@@ -109,8 +111,10 @@ class NotificationsUtils {
 				.setContentTitle(context.getString(R.string.note_time_reminder_notification_title))
 				.setContentText(getBody(noteBody))
 				.setContentIntent(getOpenNoteNotificationPendingIntent(context, noteId))
-				.setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
-				.addAction(getOpenNoteAction(context, noteId)).addAction(dismissNotificationsAction(context, noteId))
+				.setPriority(NotificationCompat.PRIORITY_HIGH)
+				.setAutoCancel(true)
+				.addAction(getOpenNoteAction(context, noteId))
+				.addAction(dismissNotificationsAction(context, noteId))
 	}
 
 
@@ -130,10 +134,11 @@ class NotificationsUtils {
 		val noteIntent = Intent(context, AddEditNoteActivity::class.java)
 		noteIntent.putExtra(Constants.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, true)
 		noteIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
-		return TaskStackBuilder.create(context).run {
-			addNextIntentWithParentStack(noteIntent)
-			getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
-		}
+		return TaskStackBuilder.create(context)
+				.run {
+					addNextIntentWithParentStack(noteIntent)
+					getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+				}
 	}
 
 	private fun getDismissNotificationPendingIntent(context : Context, noteId : Long) : PendingIntent? {

@@ -96,10 +96,12 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
 					showPlaceDialogConfirm(addresses, latLng)
 				} catch (e : IOException) {
 					e.printStackTrace()
-					Toast.makeText(this@GeofencePickerActivity, getString(R.string.error_msg), Toast.LENGTH_LONG).show()
+					Toast.makeText(this@GeofencePickerActivity, getString(R.string.error_msg), Toast.LENGTH_LONG)
+							.show()
 				} catch (e : IllegalArgumentException) {
 					e.printStackTrace()
-					Toast.makeText(this@GeofencePickerActivity, getString(R.string.error_msg), Toast.LENGTH_LONG).show()
+					Toast.makeText(this@GeofencePickerActivity, getString(R.string.error_msg), Toast.LENGTH_LONG)
+							.show()
 				}
 
 			}

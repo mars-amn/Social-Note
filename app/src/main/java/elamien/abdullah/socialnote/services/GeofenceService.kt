@@ -34,7 +34,8 @@ class GeofenceService : JobIntentService() {
 
 	private fun queryAndAddGeofences() {
 		mDatabase = AppDatabase.getDatabase(applicationContext)
-		val geofencesList = mDatabase?.notesDao()?.getAllGeofencesNotes()
+		val geofencesList = mDatabase?.notesDao()
+				?.getAllGeofencesNotes()
 		geofencesList?.forEach { note ->
 			createGeofences(note)
 		}
@@ -60,15 +61,19 @@ class GeofenceService : JobIntentService() {
 	}
 
 	private fun createGeofenceRequest(geofence : Geofence) : GeofencingRequest {
-		return GeofencingRequest.Builder().setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-				.addGeofence(geofence).build()
+		return GeofencingRequest.Builder()
+				.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+				.addGeofence(geofence)
+				.build()
 	}
 
 	private fun createAGeofencing(latLng : LatLng, id : Long) : Geofence {
-		return Geofence.Builder().setRequestId("geo_fence_reminder$id")
+		return Geofence.Builder()
+				.setRequestId("geo_fence_reminder$id")
 				.setCircularRegion(latLng.latitude, latLng.longitude, Constants.GEOFENCE_REMINDER_RADIUS)
 				.setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
-				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT).build()
+				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
+				.build()
 	}
 
 
