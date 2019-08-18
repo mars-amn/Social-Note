@@ -1,6 +1,5 @@
 package elamien.abdullah.socialnote.receiver
 
-import android.Manifest
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -8,15 +7,10 @@ import android.os.AsyncTask
 import com.google.android.gms.location.GeofencingEvent
 import com.google.android.gms.location.LocationServices
 import elamien.abdullah.socialnote.database.AppDatabase
-import elamien.abdullah.socialnote.services.GeofenceService
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotificationsUtils
-import pub.devrel.easypermissions.EasyPermissions
 
 class GeofenceReminderReceiver : BroadcastReceiver() {
-
-	private val locationPermissions =
-		arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
 	override fun onReceive(context : Context?, intent : Intent?) {
 		if (context != null && intent != null) {
@@ -26,9 +20,6 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 			} else if (action == Constants.NOTE_GEOFENCE_REMINDER_ACTION) {
 				sendNoteGeofenceNotification(context, intent)
 				removeGeofenceRequest(intent, context)
-			} else if (action == Intent.ACTION_BOOT_COMPLETED && EasyPermissions.hasPermissions(context,
-						*locationPermissions)) {
-				startAddingGeofencesService(context)
 			}
 		}
 	}
@@ -57,12 +48,4 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		}
 		LocationServices.getGeofencingClient(context!!).removeGeofences(triggeredGeofencesRequestIds)
 	}
-
-	private fun startAddingGeofencesService(context : Context) {
-		val geofenceService = Intent(context.applicationContext, GeofenceService::class.java)
-		geofenceService.action = Constants.RE_ADD_GEOFNECES_INTENT_ACTION
-		GeofenceService.getGeofenceService()
-				.enqueueQueryingAndAddingGeofencesJob(context.applicationContext, geofenceService)
-	}
-
 }
