@@ -41,7 +41,7 @@ class NotificationsUtils {
 												   noteBody : String,
 												   noteId : Long) : NotificationCompat.Builder? {
 		return NotificationCompat.Builder(context, context.getString(R.string.note_geofence_notification_channel_name))
-				.setSmallIcon(R.drawable.ic_geofence_notification)
+				.setSmallIcon(R.drawable.ic_notification)
 				.setContentTitle(context.getString(R.string.note_geofence_notification_title))
 				.setContentText(getBody(noteBody))
 				.setContentIntent(getNoteGeofenceLocationPendingIntent(context, noteId))

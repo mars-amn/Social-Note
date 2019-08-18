@@ -26,6 +26,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.geofence.NoteGeofence
 import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.reminder.NoteReminder
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
 import elamien.abdullah.socialnote.receiver.GeofenceReminderReceiver
 import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
@@ -47,8 +48,12 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private lateinit var mBinding : ActivityAddNoteBinding
 	private lateinit var editedNote : Note
 	private var mGeofenceLocation : LatLng? = null
+	private var mReminderDate : Date? = null
 	private val locationsPermissions =
 		arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+
+	private var isGeofence = false
+	private var isReminder = false
 
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -83,6 +88,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 				mBinding.aztec.fromHtml(editedNote.note.toString(), true)
 				mBinding.noteTitleInputText.setText(note.noteTitle!!)
 				if (note.geofence != null) {
+					isGeofence = true
 					mGeofenceLocation =
 						LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
 				}
@@ -146,28 +152,32 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 			editedNote.dateModified = currentDate
 			editedNote.note = mBinding.aztec.toFormattedHtml()
 			editedNote.noteTitle = noteTitle()
-			mViewModel.updateNote(editedNote)
-			if (isTimeReminderNotNull()) {
+			if (isReminder) {
+				editedNote.timeReminder = NoteReminder(mReminderDate?.time)
 				setupReminder(editedNote.note!!, editedNote.id!!)
 			}
-			if (isGeofenceLocationNotNull()) {
+			if (isGeofence) {
 				val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
 				editedNote.geofence = noteGeofence
 				createNoteGeofence(editedNote.id!!)
 			}
+			mViewModel.updateNote(editedNote)
 			navigateUp()
 		} else {
 			val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
-			if (isGeofenceLocationNotNull()) {
+			if (isGeofence) {
 				val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
 				note.geofence = noteGeofence
 			}
+			if (isReminder) {
+				note.timeReminder = NoteReminder(mReminderDate?.time)
+			}
 			mViewModel.insertNewNote(note).observe(this, Observer<Long> { noteId ->
 				if (noteId != null) {
-					if (isTimeReminderNotNull()) {
+					if (isReminder) {
 						setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
 					}
-					if (isGeofenceLocationNotNull()) {
+					if (isGeofence) {
 						createNoteGeofence(noteId)
 					}
 				}
@@ -183,7 +193,6 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		finish()
 	}
 
-	private fun isTimeReminderNotNull() = mReminderDate != null
 
 	private fun setupReminder(body : String, id : Long) {
 		val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -195,8 +204,6 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		}
 		alarmManager.setExact(AlarmManager.RTC_WAKEUP, mReminderDate?.time!!, alarmIntent)
 	}
-
-	private fun isGeofenceLocationNotNull() = mGeofenceLocation != null
 
 	private fun createNoteGeofence(id : Long) {
 		addGeofence(createGeofenceRequest(getGeofenceBuilder(id)), id)
@@ -251,14 +258,13 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		}
 	}
 
-	private var mReminderDate : Date? = null
-
 	fun onSetReminderClick(view : View) {
 		SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity).title("Pick Date").displayYears(false)
 				.displayDays(true).displayHours(true).displayMinutes(true).minutesStep(1)
 				.mainColor(ContextCompat.getColor(this@AddEditNoteActivity, R.color.secondaryColor)).mustBeOnFuture()
 				.listener { pickedDate ->
 					if (pickedDate != null) {
+						isReminder = true
 						mReminderDate = pickedDate
 					}
 				}.display()
@@ -286,6 +292,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
 		if (requestCode == GEOFENCE_NOTE_REMINDER_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
+			isGeofence = true
 			mGeofenceLocation = data.getParcelableExtra<LatLng>(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
 		}
 	}
