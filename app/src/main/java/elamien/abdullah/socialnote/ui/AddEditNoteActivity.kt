@@ -116,6 +116,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private fun dismissNoteTimeReminderNotification() {
 		val intent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
 		intent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
+		intent.putExtra(Constants.NOTE_INTENT_KEY, getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
 		PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		sendBroadcast(intent)
 	}
@@ -198,7 +199,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 		val alarmIntent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java).let { intent ->
 			intent.action = Constants.NOTE_TIME_REMINDER_ACTION
-			intent.putExtra(Constants.NOTE_INTENT_ID, id)
+			intent.putExtra(Constants.NOTE_INTENT_KEY, id)
 			intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
 			PendingIntent.getBroadcast(this@AddEditNoteActivity, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
 		}

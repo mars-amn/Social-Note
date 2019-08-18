@@ -85,7 +85,7 @@ class NotificationsUtils {
 		}
 	}
 
-	fun sendNoteTimeReminderNotification(context : Context, intent : Intent) {
+	fun sendNoteTimeReminderNotification(context : Context, noteBody : String, noteId : Long) {
 		val notificationManager : NotificationManager =
 			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -95,21 +95,58 @@ class NotificationsUtils {
 			notificationManager.createNotificationChannel(channel)
 		}
 
-		val builder = getNoteTimeReminderNotificationBuilder(context, intent)
+		val builder = getNoteTimeReminderNotificationBuilder(context, noteBody, noteId)
 
-		notificationManager.notify(context.resources.getInteger(R.integer.note_reminder_notification_id),
+		notificationManager.notify(context.resources.getInteger(R.integer.note_reminder_notification_id) + noteId.toInt(),
 				builder?.build())
 	}
 
 	private fun getNoteTimeReminderNotificationBuilder(context : Context,
-													   intent : Intent) : NotificationCompat.Builder? {
+													   noteBody : String,
+													   noteId : Long) : NotificationCompat.Builder? {
 		return NotificationCompat.Builder(context, context.getString(R.string.notification_id))
 				.setSmallIcon(R.drawable.ic_notification)
 				.setContentTitle(context.getString(R.string.note_time_reminder_notification_title))
-				.setContentText(getBody(intent.getStringExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY)!!))
-				.setContentIntent(getOpenNoteNotificationPendingIntent(context, intent))
+				.setContentText(getBody(noteBody))
+				.setContentIntent(getOpenNoteNotificationPendingIntent(context, noteId))
 				.setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
-				.addAction(getOpenNoteAction(context, intent)).addAction(dismissNotificationsAction(context))
+				.addAction(getOpenNoteAction(context, noteId)).addAction(dismissNotificationsAction(context, noteId))
+	}
+
+
+	private fun getOpenNoteAction(context : Context, noteId : Long) : NotificationCompat.Action {
+		return NotificationCompat.Action(R.drawable.ic_notification_open,
+				context.getString(R.string.note_notification_open_action_label),
+				getOpenNoteNotificationPendingIntent(context, noteId))
+	}
+
+	private fun dismissNotificationsAction(context : Context, noteId : Long) : NotificationCompat.Action {
+		return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
+				context.getString(R.string.note_notification_dismiss_action_label),
+				getDismissNotificationPendingIntent(context, noteId))
+	}
+
+	private fun getOpenNoteNotificationPendingIntent(context : Context, noteId : Long) : PendingIntent? {
+		val noteIntent = Intent(context, AddEditNoteActivity::class.java)
+		noteIntent.putExtra(Constants.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, true)
+		noteIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
+		return TaskStackBuilder.create(context).run {
+			addNextIntentWithParentStack(noteIntent)
+			getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+		}
+	}
+
+	private fun getDismissNotificationPendingIntent(context : Context, noteId : Long) : PendingIntent? {
+		val dismissIntent = Intent(context, NoteReminderReceiver::class.java)
+		dismissIntent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
+		dismissIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
+		return PendingIntent.getBroadcast(context, noteId.toInt(), dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+	}
+
+	fun dismissNoteReminderNotification(context : Context, id : Int) {
+		val notificationManager : NotificationManager =
+			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+		notificationManager.cancel(context.resources.getInteger(R.integer.note_reminder_notification_id) + id)
 	}
 
 	@Suppress("DEPRECATION")
@@ -119,41 +156,6 @@ class NotificationsUtils {
 		} else {
 			Html.fromHtml(body)
 		}
-	}
-
-	private fun getOpenNoteAction(context : Context, intent : Intent) : NotificationCompat.Action {
-		return NotificationCompat.Action(R.drawable.ic_notification_open,
-				context.getString(R.string.note_notification_open_action_label),
-				getOpenNoteNotificationPendingIntent(context, intent))
-	}
-
-	private fun dismissNotificationsAction(context : Context) : NotificationCompat.Action {
-		return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
-				context.getString(R.string.note_notification_dismiss_action_label),
-				getDismissNotificationPendingIntent(context))
-	}
-
-	private fun getOpenNoteNotificationPendingIntent(context : Context, intent : Intent) : PendingIntent? {
-		val noteIntent = Intent(context, AddEditNoteActivity::class.java)
-		val noteId = intent.getLongExtra(Constants.NOTE_INTENT_ID, -1)
-		noteIntent.putExtra(Constants.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, true)
-		noteIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
-		return TaskStackBuilder.create(context).run {
-			addNextIntentWithParentStack(noteIntent)
-			getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT)
-		}
-	}
-
-	private fun getDismissNotificationPendingIntent(context : Context) : PendingIntent? {
-		val dismissIntent = Intent(context, NoteReminderReceiver::class.java)
-		dismissIntent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
-		return PendingIntent.getBroadcast(context, 0, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-	}
-
-	fun dismissNoteReminderNotification(context : Context) {
-		val notificationManager : NotificationManager =
-			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-		notificationManager.cancel(context.resources.getInteger(R.integer.note_reminder_notification_id))
 	}
 
 	/**
