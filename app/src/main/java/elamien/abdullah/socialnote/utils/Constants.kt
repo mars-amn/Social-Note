@@ -6,6 +6,8 @@ package elamien.abdullah.socialnote.utils
 class Constants {
 
 	companion object {
+
+
 		/**
 		 * Intent & Notification Keys
 		 */
@@ -36,6 +38,8 @@ class Constants {
 		const val GEOFENCE_REMINDER_RADIUS = 300.0f
 		const val GEOFENCE_REMINDER_MAP_RADIUS = GEOFENCE_REMINDER_RADIUS.toDouble()
 		const val GEOFENCE_EXPIRE_DATE = 2160000000L // 25 days
+		const val RE_ADD_GEOFNECES_INTENT_ACTION = "elamien.abdullah.socialnote.re_add_geofences"
+		const val GEOFENCE_RETRIEVER_INTENT_JOB_ID = 3
 	}
 
 }

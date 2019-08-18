@@ -199,7 +199,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private fun isGeofenceLocationNotNull() = mGeofenceLocation != null
 
 	private fun createNoteGeofence(id : Long) {
-		addGeofence(createGeofenceRequest(getGeofenceBuilder()), id)
+		addGeofence(createGeofenceRequest(getGeofenceBuilder(id)), id)
 	}
 
 	@SuppressLint("MissingPermission")
@@ -224,8 +224,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 				.addGeofence(geofence).build()
 	}
 
-	private fun getGeofenceBuilder() : Geofence {
-		return Geofence.Builder().setRequestId("geo_fence_reminder_${Date().time}")
+	private fun getGeofenceBuilder(id : Long) : Geofence {
+		return Geofence.Builder().setRequestId("geo_fence_reminder_$id")
 				.setCircularRegion(mGeofenceLocation?.latitude!!,
 						mGeofenceLocation?.longitude!!,
 						Constants.GEOFENCE_REMINDER_RADIUS).setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
