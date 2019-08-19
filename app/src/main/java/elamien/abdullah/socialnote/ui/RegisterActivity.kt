@@ -7,9 +7,14 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.transitionseverywhere.extra.Scale
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.databinding.ActivityRegisterBinding
 import elamien.abdullah.socialnote.eventbus.AuthenticationEvent
@@ -68,7 +73,7 @@ class RegisterActivity : AppCompatActivity() {
 
 	override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
-		if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
+		if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE && resultCode == RESULT_OK) {
 			mViewModel.registerGoogleUser(GoogleSignIn.getSignedInAccountFromIntent(data))
 		}
 	}
@@ -76,10 +81,24 @@ class RegisterActivity : AppCompatActivity() {
 	@Subscribe
 	fun onEvent(event : AuthenticationEvent) {
 		if (event.authenticationEventMessage == Constants.AUTH_EVENT_SUCCESS) {
-			startHomeActivity()
+			if (callingActivity == null) {
+				startHomeActivity()
+			} else {
+				setResult(RESULT_OK)
+				finish()
+			}
 		} else if (event.authenticationEventMessage == Constants.AUTH_EVENT_FAIL) {
 			Toast.makeText(this@RegisterActivity, getString(R.string.auth_failed_msg), Toast.LENGTH_LONG)
 					.show()
+		}
+	}
+
+	fun onSkipButtonClick(view : View) {
+		if (callingActivity == null) {
+			startHomeActivity()
+		} else {
+			setResult(RESULT_CANCELED)
+			finish()
 		}
 	}
 
@@ -87,6 +106,19 @@ class RegisterActivity : AppCompatActivity() {
 		val intent = Intent(this@RegisterActivity, HomeActivity::class.java)
 		startActivity(intent)
 		finish()
+	}
+
+	fun onRegisterButtonClick(view : View) {
+		applyAnimation()
+		mBinding.animationGroup.visibility = View.GONE
+		mBinding.registerGroup.visibility = View.VISIBLE
+	}
+
+	private fun applyAnimation() {
+		val set = TransitionSet().addTransition(Scale(0.7f))
+				.addTransition(Fade())
+				.setInterpolator(FastOutLinearInInterpolator())
+		TransitionManager.beginDelayedTransition(mBinding.parent, set)
 	}
 
 	companion object {

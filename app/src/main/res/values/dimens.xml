@@ -12,5 +12,8 @@
 	<dimen name="auth_button_margin">16dp</dimen>
 	<dimen name="network_error_label_margin">8dp</dimen>
 	<dimen name="network_retry_button_margin">32dp</dimen>
+	<dimen name="register_buttons_margin">32dp</dimen>
+	<dimen name="cloud_animation_height">300dp</dimen>
+	<dimen name="cloud_animation_margin">32dp</dimen>
 
 </resources>

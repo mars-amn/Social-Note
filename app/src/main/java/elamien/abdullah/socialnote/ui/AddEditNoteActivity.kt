@@ -34,10 +34,8 @@ import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
 import org.wordpress.aztec.Aztec
-import org.wordpress.aztec.AztecText
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
-import org.xml.sax.Attributes
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
 
@@ -72,7 +70,6 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		} else if (isOpenFromNotification()) {
 			dismissNoteTimeReminderNotification()
 		}
-
 	}
 
 	private fun setupToolbar(label : String) {
@@ -334,19 +331,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	}
 
 	override fun onToolbarHtmlButtonClicked() {
-		val uploadingPredicate = object : AztecText.AttributePredicate {
-			override fun matches(attrs : Attributes) : Boolean {
-				return attrs.getIndex("uploading") > -1
-			}
-		}
 
-		val mediaPending = mBinding.aztec.getAllElementAttributes(uploadingPredicate)
-				.isNotEmpty()
-
-		if (mediaPending) {
-		} else {
-			mBinding.formattingToolbar.toggleEditorMode()
-		}
 	}
 
 	override fun onToolbarListButtonClicked() {

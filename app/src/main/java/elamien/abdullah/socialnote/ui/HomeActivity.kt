@@ -3,11 +3,15 @@ package elamien.abdullah.socialnote.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
+import com.google.android.material.navigation.NavigationView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
@@ -21,7 +25,8 @@ import org.koin.android.ext.android.inject
 import java.util.concurrent.TimeUnit
 
 
-class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener {
+class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener,
+	NavigationView.OnNavigationItemSelectedListener {
 
 	private lateinit var adapter : PagedNoteListAdapter
 	private lateinit var mBinding : ActivityHomeBinding
@@ -32,14 +37,42 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
 		mBinding.handlers = this
-		adapter = PagedNoteListAdapter(this@HomeActivity)
 		setupToolbar()
+		setupNavDrawer()
+		adapter = PagedNoteListAdapter(this@HomeActivity)
 		loadNotes()
 		setupSearchView()
 	}
 
+	private fun setupNavDrawer() {
+		val toggle = actionBarDrawerToggle
+		mBinding.drawerLayout.addDrawerListener(toggle)
+		mBinding.navigationView.setNavigationItemSelectedListener(this@HomeActivity)
+		toggle.syncState()
+
+	}
+
+	private val actionBarDrawerToggle : ActionBarDrawerToggle
+		get() {
+			mBinding.navigationView.itemIconTintList = null
+			setSupportActionBar(mBinding.toolbar)
+			return object : ActionBarDrawerToggle(this,
+					mBinding.drawerLayout,
+					mBinding.toolbar,
+					R.string.nav_drawer_open,
+					R.string.nav_drawer_close) {
+				override fun onDrawerSlide(drawerView : View, slideOffset : Float) {
+					super.onDrawerSlide(drawerView, slideOffset)
+
+					val moveFactor = mBinding.drawerLayout.width * slideOffset
+					mBinding.homeContainer.translationX = moveFactor
+					super.onDrawerSlide(drawerView, slideOffset)
+				}
+			}
+		}
 
 	private fun setupToolbar() {
+		mBinding.toolbar.setNavigationIcon(R.drawable.ic_home_nav)
 		setSupportActionBar(mBinding.toolbar)
 		title = getString(R.string.app_name)
 	}
@@ -125,11 +158,22 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 		super.onStop()
 	}
 
+	override fun onNavigationItemSelected(item : MenuItem) : Boolean {
+		when (item.itemId) {
+			R.id.settingsMenuItem -> openSettingsActivity()
+		}
+		return true
+	}
+
+	private fun openSettingsActivity() {
+		startActivity(Intent(this@HomeActivity, SettingsActivity::class.java))
+	}
+
 	override fun onBackPressed() {
-		if (mBinding.searchView.isSearchOpen) {
-			mBinding.searchView.closeSearch()
-		} else {
-			super.onBackPressed()
+		when {
+			mBinding.searchView.isSearchOpen -> mBinding.searchView.closeSearch()
+			mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(GravityCompat.START)
+			else -> super.onBackPressed()
 		}
 	}
 

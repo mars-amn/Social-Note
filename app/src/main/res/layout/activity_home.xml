@@ -11,100 +11,119 @@
 				type="elamien.abdullah.socialnote.ui.HomeActivity"/>
 	</data>
 	
-	<androidx.coordinatorlayout.widget.CoordinatorLayout
+	<androidx.drawerlayout.widget.DrawerLayout
+			android:id="@+id/drawerLayout"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			android:fitsSystemWindows="true"
+			tools:openDrawer="start">
 		
-		<com.google.android.material.appbar.AppBarLayout
-				android:id="@+id/appBar"
+		<androidx.coordinatorlayout.widget.CoordinatorLayout
 				android:layout_width="match_parent"
-				android:layout_height="?attr/actionBarSize"
-				android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-				android:fitsSystemWindows="true">
-			
-			<FrameLayout
-					android:id="@+id/toolbar_container"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content">
-				
-				
-				<androidx.appcompat.widget.Toolbar
-						android:id="@+id/toolbar"
-						android:layout_width="match_parent"
-						android:layout_height="?attr/actionBarSize"
-						app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
-				
-				<com.miguelcatalan.materialsearchview.MaterialSearchView
-						android:id="@+id/searchView"
-						android:hint="@string/search_view_hint_label"
-						android:textColorHint="@color/text_color_hint"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"/>
-			
-			</FrameLayout>
-		</com.google.android.material.appbar.AppBarLayout>
-		
-		<androidx.constraintlayout.widget.ConstraintLayout
-				app:layout_behavior="@string/appbar_scrolling_view_behavior"
-				android:layout_width="match_parent"
+				android:id="@+id/homeContainer"
 				android:layout_height="match_parent">
 			
-			
-			<androidx.recyclerview.widget.RecyclerView
+			<com.google.android.material.appbar.AppBarLayout
+					android:id="@+id/appBar"
 					android:layout_width="match_parent"
-					android:id="@+id/notesRecyclerView"
-					android:layout_height="wrap_content"
-					app:layout_constraintTop_toTopOf="parent"
-					app:layout_constraintStart_toStartOf="parent"
-					app:spanCount="2"
-					android:visibility="visible"
-					tools:listitem="@layout/list_item_notes"
-					app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-					/>
-			
-			<LinearLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical"
-					android:visibility="gone"
-					android:id="@+id/noteEmptyStateLayout"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent">
+					android:layout_height="?attr/actionBarSize"
+					android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+					android:fitsSystemWindows="true">
 				
-				<TextView
+				<FrameLayout
+						android:id="@+id/toolbar_container"
 						android:layout_width="match_parent"
+						android:layout_height="wrap_content">
+					
+					
+					<androidx.appcompat.widget.Toolbar
+							android:id="@+id/toolbar"
+							android:layout_width="match_parent"
+							android:layout_height="?attr/actionBarSize"
+							app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+					
+					<com.miguelcatalan.materialsearchview.MaterialSearchView
+							android:id="@+id/searchView"
+							android:hint="@string/search_view_hint_label"
+							android:textColorHint="@color/text_color_hint"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"/>
+				
+				</FrameLayout>
+			</com.google.android.material.appbar.AppBarLayout>
+			
+			<androidx.constraintlayout.widget.ConstraintLayout
+					app:layout_behavior="@string/appbar_scrolling_view_behavior"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
+				
+				
+				<androidx.recyclerview.widget.RecyclerView
+						android:layout_width="match_parent"
+						android:id="@+id/notesRecyclerView"
 						android:layout_height="wrap_content"
-						android:text="Your note list is empty"
-						android:layout_gravity="center"
-						android:paddingTop="12dp"
-						android:gravity="center"
-						android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-				
-				<com.airbnb.lottie.LottieAnimationView
-						android:id="@+id/lottieAnimationView"
-						android:layout_width="match_parent"
-						app:lottie_autoPlay="true"
-						app:lottie_loop="true"
-						android:layout_weight="3"
-						android:layout_height="0dp"
-						app:lottie_rawRes="@raw/empty_state"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:spanCount="2"
+						android:visibility="visible"
+						tools:listitem="@layout/list_item_notes"
+						app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 						/>
-			</LinearLayout>
+				
+				<LinearLayout
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"
+						android:orientation="vertical"
+						android:visibility="gone"
+						android:id="@+id/noteEmptyStateLayout"
+						app:layout_constraintEnd_toEndOf="parent"
+						app:layout_constraintStart_toStartOf="parent"
+						app:layout_constraintTop_toTopOf="parent">
+					
+					<TextView
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:text="Your note list is empty"
+							android:layout_gravity="center"
+							android:paddingTop="12dp"
+							android:gravity="center"
+							android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+					
+					<com.airbnb.lottie.LottieAnimationView
+							android:id="@+id/lottieAnimationView"
+							android:layout_width="match_parent"
+							app:lottie_autoPlay="true"
+							app:lottie_loop="true"
+							android:layout_weight="3"
+							android:layout_height="0dp"
+							app:lottie_rawRes="@raw/empty_state"
+							/>
+				</LinearLayout>
+			
+			</androidx.constraintlayout.widget.ConstraintLayout>
+			
+			<com.google.android.material.floatingactionbutton.FloatingActionButton
+					android:id="@+id/addNewNoteFAB"
+					android:layout_width="wrap_content"
+					app:tint="#fff"
+					app:backgroundTint="@color/secondaryColor"
+					android:layout_height="wrap_content"
+					android:layout_gravity="bottom|end"
+					android:layout_margin="16dp"
+					android:onClick="@{handlers::onNewNoteFabClick}"
+					app:srcCompat="@drawable/ic_author"/>
 		
-		</androidx.constraintlayout.widget.ConstraintLayout>
+		</androidx.coordinatorlayout.widget.CoordinatorLayout>
 		
-		<com.google.android.material.floatingactionbutton.FloatingActionButton
-				android:id="@+id/addNewNoteFAB"
+		<com.google.android.material.navigation.NavigationView
+				android:id="@+id/navigationView"
 				android:layout_width="wrap_content"
-				app:tint="#fff"
-				app:backgroundTint="@color/secondaryColor"
-				android:layout_height="wrap_content"
-				android:layout_gravity="bottom|end"
-				android:layout_margin="16dp"
-				android:onClick="@{handlers::onNewNoteFabClick}"
-				app:srcCompat="@drawable/ic_author"/>
-	
-	</androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+				android:layout_height="match_parent"
+				android:layout_gravity="start"
+				android:fitsSystemWindows="true"
+				app:itemIconTint="@color/network_state_text_color"
+				android:background="@color/gray_background_color"
+				app:itemTextColor="@color/network_state_text_color"
+				app:menu="@menu/nav_menu"/>
+	</androidx.drawerlayout.widget.DrawerLayout>
 </layout>

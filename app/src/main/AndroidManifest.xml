@@ -8,17 +8,18 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	
-	
 	<application
-			android:fullBackupContent="true"
 			android:name=".base.NotesApplication"
 			android:allowBackup="true"
+			android:fullBackupContent="true"
 			android:icon="@mipmap/ic_launcher"
 			android:label="@string/app_name"
 			android:roundIcon="@mipmap/ic_launcher_round"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme"
 			tools:ignore="GoogleAppIndexingWarning">
+		<activity android:name=".ui.SettingsActivity">
+		</activity>
 		
 		<meta-data
 				android:name="com.google.android.geo.API_KEY"
@@ -29,7 +30,6 @@
 				android:directBootAware="true">
 			<intent-filter>
 				<action android:name="android.intent.action.BOOT_COMPLETED"/>
-				
 				<action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
 			</intent-filter>
 		</receiver>
@@ -40,8 +40,7 @@
 				<action android:name="android.intent.action.BOOT_COMPLETED"/>
 			</intent-filter>
 		</receiver>
-		<receiver
-				android:name=".receiver.GeofenceReminderReceiver"/>
+		<receiver android:name=".receiver.GeofenceReminderReceiver"/>
 		
 		<activity
 				android:name=".ui.GeofencePickerActivity"
@@ -73,15 +72,14 @@
 				android:name="preloaded_fonts"
 				android:resource="@array/preloaded_fonts"/>
 		
-		
 		<service
 				android:name=".services.GeofenceService"
-				android:permission="android.permission.BIND_JOB_SERVICE"
-				android:exported="false"/>
+				android:exported="false"
+				android:permission="android.permission.BIND_JOB_SERVICE"/>
 		<service
 				android:name=".services.TimeReminderService"
-				android:permission="android.permission.BIND_JOB_SERVICE"
-				android:exported="false"/>
+				android:exported="false"
+				android:permission="android.permission.BIND_JOB_SERVICE"/>
 	</application>
 
 </manifest>

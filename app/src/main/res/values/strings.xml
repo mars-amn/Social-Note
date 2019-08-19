@@ -30,7 +30,7 @@
 	<string name="set_reminder_label">SET REMINDER</string>
 	<string name="empty_editor_msg">Nothing to save</string>
 	<string name="register_label_text">Register to continue ..</string>
-	<string name="web_api_key"> </string>
+	<string name="web_api_key">key</string>
 	<string name="auth_failed_msg">Authentication Failed!</string>
 	<string name="create_note_shortcut_short_label">Create a new Note</string>
 	<string name="create_note_shortcut_long_label">Tap to create a new Note</string>
@@ -49,4 +49,13 @@
 	<string name="place_picker_dialog_button_negative_label">No, Change it</string>
 	<string name="network_error_label">Looks like you don\'t have an internet connection, enable your internet connection and press the retry button</string>
 	<string name="network_retry_button_text">Retry</string>
+	<string name="nav_drawer_open">Open</string>
+	<string name="nav_drawer_close">Close</string>
+	<string name="note_sync_key" translatable="false">Note-Sync-Key</string>
+	<string name="sync_notes_dialog_title">Syncing</string>
+	<string name="sync_notes_dialog_message">To be able to save your local saved notes to the cloud, you should sign in.</string>
+	<string name="sync_notes_dialog_neg_button_label">Cancel</string>
+	<string name="sync_notes_dialog_pos_button_label">Okay</string>
+	<string name="skip_register_button_label">Skip</string>
+	<string name="register_button_label">Register or Login</string>
 </resources>
