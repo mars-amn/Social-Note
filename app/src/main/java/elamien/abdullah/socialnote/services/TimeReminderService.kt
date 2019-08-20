@@ -5,15 +5,17 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import elamien.abdullah.socialnote.database.AppDatabase
 import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.notes.NoteDao
 import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
 import elamien.abdullah.socialnote.utils.Constants
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.*
 
 
-class TimeReminderService : JobIntentService() {
-	private var mDatabase : AppDatabase? = null
+class TimeReminderService : JobIntentService(), KoinComponent {
+	private val mNotesDao by inject<NoteDao>()
 
 	fun enqueueReminderNotes(context : Context, intent : Intent) {
 		enqueueWork(context, TimeReminderService::class.java, Constants.TIME_REMINDER_INTENT_JOB_ID, intent)
@@ -27,10 +29,9 @@ class TimeReminderService : JobIntentService() {
 	}
 
 	private fun addNotesToTheAlarmManager() {
-		mDatabase = AppDatabase.getDatabase(applicationContext)
-		val noteReminderList = mDatabase?.notesDao()
-				?.getTimeReminderNotes()
-		noteReminderList?.forEach { note ->
+
+		val noteReminderList = mNotesDao.getTimeReminderNotes()
+		noteReminderList.forEach { note ->
 			addNoteToAlarmManager(note)
 		}
 	}

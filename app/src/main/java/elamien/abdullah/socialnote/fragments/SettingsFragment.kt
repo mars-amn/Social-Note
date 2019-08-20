@@ -47,6 +47,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 					switchPreference.isChecked = false
 					showRegisterRequestDialog()
 					return
+				} else {
 				}
 			}
 		}

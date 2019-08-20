@@ -17,6 +17,7 @@ import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.preference.PreferenceManager
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
@@ -30,6 +31,7 @@ import elamien.abdullah.socialnote.database.reminder.NoteReminder
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
 import elamien.abdullah.socialnote.receiver.GeofenceReminderReceiver
 import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
+import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
@@ -52,6 +54,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 
 	private var isGeofence = false
 	private var isReminder = false
+	private var isSyncingEnabled = false
 
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -69,6 +72,19 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 			dismissGeofenceNotification()
 		} else if (isOpenFromNotification()) {
 			dismissNoteTimeReminderNotification()
+		}
+		setupSyncing()
+	}
+
+	private fun setupSyncing() {
+		val settings = PreferenceManager.getDefaultSharedPreferences(this@AddEditNoteActivity)
+		isSyncingEnabled = settings.getBoolean(getString(R.string.note_sync_key), false)
+		if (isSyncingEnabled) {
+			Toast.makeText(this@AddEditNoteActivity, "Enabled", Toast.LENGTH_LONG)
+					.show()
+		} else {
+			Toast.makeText(this@AddEditNoteActivity, "Disabled", Toast.LENGTH_LONG)
+					.show()
 		}
 	}
 
@@ -146,45 +162,63 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 					.show()
 			return
 		}
-
 		val currentDate = Date()
 		if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
-			editedNote.dateModified = currentDate
-			editedNote.note = mBinding.aztec.toFormattedHtml()
-			editedNote.noteTitle = noteTitle()
-			if (isReminder) {
-				editedNote.timeReminder = NoteReminder(mReminderDate?.time)
-				setupReminder(editedNote.note!!, editedNote.id!!)
-			}
-			if (isGeofence) {
-				val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
-				editedNote.geofence = noteGeofence
-				createNoteGeofence(editedNote.id!!)
-			}
-			mViewModel.updateNote(editedNote)
-			navigateUp()
+			updateNote(currentDate)
 		} else {
-			val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
-			if (isGeofence) {
-				val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
-				note.geofence = noteGeofence
-			}
-			if (isReminder) {
-				note.timeReminder = NoteReminder(mReminderDate?.time)
-			}
-			mViewModel.insertNewNote(note)
-					.observe(this, Observer<Long> { noteId ->
-						if (noteId != null) {
-							if (isReminder) {
-								setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
-							}
-							if (isGeofence) {
-								createNoteGeofence(noteId)
-							}
-						}
-						navigateUp()
-					})
+			insertNewNote(currentDate)
 		}
+	}
+
+	private fun insertNewNote(currentDate : Date) {
+		val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+		if (isGeofence) {
+			val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
+			note.geofence = noteGeofence
+		}
+		if (isReminder) {
+			note.timeReminder = NoteReminder(mReminderDate?.time)
+		}
+		mViewModel.insertNewNote(note)
+				.observe(this, Observer<Long> { noteId ->
+					if (noteId != null) {
+						if (isReminder) {
+							setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
+						}
+						if (isGeofence) {
+							createNoteGeofence(noteId)
+						}
+						if (isSyncingEnabled) {
+							startSyncService(noteId)
+						}
+					}
+					navigateUp()
+				})
+	}
+
+	private fun startSyncService(noteId : Long) {
+		val syncIntent = Intent(this@AddEditNoteActivity, SyncingService::class.java)
+		syncIntent.action = Constants.SYNC_NEW_NOTE_INTENT_ACTION
+		syncIntent.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, noteId)
+		SyncingService.getSyncingService()
+				.enqueueSyncNewNoteService(this, syncIntent)
+	}
+
+	private fun updateNote(currentDate : Date) {
+		editedNote.dateModified = currentDate
+		editedNote.note = mBinding.aztec.toFormattedHtml()
+		editedNote.noteTitle = noteTitle()
+		if (isReminder) {
+			editedNote.timeReminder = NoteReminder(mReminderDate?.time)
+			setupReminder(editedNote.note!!, editedNote.id!!)
+		}
+		if (isGeofence) {
+			val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
+			editedNote.geofence = noteGeofence
+			createNoteGeofence(editedNote.id!!)
+		}
+		mViewModel.updateNote(editedNote)
+		navigateUp()
 	}
 
 	private fun noteTitle() = mBinding.noteTitleInputText.text.toString()

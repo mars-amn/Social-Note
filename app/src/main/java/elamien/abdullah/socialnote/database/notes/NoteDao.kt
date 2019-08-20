@@ -45,6 +45,12 @@ interface NoteDao {
 	fun getTimeReminderNotes() : List<Note>
 
 	/**
+	 * Syncing related queries
+	 */
+	@Query("SELECT * FROM Notes WHERE note_id =:id")
+	fun getNoteForSync(id : Long) : Note?
+
+	/**
 	 * DANGER!
 	 * DO NOT call this function
 	 * calling it probably will make you regret

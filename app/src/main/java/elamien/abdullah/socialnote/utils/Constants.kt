@@ -46,6 +46,26 @@ class Constants {
 		const val GEOFENCE_RETRIEVER_INTENT_JOB_ID = 3
 		const val RE_ADD_TIME_REMINDER_INTENT_ACTION = "elamien.abdullah.socialnote.re_add_time_reminders"
 		const val TIME_REMINDER_INTENT_JOB_ID = 10
+
+		/**
+		 * Sync related constants
+		 */
+		const val SYNC_NEW_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_new_note"
+		const val SYNC_NOTE_ID_INTENT_KEY = "elamien.abdullah.socialnote.sync_note_id_intent_key"
+		const val SYNC_NEW_NOTE_INTENT_JOB_ID = 8
+
+		/**
+		 * Firebase related constants
+		 */
+
+		const val FIRESTORE_SYNCED_NOTES_COLLECTION_NAME = "SocialNote"
+		const val FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME = "SyncedNotes"
+		const val FIRESTORE_SYNCED_NOTE_BODY = "NoteBody"
+		const val FIRESTORE_SYNCED_NOTE_TITLE = "NoteTitle"
+		const val FIRESTORE_SYNCED_NOTE_DATE_CREATED = "DateCreated"
+		const val FIRESTORE_SYNCED_NOTE_DATE_MODIFIED = "DateModified"
+		const val FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER = "GeofenceLocation"
+		const val FIRESTORE_SYNCED_NOTE_TIME_REMINDER = "TimeReminder"
 	}
 
 }

@@ -9,14 +9,16 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import elamien.abdullah.socialnote.database.AppDatabase
 import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.notes.NoteDao
 import elamien.abdullah.socialnote.receiver.GeofenceReminderReceiver
 import elamien.abdullah.socialnote.utils.Constants
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 
-class GeofenceService : JobIntentService() {
-	private var mDatabase : AppDatabase? = null
+class GeofenceService : JobIntentService(), KoinComponent {
+	private val mNotesDao by inject<NoteDao>()
 
 	fun enqueueQueryingAndAddingGeofencesJob(applicationContext : Context?, intent : Intent) {
 		enqueueWork(applicationContext!!,
@@ -33,10 +35,8 @@ class GeofenceService : JobIntentService() {
 	}
 
 	private fun queryAndAddGeofences() {
-		mDatabase = AppDatabase.getDatabase(applicationContext)
-		val geofencesList = mDatabase?.notesDao()
-				?.getAllGeofencesNotes()
-		geofencesList?.forEach { note ->
+		val geofencesList = mNotesDao.getAllGeofencesNotes()
+		geofencesList.forEach { note ->
 			createGeofences(note)
 		}
 	}
