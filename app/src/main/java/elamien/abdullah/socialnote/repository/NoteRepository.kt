@@ -56,16 +56,17 @@ class NoteRepository : INoteRepository, KoinComponent {
 
 	override fun insertNote(note : Note) : LiveData<Long> {
 		val id = MutableLiveData<Long>()
-		mDisposables.add(mNotesDao.insertNote(note).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(
-				object : DisposableSingleObserver<Long>() {
-					override fun onSuccess(t : Long) {
-						id.value = t
-					}
+		mDisposables.add(mNotesDao.insertNote(note).subscribeOn(Schedulers.io()).observeOn(
+				AndroidSchedulers.mainThread()).subscribeWith(object :
+			DisposableSingleObserver<Long>() {
+			override fun onSuccess(t : Long) {
+				id.value = t
+			}
 
-					override fun onError(e : Throwable) {
-					}
+			override fun onError(e : Throwable) {
+			}
 
-				}))
+		}))
 		return id
 	}
 
@@ -79,12 +80,13 @@ class NoteRepository : INoteRepository, KoinComponent {
 	}
 
 	override fun updateNote(note : Note) {
-		mDisposables.add(Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(Schedulers.io()).observeOn(
-				AndroidSchedulers.mainThread()).subscribe())
+		mDisposables.add(Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
+				Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe())
 	}
 
 	override fun deleteNote(note : Note) {
-		mDisposables.add(Observable.fromCallable { mNotesDao.deleteNote(note) }.subscribeOn(Schedulers.io()).subscribe())
+		mDisposables.add(Observable.fromCallable { mNotesDao.deleteNote(note) }.subscribeOn(
+				Schedulers.io()).subscribe())
 	}
 
 
@@ -94,7 +96,8 @@ class NoteRepository : INoteRepository, KoinComponent {
 
 	override fun getAllNoteGeofences() : List<Note> {
 		var noteGeofencesList = ArrayList<Note>()
-		mDisposables.add(Observable.fromCallable { mNotesDao.getAllGeofencesNotes() }.subscribeOn(Schedulers.io()).subscribe {
+		mDisposables.add(Observable.fromCallable { mNotesDao.getAllGeofencesNotes() }.subscribeOn(
+				Schedulers.io()).subscribe {
 			noteGeofencesList.addAll(it)
 		})
 		return noteGeofencesList

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-		  xmlns:tools="http://schemas.android.com/tools"
-		  package="elamien.abdullah.socialnote">
+		xmlns:tools="http://schemas.android.com/tools"
+		package="elamien.abdullah.socialnote">
 	
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	
 	<application
 			android:name=".base.NotesApplication"
@@ -18,72 +18,69 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme"
 			tools:ignore="GoogleAppIndexingWarning">
-		<activity android:name=".ui.SettingsActivity">
-		</activity>
+		<activity android:name=".ui.SettingsActivity"></activity>
 		
 		<meta-data
 				android:name="com.google.android.geo.API_KEY"
-				android:value="@string/google_maps_key"/>
+				android:value="@string/google_maps_key" />
 		
 		<receiver
 				android:name=".receiver.RebootReceiver"
 				android:directBootAware="true">
 			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED"/>
-				<action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
 		<receiver
 				android:name=".receiver.NoteReminderReceiver"
 				android:enabled="true">
 			<intent-filter>
-				<action android:name="android.intent.action.BOOT_COMPLETED"/>
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
-		<receiver android:name=".receiver.GeofenceReminderReceiver"/>
+		<receiver android:name=".receiver.GeofenceReminderReceiver" />
 		
 		<activity
 				android:name=".ui.GeofencePickerActivity"
 				android:label="@string/title_activity_location_map_actitivty">
 			<meta-data
 					android:name="android.support.PARENT_ACTIVITY"
-					android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity"/>
+					android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
 		</activity>
-		<activity android:name=".ui.RegisterActivity">
-		</activity>
+		<activity android:name=".ui.RegisterActivity"></activity>
 		<activity
 				android:name=".ui.AddEditNoteActivity"
 				android:parentActivityName=".ui.HomeActivity"
-				android:theme="@style/EditorTheme">
-		</activity>
+				android:theme="@style/EditorTheme"></activity>
 		<activity android:name=".ui.HomeActivity">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN"/>
+				<action android:name="android.intent.action.MAIN" />
 				
-				<category android:name="android.intent.category.LAUNCHER"/>
+				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 			
 			<meta-data
 					android:name="android.app.shortcuts"
-					android:resource="@xml/app_shortcuts"/>
+					android:resource="@xml/app_shortcuts" />
 		</activity>
 		
 		<meta-data
 				android:name="preloaded_fonts"
-				android:resource="@array/preloaded_fonts"/>
+				android:resource="@array/preloaded_fonts" />
 		
 		<service
 				android:name=".services.GeofenceService"
 				android:exported="false"
-				android:permission="android.permission.BIND_JOB_SERVICE"/>
+				android:permission="android.permission.BIND_JOB_SERVICE" />
 		<service
 				android:name=".services.TimeReminderService"
 				android:exported="false"
-				android:permission="android.permission.BIND_JOB_SERVICE"/>
+				android:permission="android.permission.BIND_JOB_SERVICE" />
 		<service
 				android:name=".services.SyncingService"
 				android:exported="false"
-				android:permission="android.permission.BIND_JOB_SERVICE"/>
+				android:permission="android.permission.BIND_JOB_SERVICE" />
 	
 	</application>
 

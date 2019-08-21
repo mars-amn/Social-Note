@@ -50,6 +50,9 @@ interface NoteDao {
 	@Query("SELECT * FROM Notes WHERE note_id =:id")
 	fun getNoteForSync(id : Long) : Note?
 
+	@Query("SELECT * FROM Notes WHERE is_synced = 0")
+	fun getNotesForSyncing() : List<Note>
+
 	/**
 	 * DANGER!
 	 * DO NOT call this function

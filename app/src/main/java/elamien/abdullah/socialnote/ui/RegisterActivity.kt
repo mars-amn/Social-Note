@@ -54,7 +54,8 @@ class RegisterActivity : AppCompatActivity() {
 	}
 
 	private fun setupFullScreen() {
-		window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+		window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN)
 	}
 
 	fun onGoogleClick(view : View) {
@@ -88,7 +89,9 @@ class RegisterActivity : AppCompatActivity() {
 				finish()
 			}
 		} else if (event.authenticationEventMessage == Constants.AUTH_EVENT_FAIL) {
-			Toast.makeText(this@RegisterActivity, getString(R.string.auth_failed_msg), Toast.LENGTH_LONG)
+			Toast.makeText(this@RegisterActivity,
+					getString(R.string.auth_failed_msg),
+					Toast.LENGTH_LONG)
 					.show()
 		}
 	}

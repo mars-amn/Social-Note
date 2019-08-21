@@ -11,12 +11,15 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
+import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
 import elamien.abdullah.socialnote.database.notes.Note
 import elamien.abdullah.socialnote.databinding.ActivityHomeBinding
+import elamien.abdullah.socialnote.services.SyncingService
+import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -32,7 +35,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	private lateinit var mBinding : ActivityHomeBinding
 	private val mViewModel : NoteViewModel by inject()
 	private val mDisposables = CompositeDisposable()
-
+	private var isSyncingEnabled = false
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
@@ -40,8 +43,14 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 		setupToolbar()
 		setupNavDrawer()
 		adapter = PagedNoteListAdapter(this@HomeActivity)
+		setupSyncing()
 		loadNotes()
 		setupSearchView()
+	}
+
+	private fun setupSyncing() {
+		val settings = PreferenceManager.getDefaultSharedPreferences(this@HomeActivity)
+		isSyncingEnabled = settings.getBoolean(getString(R.string.note_sync_key), false)
 	}
 
 	private fun setupNavDrawer() {
@@ -81,11 +90,21 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 		mViewModel.loadPagedNotes()
 				.observe(this, Observer<PagedList<Note>> { list ->
 					if (list.isNotEmpty()) {
+						if (isSyncingEnabled) {
+							syncAllNotes()
+						}
 						addNotesToRecyclerView(list)
 					} else {
 						hideRecyclerView()
 					}
 				})
+	}
+
+	private fun syncAllNotes() {
+		val syncService = Intent(this@HomeActivity, SyncingService::class.java)
+		syncService.action = Constants.SYNC_ALL_NOTES_INTENT_ACTION
+		SyncingService.getSyncingService()
+				.enqueueSyncAllNotes(this@HomeActivity, syncService)
 	}
 
 	private fun addNotesToRecyclerView(list : PagedList<Note>) {
@@ -133,8 +152,8 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	override fun onQueryTextChange(newText : String?) : Boolean {
 		val searchSubject = BehaviorSubject.create<String>()
 		searchSubject.onNext(newText!!)
-		mDisposables.add(searchSubject.debounce(700,
-				TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe { query ->
+		mDisposables.add(searchSubject.debounce(700, TimeUnit.MILLISECONDS).observeOn(
+				AndroidSchedulers.mainThread()).subscribe { query ->
 			searchNotes(query)
 		})
 		return false
@@ -172,7 +191,8 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	override fun onBackPressed() {
 		when {
 			mBinding.searchView.isSearchOpen -> mBinding.searchView.closeSearch()
-			mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(GravityCompat.START)
+			mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(
+					GravityCompat.START)
 			else -> super.onBackPressed()
 		}
 	}

@@ -42,15 +42,16 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
 
 
-class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, EasyPermissions.PermissionCallbacks {
+class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
+	EasyPermissions.PermissionCallbacks {
 
 	private val mViewModel : NoteViewModel by inject()
 	private lateinit var mBinding : ActivityAddNoteBinding
 	private lateinit var editedNote : Note
 	private var mGeofenceLocation : LatLng? = null
 	private var mReminderDate : Date? = null
-	private val locationsPermissions =
-		arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+	private val locationsPermissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.ACCESS_COARSE_LOCATION)
 
 	private var isGeofence = false
 	private var isReminder = false
@@ -79,13 +80,6 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private fun setupSyncing() {
 		val settings = PreferenceManager.getDefaultSharedPreferences(this@AddEditNoteActivity)
 		isSyncingEnabled = settings.getBoolean(getString(R.string.note_sync_key), false)
-		if (isSyncingEnabled) {
-			Toast.makeText(this@AddEditNoteActivity, "Enabled", Toast.LENGTH_LONG)
-					.show()
-		} else {
-			Toast.makeText(this@AddEditNoteActivity, "Disabled", Toast.LENGTH_LONG)
-					.show()
-		}
 	}
 
 	private fun setupToolbar(label : String) {
@@ -103,8 +97,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 						mBinding.noteTitleInputText.setText(note.noteTitle!!)
 						if (note.geofence != null) {
 							isGeofence = true
-							mGeofenceLocation =
-								LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
+							mGeofenceLocation = LatLng(note.geofence?.noteGeofenceLatitude!!,
+									note.geofence?.noteGeofenceLongitude!!)
 						}
 					}
 
@@ -120,7 +114,10 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		intent.action = Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION
 		intent.putExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION,
 				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
-		PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+		PendingIntent.getBroadcast(this@AddEditNoteActivity,
+				0,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
 		sendBroadcast(intent)
 	}
 
@@ -130,8 +127,12 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private fun dismissNoteTimeReminderNotification() {
 		val intent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
 		intent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
-		intent.putExtra(Constants.NOTE_INTENT_KEY, getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
-		PendingIntent.getBroadcast(this@AddEditNoteActivity, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+		intent.putExtra(Constants.NOTE_INTENT_KEY,
+				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
+		PendingIntent.getBroadcast(this@AddEditNoteActivity,
+				0,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
 		sendBroadcast(intent)
 	}
 
@@ -158,7 +159,9 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 
 	private fun onSaveMenuItemClick() {
 		if (mBinding.aztec.toFormattedHtml() == "") {
-			Toast.makeText(this@AddEditNoteActivity, getString(R.string.empty_editor_msg), Toast.LENGTH_LONG)
+			Toast.makeText(this@AddEditNoteActivity,
+					getString(R.string.empty_editor_msg),
+					Toast.LENGTH_LONG)
 					.show()
 			return
 		}
@@ -173,7 +176,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 	private fun insertNewNote(currentDate : Date) {
 		val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
 		if (isGeofence) {
-			val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
+			val noteGeofence =
+				NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
 			note.geofence = noteGeofence
 		}
 		if (isReminder) {
@@ -187,9 +191,6 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 						}
 						if (isGeofence) {
 							createNoteGeofence(noteId)
-						}
-						if (isSyncingEnabled) {
-							startSyncService(noteId)
 						}
 					}
 					navigateUp()
@@ -213,9 +214,13 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 			setupReminder(editedNote.note!!, editedNote.id!!)
 		}
 		if (isGeofence) {
-			val noteGeofence = NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
+			val noteGeofence =
+				NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
 			editedNote.geofence = noteGeofence
 			createNoteGeofence(editedNote.id!!)
+		}
+		if (isSyncingEnabled) {
+			startSyncService(editedNote.id!!)
 		}
 		mViewModel.updateNote(editedNote)
 		navigateUp()
@@ -231,12 +236,16 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 
 	private fun setupReminder(body : String, id : Long) {
 		val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-		val alarmIntent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java).let { intent ->
-			intent.action = Constants.NOTE_TIME_REMINDER_ACTION
-			intent.putExtra(Constants.NOTE_INTENT_KEY, id)
-			intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
-			PendingIntent.getBroadcast(this@AddEditNoteActivity, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
-		}
+		val alarmIntent =
+			Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java).let { intent ->
+				intent.action = Constants.NOTE_TIME_REMINDER_ACTION
+				intent.putExtra(Constants.NOTE_INTENT_KEY, id)
+				intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
+				PendingIntent.getBroadcast(this@AddEditNoteActivity,
+						id.toInt(),
+						intent,
+						PendingIntent.FLAG_UPDATE_CURRENT)
+			}
 		alarmManager.setExact(AlarmManager.RTC_WAKEUP, mReminderDate?.time!!, alarmIntent)
 	}
 
@@ -343,7 +352,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener, Eas
 		super.onActivityResult(requestCode, resultCode, data)
 		if (requestCode == GEOFENCE_NOTE_REMINDER_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
 			isGeofence = true
-			mGeofenceLocation = data.getParcelableExtra<LatLng>(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+			mGeofenceLocation =
+				data.getParcelableExtra<LatLng>(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
 		}
 	}
 

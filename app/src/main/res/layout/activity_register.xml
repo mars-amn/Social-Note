@@ -5,93 +5,91 @@
 		
 		<variable
 				name="handlers"
-				type="elamien.abdullah.socialnote.ui.RegisterActivity"/>
+				type="elamien.abdullah.socialnote.ui.RegisterActivity" />
 	</data>
 	
-	<androidx.constraintlayout.widget.ConstraintLayout
-			xmlns:android="http://schemas.android.com/apk/res/android"
+	<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			xmlns:tools="http://schemas.android.com/tools"
-			android:layout_width="match_parent"
 			android:id="@+id/parent"
+			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			tools:context=".ui.RegisterActivity">
 		
 		<com.airbnb.lottie.LottieAnimationView
-				android:background="?android:attr/selectableItemBackground"
-				android:onClick="@{handlers::onGoogleClick}"
-				android:layout_margin="@dimen/auth_button_margin"
-				app:lottie_speed="2.5"
 				android:id="@+id/googleAnimationView"
 				android:layout_width="@dimen/auth_button_width"
-				app:lottie_autoPlay="true"
 				android:layout_height="@dimen/auth_button_height"
-				app:lottie_rawRes="@raw/google_sign_in"
-				app:layout_constraintTop_toBottomOf="@+id/registerLabel"
+				android:layout_margin="@dimen/auth_button_margin"
+				android:background="?android:attr/selectableItemBackground"
+				android:onClick="@{handlers::onGoogleClick}"
+				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintEnd_toEndOf="@+id/registerLabel"
 				app:layout_constraintStart_toStartOf="@+id/registerLabel"
-				app:layout_constraintBottom_toBottomOf="parent"/>
+				app:layout_constraintTop_toBottomOf="@+id/registerLabel"
+				app:lottie_autoPlay="true"
+				app:lottie_rawRes="@raw/google_sign_in"
+				app:lottie_speed="2.5" />
 		
 		<com.airbnb.lottie.LottieAnimationView
-				android:background="?android:attr/selectableItemBackground"
 				android:id="@+id/cloudAnimationView"
 				android:layout_width="match_parent"
-				app:lottie_autoPlay="true"
-				android:layout_marginBottom="@dimen/cloud_animation_margin"
 				android:layout_height="@dimen/cloud_animation_height"
-				app:lottie_rawRes="@raw/floating_cloud"
-				app:layout_constraintTop_toTopOf="parent"
+				android:layout_marginBottom="@dimen/cloud_animation_margin"
+				android:background="?android:attr/selectableItemBackground"
+				app:layout_constraintBottom_toTopOf="@+id/registerButton"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent"
+				app:lottie_autoPlay="true"
 				
-				app:layout_constraintBottom_toTopOf="@+id/registerButton"/>
+				app:lottie_rawRes="@raw/floating_cloud" />
 		
 		<TextView
-				android:text="@string/register_label_text"
+				android:id="@+id/registerLabel"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:id="@+id/registerLabel"
+				android:layout_margin="20dp"
+				android:text="@string/register_label_text"
 				android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-				app:layout_constraintTop_toTopOf="parent"
 				app:layout_constraintEnd_toEndOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				android:layout_margin="20dp"
-				/>
+				app:layout_constraintTop_toTopOf="parent" />
 		
 		<Button
-				android:onClick="@{handlers::onRegisterButtonClick}"
-				android:layout_width="wrap_content"
 				android:id="@+id/registerButton"
-				android:text="@string/register_button_label"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				app:layout_constraintTop_toBottomOf="@id/cloudAnimationView"
+				android:layout_margin="@dimen/register_buttons_margin"
+				android:onClick="@{handlers::onRegisterButtonClick}"
+				android:text="@string/register_button_label"
 				android:textAllCaps="false"
 				app:layout_constraintBottom_toBottomOf="parent"
 				app:layout_constraintStart_toStartOf="parent"
-				android:layout_margin="@dimen/register_buttons_margin"/>
+				app:layout_constraintTop_toBottomOf="@id/cloudAnimationView" />
 		
 		<Button
-				android:onClick="@{handlers::onSkipButtonClick}"
-				android:layout_width="wrap_content"
 				android:id="@+id/skipButton"
-				android:text="@string/skip_register_button_label"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_margin="@dimen/register_buttons_margin"
+				android:onClick="@{handlers::onSkipButtonClick}"
+				android:text="@string/skip_register_button_label"
 				android:textAllCaps="false"
 				app:layout_constraintBottom_toBottomOf="@+id/registerButton"
 				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toTopOf="@+id/registerButton"
-				android:layout_margin="@dimen/register_buttons_margin"/>
+				app:layout_constraintTop_toTopOf="@+id/registerButton" />
 		
 		<androidx.constraintlayout.widget.Group
 				android:id="@+id/animationGroup"
 				android:layout_width="wrap_content"
-				app:constraint_referenced_ids="registerButton,skipButton,cloudAnimationView"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				app:constraint_referenced_ids="registerButton,skipButton,cloudAnimationView" />
 		
 		<androidx.constraintlayout.widget.Group
-				android:visibility="gone"
 				android:id="@+id/registerGroup"
 				android:layout_width="wrap_content"
-				app:constraint_referenced_ids="registerLabel,googleAnimationView"
-				android:layout_height="wrap_content"/>
+				android:layout_height="wrap_content"
+				android:visibility="gone"
+				app:constraint_referenced_ids="registerLabel,googleAnimationView" />
 	</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

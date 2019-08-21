@@ -4,15 +4,15 @@
 	
 	<data>
 		
-		<import type="android.text.Html"/>
+		<import type="android.text.Html" />
 		
 		<variable
 				name="note"
-				type="elamien.abdullah.socialnote.database.notes.Note"/>
+				type="elamien.abdullah.socialnote.database.notes.Note" />
 		
 		<variable
 				name="handlers"
-				type="elamien.abdullah.socialnote.adapter.PagedNoteListAdapter.NotesViewHolder"/>
+				type="elamien.abdullah.socialnote.adapter.PagedNoteListAdapter.NotesViewHolder" />
 	</data>
 	
 	<androidx.cardview.widget.CardView
@@ -20,54 +20,54 @@
 			android:layout_height="wrap_content"
 			android:layout_margin="8dp"
 			android:clickable="true"
+			android:focusable="true"
 			android:onClick="@{handlers::onNoteClick}"
 			android:onLongClick="@{handlers::onNoteLongClick}"
-			android:focusable="true"
-			app:cardCornerRadius="4dp"
 			android:stateListAnimator="@animator/card_left_on_touch"
+			app:cardCornerRadius="4dp"
 			app:cardElevation="1dp">
 		
 		<LinearLayout
-				android:layout_width="match_parent"
-				android:orientation="vertical"
 				android:id="@+id/listItemNoteParent"
-				android:layout_height="match_parent">
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
 			
 			
 			<TextView
-					android:text="@{Html.fromHtml(note.note)}"
-					android:layout_width="match_parent"
 					android:id="@+id/listItemNoteBody"
-					android:textSize="14sp"
-					android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+					android:layout_width="match_parent"
+					android:layout_height="120dp"
 					android:padding="2dp"
-					android:layout_height="120dp"/>
+					android:text="@{Html.fromHtml(note.note)}"
+					android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+					android:textSize="14sp" />
 			
 			<View
 					android:layout_width="match_parent"
+					android:layout_height="1.5dp"
 					android:layout_margin="1.5dp"
-					android:background="#eeeeee"
-					android:layout_height="1.5dp"/>
+					android:background="#eeeeee" />
 			
 			<TextView
+					android:id="@+id/listItemNoteCreateAt"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="end"
+					android:layout_margin="2dp"
 					android:text="@{`Date Created: `+@string/format(note.dateCreated)}"
-					android:layout_width="wrap_content"
-					android:textSize="12sp"
 					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-					android:layout_height="wrap_content"
-					android:layout_gravity="end"
-					android:layout_margin="2dp"
-					android:id="@+id/listItemNoteCreateAt"/>
+					android:textSize="12sp" />
 			
 			<TextView
-					android:text="@{`Date Modified: `+@string/format(note.dateModified)}"
-					android:layout_margin="2dp"
-					android:textSize="12sp"
-					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:id="@+id/listItemNoteModifiedAt"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_gravity="end"
-					android:id="@+id/listItemNoteModifiedAt"/>
+					android:layout_margin="2dp"
+					android:text="@{`Date Modified: `+@string/format(note.dateModified)}"
+					android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+					android:textSize="12sp" />
 		</LinearLayout>
 	</androidx.cardview.widget.CardView>
 </layout>

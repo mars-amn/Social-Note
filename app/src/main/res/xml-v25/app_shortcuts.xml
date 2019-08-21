@@ -1,16 +1,16 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
 	<shortcut
-			android:shortcutId="createNoteShortcut"
 			android:enabled="true"
 			android:icon="@drawable/ic_create_note_shortcut"
-			android:shortcutShortLabel="@string/create_note_shortcut_short_label"
+			android:shortcutDisabledMessage="@string/create_note_shortcut_disabled_message"
+			android:shortcutId="createNoteShortcut"
 			android:shortcutLongLabel="@string/create_note_shortcut_long_label"
-			android:shortcutDisabledMessage="@string/create_note_shortcut_disabled_message">
+			android:shortcutShortLabel="@string/create_note_shortcut_short_label">
 		<intent
 				android:action="android.intent.action.VIEW"
-				android:targetPackage="elamien.abdullah.socialnote"
-				android:targetClass="elamien.abdullah.socialnote.ui.AddEditNoteActivity"/>
-		<categories android:name="android.shortcut.conversation"/>
+				android:targetClass="elamien.abdullah.socialnote.ui.AddEditNoteActivity"
+				android:targetPackage="elamien.abdullah.socialnote" />
+		<categories android:name="android.shortcut.conversation" />
 	</shortcut>
 
 </shortcuts>

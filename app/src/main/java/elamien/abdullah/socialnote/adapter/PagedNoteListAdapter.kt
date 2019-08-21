@@ -41,7 +41,9 @@ class PagedNoteListAdapter(private val context : Context) :
 	var previousRandomColor = 0
 	var colorBeforePrevious = 1
 
-	inner class NotesViewHolder(var mBinding : ListItemNotesBinding) : RecyclerView.ViewHolder(mBinding.root) {
+	inner class NotesViewHolder(var mBinding : ListItemNotesBinding) :
+		RecyclerView.ViewHolder(mBinding.root) {
+
 		init {
 			mBinding.handlers = this
 		}

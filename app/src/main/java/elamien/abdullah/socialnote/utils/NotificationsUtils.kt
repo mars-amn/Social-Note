@@ -25,9 +25,10 @@ class NotificationsUtils {
 		val notificationManager : NotificationManager =
 			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			val channel = NotificationChannel(context.getString(R.string.note_geofence_notification_id),
-					context.getString(R.string.note_geofence_notification_name),
-					NotificationManager.IMPORTANCE_HIGH)
+			val channel =
+				NotificationChannel(context.getString(R.string.note_geofence_notification_id),
+						context.getString(R.string.note_geofence_notification_name),
+						NotificationManager.IMPORTANCE_HIGH)
 			notificationManager.createNotificationChannel(channel)
 		}
 
@@ -40,7 +41,8 @@ class NotificationsUtils {
 	private fun getGeofenceNoteNotificationBuilder(context : Context,
 												   noteBody : String,
 												   noteId : Long) : NotificationCompat.Builder? {
-		return NotificationCompat.Builder(context, context.getString(R.string.note_geofence_notification_channel_name))
+		return NotificationCompat.Builder(context,
+				context.getString(R.string.note_geofence_notification_channel_name))
 				.setSmallIcon(R.drawable.ic_notification)
 				.setContentTitle(context.getString(R.string.note_geofence_notification_title))
 				.setContentText(getBody(noteBody))
@@ -51,20 +53,27 @@ class NotificationsUtils {
 				.addAction(dismissNoteGeofenceNotificationAction(context, noteId))
 	}
 
-	private fun getDismissNoteGeofenceNotificationPendingIntent(context : Context, noteId : Long) : PendingIntent? {
+	private fun getDismissNoteGeofenceNotificationPendingIntent(context : Context,
+																noteId : Long) : PendingIntent? {
 		val dismissIntent = Intent(context, GeofenceReminderReceiver::class.java)
 		dismissIntent.action = Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION
-		dismissIntent.putExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION, noteId) // just treat it as key
-		return PendingIntent.getBroadcast(context, noteId.toInt(), dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+		dismissIntent.putExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION,
+				noteId) // just treat it as key
+		return PendingIntent.getBroadcast(context,
+				noteId.toInt(),
+				dismissIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
 	}
 
-	private fun dismissNoteGeofenceNotificationAction(context : Context, noteId : Long) : NotificationCompat.Action {
+	private fun dismissNoteGeofenceNotificationAction(context : Context,
+													  noteId : Long) : NotificationCompat.Action {
 		return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
 				context.getString(R.string.note_notification_dismiss_action_label),
 				getDismissNoteGeofenceNotificationPendingIntent(context, noteId))
 	}
 
-	private fun getOpenNoteGeofenceAction(context : Context, noteId : Long) : NotificationCompat.Action {
+	private fun getOpenNoteGeofenceAction(context : Context,
+										  noteId : Long) : NotificationCompat.Action {
 		return NotificationCompat.Action(R.drawable.ic_notification_open,
 				context.getString(R.string.note_notification_open_action_label),
 				getNoteGeofenceLocationPendingIntent(context, noteId))
@@ -76,7 +85,8 @@ class NotificationsUtils {
 		notificationManager.cancel(context.resources.getInteger(R.integer.note_geofence_reminder_notification_id) + noteId.toInt())
 	}
 
-	private fun getNoteGeofenceLocationPendingIntent(context : Context, noteId : Long) : PendingIntent? {
+	private fun getNoteGeofenceLocationPendingIntent(context : Context,
+													 noteId : Long) : PendingIntent? {
 		val noteIntent = Intent(context, AddEditNoteActivity::class.java)
 		noteIntent.putExtra(Constants.ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN, true)
 		noteIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
@@ -124,13 +134,15 @@ class NotificationsUtils {
 				getOpenNoteNotificationPendingIntent(context, noteId))
 	}
 
-	private fun dismissNotificationsAction(context : Context, noteId : Long) : NotificationCompat.Action {
+	private fun dismissNotificationsAction(context : Context,
+										   noteId : Long) : NotificationCompat.Action {
 		return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
 				context.getString(R.string.note_notification_dismiss_action_label),
 				getDismissNotificationPendingIntent(context, noteId))
 	}
 
-	private fun getOpenNoteNotificationPendingIntent(context : Context, noteId : Long) : PendingIntent? {
+	private fun getOpenNoteNotificationPendingIntent(context : Context,
+													 noteId : Long) : PendingIntent? {
 		val noteIntent = Intent(context, AddEditNoteActivity::class.java)
 		noteIntent.putExtra(Constants.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, true)
 		noteIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
@@ -141,11 +153,15 @@ class NotificationsUtils {
 				}
 	}
 
-	private fun getDismissNotificationPendingIntent(context : Context, noteId : Long) : PendingIntent? {
+	private fun getDismissNotificationPendingIntent(context : Context,
+													noteId : Long) : PendingIntent? {
 		val dismissIntent = Intent(context, NoteReminderReceiver::class.java)
 		dismissIntent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
 		dismissIntent.putExtra(Constants.NOTE_INTENT_KEY, noteId)
-		return PendingIntent.getBroadcast(context, noteId.toInt(), dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+		return PendingIntent.getBroadcast(context,
+				noteId.toInt(),
+				dismissIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
 	}
 
 	fun dismissNoteReminderNotification(context : Context, id : Int) {

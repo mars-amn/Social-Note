@@ -8,7 +8,8 @@ import android.os.Build
 class ConnectionUtils(val context : Context) {
 	@Suppress("DEPRECATION")
 	fun isDeviceNetworkAvailable() : Boolean {
-		val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+		val connectivityManager =
+			context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 		val networkInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			connectivityManager.activeNetwork
 		} else {

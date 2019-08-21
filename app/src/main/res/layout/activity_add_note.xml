@@ -6,15 +6,15 @@
 		
 		<variable
 				name="handlers"
-				type="elamien.abdullah.socialnote.ui.AddEditNoteActivity"/>
+				type="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
 	</data>
 	
 	<LinearLayout
 			android:layout_width="match_parent"
-			android:orientation="vertical"
-			android:focusableInTouchMode="true"
+			android:layout_height="match_parent"
 			android:background="@color/white"
-			android:layout_height="match_parent">
+			android:focusableInTouchMode="true"
+			android:orientation="vertical">
 		
 		<LinearLayout
 				android:layout_width="match_parent"
@@ -23,38 +23,38 @@
 			
 			<com.google.android.material.textfield.TextInputEditText
 					android:id="@+id/noteTitleInputText"
-					android:padding="@dimen/title_text_padding"
-					android:layout_weight="2"
 					android:layout_width="0dp"
+					android:layout_height="@dimen/title_text_height"
+					android:layout_weight="2"
 					android:background="@color/white"
 					android:hint="@string/text_title_label"
-					android:textColorHint="@color/text_color_hint"
+					android:padding="@dimen/title_text_padding"
 					android:textColor="@color/text_title_color"
-					android:layout_height="@dimen/title_text_height"/>
+					android:textColorHint="@color/text_color_hint" />
 			
 			<TextView
 					android:layout_width="0dp"
+					android:layout_height="match_parent"
 					android:layout_weight="1"
-					android:focusable="true"
+					android:background="?android:attr/selectableItemBackground"
 					android:clickable="true"
+					android:focusable="true"
+					android:gravity="center"
 					android:onClick="@{handlers::onLocationReminderClick}"
-					android:gravity="center"
 					android:text="@string/location_reminder_label"
-					android:textColor="@color/secondaryColor"
-					android:background="?android:attr/selectableItemBackground"
-					android:layout_height="match_parent"/>
+					android:textColor="@color/secondaryColor" />
 			
 			<TextView
 					android:layout_width="0dp"
+					android:layout_height="match_parent"
 					android:layout_weight="1"
-					android:focusable="true"
-					android:clickable="true"
-					android:onClick="@{handlers::onSetReminderClick}"
-					android:gravity="center"
-					android:text="@string/set_reminder_label"
-					android:textColor="@color/secondaryColor"
 					android:background="?android:attr/selectableItemBackground"
-					android:layout_height="match_parent"/>
+					android:clickable="true"
+					android:focusable="true"
+					android:gravity="center"
+					android:onClick="@{handlers::onSetReminderClick}"
+					android:text="@string/set_reminder_label"
+					android:textColor="@color/secondaryColor" />
 		</LinearLayout>
 		
 		<RelativeLayout
@@ -65,8 +65,7 @@
 					android:id="@+id/formatting_toolbar"
 					android:layout_width="match_parent"
 					android:layout_height="@dimen/aztec_format_bar_height"
-					android:layout_alignParentBottom="true">
-			</org.wordpress.aztec.toolbar.AztecToolbar>
+					android:layout_alignParentBottom="true"></org.wordpress.aztec.toolbar.AztecToolbar>
 			
 			<ScrollView
 					android:layout_width="match_parent"
@@ -84,28 +83,28 @@
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:gravity="top|start"
-							android:padding="@dimen/editor_padding"
-							aztec:backgroundColor="#fff"
-							aztec:textColor="#000"
-							android:scrollbars="vertical"
 							android:imeOptions="flagNoExtractUi"
+							android:padding="@dimen/editor_padding"
+							android:scrollbars="vertical"
+							aztec:backgroundColor="#fff"
 							aztec:historyEnable="true"
-							aztec:historySize="10"/>
+							aztec:historySize="10"
+							aztec:textColor="#000" />
 					
 					<org.wordpress.aztec.source.SourceViewEditText
 							android:id="@+id/source"
 							android:layout_width="match_parent"
 							android:layout_height="match_parent"
 							android:gravity="top|start"
+							android:imeOptions="flagNoExtractUi"
 							android:inputType="textNoSuggestions|textMultiLine"
 							android:padding="@dimen/editor_padding"
 							android:scrollbars="vertical"
-							android:textSize="@dimen/editor_text_size"
 							
+							android:textSize="@dimen/editor_text_size"
 							android:visibility="gone"
-							android:imeOptions="flagNoExtractUi"
 							aztec:codeBackgroundColor="@android:color/transparent"
-							aztec:codeTextColor="@android:color/white"/>
+							aztec:codeTextColor="@android:color/white" />
 				
 				</FrameLayout>
 			

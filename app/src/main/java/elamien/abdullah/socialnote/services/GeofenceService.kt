@@ -42,7 +42,8 @@ class GeofenceService : JobIntentService(), KoinComponent {
 	}
 
 	private fun createGeofences(note : Note) {
-		val latLong = LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
+		val latLong =
+			LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
 		addGeofence(createGeofenceRequest(createAGeofencing(latLong, note.id!!)), note.id!!)
 	}
 
@@ -56,7 +57,10 @@ class GeofenceService : JobIntentService(), KoinComponent {
 		val intent = Intent(applicationContext, GeofenceReminderReceiver::class.java)
 		intent.action = Constants.NOTE_GEOFENCE_REMINDER_ACTION
 		intent.putExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY, id)
-		return PendingIntent.getBroadcast(applicationContext, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
+		return PendingIntent.getBroadcast(applicationContext,
+				id.toInt(),
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
 
 	}
 
@@ -70,7 +74,9 @@ class GeofenceService : JobIntentService(), KoinComponent {
 	private fun createAGeofencing(latLng : LatLng, id : Long) : Geofence {
 		return Geofence.Builder()
 				.setRequestId("geo_fence_reminder$id")
-				.setCircularRegion(latLng.latitude, latLng.longitude, Constants.GEOFENCE_REMINDER_RADIUS)
+				.setCircularRegion(latLng.latitude,
+						latLng.longitude,
+						Constants.GEOFENCE_REMINDER_RADIUS)
 				.setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
 				.setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
 				.build()

@@ -16,7 +16,8 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		if (context != null && intent != null) {
 			val action = intent.action
 			if (action == Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION) {
-				dismissNotification(context, intent.getLongExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION, -1))
+				dismissNotification(context,
+						intent.getLongExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION, -1))
 			} else if (action == Constants.NOTE_GEOFENCE_REMINDER_ACTION) {
 				sendNoteGeofenceNotification(context, intent)
 				removeGeofenceRequest(intent, context)
@@ -28,7 +29,8 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 		AsyncTask.execute {
 			val note = AppDatabase.getDatabase(context)
 					?.notesDao()
-					?.getGeofenceNote(intent.getLongExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY, -1))
+					?.getGeofenceNote(intent.getLongExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY,
+							-1))
 			if (note != null) {
 				NotificationsUtils.getNotificationUtils()
 						.sendNoteGeofenceReminderNotification(context, note.note!!, note.id!!)

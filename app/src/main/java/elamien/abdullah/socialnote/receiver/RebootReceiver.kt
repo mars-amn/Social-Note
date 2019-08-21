@@ -11,8 +11,8 @@ import pub.devrel.easypermissions.EasyPermissions
 
 
 class RebootReceiver : BroadcastReceiver() {
-	private val locationPermissions =
-		arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+	private val locationPermissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+			Manifest.permission.ACCESS_COARSE_LOCATION)
 
 	override fun onReceive(context : Context?, intent : Intent?) {
 		if (context != null && intent != null) {
@@ -28,7 +28,8 @@ class RebootReceiver : BroadcastReceiver() {
 	}
 
 	private fun startAddingTimeReminderNotes(context : Context) {
-		val timeReminderService = Intent(context.applicationContext, TimeReminderService::class.java)
+		val timeReminderService =
+			Intent(context.applicationContext, TimeReminderService::class.java)
 		timeReminderService.action = Constants.RE_ADD_TIME_REMINDER_INTENT_ACTION
 		TimeReminderService.getTimeReminderService()
 				.enqueueReminderNotes(context.applicationContext, timeReminderService)

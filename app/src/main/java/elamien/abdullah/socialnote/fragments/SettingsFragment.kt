@@ -10,11 +10,15 @@ import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import elamien.abdullah.socialnote.R
+import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.ui.RegisterActivity
+import elamien.abdullah.socialnote.utils.Constants
 import org.koin.android.ext.android.inject
 
 
-class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(),
+	SharedPreferences.OnSharedPreferenceChangeListener {
+
 	val mFirebaseAuth : FirebaseAuth  by inject()
 
 	override fun onCreatePreferences(savedInstanceState : Bundle?, rootKey : String?) {
@@ -48,9 +52,17 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 					showRegisterRequestDialog()
 					return
 				} else {
+					setupSyncingNotes()
 				}
 			}
 		}
+	}
+
+	private fun setupSyncingNotes() {
+		val syncService = Intent(context, SyncingService::class.java)
+		syncService.action = Constants.SYNC_ALL_NOTES_INTENT_ACTION
+		SyncingService.getSyncingService()
+				.enqueueSyncAllNotes(context!!, syncService)
 	}
 
 	private fun showRegisterRequestDialog() {
@@ -74,7 +86,8 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
 	override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
 		super.onActivityResult(requestCode, resultCode, data)
 		if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_OK && isUserNotNull()) {
-			val switchPreference = findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat
+			val switchPreference =
+				findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat
 			switchPreference.isChecked = true
 		}
 	}
