@@ -21,6 +21,7 @@ class SyncingService : JobIntentService(), KoinComponent {
 	private val mFirestore by inject<FirebaseFirestore>()
 	private val mFirebaseAuth by inject<FirebaseAuth>()
 	private val mDisposables = CompositeDisposable()
+
 	fun enqueueSyncNewNoteService(context : Context, intent : Intent) {
 		enqueueWork(context, SyncingService::class.java, Constants.SYNC_NOTE_SERVICE_JOB_ID, intent)
 	}
@@ -33,6 +34,10 @@ class SyncingService : JobIntentService(), KoinComponent {
 		enqueueWork(context, SyncingService::class.java, Constants.SYNC_NOTE_SERVICE_JOB_ID, intent)
 	}
 
+	fun enqueueSyncDeleteNote(context : Context, intent : Intent) {
+		enqueueWork(context, SyncingService::class.java, Constants.SYNC_NOTE_SERVICE_JOB_ID, intent)
+	}
+
 	override fun onHandleWork(intent : Intent) {
 		when (intent.action) {
 			Constants.SYNC_NEW_NOTE_INTENT_ACTION -> {
@@ -41,6 +46,9 @@ class SyncingService : JobIntentService(), KoinComponent {
 			}
 			Constants.SYNC_ALL_NOTES_INTENT_ACTION -> syncAllNotes()
 			Constants.SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION -> syncNotesUpdates()
+			Constants.SYNC_DELETE_NOTE_INTENT_ACTION -> deleteSyncNote(intent.getLongExtra(Constants.SYNC_NOTE_ID_INTENT_KEY,
+					-1))
+
 		}
 	}
 
@@ -55,7 +63,7 @@ class SyncingService : JobIntentService(), KoinComponent {
 		mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
 				.document(mFirebaseAuth.currentUser?.uid!!)
 				.collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-				.document("${mFirebaseAuth.currentUser?.uid!!}Note${note.id!!}")
+				.document(getDocumentName(note.id!!))
 				.update(getMappedNote(note))
 				.addOnSuccessListener {
 					note.isSynced = true
@@ -79,7 +87,7 @@ class SyncingService : JobIntentService(), KoinComponent {
 		mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
 				.document(mFirebaseAuth.currentUser?.uid!!)
 				.collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-				.document("${mFirebaseAuth.currentUser?.uid!!}Note${note.id}")
+				.document(getDocumentName(note.id!!))
 				.set(getMappedNote(note))
 				.addOnSuccessListener {
 					note.isSynced = true
@@ -98,6 +106,23 @@ class SyncingService : JobIntentService(), KoinComponent {
 		})
 	}
 
+	private fun deleteSyncNote(id : Long) {
+		val documentName = getDocumentName(id)
+		mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
+				.document(mFirebaseAuth.currentUser?.uid!!)
+				.collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
+				.document(documentName)
+				.delete()
+				.addOnSuccessListener { }
+				.addOnFailureListener { }
+	}
+
+	private fun getDocumentName(id : Long) : String {
+		val user = mFirebaseAuth.currentUser!!
+		val uid = user.uid
+		val noteId = id.toString()
+		return uid + "note" + noteId
+	}
 
 	private fun getMappedNote(note : Note) : HashMap<String, Any> {
 		val noteMap = HashMap<String, Any>()

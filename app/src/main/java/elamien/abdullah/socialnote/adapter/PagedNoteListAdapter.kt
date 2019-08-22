@@ -12,7 +12,6 @@ import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.notes.Note
 import elamien.abdullah.socialnote.databinding.ListItemNotesBinding
 import elamien.abdullah.socialnote.ui.AddEditNoteActivity
-import elamien.abdullah.socialnote.ui.HomeActivity
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotesDiffCallback
 import java.util.*
@@ -22,7 +21,8 @@ import kotlin.collections.ArrayList
 /**
  * Created by AbdullahAtta on 7/23/2019.
  */
-class PagedNoteListAdapter(private val context : Context) :
+class PagedNoteListAdapter(private val listener : LongClickListener,
+						   private val context : Context) :
 	PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
 
 	val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors)
@@ -82,8 +82,7 @@ class PagedNoteListAdapter(private val context : Context) :
 		}
 
 		private fun deleteNote() {
-			val mainActivity = context as HomeActivity
-			mainActivity.deleteNote(getItem(adapterPosition))
+			listener.onLongClickListener(getItem(adapterPosition)!!)
 		}
 
 		fun onNoteClick(view : View) {
@@ -91,5 +90,9 @@ class PagedNoteListAdapter(private val context : Context) :
 			noteIntent.putExtra(Constants.NOTE_INTENT_KEY, getItem(adapterPosition)?.id)
 			context.startActivity(noteIntent)
 		}
+	}
+
+	interface LongClickListener {
+		fun onLongClickListener(note : Note)
 	}
 }

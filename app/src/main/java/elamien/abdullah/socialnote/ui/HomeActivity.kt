@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener,
-	NavigationView.OnNavigationItemSelectedListener {
+	NavigationView.OnNavigationItemSelectedListener, PagedNoteListAdapter.LongClickListener {
 
 	private lateinit var adapter : PagedNoteListAdapter
 	private lateinit var mBinding : ActivityHomeBinding
@@ -42,7 +42,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 		mBinding.handlers = this
 		setupToolbar()
 		setupNavDrawer()
-		adapter = PagedNoteListAdapter(this@HomeActivity)
+		adapter = PagedNoteListAdapter(this@HomeActivity, this@HomeActivity)
 		setupSyncing()
 		loadNotes()
 		setupSearchView()
@@ -137,8 +137,19 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 		startActivity(intent)
 	}
 
-	fun deleteNote(note : Note?) {
+	override fun onLongClickListener(note : Note) {
+		if (isSyncingEnabled) {
+			startDeletingService(note.id!!)
+		}
 		mViewModel.deleteNote(note)
+	}
+
+	private fun startDeletingService(id : Long) {
+		val syncService = Intent(this@HomeActivity, SyncingService::class.java)
+		syncService.action = Constants.SYNC_DELETE_NOTE_INTENT_ACTION
+		syncService.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, id)
+		SyncingService.getSyncingService()
+				.enqueueSyncDeleteNote(this@HomeActivity, syncService)
 	}
 
 	private fun setupSearchView() {

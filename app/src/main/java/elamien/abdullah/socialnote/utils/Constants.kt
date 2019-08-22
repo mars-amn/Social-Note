@@ -61,6 +61,7 @@ class Constants {
 		const val SYNC_ALL_NOTES_INTENT_ACTION = "elamien.abdullah.socialnote.sync_all_notes"
 		const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION =
 			"elamien.abdullah.socialnote.sync_notes_need_update"
+		const val SYNC_DELETE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_delete_note"
 		const val SYNC_NOTE_ID_INTENT_KEY = "elamien.abdullah.socialnote.sync_note_id_intent_key"
 		const val SYNC_NOTE_SERVICE_JOB_ID = 8
 
