@@ -53,6 +53,9 @@ interface NoteDao {
 	@Query("SELECT * FROM Notes WHERE is_synced = 0")
 	fun getNotesForSyncing() : List<Note>
 
+	@Query("SELECT * FROM Notes WHERE need_update = 1")
+	fun getNotesNeededForUpdate() : List<Note>
+
 	/**
 	 * DANGER!
 	 * DO NOT call this function

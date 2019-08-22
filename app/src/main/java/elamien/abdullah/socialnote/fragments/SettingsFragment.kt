@@ -52,10 +52,19 @@ class SettingsFragment : PreferenceFragmentCompat(),
 					showRegisterRequestDialog()
 					return
 				} else {
+					setupNeededSyncUpdatesNotes()
 					setupSyncingNotes()
 				}
 			}
 		}
+	}
+
+	private fun setupNeededSyncUpdatesNotes() {
+		val syncService = Intent(context, SyncingService::class.java)
+		syncService.action = Constants.SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION
+		SyncingService.getSyncingService()
+				.enqueueSyncNeededUpdateNotes(context!!, syncService)
+
 	}
 
 	private fun setupSyncingNotes() {

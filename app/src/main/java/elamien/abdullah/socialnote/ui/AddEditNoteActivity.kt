@@ -47,7 +47,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 
 	private val mViewModel : NoteViewModel by inject()
 	private lateinit var mBinding : ActivityAddNoteBinding
-	private lateinit var editedNote : Note
+	private lateinit var mExistedNote : Note
 	private var mGeofenceLocation : LatLng? = null
 	private var mReminderDate : Date? = null
 	private val locationsPermissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
@@ -69,17 +69,13 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 			setupToolbar(label = getString(R.string.add_note_label))
 		}
 
+		setupSyncing()
+
 		if (isFromGeofenceReceiver()) {
 			dismissGeofenceNotification()
 		} else if (isOpenFromNotification()) {
 			dismissNoteTimeReminderNotification()
 		}
-		setupSyncing()
-	}
-
-	private fun setupSyncing() {
-		val settings = PreferenceManager.getDefaultSharedPreferences(this@AddEditNoteActivity)
-		isSyncingEnabled = settings.getBoolean(getString(R.string.note_sync_key), false)
 	}
 
 	private fun setupToolbar(label : String) {
@@ -92,8 +88,8 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 		mViewModel.getNote(noteId)
 				.observe(this, Observer<Note> { note ->
 					if (note != null) {
-						editedNote = note
-						mBinding.aztec.fromHtml(editedNote.note.toString(), true)
+						mExistedNote = note
+						mBinding.aztec.fromHtml(mExistedNote.note.toString(), true)
 						mBinding.noteTitleInputText.setText(note.noteTitle!!)
 						if (note.geofence != null) {
 							isGeofence = true
@@ -105,37 +101,10 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 				})
 	}
 
-	private fun isFromGeofenceReceiver() : Boolean {
-		return intent.getBooleanExtra(Constants.ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN, false)
+	private fun setupSyncing() {
+		val settings = PreferenceManager.getDefaultSharedPreferences(this@AddEditNoteActivity)
+		isSyncingEnabled = settings.getBoolean(getString(R.string.note_sync_key), false)
 	}
-
-	private fun dismissGeofenceNotification() {
-		val intent = Intent(this@AddEditNoteActivity, GeofenceReminderReceiver::class.java)
-		intent.action = Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION
-		intent.putExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION,
-				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
-		PendingIntent.getBroadcast(this@AddEditNoteActivity,
-				0,
-				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT)
-		sendBroadcast(intent)
-	}
-
-	private fun isOpenFromNotification() =
-		intent.getBooleanExtra(Constants.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, false)
-
-	private fun dismissNoteTimeReminderNotification() {
-		val intent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
-		intent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
-		intent.putExtra(Constants.NOTE_INTENT_KEY,
-				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
-		PendingIntent.getBroadcast(this@AddEditNoteActivity,
-				0,
-				intent,
-				PendingIntent.FLAG_UPDATE_CURRENT)
-		sendBroadcast(intent)
-	}
-
 
 	override fun onCreateOptionsMenu(menu : Menu?) : Boolean {
 		menuInflater.inflate(R.menu.add_note_menu, menu)
@@ -173,66 +142,28 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 		}
 	}
 
-	private fun insertNewNote(currentDate : Date) {
-		val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
-		if (isGeofence) {
-			val noteGeofence =
-				NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
-			note.geofence = noteGeofence
-		}
-		if (isReminder) {
-			note.timeReminder = NoteReminder(mReminderDate?.time)
-		}
-		mViewModel.insertNewNote(note)
-				.observe(this, Observer<Long> { noteId ->
-					if (noteId != null) {
-						if (isReminder) {
-							setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
-						}
-						if (isGeofence) {
-							createNoteGeofence(noteId)
-						}
-					}
-					navigateUp()
-				})
-	}
-
-	private fun startSyncService(noteId : Long) {
-		val syncIntent = Intent(this@AddEditNoteActivity, SyncingService::class.java)
-		syncIntent.action = Constants.SYNC_NEW_NOTE_INTENT_ACTION
-		syncIntent.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, noteId)
-		SyncingService.getSyncingService()
-				.enqueueSyncNewNoteService(this, syncIntent)
-	}
-
 	private fun updateNote(currentDate : Date) {
-		editedNote.dateModified = currentDate
-		editedNote.note = mBinding.aztec.toFormattedHtml()
-		editedNote.noteTitle = noteTitle()
+		mExistedNote.dateModified = currentDate
+		mExistedNote.note = mBinding.aztec.toFormattedHtml()
+		mExistedNote.noteTitle = noteTitle()
 		if (isReminder) {
-			editedNote.timeReminder = NoteReminder(mReminderDate?.time)
-			setupReminder(editedNote.note!!, editedNote.id!!)
+			mExistedNote.timeReminder = getTimeReminder()
+			setupReminder(mExistedNote.note!!, mExistedNote.id!!)
 		}
 		if (isGeofence) {
-			val noteGeofence =
-				NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
-			editedNote.geofence = noteGeofence
-			createNoteGeofence(editedNote.id!!)
+			mExistedNote.geofence = getGeofenceLocation()
+			createNoteGeofence(mExistedNote.id!!)
 		}
 		if (isSyncingEnabled) {
-			startSyncService(editedNote.id!!)
+			startSyncService(mExistedNote.id!!)
+		} else {
+			mExistedNote.isNeedUpdate = true
 		}
-		mViewModel.updateNote(editedNote)
+		mViewModel.updateNote(mExistedNote)
 		navigateUp()
 	}
 
 	private fun noteTitle() = mBinding.noteTitleInputText.text.toString()
-
-	private fun navigateUp() {
-		NavUtils.navigateUpFromSameTask(this@AddEditNoteActivity)
-		finish()
-	}
-
 
 	private fun setupReminder(body : String, id : Long) {
 		val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
@@ -249,9 +180,64 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 		alarmManager.setExact(AlarmManager.RTC_WAKEUP, mReminderDate?.time!!, alarmIntent)
 	}
 
+	private fun getTimeReminder() = NoteReminder(mReminderDate?.time)
+
+	private fun getGeofenceLocation() =
+		NoteGeofence(mGeofenceLocation?.latitude, mGeofenceLocation?.longitude)
+
 	private fun createNoteGeofence(id : Long) {
 		addGeofence(createGeofenceRequest(getGeofenceBuilder(id)), id)
 	}
+
+	private fun startSyncService(noteId : Long) {
+		val syncIntent = Intent(this@AddEditNoteActivity, SyncingService::class.java)
+		syncIntent.action = Constants.SYNC_NEW_NOTE_INTENT_ACTION
+		syncIntent.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, noteId)
+		SyncingService.getSyncingService()
+				.enqueueSyncNewNoteService(this, syncIntent)
+	}
+
+
+	private fun insertNewNote(currentDate : Date) {
+		val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+		if (isGeofence) {
+			note.geofence = getGeofenceLocation()
+		}
+		if (isReminder) {
+			note.timeReminder = getTimeReminder()
+		}
+		mViewModel.insertNewNote(note)
+				.observe(this, Observer<Long> { noteId ->
+					if (noteId != null) {
+						if (isReminder) {
+							setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
+						}
+						if (isGeofence) {
+							createNoteGeofence(noteId)
+						}
+					}
+					navigateUp()
+				})
+	}
+
+	private fun showUnsavedNoteDialog() {
+		MaterialAlertDialogBuilder(this@AddEditNoteActivity).setTitle(getString(R.string.back_button_dialog_title))
+				.setMessage(getString(R.string.back_button_dialog_msg_ptI) + "\n" + getString(R.string.back_button_dialog_msg_ptII))
+				.setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
+					dialog.dismiss()
+					navigateUp()
+				}
+				.setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
+					dialog.dismiss()
+				}
+				.show()
+	}
+
+	private fun navigateUp() {
+		NavUtils.navigateUpFromSameTask(this@AddEditNoteActivity)
+		finish()
+	}
+
 
 	@SuppressLint("MissingPermission")
 	fun addGeofence(geofencingRequest : GeofencingRequest, id : Long) {
@@ -289,26 +275,6 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 				.build()
 	}
 
-	private fun showUnsavedNoteDialog() {
-		MaterialAlertDialogBuilder(this@AddEditNoteActivity).setTitle(getString(R.string.back_button_dialog_title))
-				.setMessage(getString(R.string.back_button_dialog_msg_ptI) + "\n" + getString(R.string.back_button_dialog_msg_ptII))
-				.setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
-					dialog.dismiss()
-					navigateUp()
-				}
-				.setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
-					dialog.dismiss()
-				}
-				.show()
-	}
-
-	override fun onBackPressed() {
-		if (mBinding.aztec.toFormattedHtml() == "") {
-			super.onBackPressed()
-		} else {
-			showUnsavedNoteDialog()
-		}
-	}
 
 	fun onSetReminderClick(view : View) {
 		SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity)
@@ -371,6 +337,45 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 	override fun onPermissionsGranted(requestCode : Int, perms : MutableList<String>) {
 		if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
 			startMapActivity()
+		}
+	}
+
+	private fun isFromGeofenceReceiver() : Boolean {
+		return intent.getBooleanExtra(Constants.ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN, false)
+	}
+
+	private fun dismissGeofenceNotification() {
+		val intent = Intent(this@AddEditNoteActivity, GeofenceReminderReceiver::class.java)
+		intent.action = Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION
+		intent.putExtra(Constants.DISMISS_NOTE_GEOFENCE_NOTIFICATION,
+				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
+		PendingIntent.getBroadcast(this@AddEditNoteActivity,
+				0,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
+		sendBroadcast(intent)
+	}
+
+	private fun isOpenFromNotification() =
+		intent.getBooleanExtra(Constants.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, false)
+
+	private fun dismissNoteTimeReminderNotification() {
+		val intent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
+		intent.action = Constants.DISMISS_NOTE_TIME_REMINDER_NOTIFICATION
+		intent.putExtra(Constants.NOTE_INTENT_KEY,
+				getIntent().getLongExtra(Constants.NOTE_INTENT_KEY, -1))
+		PendingIntent.getBroadcast(this@AddEditNoteActivity,
+				0,
+				intent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
+		sendBroadcast(intent)
+	}
+
+	override fun onBackPressed() {
+		if (mBinding.aztec.toFormattedHtml() == "") {
+			super.onBackPressed()
+		} else {
+			showUnsavedNoteDialog()
 		}
 	}
 

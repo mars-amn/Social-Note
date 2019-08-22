@@ -23,6 +23,9 @@ class Note(@ColumnInfo(name = "note_title") var noteTitle : String?, @ColumnInfo
 	@ColumnInfo(name = "is_synced")
 	var isSynced : Boolean = false
 
+	@ColumnInfo(name = "need_update")
+	var isNeedUpdate : Boolean = false
+
 	override fun equals(other : Any?) : Boolean {
 		if (other == null || other !is Note) return false
 		return note == other.note && id == other.id
