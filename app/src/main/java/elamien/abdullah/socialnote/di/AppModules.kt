@@ -3,7 +3,7 @@ package elamien.abdullah.socialnote.di
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import elamien.abdullah.socialnote.database.AppDatabase
+import elamien.abdullah.socialnote.database.local.AppDatabase
 import elamien.abdullah.socialnote.repository.AuthenticationRepository
 import elamien.abdullah.socialnote.repository.NoteRepository
 import elamien.abdullah.socialnote.viewmodel.AuthenticationViewModel

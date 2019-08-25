@@ -2,7 +2,7 @@ package elamien.abdullah.socialnote.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.Note
 
 /**
  * Created by AbdullahAtta on 7/23/2019.

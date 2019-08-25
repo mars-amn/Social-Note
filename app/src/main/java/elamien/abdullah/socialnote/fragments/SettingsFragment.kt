@@ -20,7 +20,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
 	SharedPreferences.OnSharedPreferenceChangeListener {
 
 	val mFirebaseAuth : FirebaseAuth  by inject()
-
 	override fun onCreatePreferences(savedInstanceState : Bundle?, rootKey : String?) {
 		addPreferencesFromResource(R.xml.settings)
 		registerPreferenceListener()
@@ -45,18 +44,28 @@ class SettingsFragment : PreferenceFragmentCompat(),
 	override fun onSharedPreferenceChanged(sharedPreferences : SharedPreferences?, key : String?) {
 		if (key == getString(R.string.note_sync_key)) {
 			val isEnabled = sharedPreferences?.getBoolean(key, false)!!
-			if (isEnabled) {
-				if (mFirebaseAuth.currentUser == null) {
-					val switchPreference = findPreference(key) as SwitchPreferenceCompat
-					switchPreference.isChecked = false
-					showRegisterRequestDialog()
-					return
-				} else {
-					setupNeededSyncUpdatesNotes()
-					setupSyncingNotes()
-				}
+			if (isEnabled && mFirebaseAuth.currentUser == null) {
+				val switchPreference = findPreference(key) as SwitchPreferenceCompat
+				switchPreference.isChecked = false
+				showRegisterRequestDialog()
+				return
+			} else if (isEnabled && mFirebaseAuth.currentUser != null) {
+				startSyncService()
 			}
 		}
+	}
+
+	private fun startSyncService() {
+		setupNeededSyncUpdatesNotes()
+		setupSyncingNotes()
+		getSyncedNotes()
+	}
+
+	private fun getSyncedNotes() {
+		val syncService = Intent(context, SyncingService::class.java)
+		syncService.action = Constants.SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION
+		SyncingService.getSyncingService()
+				.enqueueCallSyncedNotes(context!!, syncService)
 	}
 
 	private fun setupNeededSyncUpdatesNotes() {
@@ -98,6 +107,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 			val switchPreference =
 				findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat
 			switchPreference.isChecked = true
+			startSyncService()
 		}
 	}
 

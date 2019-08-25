@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
-import elamien.abdullah.socialnote.database.notes.Note
-import elamien.abdullah.socialnote.database.notes.NoteDao
+import elamien.abdullah.socialnote.database.local.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.NoteDao
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.Observable

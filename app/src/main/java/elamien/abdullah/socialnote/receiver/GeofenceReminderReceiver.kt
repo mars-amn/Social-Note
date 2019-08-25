@@ -6,7 +6,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import com.google.android.gms.location.GeofencingEvent
 import com.google.android.gms.location.LocationServices
-import elamien.abdullah.socialnote.database.AppDatabase
+import elamien.abdullah.socialnote.database.local.AppDatabase
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotificationsUtils
 

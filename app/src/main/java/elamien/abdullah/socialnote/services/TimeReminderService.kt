@@ -5,8 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.JobIntentService
-import elamien.abdullah.socialnote.database.notes.Note
-import elamien.abdullah.socialnote.database.notes.NoteDao
+import elamien.abdullah.socialnote.database.local.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.NoteDao
 import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
 import elamien.abdullah.socialnote.utils.Constants
 import org.koin.core.KoinComponent

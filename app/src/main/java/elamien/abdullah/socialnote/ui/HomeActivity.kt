@@ -16,7 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
-import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.Note
 import elamien.abdullah.socialnote.databinding.ActivityHomeBinding
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.utils.Constants
@@ -89,22 +89,24 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	private fun loadNotes() {
 		mViewModel.loadPagedNotes()
 				.observe(this, Observer<PagedList<Note>> { list ->
-					if (list.isNotEmpty()) {
-						if (isSyncingEnabled) {
-							syncAllNotes()
+					when {
+						list.isNotEmpty() -> {
+							addNotesToRecyclerView(list)
 						}
-						addNotesToRecyclerView(list)
-					} else {
-						hideRecyclerView()
+						isSyncingEnabled -> {
+							hideRecyclerView()
+							getSyncedNotes()
+						}
+						else -> hideRecyclerView()
 					}
 				})
 	}
 
-	private fun syncAllNotes() {
+	private fun getSyncedNotes() {
 		val syncService = Intent(this@HomeActivity, SyncingService::class.java)
-		syncService.action = Constants.SYNC_ALL_NOTES_INTENT_ACTION
+		syncService.action = Constants.SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION
 		SyncingService.getSyncingService()
-				.enqueueSyncAllNotes(this@HomeActivity, syncService)
+				.enqueueCallSyncedNotes(this@HomeActivity, syncService)
 	}
 
 	private fun addNotesToRecyclerView(list : PagedList<Note>) {

@@ -9,7 +9,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import elamien.abdullah.socialnote.R
-import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.Note
 import elamien.abdullah.socialnote.databinding.ListItemNotesBinding
 import elamien.abdullah.socialnote.ui.AddEditNoteActivity
 import elamien.abdullah.socialnote.utils.Constants

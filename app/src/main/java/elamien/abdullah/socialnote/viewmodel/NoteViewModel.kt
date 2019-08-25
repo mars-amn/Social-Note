@@ -3,7 +3,7 @@ package elamien.abdullah.socialnote.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
-import elamien.abdullah.socialnote.database.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.Note
 import elamien.abdullah.socialnote.repository.NoteRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject

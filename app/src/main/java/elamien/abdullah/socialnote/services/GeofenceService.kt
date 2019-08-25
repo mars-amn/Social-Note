@@ -9,8 +9,8 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
-import elamien.abdullah.socialnote.database.notes.Note
-import elamien.abdullah.socialnote.database.notes.NoteDao
+import elamien.abdullah.socialnote.database.local.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.NoteDao
 import elamien.abdullah.socialnote.receiver.GeofenceReminderReceiver
 import elamien.abdullah.socialnote.utils.Constants
 import org.koin.core.KoinComponent

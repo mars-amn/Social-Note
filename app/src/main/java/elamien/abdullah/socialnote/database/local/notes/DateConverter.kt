@@ -1,4 +1,4 @@
-package elamien.abdullah.socialnote.database.notes
+package elamien.abdullah.socialnote.database.local.notes
 
 import androidx.room.TypeConverter
 import java.util.*

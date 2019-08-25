@@ -14,6 +14,7 @@ import androidx.transition.TransitionSet
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.transitionseverywhere.extra.Scale
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.databinding.ActivityRegisterBinding
@@ -28,6 +29,7 @@ class RegisterActivity : AppCompatActivity() {
 	private lateinit var mBinding : ActivityRegisterBinding
 	private var mGoogleSignInClient : GoogleSignInClient? = null
 	private val mViewModel : AuthenticationViewModel by inject()
+	val mFirebaseAuth : FirebaseAuth  by inject()
 
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -35,7 +37,11 @@ class RegisterActivity : AppCompatActivity() {
 		mBinding = DataBindingUtil.setContentView(this@RegisterActivity, R.layout.activity_register)
 		mBinding.handlers = this
 		registerEventBus()
+		if (mFirebaseAuth.currentUser != null) {
+			startHomeActivity()
+		} else {
 
+		}
 	}
 
 	private fun registerEventBus() {

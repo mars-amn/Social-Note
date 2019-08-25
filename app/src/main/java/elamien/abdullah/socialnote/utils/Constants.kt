@@ -57,25 +57,29 @@ class Constants {
 		/**
 		 * Sync related constants
 		 */
-		const val SYNC_NEW_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_new_note"
+		const val SYNC_UPDATE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_update_note"
 		const val SYNC_ALL_NOTES_INTENT_ACTION = "elamien.abdullah.socialnote.sync_all_notes"
 		const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION =
 			"elamien.abdullah.socialnote.sync_notes_need_update"
+		const val SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION =
+			"elamien.abdullah.socialnote.get_notes_remote_populate_room"
+		const val SYNC_NEW_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_new_note"
 		const val SYNC_DELETE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_delete_note"
 		const val SYNC_NOTE_ID_INTENT_KEY = "elamien.abdullah.socialnote.sync_note_id_intent_key"
 		const val SYNC_NOTE_SERVICE_JOB_ID = 8
-
 		/**
 		 * Firebase related constants
 		 */
 		const val FIRESTORE_SYNCED_NOTES_COLLECTION_NAME = "SocialNote"
 		const val FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME = "SyncedNotes"
-		const val FIRESTORE_SYNCED_NOTE_BODY = "NoteBody"
-		const val FIRESTORE_SYNCED_NOTE_TITLE = "NoteTitle"
-		const val FIRESTORE_SYNCED_NOTE_DATE_CREATED = "DateCreated"
-		const val FIRESTORE_SYNCED_NOTE_DATE_MODIFIED = "DateModified"
-		const val FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER = "GeofenceLocation"
-		const val FIRESTORE_SYNCED_NOTE_TIME_REMINDER = "TimeReminder"
+		const val FIRESTORE_SYNCED_NOTE_ID = "noteId"
+		const val FIRESTORE_SYNCED_NOTE_BODY = "noteBody"
+		const val FIRESTORE_SYNCED_NOTE_TITLE = "noteTitle"
+		const val FIRESTORE_SYNCED_NOTE_DATE_CREATED = "dateCreated"
+		const val FIRESTORE_SYNCED_NOTE_DATE_MODIFIED = "dateModified"
+		const val FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER = "geofenceLocation"
+		const val FIRESTORE_SYNCED_NOTE_TIME_REMINDER = "timeReminder"
+		const val FIRESTORE_SYNCED_NOTE_IS_SYNCED = "isSynced"
 	}
 
 }

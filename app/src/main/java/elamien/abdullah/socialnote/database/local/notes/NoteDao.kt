@@ -1,4 +1,4 @@
-package elamien.abdullah.socialnote.database.notes
+package elamien.abdullah.socialnote.database.local.notes
 
 import androidx.paging.DataSource
 import androidx.room.*
@@ -55,6 +55,9 @@ interface NoteDao {
 
 	@Query("SELECT * FROM Notes WHERE need_update = 1")
 	fun getNotesNeededForUpdate() : List<Note>
+
+	@Insert(onConflict = OnConflictStrategy.REPLACE)
+	fun insertSyncedNotes(notes : List<Note>)
 
 	/**
 	 * DANGER!

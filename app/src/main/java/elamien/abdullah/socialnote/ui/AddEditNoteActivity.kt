@@ -25,9 +25,9 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import elamien.abdullah.socialnote.R
-import elamien.abdullah.socialnote.database.geofence.NoteGeofence
-import elamien.abdullah.socialnote.database.notes.Note
-import elamien.abdullah.socialnote.database.reminder.NoteReminder
+import elamien.abdullah.socialnote.database.local.geofence.NoteGeofence
+import elamien.abdullah.socialnote.database.local.notes.Note
+import elamien.abdullah.socialnote.database.local.reminder.NoteReminder
 import elamien.abdullah.socialnote.databinding.ActivityAddNoteBinding
 import elamien.abdullah.socialnote.receiver.GeofenceReminderReceiver
 import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
@@ -155,7 +155,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 			createNoteGeofence(mExistedNote.id!!)
 		}
 		if (isSyncingEnabled) {
-			startSyncService(mExistedNote.id!!)
+			startSyncService(mExistedNote.id!!, Constants.SYNC_UPDATE_NOTE_INTENT_ACTION)
 		} else {
 			mExistedNote.isNeedUpdate = true
 		}
@@ -189,9 +189,9 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 		addGeofence(createGeofenceRequest(getGeofenceBuilder(id)), id)
 	}
 
-	private fun startSyncService(noteId : Long) {
+	private fun startSyncService(noteId : Long, action : String) {
 		val syncIntent = Intent(this@AddEditNoteActivity, SyncingService::class.java)
-		syncIntent.action = Constants.SYNC_NEW_NOTE_INTENT_ACTION
+		syncIntent.action = action
 		syncIntent.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, noteId)
 		SyncingService.getSyncingService()
 				.enqueueSyncNewNoteService(this, syncIntent)
@@ -200,6 +200,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 
 	private fun insertNewNote(currentDate : Date) {
 		val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+		note.id = Date().time
 		if (isGeofence) {
 			note.geofence = getGeofenceLocation()
 		}
@@ -214,6 +215,9 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 						}
 						if (isGeofence) {
 							createNoteGeofence(noteId)
+						}
+						if (isSyncingEnabled) {
+							startSyncService(noteId, Constants.SYNC_NEW_NOTE_INTENT_ACTION)
 						}
 					}
 					navigateUp()

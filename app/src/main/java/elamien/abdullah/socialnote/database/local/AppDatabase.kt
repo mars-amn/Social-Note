@@ -1,13 +1,13 @@
-package elamien.abdullah.socialnote.database
+package elamien.abdullah.socialnote.database.local
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import elamien.abdullah.socialnote.database.notes.DateConverter
-import elamien.abdullah.socialnote.database.notes.Note
-import elamien.abdullah.socialnote.database.notes.NoteDao
+import elamien.abdullah.socialnote.database.local.notes.DateConverter
+import elamien.abdullah.socialnote.database.local.notes.Note
+import elamien.abdullah.socialnote.database.local.notes.NoteDao
 
 /**
  * Created by AbdullahAtta on 7/19/2019.
