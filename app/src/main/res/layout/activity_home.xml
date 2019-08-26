@@ -62,6 +62,7 @@
 						android:id="@+id/notesRecyclerView"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
+						android:layoutAnimation="@anim/layout_anim_from_bottom"
 						android:visibility="visible"
 						app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 						app:layout_constraintStart_toStartOf="parent"

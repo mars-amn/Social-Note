@@ -34,6 +34,11 @@ android {
     dataBinding {
         enabled true
     }
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+        kotlinOptions {
+            jvmTarget = "1.8"
+        }
+    }
 }
 
 dependencies {
@@ -83,6 +88,7 @@ dependencies {
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation 'com.google.android.gms:play-services-location:16.0.0'
     implementation 'com.google.firebase:firebase-firestore:20.2.0'
+    implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
 
     /**
      * RxJava & RxAndroid
@@ -118,5 +124,8 @@ dependencies {
     implementation 'com.github.florent37:singledateandtimepicker:2.1.5'
     implementation 'com.afollestad.material-dialogs:core:3.1.0'
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.0'
+
+    implementation("io.coil-kt:coil:0.6.1")
+
 }
 apply plugin: 'com.google.gms.google-services'

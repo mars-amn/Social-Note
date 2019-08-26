@@ -18,7 +18,10 @@
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme"
 			tools:ignore="GoogleAppIndexingWarning">
-		<activity android:name=".ui.SettingsActivity"></activity>
+		<activity android:name=".ui.CommentActivity"></activity>
+		<activity android:name=".ui.CreatePostActivity" />
+		<activity android:name=".ui.FeedActivity" />
+		<activity android:name=".ui.SettingsActivity" />
 		
 		<meta-data
 				android:name="com.google.android.geo.API_KEY"
@@ -48,11 +51,11 @@
 					android:name="android.support.PARENT_ACTIVITY"
 					android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
 		</activity>
-		<activity android:name=".ui.RegisterActivity"></activity>
+		<activity android:name=".ui.RegisterActivity" />
 		<activity
 				android:name=".ui.AddEditNoteActivity"
 				android:parentActivityName=".ui.HomeActivity"
-				android:theme="@style/EditorTheme"></activity>
+				android:theme="@style/EditorTheme" />
 		<activity android:name=".ui.HomeActivity">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
@@ -81,7 +84,6 @@
 				android:name=".services.SyncingService"
 				android:exported="false"
 				android:permission="android.permission.BIND_JOB_SERVICE" />
-	
 	</application>
 
 </manifest>

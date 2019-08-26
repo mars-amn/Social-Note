@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto">
+	
+	<data>
+		
+		<variable
+				name="comment"
+				type="elamien.abdullah.socialnote.models.Comment" />
+	</data>
+	
+	<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical">
+		
+		<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="horizontal">
+			
+			<ImageView
+					android:id="@+id/listItemCommentAuthorImage"
+					android:layout_width="@dimen/comment_image_width"
+					android:layout_height="@dimen/comment_image_height"
+					android:layout_margin="@dimen/comment_image_margin"
+					app:imageUrl="@{comment.authorImage}" />
+			
+			<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:layout_marginTop="8dp"
+					android:orientation="vertical">
+				
+				<TextView
+						android:id="@+id/listItemCommentDate"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content" />
+				
+				<TextView
+						android:id="@+id/listItemCommentBody"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:text="@{comment.comment}"
+						android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+			
+			</LinearLayout>
+		
+		</LinearLayout>
+		
+		<View
+				android:layout_width="match_parent"
+				android:layout_height="@dimen/comment_divider_height"
+				android:layout_margin="@dimen/comment_divider_margin"
+				android:background="@color/gray_background_color" />
+	</LinearLayout>
+
+</layout>

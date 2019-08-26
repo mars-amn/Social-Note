@@ -68,7 +68,7 @@ class Constants {
 		const val SYNC_NOTE_ID_INTENT_KEY = "elamien.abdullah.socialnote.sync_note_id_intent_key"
 		const val SYNC_NOTE_SERVICE_JOB_ID = 8
 		/**
-		 * Firebase related constants
+		 * Firebase syncing related constants
 		 */
 		const val FIRESTORE_SYNCED_NOTES_COLLECTION_NAME = "SocialNote"
 		const val FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME = "SyncedNotes"
@@ -80,6 +80,21 @@ class Constants {
 		const val FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER = "geofenceLocation"
 		const val FIRESTORE_SYNCED_NOTE_TIME_REMINDER = "timeReminder"
 		const val FIRESTORE_SYNCED_NOTE_IS_SYNCED = "isSynced"
+		/**
+		 * Firebase post related constants
+		 */
+		const val FIRESTORE_POST_DOC_INTENT_KEY =
+			"elamien.abdullah.socialnote.post_document_name_key"
+		const val FIRESTORE_POSTS_COLLECTION_NAME = "Posts"
+		const val FIRESTORE_POSTS_POST_BODY = "post"
+		const val FIRESTORE_POSTS_POST_AUTHOR_NAME = "authorName"
+		const val FIRESTORE_POSTS_POST_CATEGORY_NAME = "categoryName"
+		const val FIRESTORE_POSTS_POST_AUTHOR_ID = "authorUID"
+		const val FIRESTORE_POSTS_POST_AUTHOR_IMAGE = "authorImage"
+		const val FIRESTORE_POSTS_POST_DATE_CREATED = "dateCreated"
+		const val FIRESTORE_POSTS_POST_LIKES = "likes"
+		const val FIRESTORE_POSTS_POST_COMMENTS = "comments"
+		const val FIRESTORE_POSTS_POST_DOC_NAME = "documentName"
 	}
 
 }

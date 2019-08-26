@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.preference.PreferenceManager
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.miguelcatalan.materialsearchview.MaterialSearchView
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
@@ -34,6 +36,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	private lateinit var adapter : PagedNoteListAdapter
 	private lateinit var mBinding : ActivityHomeBinding
 	private val mViewModel : NoteViewModel by inject()
+	private val mFirebaseAuth : FirebaseAuth by inject()
 	private val mDisposables = CompositeDisposable()
 	private var isSyncingEnabled = false
 	override fun onCreate(savedInstanceState : Bundle?) {
@@ -193,8 +196,22 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 	override fun onNavigationItemSelected(item : MenuItem) : Boolean {
 		when (item.itemId) {
 			R.id.settingsMenuItem -> openSettingsActivity()
+			R.id.feedMenuItem -> if (userIsLoggedIn()) {
+				openFeedActivity()
+			} else {
+				Toast.makeText(this@HomeActivity, "You have to login", Toast.LENGTH_LONG)
+						.show()
+			}
 		}
 		return true
+	}
+
+	private fun userIsLoggedIn() : Boolean {
+		return mFirebaseAuth.currentUser != null
+	}
+
+	private fun openFeedActivity() {
+		startActivity(Intent(this@HomeActivity, FeedActivity::class.java))
 	}
 
 	private fun openSettingsActivity() {

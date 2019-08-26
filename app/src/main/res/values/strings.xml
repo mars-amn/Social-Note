@@ -58,4 +58,8 @@
 	<string name="sync_notes_dialog_pos_button_label">Okay</string>
 	<string name="skip_register_button_label">Skip</string>
 	<string name="register_button_label">Register or Login</string>
+	<string name="settings_menu_item_label">Settings</string>
+	<string name="feed_menu_item_label">Feed</string>
+	<string name="create_post_label">Post what\'s in your mind</string>
+	<string name="comment_submit_button_label">Submit</string>
 </resources>

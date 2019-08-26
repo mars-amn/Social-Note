@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto">
+	
+	<data>
+		
+		<import type="android.text.Html" />
+		
+		<variable
+				name="post"
+				type="elamien.abdullah.socialnote.models.Post" />
+		
+		<variable
+				name="handlers"
+				type="elamien.abdullah.socialnote.adapter.PostsFeedAdapter.PostsFeedViewHolder" />
+	
+	</data>
+	
+	<androidx.cardview.widget.CardView
+			android:layout_width="match_parent"
+			android:layout_height="200dp"
+			android:layout_margin="4dp"
+			android:orientation="vertical"
+			app:cardCornerRadius="4dp">
+		
+		<androidx.constraintlayout.widget.ConstraintLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+			
+			
+			<ImageView
+					android:id="@+id/listItemFeedAuthorImage"
+					android:layout_width="@dimen/post_image_width"
+					android:layout_height="@dimen/post_image_height"
+					android:layout_margin="@dimen/post_image_margin"
+					app:imageUrl="@{post.authorImage}"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toTopOf="parent" />
+			
+			<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_margin="@dimen/post_date_height"
+					android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+					android:textSize="18sp"
+					app:layout_constraintBottom_toBottomOf="@id/listItemFeedAuthorImage"
+					app:layout_constraintLeft_toRightOf="@id/listItemFeedAuthorImage"
+					app:layout_constraintTop_toTopOf="@id/listItemFeedAuthorImage" />
+			
+			<TextView
+					android:id="@+id/listItemFeedBodyText"
+					android:layout_width="match_parent"
+					android:layout_height="0dp"
+					android:layout_margin="@dimen/post_body_margin"
+					android:text="@{Html.fromHtml(post.post)}"
+					app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />
+			
+			<LinearLayout
+					android:id="@+id/linearLayout"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="horizontal"
+					app:layout_constraintBottom_toBottomOf="parent"
+					app:layout_constraintStart_toStartOf="parent">
+				<!--todo will adjusted -->
+				<com.airbnb.lottie.LottieAnimationView
+						android:id="@+id/listItemFeedUpvoteButton"
+						android:layout_width="50dp"
+						android:layout_height="50dp"
+						android:layout_margin="8dp"
+						android:onClick="@{handlers::onUpvoteButtonClick}"
+						app:lottie_autoPlay="false"
+						app:lottie_loop="false"
+						app:lottie_rawRes="@raw/like_heart" />
+				
+				<ImageButton
+						android:id="@+id/listItemFeedCommentButton"
+						android:layout_width="50dp"
+						android:layout_height="50dp"
+						android:layout_margin="8dp"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:onClick="@{handlers::onCommentButtonClick}"
+						app:srcCompat="@drawable/ic_comment" />
+			</LinearLayout>
+		</androidx.constraintlayout.widget.ConstraintLayout>
+	
+	</androidx.cardview.widget.CardView>
+</layout>

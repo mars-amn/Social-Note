@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools">
+	
+	<data>
+		
+		<variable
+				name="handlers"
+				type="elamien.abdullah.socialnote.ui.FeedActivity" />
+	</data>
+	
+	<androidx.constraintlayout.widget.ConstraintLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			tools:context=".ui.FeedActivity">
+		
+		<ImageView
+				android:id="@+id/userImageView"
+				android:layout_width="@dimen/author_image_width"
+				android:layout_height="@dimen/author_image_height"
+				android:onClick="@{handlers::onPostClick}"
+				app:layout_constraintBottom_toTopOf="@+id/feedRecyclerView"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toTopOf="parent" />
+		
+		<com.google.android.material.textview.MaterialTextView
+				android:id="@+id/postButton"
+				style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:background="?attr/selectableItemBackgroundBorderless"
+				android:clickable="true"
+				android:focusable="true"
+				android:onClick="@{handlers::onPostClick}"
+				android:text="@string/create_post_label"
+				android:textAllCaps="false"
+				app:layout_constraintStart_toEndOf="@id/userImageView"
+				app:layout_constraintTop_toTopOf="parent" />
+		
+		<androidx.recyclerview.widget.RecyclerView
+				android:id="@+id/feedRecyclerView"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layoutAnimation="@anim/layout_anim_from_bottom"
+				android:orientation="vertical"
+				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+				app:layout_constraintEnd_toEndOf="parent"
+				app:layout_constraintStart_toStartOf="parent"
+				app:layout_constraintTop_toBottomOf="@id/postButton"
+				tools:listitem="@layout/list_item_feed" />
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

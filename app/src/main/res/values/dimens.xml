@@ -15,5 +15,18 @@
 	<dimen name="register_buttons_margin">32dp</dimen>
 	<dimen name="cloud_animation_height">300dp</dimen>
 	<dimen name="cloud_animation_margin">32dp</dimen>
-
+	<dimen name="comment_divider_margin">8dp</dimen>
+	<dimen name="comment_image_width">40dp</dimen>
+	<dimen name="comment_image_height">40dp</dimen>
+	<dimen name="comment_image_margin">8dp</dimen>
+	<dimen name="post_image_width">70dp</dimen>
+	<dimen name="post_image_height">70dp</dimen>
+	<dimen name="post_image_margin">4dp</dimen>
+	<dimen name="post_date_height">4dp</dimen>
+	<dimen name="post_body_margin">8dp</dimen>
+	<dimen name="author_image_width">40dp</dimen>
+	<dimen name="author_image_height">40dp</dimen>
+	<dimen name="comment_author_input_height">50dp</dimen>
+	
+	<dimen name="comment_divider_height">1.5dp</dimen>
 </resources>
