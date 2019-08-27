@@ -10,14 +10,11 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class Comment {
-
-	var comment : String? = null
-	var authorImage : String? = null
-	var authorName : String? = null
-	var authorUId : String? = null
-	private var dateCreated : Timestamp? = null
-
+data class Comment(var comment : String? = null,
+				   var authorImage : String? = null,
+				   var authorName : String? = null,
+				   var authorUId : String? = null,
+				   private var dateCreated : Timestamp? = null) {
 
 	fun getDateCreated() : Date {
 		return dateCreated!!.toDate()

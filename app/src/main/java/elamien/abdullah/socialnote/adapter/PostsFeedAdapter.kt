@@ -19,6 +19,12 @@ import elamien.abdullah.socialnote.utils.Constants
 class PostsFeedAdapter(private val context : Context, options : FirestoreRecyclerOptions<Post>) :
 	FirestoreRecyclerAdapter<Post, PostsFeedAdapter.PostsFeedViewHolder>(options) {
 
+	override fun onDataChanged() {
+		super.onDataChanged()
+		notifyDataSetChanged()
+	}
+
+
 	override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : PostsFeedViewHolder {
 		val inflater = LayoutInflater.from(context)
 		val binding = ListItemFeedBinding.inflate(inflater, parent, false)

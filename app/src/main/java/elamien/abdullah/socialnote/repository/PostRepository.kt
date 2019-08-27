@@ -3,6 +3,7 @@ package elamien.abdullah.socialnote.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -48,6 +49,9 @@ class PostRepository : IPostRepository, KoinComponent {
 		postMap[Constants.FIRESTORE_POSTS_POST_CATEGORY_NAME] = post.categoryName!!
 		postMap[Constants.FIRESTORE_POSTS_POST_DATE_CREATED] = Date()
 		postMap[Constants.FIRESTORE_POSTS_POST_DOC_NAME] = post.documentName!!
+		postMap[Constants.FIRESTORE_POSTS_POST_COMMENTS] =
+			arrayListOf(Comment("", "", "", "", Timestamp(Date())))
+
 		return postMap
 	}
 

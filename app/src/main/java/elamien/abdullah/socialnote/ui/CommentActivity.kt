@@ -39,6 +39,7 @@ class CommentActivity : AppCompatActivity() {
 					if (comments.isNotEmpty()) {
 						val adapter = CommentsAdapter(this@CommentActivity, comments)
 						mBinding.commentsRecyclerView.adapter = adapter
+						mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
 					}
 				})
 	}
@@ -49,12 +50,7 @@ class CommentActivity : AppCompatActivity() {
 		val authorUId = mFirebaseAuth.currentUser?.uid.toString()
 		val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
 
-		val comment = Comment()
-		comment.comment = commentBody
-		comment.authorUId = authorUId
-		comment.authorName = authorName
-		comment.authorImage = authorImage
-		comment.setDateCreated(Timestamp(Date()))
+		val comment = Comment(commentBody, authorImage, authorName, authorUId, Timestamp(Date()))
 		mPostViewModel.createComment(mDocumentName!!, comment)
 	}
 }

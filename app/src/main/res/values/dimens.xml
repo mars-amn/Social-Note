@@ -29,4 +29,16 @@
 	<dimen name="comment_author_input_height">50dp</dimen>
 	
 	<dimen name="comment_divider_height">1.5dp</dimen>
+	<dimen name="image_card_view_parent_height">290dp</dimen>
+	<dimen name="image_card_view_parent_margin">16dp</dimen>
+	<dimen name="image_card_view_parent_radius">8dp</dimen>
+	<dimen name="comment_card_view_parent_width">250dp</dimen>
+	<dimen name="comment_card_view_parent_height">180dp</dimen>
+	<dimen name="comment_card_view_parent_margin">16dp</dimen>
+	<dimen name="comment_card_view_parent_radius">8dp</dimen>
+	<dimen name="comment_card_view_parent_elevation">2dp</dimen>
+	<dimen name="list_item_comment_date_margin_start">8dp</dimen>
+	<dimen name="list_item_comment_author_name_margin_start">8dp</dimen>
+	<dimen name="list_item_comment_author_body_margin_top">4dp</dimen>
+	<dimen name="list_item_comment_author_body_padding">8dp</dimen>
 </resources>
