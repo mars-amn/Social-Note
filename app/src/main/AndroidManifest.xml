@@ -41,6 +41,7 @@
 			</intent-filter>
 		</receiver>
 		<receiver android:name=".receiver.GeofenceReminderReceiver" />
+		<receiver android:name=".receiver.NotificationReceiver" />
 		
 		<activity
 				android:name=".ui.GeofencePickerActivity"

@@ -10,7 +10,9 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-data class Comment(var authorRegisterToken : String? = null,
+data class Comment(var commentAuthorToken : String? = null,
+				   var authorRegisterToken : String? = null,
+				   var documentId : String? = null,
 				   var comment : String? = null,
 				   var authorImage : String? = null,
 				   var authorName : String? = null,

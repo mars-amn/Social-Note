@@ -26,17 +26,21 @@ class FeedActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
 		mBinding.handlers = this
-
+		initFeedAdapter()
 		loadPosts()
-
 		mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl)
+	}
+
+	private fun initFeedAdapter() {
+		mAdapter = PostsFeedAdapter(this@FeedActivity, ArrayList())
+		mBinding.feedRecyclerView.adapter = mAdapter
 	}
 
 	private fun loadPosts() {
 		mPostViewModel.getPosts()
 				.observe(this, Observer { posts ->
-					mAdapter = PostsFeedAdapter(this@FeedActivity, posts)
-					mBinding.feedRecyclerView.adapter = mAdapter
+					mAdapter.addPosts(posts)
+
 				})
 	}
 

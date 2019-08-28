@@ -7,6 +7,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.iid.FirebaseInstanceId
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.CommentsAdapter
 import elamien.abdullah.socialnote.databinding.ActivityCommentBinding
@@ -24,6 +25,9 @@ class CommentActivity : AppCompatActivity() {
 	private var mDocumentName : String? = null
 	private var mAuthorRegisterToken : String? = null
 	private lateinit var mAdapter : CommentsAdapter
+	private var mRegisterToken : String? = null
+
+
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this@CommentActivity, R.layout.activity_comment)
@@ -36,7 +40,7 @@ class CommentActivity : AppCompatActivity() {
 				intent.getStringExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
 			mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
 			mBinding.commentsRecyclerView.adapter = mAdapter
-
+			getRegisterToken()
 			loadPostComments()
 		}
 	}
@@ -53,16 +57,28 @@ class CommentActivity : AppCompatActivity() {
 
 	fun onSubmitButtonClick(view : View) {
 		val commentBody = mBinding.commentInputEditText.text.toString()
+		if (commentBody == "") return
+
 		val authorName = mFirebaseAuth.currentUser?.displayName
 		val authorUId = mFirebaseAuth.currentUser?.uid.toString()
 		val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
 
-		val comment = Comment(mAuthorRegisterToken,
+		val comment = Comment(mRegisterToken,
+				mAuthorRegisterToken,
+				mDocumentName,
 				commentBody,
 				authorImage,
 				authorName,
 				authorUId,
 				Timestamp(Date()))
 		mPostViewModel.createComment(mDocumentName!!, comment)
+		mBinding.commentInputEditText.setText("")
+	}
+
+	private fun getRegisterToken() {
+		FirebaseInstanceId.getInstance()
+				.instanceId.addOnSuccessListener { instanceIdResult ->
+			mRegisterToken = instanceIdResult.token
+		}
 	}
 }

@@ -14,7 +14,7 @@ import elamien.abdullah.socialnote.utils.Constants
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class PostsFeedAdapter(private val context : Context, private val mPostsFeed : List<Post>) :
+class PostsFeedAdapter(private val context : Context, private var mPostsFeed : List<Post>) :
 	RecyclerView.Adapter<PostsFeedAdapter.PostsFeedViewHolder>() {
 
 
@@ -29,6 +29,10 @@ class PostsFeedAdapter(private val context : Context, private val mPostsFeed : L
 	}
 
 	override fun getItemCount() : Int = mPostsFeed.size
+	fun addPosts(posts : List<Post>?) {
+		mPostsFeed = posts!!
+		notifyItemInserted(1)
+	}
 
 
 	inner class PostsFeedViewHolder(private val mBinding : ListItemFeedBinding) :
