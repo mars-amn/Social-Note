@@ -14,7 +14,7 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class CommentsAdapter(private val context : Context, private val comments : List<Comment>) :
+class CommentsAdapter(private val context : Context, private var mComments : List<Comment>) :
 	RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 	private val images = arrayOf("http://bit.ly/2PhvwfN",
@@ -54,21 +54,24 @@ class CommentsAdapter(private val context : Context, private val comments : List
 		}
 	}
 
-	override fun getItemCount() : Int = comments.size
+	override fun getItemCount() : Int = mComments.size
 
 	override fun onBindViewHolder(holder : RecyclerView.ViewHolder, position : Int) {
+		val comment = mComments[position]
+		if (comment.comment!! == "") return
+
 		when (holder.itemViewType) {
 			RIGHT_TYPE -> {
 				holder as RightCommentsViewHolder
-				holder.bindRightComment(comments[position])
+				holder.bindRightComment(mComments[position])
 			}
 			LEFT_TYPE -> {
 				holder as LeftCommentsViewHolder
-				holder.bindLeftComment(comments[position])
+				holder.bindLeftComment(mComments[position])
 			}
 			else -> {
 				holder as RightCommentsViewHolder
-				holder.bindRightComment(comments[position])
+				holder.bindRightComment(mComments[position])
 			}
 		}
 	}
@@ -101,6 +104,10 @@ class CommentsAdapter(private val context : Context, private val comments : List
 	}
 
 	private fun getRandomImage() = images[Random().nextInt(images.size)]
+	fun addComments(comments : List<Comment>?) {
+		mComments = comments!!
+		notifyItemInserted(mComments.lastIndex)
+	}
 
 	companion object {
 		const val RIGHT_TYPE = 1

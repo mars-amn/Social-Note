@@ -22,13 +22,21 @@ class CommentActivity : AppCompatActivity() {
 	private val mFirebaseAuth : FirebaseAuth by inject()
 	private lateinit var mBinding : ActivityCommentBinding
 	private var mDocumentName : String? = null
+	private var mAuthorRegisterToken : String? = null
+	private lateinit var mAdapter : CommentsAdapter
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this@CommentActivity, R.layout.activity_comment)
 		mBinding.handlers = this
 
-		if (intent != null && intent.hasExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY)) {
+		if (intent != null && intent.hasExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(
+					Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)) {
 			mDocumentName = intent.getStringExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY)
+			mAuthorRegisterToken =
+				intent.getStringExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
+			mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
+			mBinding.commentsRecyclerView.adapter = mAdapter
+
 			loadPostComments()
 		}
 	}
@@ -37,8 +45,7 @@ class CommentActivity : AppCompatActivity() {
 		mPostViewModel.getComments(mDocumentName!!)
 				.observe(this, Observer { comments ->
 					if (comments.isNotEmpty()) {
-						val adapter = CommentsAdapter(this@CommentActivity, comments)
-						mBinding.commentsRecyclerView.adapter = adapter
+						mAdapter.addComments(comments)
 						mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
 					}
 				})
@@ -50,7 +57,12 @@ class CommentActivity : AppCompatActivity() {
 		val authorUId = mFirebaseAuth.currentUser?.uid.toString()
 		val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
 
-		val comment = Comment(commentBody, authorImage, authorName, authorUId, Timestamp(Date()))
+		val comment = Comment(mAuthorRegisterToken,
+				commentBody,
+				authorImage,
+				authorName,
+				authorUId,
+				Timestamp(Date()))
 		mPostViewModel.createComment(mDocumentName!!, comment)
 	}
 }

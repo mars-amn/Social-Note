@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.firestore.FirestoreRecyclerAdapter
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import elamien.abdullah.socialnote.databinding.ListItemFeedBinding
 import elamien.abdullah.socialnote.models.Post
 import elamien.abdullah.socialnote.ui.CommentActivity
@@ -16,13 +14,8 @@ import elamien.abdullah.socialnote.utils.Constants
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class PostsFeedAdapter(private val context : Context, options : FirestoreRecyclerOptions<Post>) :
-	FirestoreRecyclerAdapter<Post, PostsFeedAdapter.PostsFeedViewHolder>(options) {
-
-	override fun onDataChanged() {
-		super.onDataChanged()
-		notifyDataSetChanged()
-	}
+class PostsFeedAdapter(private val context : Context, private val mPostsFeed : List<Post>) :
+	RecyclerView.Adapter<PostsFeedAdapter.PostsFeedViewHolder>() {
 
 
 	override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : PostsFeedViewHolder {
@@ -31,9 +24,12 @@ class PostsFeedAdapter(private val context : Context, options : FirestoreRecycle
 		return PostsFeedViewHolder(binding)
 	}
 
-	override fun onBindViewHolder(holder : PostsFeedViewHolder, position : Int, post : Post) {
-		holder.bind(getItem(position))
+	override fun onBindViewHolder(holder : PostsFeedViewHolder, position : Int) {
+		holder.bind(mPostsFeed[position])
 	}
+
+	override fun getItemCount() : Int = mPostsFeed.size
+
 
 	inner class PostsFeedViewHolder(private val mBinding : ListItemFeedBinding) :
 		RecyclerView.ViewHolder(mBinding.root) {
@@ -53,7 +49,9 @@ class PostsFeedAdapter(private val context : Context, options : FirestoreRecycle
 		fun onCommentButtonClick(view : View) {
 			val intent = Intent(context, CommentActivity::class.java)
 			intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY,
-					getItem(adapterPosition).documentName)
+					mPostsFeed[adapterPosition].documentName)
+			intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY,
+					mPostsFeed[adapterPosition].registerToken)
 			context.startActivity(intent)
 		}
 

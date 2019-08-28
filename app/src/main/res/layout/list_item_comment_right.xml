@@ -56,7 +56,7 @@
 						android:layout_width="@dimen/comment_image_width"
 						android:layout_height="@dimen/comment_image_height"
 						android:layout_margin="@dimen/comment_image_margin"
-						app:imageUrl="@{comment.authorImage}"
+						app:authorCommentImageUrl="@{comment.authorImage}"
 						app:layout_constraintStart_toStartOf="parent"
 						app:layout_constraintTop_toTopOf="parent" />
 				

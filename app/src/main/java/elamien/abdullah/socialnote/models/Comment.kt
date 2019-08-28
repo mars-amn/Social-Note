@@ -10,7 +10,8 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-data class Comment(var comment : String? = null,
+data class Comment(var authorRegisterToken : String? = null,
+				   var comment : String? = null,
 				   var authorImage : String? = null,
 				   var authorName : String? = null,
 				   var authorUId : String? = null,
@@ -24,10 +25,14 @@ data class Comment(var comment : String? = null,
 		this.dateCreated = date
 	}
 
+	fun isCommentEmpty() : Boolean {
+		return comment == null || authorImage == null || authorName == null || authorUId == null
+	}
+
 	companion object {
-		@BindingAdapter("imageUrl")
+		@BindingAdapter("authorCommentImageUrl")
 		@JvmStatic
-		fun loadAuthorImage(view : ImageView, imageUrl : String) {
+		fun loadAuthorCommentImage(view : ImageView, imageUrl : String) {
 			view.load(imageUrl) {
 				crossfade(true)
 				transformations(CircleCropTransformation())

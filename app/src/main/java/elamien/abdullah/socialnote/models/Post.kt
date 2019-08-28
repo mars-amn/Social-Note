@@ -10,17 +10,17 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class Post {
+data class Post(var registerToken : String? = null,
+				var post : String? = null,
+				var authorName : String? = null,
+				var categoryName : String? = null,
+				var authorUId : String? = null,
+				var authorImage : String? = null) {
 
-	var documentName : String? = null
-	var post : String? = null
-	var authorName : String? = null
-	var categoryName : String? = null
-	var authorUId : String? = null
-	var authorImage : String? = null
 	var likes : List<Like>? = null
 	var comments : List<Comment>? = null
 	private var dateCreated : Timestamp? = null
+	var documentName : String? = null
 	fun getDateCreated() : Date {
 		return dateCreated!!.toDate()
 	}
@@ -30,9 +30,9 @@ class Post {
 	}
 
 	companion object {
-		@BindingAdapter("imageUrl")
+		@BindingAdapter("authorPostImageUrl")
 		@JvmStatic
-		fun loadAuthorImage(view : ImageView, imageUrl : String) {
+		fun loadAuthorPostImage(view : ImageView, imageUrl : String) {
 			view.load(imageUrl) {
 				crossfade(true)
 				transformations(CircleCropTransformation())

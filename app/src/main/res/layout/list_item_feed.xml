@@ -33,7 +33,7 @@
 					android:layout_width="@dimen/post_image_width"
 					android:layout_height="@dimen/post_image_height"
 					android:layout_margin="@dimen/post_image_margin"
-					app:imageUrl="@{post.authorImage}"
+					app:authorPostImageUrl="@{post.authorImage}"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toTopOf="parent" />
 			

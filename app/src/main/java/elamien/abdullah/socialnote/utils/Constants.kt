@@ -85,6 +85,8 @@ class Constants {
 		 */
 		const val FIRESTORE_POST_DOC_INTENT_KEY =
 			"elamien.abdullah.socialnote.post_document_name_key"
+		const val FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY =
+			"elamien.abdullah.socialnote.post_author_register_key"
 		const val FIRESTORE_POSTS_COLLECTION_NAME = "Posts"
 		const val FIRESTORE_POSTS_POST_BODY = "post"
 		const val FIRESTORE_POSTS_POST_AUTHOR_NAME = "authorName"
@@ -94,7 +96,16 @@ class Constants {
 		const val FIRESTORE_POSTS_POST_DATE_CREATED = "dateCreated"
 		const val FIRESTORE_POSTS_POST_LIKES = "likes"
 		const val FIRESTORE_POSTS_POST_COMMENTS = "comments"
+		const val FIRESTORE_POSTS_POST_REGISTER_TOKEN = "registerToken"
 		const val FIRESTORE_POSTS_POST_DOC_NAME = "documentName"
+
+		const val FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME = "CommentNotification"
+		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"
+		const val FIRESTORE_COMMENTS_NOTIFICATION_COMMENT = "comment"
+		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE = "authorImage"
+		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME = "authorName"
+		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_UID = "authorUId"
+		const val FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED = "dateCreated"
 	}
 
 }

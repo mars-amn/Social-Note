@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import coil.api.load
 import com.google.firebase.auth.FirebaseAuth
 import elamien.abdullah.socialnote.R
@@ -26,20 +27,17 @@ class FeedActivity : AppCompatActivity() {
 		mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
 		mBinding.handlers = this
 
-		mAdapter = PostsFeedAdapter(this@FeedActivity, mPostViewModel.getPosts())
-		mBinding.feedRecyclerView.adapter = mAdapter
+		loadPosts()
 
 		mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl)
 	}
 
-	override fun onStart() {
-		super.onStart()
-		mAdapter.startListening()
-	}
-
-	override fun onStop() {
-		super.onStop()
-		mAdapter.stopListening()
+	private fun loadPosts() {
+		mPostViewModel.getPosts()
+				.observe(this, Observer { posts ->
+					mAdapter = PostsFeedAdapter(this@FeedActivity, posts)
+					mBinding.feedRecyclerView.adapter = mAdapter
+				})
 	}
 
 	fun onPostClick(view : View) {

@@ -1,6 +1,7 @@
 package elamien.abdullah.socialnote.base
 
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import elamien.abdullah.socialnote.di.appModules
 import elamien.abdullah.socialnote.di.firebaseModules
 import elamien.abdullah.socialnote.di.repositoriesModules
@@ -17,6 +18,7 @@ class NotesApplication : Application() {
 
 	override fun onCreate() {
 		super.onCreate()
+		FirebaseApp.initializeApp(applicationContext)
 		startKoin {
 			androidContext(this@NotesApplication)
 			androidLogger(Level.DEBUG)

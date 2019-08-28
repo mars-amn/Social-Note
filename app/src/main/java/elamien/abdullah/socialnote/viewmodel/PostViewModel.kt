@@ -2,7 +2,6 @@ package elamien.abdullah.socialnote.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import elamien.abdullah.socialnote.models.Comment
 import elamien.abdullah.socialnote.models.Post
 import elamien.abdullah.socialnote.repository.PostRepository
@@ -20,7 +19,7 @@ class PostViewModel : ViewModel(), KoinComponent {
 		mPostRepository.createNewPost(post)
 	}
 
-	fun getPosts() : FirestoreRecyclerOptions<Post> {
+	fun getPosts() : LiveData<List<Post>> {
 		return mPostRepository.getPostsFeed()
 	}
 
