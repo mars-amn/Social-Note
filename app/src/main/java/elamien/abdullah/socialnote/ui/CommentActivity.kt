@@ -1,6 +1,9 @@
 package elamien.abdullah.socialnote.ui
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -12,7 +15,11 @@ import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.CommentsAdapter
 import elamien.abdullah.socialnote.databinding.ActivityCommentBinding
 import elamien.abdullah.socialnote.models.Comment
-import elamien.abdullah.socialnote.utils.Constants
+import elamien.abdullah.socialnote.receiver.NotificationReceiver
+import elamien.abdullah.socialnote.utils.Constants.Companion.DISMISS_POST_COMMENT_NOTIFICATION_ACTION
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POST_DOC_INTENT_KEY
+import elamien.abdullah.socialnote.utils.Constants.Companion.OPEN_FROM_NOTIFICATION_COMMENT
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,17 +40,46 @@ class CommentActivity : AppCompatActivity() {
 		mBinding = DataBindingUtil.setContentView(this@CommentActivity, R.layout.activity_comment)
 		mBinding.handlers = this
 
-		if (intent != null && intent.hasExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(
-					Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)) {
-			mDocumentName = intent.getStringExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY)
-			mAuthorRegisterToken =
-				intent.getStringExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
+		if (intent != null && intent.hasExtra(FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(
+					FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)) {
+			mDocumentName = intent.getStringExtra(FIRESTORE_POST_DOC_INTENT_KEY)
+			mAuthorRegisterToken = intent.getStringExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
 			mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
 			mBinding.commentsRecyclerView.adapter = mAdapter
 			getRegisterToken()
 			loadPostComments()
 		}
+
+		if (isPostFromNotification()) {
+			Log.d("isNotification", "it's notification")
+			dismissNotification()
+		} else {
+			Log.d("isNotification", "it's not notification")
+
+		}
 	}
+
+	private fun dismissNotification() {
+		Log.d("isNotification", "in activity. dismissing")
+
+		val dismissIntent = Intent(this@CommentActivity, NotificationReceiver::class.java)
+		dismissIntent.action = DISMISS_POST_COMMENT_NOTIFICATION_ACTION
+		dismissIntent.putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
+				intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1))
+		Log.d("isNotification",
+				"in activity. dismissing id = ${intent.getIntExtra(
+						DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
+						-1)}")
+		PendingIntent.getBroadcast(this@CommentActivity,
+				0,
+				dismissIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT)
+		sendBroadcast(dismissIntent)
+	}
+
+	private fun isPostFromNotification() : Boolean =
+		intent.getBooleanExtra(OPEN_FROM_NOTIFICATION_COMMENT, false)
+
 
 	private fun loadPostComments() {
 		mPostViewModel.getComments(mDocumentName!!)

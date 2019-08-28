@@ -100,6 +100,7 @@ class NotificationsUtils {
 		openIntent.putExtra(OPEN_FROM_NOTIFICATION_COMMENT, true)
 		openIntent.putExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, token)
 		openIntent.putExtra(FIRESTORE_POST_DOC_INTENT_KEY, documentId)
+		openIntent.putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, notificationId)
 		return TaskStackBuilder.create(context)
 				.run {
 					addNextIntentWithParentStack(openIntent)
@@ -307,6 +308,12 @@ class NotificationsUtils {
 		val notificationManager : NotificationManager =
 			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 		notificationManager.cancelAll()
+	}
+
+	fun dismissCommentNotification(context : Context, notificationId : Int) {
+		val notificationManager : NotificationManager =
+			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+		notificationManager.cancel(notificationId)
 	}
 
 	companion object {

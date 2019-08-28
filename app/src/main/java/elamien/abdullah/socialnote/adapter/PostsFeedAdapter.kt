@@ -31,7 +31,7 @@ class PostsFeedAdapter(private val context : Context, private var mPostsFeed : L
 	override fun getItemCount() : Int = mPostsFeed.size
 	fun addPosts(posts : List<Post>?) {
 		mPostsFeed = posts!!
-		notifyItemInserted(1)
+		notifyDataSetChanged()
 	}
 
 
