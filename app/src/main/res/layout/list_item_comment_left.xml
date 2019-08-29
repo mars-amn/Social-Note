@@ -6,7 +6,7 @@
 		
 		<variable
 				name="comment"
-				type="elamien.abdullah.socialnote.models.Comment" />
+				type="elamien.abdullah.socialnote.database.remote.firestore.models.Comment" />
 	</data>
 	
 	<androidx.constraintlayout.widget.ConstraintLayout

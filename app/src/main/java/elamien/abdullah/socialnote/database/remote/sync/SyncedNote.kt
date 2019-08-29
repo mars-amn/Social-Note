@@ -1,4 +1,4 @@
-package elamien.abdullah.socialnote.database.remote
+package elamien.abdullah.socialnote.database.remote.sync
 
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.GeoPoint

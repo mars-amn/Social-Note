@@ -6,8 +6,9 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
-import elamien.abdullah.socialnote.models.Comment
-import elamien.abdullah.socialnote.models.Post
+import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
+import elamien.abdullah.socialnote.database.remote.firestore.models.Like
+import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN
@@ -26,6 +27,7 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POS
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_COMMENTS
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_DATE_CREATED
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_DOC_NAME
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_LIKES
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_REGISTER_TOKEN
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -40,6 +42,15 @@ class PostRepository : IPostRepository, KoinComponent {
 
 
 	private val mFirestore : FirebaseFirestore by inject()
+
+	override fun createLikeOnPost(like : Like) {
+		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+				.document(like.documentId!!)
+				.update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayUnion(like))
+				.addOnCompleteListener { }
+				.addOnFailureListener { }
+	}
+
 	override fun createComment(documentName : String, comment : Comment) {
 		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
 				.document(documentName)
@@ -108,7 +119,6 @@ class PostRepository : IPostRepository, KoinComponent {
 						posts.value = documents
 					}
 				}
-
 		return posts
 	}
 
@@ -132,5 +142,6 @@ class PostRepository : IPostRepository, KoinComponent {
 				}
 		return comments
 	}
+
 
 }

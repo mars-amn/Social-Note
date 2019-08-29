@@ -19,8 +19,8 @@
 	<dimen name="comment_image_width">40dp</dimen>
 	<dimen name="comment_image_height">40dp</dimen>
 	<dimen name="comment_image_margin">8dp</dimen>
-	<dimen name="post_image_width">70dp</dimen>
-	<dimen name="post_image_height">70dp</dimen>
+	<dimen name="post_image_width">50dp</dimen>
+	<dimen name="post_image_height">50dp</dimen>
 	<dimen name="post_image_margin">4dp</dimen>
 	<dimen name="post_date_height">4dp</dimen>
 	<dimen name="post_body_margin">8dp</dimen>

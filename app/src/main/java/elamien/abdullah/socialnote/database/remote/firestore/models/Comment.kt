@@ -1,4 +1,4 @@
-package elamien.abdullah.socialnote.models
+package elamien.abdullah.socialnote.database.remote.firestore.models
 
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter

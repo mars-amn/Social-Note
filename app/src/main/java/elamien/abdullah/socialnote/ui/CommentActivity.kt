@@ -3,7 +3,6 @@ package elamien.abdullah.socialnote.ui
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,8 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.CommentsAdapter
+import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
 import elamien.abdullah.socialnote.databinding.ActivityCommentBinding
-import elamien.abdullah.socialnote.models.Comment
 import elamien.abdullah.socialnote.receiver.NotificationReceiver
 import elamien.abdullah.socialnote.utils.Constants.Companion.DISMISS_POST_COMMENT_NOTIFICATION_ACTION
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY
@@ -51,25 +50,15 @@ class CommentActivity : AppCompatActivity() {
 		}
 
 		if (isPostFromNotification()) {
-			Log.d("isNotification", "it's notification")
 			dismissNotification()
-		} else {
-			Log.d("isNotification", "it's not notification")
-
 		}
 	}
 
 	private fun dismissNotification() {
-		Log.d("isNotification", "in activity. dismissing")
-
 		val dismissIntent = Intent(this@CommentActivity, NotificationReceiver::class.java)
 		dismissIntent.action = DISMISS_POST_COMMENT_NOTIFICATION_ACTION
 		dismissIntent.putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
 				intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1))
-		Log.d("isNotification",
-				"in activity. dismissing id = ${intent.getIntExtra(
-						DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
-						-1)}")
 		PendingIntent.getBroadcast(this@CommentActivity,
 				0,
 				dismissIntent,

@@ -8,7 +8,7 @@
 		
 		<variable
 				name="post"
-				type="elamien.abdullah.socialnote.models.Post" />
+				type="elamien.abdullah.socialnote.database.remote.firestore.models.Post" />
 		
 		<variable
 				name="handlers"
@@ -17,6 +17,7 @@
 	</data>
 	
 	<androidx.cardview.widget.CardView
+			android:id="@+id/listItemFeedPostParent"
 			android:layout_width="match_parent"
 			android:layout_height="200dp"
 			android:layout_margin="4dp"
@@ -53,37 +54,47 @@
 					android:layout_height="0dp"
 					android:layout_margin="@dimen/post_body_margin"
 					android:text="@{Html.fromHtml(post.post)}"
-					app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+					app:layout_constraintBottom_toTopOf="@+id/socialInteractParent"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"
 					app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />
 			
 			<LinearLayout
-					android:id="@+id/linearLayout"
+					android:id="@+id/socialInteractParent"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
 					app:layout_constraintBottom_toBottomOf="parent"
 					app:layout_constraintStart_toStartOf="parent">
-				<!--todo will adjusted -->
-				<com.airbnb.lottie.LottieAnimationView
-						android:id="@+id/listItemFeedUpvoteButton"
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:layout_margin="8dp"
-						android:onClick="@{handlers::onUpvoteButtonClick}"
-						app:lottie_autoPlay="false"
-						app:lottie_loop="false"
-						app:lottie_rawRes="@raw/like_heart" />
 				
-				<ImageButton
-						android:id="@+id/listItemFeedCommentButton"
-						android:layout_width="50dp"
+				<TextView
+						android:id="@+id/listItemFeedUpvoteButton"
+						android:layout_width="match_parent"
 						android:layout_height="50dp"
 						android:layout_margin="8dp"
-						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:drawableStart="@drawable/ic_like"
+						android:drawablePadding="4dp"
+						android:focusable="true"
+						android:gravity="center"
+						android:onClick="@{handlers::onUpvoteButtonClick}"
+						android:text="Like"
+						android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+						android:textSize="18sp" />
+				
+				<TextView
+						android:id="@+id/listItemFeedCommentButton"
+						android:layout_width="match_parent"
+						android:layout_height="50dp"
+						android:layout_gravity="center"
+						android:layout_margin="8dp"
+						android:clickable="true"
+						android:drawableStart="@drawable/ic_comment"
+						android:drawablePadding="4dp"
+						android:focusable="true"
+						android:gravity="center"
 						android:onClick="@{handlers::onCommentButtonClick}"
-						app:srcCompat="@drawable/ic_comment" />
+						android:text="Comment" />
 			</LinearLayout>
 		</androidx.constraintlayout.widget.ConstraintLayout>
 	

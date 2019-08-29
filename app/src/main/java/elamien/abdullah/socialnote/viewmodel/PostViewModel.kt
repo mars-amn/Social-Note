@@ -2,8 +2,9 @@ package elamien.abdullah.socialnote.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import elamien.abdullah.socialnote.models.Comment
-import elamien.abdullah.socialnote.models.Post
+import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
+import elamien.abdullah.socialnote.database.remote.firestore.models.Like
+import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.repository.PostRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -29,5 +30,9 @@ class PostViewModel : ViewModel(), KoinComponent {
 
 	fun getComments(documentName : String) : LiveData<List<Comment>> {
 		return mPostRepository.getCommentsFeed(documentName)
+	}
+
+	fun createLikeOnPost(like : Like) {
+		mPostRepository.createLikeOnPost(like)
 	}
 }

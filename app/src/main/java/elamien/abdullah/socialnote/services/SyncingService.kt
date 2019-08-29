@@ -10,7 +10,7 @@ import elamien.abdullah.socialnote.database.local.geofence.NoteGeofence
 import elamien.abdullah.socialnote.database.local.notes.Note
 import elamien.abdullah.socialnote.database.local.notes.NoteDao
 import elamien.abdullah.socialnote.database.local.reminder.NoteReminder
-import elamien.abdullah.socialnote.database.remote.SyncedNote
+import elamien.abdullah.socialnote.database.remote.sync.SyncedNote
 import elamien.abdullah.socialnote.utils.Constants
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable

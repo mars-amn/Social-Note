@@ -16,6 +16,8 @@
 	<color name="text_color_hint">#bdbdbd</color>
 	<color name="text_title_color">#000</color>
 	<color name="network_state_text_color">#455a64</color>
+	<color name="normal_like_state_color">#808080</color>
+	<color name="liked_state_color">@color/colorAccent</color>
 	<!-- recycler view-->
 	<array name="recyclerViewBackgroundColors">
 		<item>@color/recyclerViewColor</item>
