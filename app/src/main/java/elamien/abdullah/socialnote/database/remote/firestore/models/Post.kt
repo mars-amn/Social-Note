@@ -17,7 +17,7 @@ data class Post(var registerToken : String? = null,
 				var authorUId : String? = null,
 				var authorImage : String? = null) {
 
-	var likes : List<Like>? = null
+	var likes : ArrayList<Like>? = null
 	var comments : List<Comment>? = null
 	private var dateCreated : Timestamp? = null
 	var documentName : String? = null

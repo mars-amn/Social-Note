@@ -68,7 +68,7 @@
 					app:layout_constraintStart_toStartOf="parent">
 				
 				<TextView
-						android:id="@+id/listItemFeedUpvoteButton"
+						android:id="@+id/listItemFeedLikeButton"
 						android:layout_width="match_parent"
 						android:layout_height="50dp"
 						android:layout_margin="8dp"
@@ -77,10 +77,27 @@
 						android:drawablePadding="4dp"
 						android:focusable="true"
 						android:gravity="center"
-						android:onClick="@{handlers::onUpvoteButtonClick}"
+						android:onClick="@{handlers::onLikeButtonClick}"
 						android:text="Like"
 						android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
 						android:textSize="18sp" />
+				
+				<TextView
+						android:id="@+id/listItemFeedUnLikeButton"
+						android:layout_width="match_parent"
+						android:layout_height="50dp"
+						android:layout_margin="8dp"
+						android:clickable="true"
+						android:drawableStart="@drawable/ic_liked"
+						android:drawablePadding="4dp"
+						android:focusable="true"
+						android:gravity="center"
+						android:onClick="@{handlers::onUnLikeButtonClick}"
+						android:text="Like"
+						android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+						android:textColor="@color/liked_state_color"
+						android:textSize="18sp"
+						android:visibility="gone" />
 				
 				<TextView
 						android:id="@+id/listItemFeedCommentButton"

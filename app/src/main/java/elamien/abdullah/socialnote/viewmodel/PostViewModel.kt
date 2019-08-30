@@ -35,4 +35,8 @@ class PostViewModel : ViewModel(), KoinComponent {
 	fun createLikeOnPost(like : Like) {
 		mPostRepository.createLikeOnPost(like)
 	}
+
+	fun deleteRemoveLikeOfPost(like : Like) {
+		mPostRepository.removeLike(like)
+	}
 }

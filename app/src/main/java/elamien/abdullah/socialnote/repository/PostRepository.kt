@@ -43,6 +43,14 @@ class PostRepository : IPostRepository, KoinComponent {
 
 	private val mFirestore : FirebaseFirestore by inject()
 
+	override fun removeLike(like : Like) {
+		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+				.document(like.documentId!!)
+				.update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayRemove(like))
+				.addOnCompleteListener { }
+				.addOnFailureListener { }
+	}
+
 	override fun createLikeOnPost(like : Like) {
 		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
 				.document(like.documentId!!)
@@ -108,15 +116,14 @@ class PostRepository : IPostRepository, KoinComponent {
 		val posts = MutableLiveData<List<Post>>()
 		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
 				.orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
-				.addSnapshotListener { querySnapshot, e ->
-					if (e != null) {
-
-					} else {
-						val documents = ArrayList<Post>()
-						querySnapshot?.forEach { document ->
-							documents.add(document.toObject(Post::class.java))
+				.get()
+				.addOnCompleteListener { querySnapshot ->
+					if (querySnapshot.isSuccessful) {
+						val postsList = ArrayList<Post>()
+						querySnapshot.result?.forEach { document ->
+							postsList.add(document.toObject(Post::class.java))
 						}
-						posts.value = documents
+						posts.value = postsList
 					}
 				}
 		return posts
@@ -142,6 +149,5 @@ class PostRepository : IPostRepository, KoinComponent {
 				}
 		return comments
 	}
-
 
 }

@@ -8,10 +8,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import coil.api.load
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PostsFeedAdapter
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
+import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ActivityFeedBinding
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
@@ -21,7 +21,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 
 	private val mPostViewModel : PostViewModel by viewModel()
 	private val mFirebaseAuth : FirebaseAuth by inject()
-	private val mFirestore : FirebaseFirestore by inject()
+
 
 	private lateinit var mBinding : ActivityFeedBinding
 	private lateinit var mAdapter : PostsFeedAdapter
@@ -29,6 +29,8 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
 		mBinding.handlers = this
+		mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
+
 		loadPosts()
 		mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl)
 	}
@@ -36,7 +38,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 	private fun loadPosts() {
 		mPostViewModel.getPosts()
 				.observe(this, Observer { posts ->
-					mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, posts)
+					mAdapter.addPosts(posts)
 					mBinding.feedRecyclerView.adapter = mAdapter
 				})
 	}
@@ -49,9 +51,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 		mPostViewModel.createLikeOnPost(like)
 	}
 
-
-	override fun onStop() {
-		super.onStop()
-		//mAdapter.dispose()
+	override fun onUnLikeButtonClick(like : Like) {
+		mPostViewModel.deleteRemoveLikeOfPost(like)
 	}
 }

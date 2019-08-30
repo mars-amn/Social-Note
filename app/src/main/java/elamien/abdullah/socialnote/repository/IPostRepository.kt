@@ -15,4 +15,5 @@ interface IPostRepository {
 	fun createComment(documentName : String, comment : Comment)
 	fun getCommentsFeed(documentName : String) : LiveData<List<Comment>>
 	fun createLikeOnPost(like : Like)
+	fun removeLike(like : Like)
 }
