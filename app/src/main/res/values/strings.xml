@@ -65,4 +65,5 @@
 	<string name="notification_post_channel_id">Social-Posts</string>
 	<string name="notification_social_posts_channel_name">Social Posts</string>
 	<string name="open_post_notification_action_label">Open Post</string>
+	<string name="share_title">Share Post</string>
 </resources>

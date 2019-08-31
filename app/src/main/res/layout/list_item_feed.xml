@@ -18,11 +18,11 @@
 	
 	<androidx.cardview.widget.CardView
 			android:id="@+id/listItemFeedPostParent"
-			android:layout_width="match_parent"
+			android:layout_width="	match_parent"
 			android:layout_height="200dp"
 			android:layout_margin="4dp"
-			android:orientation="vertical"
-			app:cardCornerRadius="4dp">
+			app:cardCornerRadius="4dp"
+			app:cardElevation="1dp">
 		
 		<androidx.constraintlayout.widget.ConstraintLayout
 				android:layout_width="match_parent"
@@ -61,57 +61,68 @@
 			
 			<LinearLayout
 					android:id="@+id/socialInteractParent"
-					android:layout_width="wrap_content"
+					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
 					android:orientation="horizontal"
 					app:layout_constraintBottom_toBottomOf="parent"
 					app:layout_constraintStart_toStartOf="parent">
 				
-				<TextView
+				<ImageButton
 						android:id="@+id/listItemFeedLikeButton"
-						android:layout_width="match_parent"
+						android:layout_width="50dp"
 						android:layout_height="50dp"
-						android:layout_margin="8dp"
+						android:layout_gravity="center"
+						android:layout_margin="4dp"
+						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:drawableStart="@drawable/ic_like"
-						android:drawablePadding="4dp"
 						android:focusable="true"
 						android:gravity="center"
 						android:onClick="@{handlers::onLikeButtonClick}"
-						android:text="Like"
-						android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-						android:textSize="18sp" />
+						app:srcCompat="@drawable/ic_like_normal" />
 				
-				<TextView
+				<ImageButton
 						android:id="@+id/listItemFeedUnLikeButton"
-						android:layout_width="match_parent"
+						android:layout_width="50dp"
 						android:layout_height="50dp"
-						android:layout_margin="8dp"
+						android:layout_gravity="center"
+						android:layout_margin="4dp"
+						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:drawableStart="@drawable/ic_liked"
-						android:drawablePadding="4dp"
 						android:focusable="true"
 						android:gravity="center"
 						android:onClick="@{handlers::onUnLikeButtonClick}"
-						android:text="Like"
-						android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-						android:textColor="@color/liked_state_color"
-						android:textSize="18sp"
-						android:visibility="gone" />
+						android:visibility="gone"
+						app:srcCompat="@drawable/ic_like_state" />
 				
-				<TextView
+				<ImageButton
 						android:id="@+id/listItemFeedCommentButton"
-						android:layout_width="match_parent"
+						android:layout_width="50dp"
 						android:layout_height="50dp"
 						android:layout_gravity="center"
-						android:layout_margin="8dp"
+						android:layout_margin="4dp"
+						android:background="?attr/selectableItemBackgroundBorderless"
 						android:clickable="true"
-						android:drawableStart="@drawable/ic_comment"
-						android:drawablePadding="4dp"
 						android:focusable="true"
-						android:gravity="center"
 						android:onClick="@{handlers::onCommentButtonClick}"
-						android:text="Comment" />
+						app:srcCompat="@drawable/ic_comment" />
+				
+				<Space
+						android:layout_width="0dp"
+						android:layout_height="0dp"
+						android:layout_weight="1" />
+				
+				
+				<ImageButton
+						android:id="@+id/listItemFeedSharePostButton"
+						android:layout_width="50dp"
+						android:layout_height="50dp"
+						android:layout_gravity="center"
+						android:layout_margin="4dp"
+						android:background="?attr/selectableItemBackgroundBorderless"
+						android:clickable="true"
+						android:focusable="true"
+						android:onClick="@{handlers::onSharePostClick}"
+						app:srcCompat="@drawable/ic_share_post" />
 			</LinearLayout>
 		</androidx.constraintlayout.widget.ConstraintLayout>
 	

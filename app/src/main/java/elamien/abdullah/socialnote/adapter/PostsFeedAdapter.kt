@@ -2,9 +2,12 @@ package elamien.abdullah.socialnote.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
@@ -13,6 +16,7 @@ import androidx.transition.TransitionSet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.transitionseverywhere.extra.Scale
+import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ListItemFeedBinding
@@ -148,6 +152,20 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 					mFirebaseAuth.currentUser?.photoUrl.toString())
 			listener.onUnLikeButtonClick(like)
 			likedArray.remove(post.documentName!!)
+		}
+
+		fun onSharePostClick(view : View) {
+			ShareCompat.IntentBuilder.from(context as AppCompatActivity)
+					.setType("text/plain")
+					.setText(getShareText())
+					.setChooserTitle(context.getString(R.string.share_title))
+					.startChooser()
+		}
+
+		private fun getShareText() : String {
+			val post = mPostsFeed[adapterPosition]
+			return "Check out what ${post.authorName} posted on Social Note \n\n" + "${Html.fromHtml(
+					post.post)}"
 		}
 	}
 }
