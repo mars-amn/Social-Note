@@ -18,6 +18,12 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_POST_COMMENT_DOC_ID
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_LIKES_NOTIFICATION_AUTHOR_REGISTER_TOKEN
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_LIKES_NOTIFICATION_USER_ID
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_LIKES_NOTIFICATION_USER_NAME
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_COLLECTION_NAME
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_AUTHOR_ID
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_AUTHOR_IMAGE
@@ -57,6 +63,22 @@ class PostRepository : IPostRepository, KoinComponent {
 				.update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayUnion(like))
 				.addOnCompleteListener { }
 				.addOnFailureListener { }
+
+		mFirestore.collection(FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME)
+				.document()
+				.set(getMappedLike(like))
+				.addOnCompleteListener { }
+				.addOnFailureListener { }
+	}
+
+	private fun getMappedLike(like : Like) : HashMap<String, Any> {
+		val likeMap = HashMap<String, Any>()
+		likeMap[FIRESTORE_LIKES_NOTIFICATION_AUTHOR_REGISTER_TOKEN] = like.authorRegisterToken!!
+		likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN] = like.userRegisterToken!!
+		likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_NAME] = like.userName!!
+		likeMap[FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID] = like.documentId!!
+		likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_ID] = like.userLikerUId!!
+		return likeMap
 	}
 
 	override fun createComment(documentName : String, comment : Comment) {

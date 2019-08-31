@@ -79,22 +79,21 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 		fun bind(post : Post) {
 			hideLikedButton()
 			mBinding.post = post
-
+			if (likedArray.contains(post.documentName!!)) {
+				showLikedButton()
+			}
 			if (post.likes != null) {
-				if (likedArray.contains(post.documentName!!)) {
-					showLikedButton()
-				} else {
-					post.likes?.forEach { like ->
-						if (like.userLikerUId == mFirebaseAuth.currentUser?.uid || likedArray.contains(
-									post.documentName!!)) {
-							showLikedButton()
-						} else {
-							hideLikedButton()
-						}
+				post.likes?.forEach { like ->
+					if (like.userLikerUId == mFirebaseAuth.currentUser?.uid || likedArray.contains(
+								post.documentName!!)) {
+						showLikedButton()
+					} else {
+						hideLikedButton()
 					}
 				}
 			}
 		}
+
 
 		private fun hideLikedButton() {
 			applyAnimation()

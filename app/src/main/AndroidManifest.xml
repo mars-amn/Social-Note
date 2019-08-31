@@ -16,7 +16,9 @@
 			android:roundIcon="@mipmap/ic_launcher_round"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
-		<activity android:name=".ui.CommentActivity"></activity>
+		<activity
+				android:name=".ui.CommentActivity"
+				android:parentActivityName=".ui.FeedActivity"></activity>
 		<activity android:name=".ui.CreatePostActivity" />
 		<activity android:name=".ui.FeedActivity" />
 		<activity android:name=".ui.SettingsActivity" />

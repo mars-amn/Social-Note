@@ -10,22 +10,40 @@ import elamien.abdullah.socialnote.utils.NotificationsUtils
 class FMService : FirebaseMessagingService() {
 
 	override fun onMessageReceived(message : RemoteMessage) {
+		when (message.data["type"]) {
+			"COMMENT" -> notifyUserWithPostComment(message)
+			"LIKE" -> notifyUserWithPostLike(message)
+			else -> {
+				return
+			}
+		}
+	}
+
+	private fun notifyUserWithPostLike(message : RemoteMessage) {
+		val authorToken = message.data["authorToken"]
+		val userLikerToken = message.data["userLikerToken"]
+		if (authorToken == userLikerToken) {
+			return
+		}
+		val title = message.data["title"]
+		val documentId = message.data["documentId"]
+		notifyAuthor("", title!!, documentId!!, authorToken!!)
+	}
+
+	private fun notifyUserWithPostComment(message : RemoteMessage) {
+		val token = message.data["token"]
+		val commentAuthToken = message.data["commentAuthToken"]
+		if (commentAuthToken == token) {
+			return
+		}
 		val comment = message.data["comment"]
 		val title = message.data["title"]
 		val documentId = message.data["documentId"]
-		val token = message.data["token"]
-		val commentAuthToken = message.data["commentAuthToken"]
-
-		if (commentAuthToken == token) return // wouldn't be nice if the author of the post commented on his post, yet to receive a notification
-
-		notifyUserWithComment(comment!!, title!!, documentId!!, token!!)
+		notifyAuthor(comment!!, title!!, documentId!!, token!!)
 	}
 
-	private fun notifyUserWithComment(comment : String,
-									  title : String,
-									  documentId : String,
-									  token : String) {
+	private fun notifyAuthor(text : String, title : String, documentId : String, token : String) {
 		NotificationsUtils.getNotificationUtils()
-				.sendCommentNotification(applicationContext, comment, title, documentId, token)
+				.sendPostInteractNotification(applicationContext, text, title, documentId, token)
 	}
 }

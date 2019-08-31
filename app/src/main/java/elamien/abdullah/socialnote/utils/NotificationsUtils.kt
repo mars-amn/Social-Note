@@ -35,43 +35,45 @@ import java.util.*
 class NotificationsUtils {
 
 	/**
-	 * Notification upon user comment
+	 * Notification upon user like & text
 	 */
-	fun sendCommentNotification(context : Context,
-								comment : String,
-								title : String,
-								documentId : String,
-								token : String) {
+	fun sendPostInteractNotification(context : Context,
+									 text : String,
+									 title : String,
+									 documentId : String,
+									 token : String) {
 		val notificationId = Date().time
 
 		val notificationManager : NotificationManager =
 			context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			val channel = NotificationChannel("Post-Comments",
-					"Post Comments",
-					NotificationManager.IMPORTANCE_HIGH)
+			val channel =
+				NotificationChannel(context.getString(R.string.notification_post_channel_id),
+						context.getString(R.string.notification_social_posts_channel_name),
+						NotificationManager.IMPORTANCE_HIGH)
 			notificationManager.createNotificationChannel(channel)
 		}
-		val builder = getPostCommentNotificationBuilder(context,
+		val builder = getPostInteractNotificationBuilder(context,
 				notificationId.toInt(),
-				comment,
+				text,
 				title,
 				documentId,
 				token)
 		notificationManager.notify(notificationId.toInt(), builder.build())
 	}
 
-	private fun getPostCommentNotificationBuilder(context : Context,
-												  notificationId : Int,
-												  comment : String,
-												  title : String,
-												  documentId : String,
-												  token : String) : NotificationCompat.Builder {
+	private fun getPostInteractNotificationBuilder(context : Context,
+												   notificationId : Int,
+												   text : String,
+												   title : String,
+												   documentId : String,
+												   token : String) : NotificationCompat.Builder {
 
-		return NotificationCompat.Builder(context, "Post-Comments")
+		return NotificationCompat.Builder(context,
+				context.getString(R.string.notification_post_channel_id))
 				.setSmallIcon(R.drawable.ic_notification)
 				.setContentTitle(title)
-				.setContentText(comment)
+				.setContentText(text)
 				.setContentIntent(getPostContentPendingIntent(context,
 						notificationId,
 						documentId,
@@ -79,23 +81,26 @@ class NotificationsUtils {
 				.setPriority(NotificationCompat.PRIORITY_HIGH)
 				.setAutoCancel(true)
 				.addAction(getDismissPostNotificationAction(context, notificationId))
-				.addAction(getOpenPostCommentsAction(context, notificationId, documentId, token))
+				.addAction(getOpenPostNotificationAction(context,
+						notificationId,
+						documentId,
+						token))
 
 	}
 
-	private fun getOpenPostCommentsAction(context : Context,
-										  notificationId : Int,
-										  documentId : String,
-										  token : String) : NotificationCompat.Action? {
+	private fun getOpenPostNotificationAction(context : Context,
+											  notificationId : Int,
+											  documentId : String,
+											  token : String) : NotificationCompat.Action? {
 		return NotificationCompat.Action(R.drawable.ic_notification_open,
-				context.getString(R.string.note_notification_open_action_label),
-				getOpenPostCommentsIntent(context, notificationId, documentId, token))
+				context.getString(R.string.open_post_notification_action_label),
+				getOpenPostPendingIntent(context, notificationId, documentId, token))
 	}
 
-	private fun getOpenPostCommentsIntent(context : Context,
-										  notificationId : Int,
-										  documentId : String,
-										  token : String) : PendingIntent? {
+	private fun getOpenPostPendingIntent(context : Context,
+										 notificationId : Int,
+										 documentId : String,
+										 token : String) : PendingIntent? {
 		val openIntent = Intent(context, CommentActivity::class.java)
 		openIntent.putExtra(OPEN_FROM_NOTIFICATION_COMMENT, true)
 		openIntent.putExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, token)
