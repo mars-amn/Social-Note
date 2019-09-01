@@ -2,12 +2,15 @@ package elamien.abdullah.socialnote.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.text.Html
+import android.text.Spanned
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.text.HtmlCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
@@ -83,6 +86,8 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 		fun bind(post : Post) {
 			hideLikedButton()
 			mBinding.post = post
+			mBinding.listItemFeedBodyText.text = getPost(post.post!!)
+
 			if (likedArray.contains(post.documentName!!)) {
 				showLikedButton()
 			}
@@ -155,17 +160,24 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 		}
 
 		fun onSharePostClick(view : View) {
+			val post = mPostsFeed[adapterPosition]
+
 			ShareCompat.IntentBuilder.from(context as AppCompatActivity)
 					.setType("text/plain")
-					.setText(getShareText())
+					.setText("Checkout what ${post.authorName} posted on Social Note \n\n" + "${getPost(
+							post.post!!)}")
 					.setChooserTitle(context.getString(R.string.share_title))
 					.startChooser()
 		}
 
-		private fun getShareText() : String {
-			val post = mPostsFeed[adapterPosition]
-			return "Check out what ${post.authorName} posted on Social Note \n\n" + "${Html.fromHtml(
-					post.post)}"
+		@Suppress("DEPRECATION")
+		private fun getPost(body : String?) : Spanned {
+			return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+				HtmlCompat.fromHtml("$body ...", HtmlCompat.FROM_HTML_MODE_COMPACT)
+				//or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_DIV or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_LIST or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_HEADING or HtmlCompat.FROM_HTML_SEPARATOR_LINE_BREAK_BLOCKQUOTE or HtmlCompat.FROM_HTML_MODE_COMPACT)
+			} else {
+				Html.fromHtml(body)
+			}
 		}
 	}
 }

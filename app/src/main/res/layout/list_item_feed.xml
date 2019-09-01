@@ -4,7 +4,6 @@
 	
 	<data>
 		
-		<import type="android.text.Html" />
 		
 		<variable
 				name="post"
@@ -18,8 +17,8 @@
 	
 	<androidx.cardview.widget.CardView
 			android:id="@+id/listItemFeedPostParent"
-			android:layout_width="	match_parent"
-			android:layout_height="200dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
 			android:layout_margin="4dp"
 			app:cardCornerRadius="4dp"
 			app:cardElevation="1dp">
@@ -51,9 +50,9 @@
 			<TextView
 					android:id="@+id/listItemFeedBodyText"
 					android:layout_width="match_parent"
-					android:layout_height="0dp"
+					android:layout_height="wrap_content"
 					android:layout_margin="@dimen/post_body_margin"
-					android:text="@{Html.fromHtml(post.post)}"
+					app:autoSizeTextType="uniform"
 					app:layout_constraintBottom_toTopOf="@+id/socialInteractParent"
 					app:layout_constraintEnd_toEndOf="parent"
 					app:layout_constraintStart_toStartOf="parent"

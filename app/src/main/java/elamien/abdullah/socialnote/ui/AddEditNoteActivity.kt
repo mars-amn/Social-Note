@@ -61,7 +61,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_note)
 		mBinding.handlers = this
-		Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
+		initEditor()
 		if (intent != null && intent.hasExtra(Constants.NOTE_INTENT_KEY)) {
 			setupToolbar(label = getString(R.string.edit_note_toolbar_label))
 			initEditorWithNote(intent.getLongExtra(Constants.NOTE_INTENT_KEY, -1))
@@ -76,6 +76,12 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 		} else if (isOpenFromNotification()) {
 			dismissNoteTimeReminderNotification()
 		}
+	}
+
+	private fun initEditor() {
+		Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
+		mBinding.aztec.setCalypsoMode(false)
+		mBinding.source.setCalypsoMode(false)
 	}
 
 	private fun setupToolbar(label : String) {

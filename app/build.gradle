@@ -106,7 +106,7 @@ dependencies {
     /**
      * Rich Editor
      */
-    api('com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.28')
+    api('com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.30')
 
     /**
      * EventBus

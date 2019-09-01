@@ -28,9 +28,16 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
 		mBinding =
 			DataBindingUtil.setContentView(this@CreatePostActivity, R.layout.activity_create_post)
 		mBinding.handlers = this
-		Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
+		initTextEditor()
 		getRegisterToken()
 	}
+
+	private fun initTextEditor() {
+		Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
+		mBinding.aztec.setCalypsoMode(false)
+		mBinding.source.setCalypsoMode(false)
+	}
+
 
 	fun onCreatePostButtonClick(view : View) {
 		val body = mBinding.aztec.toFormattedHtml()
