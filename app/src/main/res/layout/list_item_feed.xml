@@ -38,13 +38,14 @@
 					app:layout_constraintTop_toTopOf="parent" />
 			
 			<TextView
+					android:id="@+id/listItemFeedDate"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_margin="@dimen/post_date_height"
 					android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-					android:textSize="18sp"
+					android:textSize="14sp"
 					app:layout_constraintBottom_toBottomOf="@id/listItemFeedAuthorImage"
-					app:layout_constraintLeft_toRightOf="@id/listItemFeedAuthorImage"
+					app:layout_constraintStart_toEndOf="@id/listItemFeedAuthorImage"
 					app:layout_constraintTop_toTopOf="@id/listItemFeedAuthorImage" />
 			
 			<TextView
@@ -71,9 +72,9 @@
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_gravity="center"
+						android:layout_margin="4dp"
 						android:gravity="center"
 						android:padding="2dp"
-						android:layout_margin="4dp"
 						android:text="12"
 						android:textSize="14sp" />
 				

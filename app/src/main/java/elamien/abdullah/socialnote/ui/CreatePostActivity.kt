@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import elamien.abdullah.socialnote.R
@@ -16,6 +17,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.wordpress.aztec.Aztec
 import org.wordpress.aztec.ITextFormat
 import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
+import java.util.*
 
 class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
 
@@ -45,7 +47,13 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
 		val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
 		val categoryName = ""
 		val authorName = mFirebaseAuth.currentUser?.displayName
-		val post = Post(mRegisterToken, body, authorName, categoryName, authorId, authorImage)
+		val post = Post(mRegisterToken,
+				body,
+				authorName,
+				categoryName,
+				authorId,
+				authorImage,
+				Timestamp(Date()))
 		mPostViewModel.createPost(post)
 		finish()
 	}

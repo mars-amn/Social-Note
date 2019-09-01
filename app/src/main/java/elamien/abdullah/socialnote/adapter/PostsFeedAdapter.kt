@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.text.Html
 import android.text.Spanned
+import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -89,7 +90,8 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 			hideLikedButton()
 			mBinding.post = post
 			mBinding.listItemFeedBodyText.text = getPost(post.post!!)
-
+			mBinding.listItemFeedDate.text =
+				DateUtils.getRelativeTimeSpanString(post.getDateCreated().time)
 			if (likedArray.contains(post.documentName!!)) {
 				showLikedButton()
 			}
