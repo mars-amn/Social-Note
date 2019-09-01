@@ -27,6 +27,8 @@ import elamien.abdullah.socialnote.ui.CommentActivity
 import elamien.abdullah.socialnote.utils.Constants
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import kotlin.math.ln
+import kotlin.math.pow
 
 
 /**
@@ -92,6 +94,7 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 				showLikedButton()
 			}
 			if (post.likes != null) {
+				setupLikesCounter(numberCalculation(post.likes!!.size))
 				post.likes?.forEach { like ->
 					if (like.userLikerUId == mFirebaseAuth.currentUser?.uid || likedArray.contains(
 								post.documentName!!)) {
@@ -100,7 +103,20 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 						hideLikedButton()
 					}
 				}
+			} else {
+				hideLikeCounter()
 			}
+		}
+
+		private fun hideLikeCounter() {
+			applyAnimation()
+			mBinding.listItemLikesCounter.text = "0"
+		}
+
+		private fun setupLikesCounter(count : String) {
+			mBinding.listItemLikesCounter.text = count
+			applyAnimation()
+			mBinding.listItemLikesCounter.visibility = View.VISIBLE
 		}
 
 
@@ -135,6 +151,11 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 		fun onLikeButtonClick(view : View) {
 			showLikedButton()
 			val post = mPostsFeed[adapterPosition]
+			if (post.likes != null) {
+				setupLikesCounter(numberCalculation(post.likes!!.size.plus(1)))
+			} else {
+				setupLikesCounter("1")
+			}
 			val like = Like(mFirebaseAuth.currentUser?.uid,
 
 					post.registerToken,
@@ -146,9 +167,21 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 			likedArray.add(post.documentName!!)
 		}
 
+		private fun numberCalculation(number : Int) : String {
+			if (number < 1000) return "" + number
+			val exp = (ln(number.toDouble()) / ln(1000.0)).toInt()
+			return String.format("%.1f %c", number / 1000.0.pow(exp.toDouble()), "kMGTPE"[exp - 1])
+		}
+
 		fun onUnLikeButtonClick(view : View) {
 			hideLikedButton()
 			val post = mPostsFeed[adapterPosition]
+			if (post.likes != null) {
+				setupLikesCounter(numberCalculation(mBinding.listItemLikesCounter.text.toString().toInt().minus(
+						1)))
+			} else {
+				hideLikeCounter()
+			}
 			val like = Like(mFirebaseAuth.currentUser?.uid,
 					post.registerToken,
 					mRegisterToken,

@@ -66,6 +66,17 @@
 					app:layout_constraintBottom_toBottomOf="parent"
 					app:layout_constraintStart_toStartOf="parent">
 				
+				<TextView
+						android:id="@+id/listItemLikesCounter"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_gravity="center"
+						android:gravity="center"
+						android:padding="2dp"
+						android:layout_margin="4dp"
+						android:text="12"
+						android:textSize="14sp" />
+				
 				<ImageButton
 						android:id="@+id/listItemFeedLikeButton"
 						android:layout_width="50dp"
