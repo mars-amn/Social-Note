@@ -19,7 +19,7 @@ import org.koin.android.ext.android.inject
 class SettingsFragment : PreferenceFragmentCompat(),
 	SharedPreferences.OnSharedPreferenceChangeListener {
 
-	val mFirebaseAuth : FirebaseAuth  by inject()
+	val mFirebaseAuth : FirebaseAuth by inject()
 	override fun onCreatePreferences(savedInstanceState : Bundle?, rootKey : String?) {
 		addPreferencesFromResource(R.xml.settings)
 		registerPreferenceListener()

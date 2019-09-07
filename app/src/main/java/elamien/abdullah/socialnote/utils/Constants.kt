@@ -8,6 +8,7 @@ class Constants {
 	companion object {
 
 
+		const val USER_OBJECT_INTENT_KEY = "elamien.abdullah.socialnote.user_intent_key"
 		/**
 		 * Intent & Notification Keys
 		 */
@@ -91,6 +92,7 @@ class Constants {
 			"elamien.abdullah.socialnote.open_from_notification"
 		const val DISMISS_POST_COMMENT_NOTIFICATION_ACTION =
 			"elamien.abdullah.socialnote.dismiss_post_comment_notification"
+		const val USER_LIKES_INTENT_KEY = "elamien.abdullah.socialnote.user_likes_intent_key"
 		const val FIRESTORE_POSTS_COLLECTION_NAME = "Posts"
 		const val FIRESTORE_POSTS_POST_BODY = "post"
 		const val FIRESTORE_POSTS_POST_AUTHOR_NAME = "authorName"
@@ -119,6 +121,13 @@ class Constants {
 		const val FIRESTORE_LIKES_NOTIFICATION_USER_NAME = "userName"
 		const val FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID = "documentId"
 		const val FIRESTORE_LIKES_NOTIFICATION_USER_ID = "userLikerUId"
+
+		const val FIRESTORE_USERS_COLLECTION_NAME = "Users"
+		const val FIRESTORE_USER_UID = "userUid"
+		const val FIRESTORE_USER_IMAGE_URL = "userImage"
+		const val FIRESTORE_USER_NAME = "userName"
+		const val FIRESTORE_USER_POSTS_COUNT = "userPostsCount"
+		const val FIRESTORE_USER_TITLE = "userTitle"
 	}
 
 }

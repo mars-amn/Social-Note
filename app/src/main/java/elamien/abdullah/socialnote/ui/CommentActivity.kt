@@ -1,9 +1,11 @@
 package elamien.abdullah.socialnote.ui
 
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -13,12 +15,14 @@ import com.google.firebase.iid.FirebaseInstanceId
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.CommentsAdapter
 import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
+import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.databinding.ActivityCommentBinding
 import elamien.abdullah.socialnote.receiver.NotificationReceiver
 import elamien.abdullah.socialnote.utils.Constants.Companion.DISMISS_POST_COMMENT_NOTIFICATION_ACTION
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POST_DOC_INTENT_KEY
 import elamien.abdullah.socialnote.utils.Constants.Companion.OPEN_FROM_NOTIFICATION_COMMENT
+import elamien.abdullah.socialnote.utils.Constants.Companion.USER_OBJECT_INTENT_KEY
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +35,7 @@ class CommentActivity : AppCompatActivity() {
 	private var mDocumentName : String? = null
 	private var mAuthorRegisterToken : String? = null
 	private lateinit var mAdapter : CommentsAdapter
+	private lateinit var mUser : User
 	private var mRegisterToken : String? = null
 
 
@@ -40,9 +45,11 @@ class CommentActivity : AppCompatActivity() {
 		mBinding.handlers = this
 
 		if (intent != null && intent.hasExtra(FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(
-					FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)) {
+					FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY) && intent.hasExtra(
+					USER_OBJECT_INTENT_KEY)) {
 			mDocumentName = intent.getStringExtra(FIRESTORE_POST_DOC_INTENT_KEY)
 			mAuthorRegisterToken = intent.getStringExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
+			mUser = intent.getParcelableExtra(USER_OBJECT_INTENT_KEY)!!
 			mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
 			mBinding.commentsRecyclerView.adapter = mAdapter
 			getRegisterToken()
@@ -84,6 +91,9 @@ class CommentActivity : AppCompatActivity() {
 		val commentBody = mBinding.commentInputEditText.text.toString()
 		if (commentBody == "") return
 
+		val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+		imm?.hideSoftInputFromWindow(view.windowToken, 0)
+
 		val authorName = mFirebaseAuth.currentUser?.displayName
 		val authorUId = mFirebaseAuth.currentUser?.uid.toString()
 		val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
@@ -95,7 +105,8 @@ class CommentActivity : AppCompatActivity() {
 				authorImage,
 				authorName,
 				authorUId,
-				Timestamp(Date()))
+				Timestamp(Date()),
+				mUser.userTitle)
 		mPostViewModel.createComment(mDocumentName!!, comment)
 		mBinding.commentInputEditText.setText("")
 	}

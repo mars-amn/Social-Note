@@ -18,7 +18,9 @@ import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PostsFeedAdapter
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
+import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.databinding.ActivityFeedBinding
+import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,6 +33,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 
 	private lateinit var mBinding : ActivityFeedBinding
 	private lateinit var mAdapter : PostsFeedAdapter
+	private lateinit var mUser : User
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)
 		mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
@@ -38,9 +41,17 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 		mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
 
 		loadPosts()
+		loadUser()
 		mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
 			transformations(CircleCropTransformation())
 		}
+	}
+
+	private fun loadUser() {
+		mPostViewModel.getUser()
+				.observe(this@FeedActivity, Observer { user ->
+					mUser = user
+				})
 	}
 
 	private fun loadPosts() {
@@ -72,17 +83,26 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 		startActivity(Intent(this@FeedActivity, CreatePostActivity::class.java))
 	}
 
-	fun hideLoadingView() {
+	private fun hideLoadingView() {
 		applyAnimation()
 		mBinding.loadingAnimationView.visibility = View.GONE
 		mBinding.feedRecyclerView.visibility = View.VISIBLE
 	}
 
+	override fun onCommentButtonClick(post : Post) {
+		val intent = Intent(this@FeedActivity, CommentActivity::class.java)
+		intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
+		intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
+		intent.putExtra(Constants.USER_OBJECT_INTENT_KEY, mUser)
+		startActivity(intent)
+	}
+
 	override fun onLikeButtonClick(like : Like) {
+		like.userTitle = mUser.userTitle!!
 		mPostViewModel.createLikeOnPost(like)
 	}
 
 	override fun onUnLikeButtonClick(like : Like) {
-		mPostViewModel.deleteRemoveLikeOfPost(like)
+		mPostViewModel.removeLikePost(like)
 	}
 }

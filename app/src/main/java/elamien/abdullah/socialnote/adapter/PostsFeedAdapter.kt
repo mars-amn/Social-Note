@@ -24,7 +24,7 @@ import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ListItemFeedBinding
-import elamien.abdullah.socialnote.ui.CommentActivity
+import elamien.abdullah.socialnote.ui.LikesActivity
 import elamien.abdullah.socialnote.utils.Constants
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -58,6 +58,7 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 	interface LikeClickListener {
 		fun onLikeButtonClick(like : Like)
 		fun onUnLikeButtonClick(like : Like)
+		fun onCommentButtonClick(post : Post)
 	}
 
 	private var mRegisterToken : String? = null
@@ -144,10 +145,7 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 
 		fun onCommentButtonClick(view : View) {
 			val post = mPostsFeed[adapterPosition]
-			val intent = Intent(context, CommentActivity::class.java)
-			intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
-			intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
-			context.startActivity(intent)
+			listener.onCommentButtonClick(post)
 		}
 
 		fun onLikeButtonClick(view : View) {
@@ -213,6 +211,13 @@ class PostsFeedAdapter(private val listener : LikeClickListener,
 			} else {
 				Html.fromHtml(body)
 			}
+		}
+
+		fun onLikesCounterClick(view : View) {
+			val post = mPostsFeed[adapterPosition]
+			val intent = Intent(context, LikesActivity::class.java)
+			intent.putExtra(Constants.USER_LIKES_INTENT_KEY, post.likes)
+			context.startActivity(intent)
 		}
 	}
 }

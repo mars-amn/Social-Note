@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
+import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.repository.PostRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -36,7 +37,11 @@ class PostViewModel : ViewModel(), KoinComponent {
 		mPostRepository.createLikeOnPost(like)
 	}
 
-	fun deleteRemoveLikeOfPost(like : Like) {
+	fun removeLikePost(like : Like) { // aka Unlike
 		mPostRepository.removeLike(like)
+	}
+
+	fun getUser() : LiveData<User> {
+		return mPostRepository.getUser()
 	}
 }

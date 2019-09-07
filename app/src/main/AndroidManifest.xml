@@ -16,9 +16,10 @@
 			android:roundIcon="@mipmap/ic_launcher_round"
 			android:supportsRtl="true"
 			android:theme="@style/AppTheme">
+		<activity android:name=".ui.LikesActivity"></activity>
 		<activity
 				android:name=".ui.CommentActivity"
-				android:parentActivityName=".ui.FeedActivity"></activity>
+				android:parentActivityName=".ui.FeedActivity" />
 		<activity android:name=".ui.CreatePostActivity" />
 		<activity android:name=".ui.FeedActivity" />
 		<activity android:name=".ui.SettingsActivity" />
@@ -85,7 +86,6 @@
 				android:name=".services.SyncingService"
 				android:exported="false"
 				android:permission="android.permission.BIND_JOB_SERVICE" />
-		
 		<service
 				android:name=".services.FMService"
 				android:exported="false">
@@ -93,7 +93,6 @@
 				<action android:name="com.google.firebase.MESSAGING_EVENT" />
 			</intent-filter>
 		</service>
-	
 	</application>
 
 </manifest>

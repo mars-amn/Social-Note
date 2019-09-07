@@ -39,6 +39,9 @@ android {
             jvmTarget = "1.8"
         }
     }
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {

@@ -1,16 +1,19 @@
 package elamien.abdullah.socialnote.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ActivityCreatePostBinding
+import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -55,7 +58,20 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
 				authorImage,
 				Timestamp(Date()))
 		mPostViewModel.createPost(post)
+		updateUserTitle()
 		finish()
+	}
+
+	private fun updateUserTitle() {
+		mPostViewModel.getUser()
+				.observe(this@CreatePostActivity, Observer { user ->
+					val editor = getSharedPreferences(Constants.USER_OBJECT_INTENT_KEY,
+							Context.MODE_PRIVATE).edit()
+					editor.putString(Constants.FIRESTORE_USER_TITLE, user.userTitle)
+					editor.putInt(Constants.FIRESTORE_USER_POSTS_COUNT, user.userPostsCount!!)
+					editor.apply()
+				})
+
 	}
 
 	private fun getRegisterToken() {

@@ -17,7 +17,8 @@ data class Comment(var commentAuthorToken : String? = null,
 				   var authorImage : String? = null,
 				   var authorName : String? = null,
 				   var authorUId : String? = null,
-				   private var dateCreated : Timestamp? = null) {
+				   private var dateCreated : Timestamp? = null,
+				   var authorTitle : String? = null) {
 
 	fun getDateCreated() : Date {
 		return dateCreated!!.toDate()

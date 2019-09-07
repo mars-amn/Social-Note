@@ -2,6 +2,7 @@ package elamien.abdullah.socialnote.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -9,6 +10,8 @@ import com.google.firebase.firestore.SetOptions
 import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
+import elamien.abdullah.socialnote.database.remote.firestore.models.User
+import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN
@@ -35,6 +38,9 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POS
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_DOC_NAME
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_LIKES
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_REGISTER_TOKEN
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_USERS_COLLECTION_NAME
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_USER_POSTS_COUNT
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_USER_TITLE
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.*
@@ -48,6 +54,19 @@ class PostRepository : IPostRepository, KoinComponent {
 
 
 	private val mFirestore : FirebaseFirestore by inject()
+	private val mAuth : FirebaseAuth by inject()
+	override fun getUser() : LiveData<User> {
+		val user = MutableLiveData<User>()
+		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+				.document(mAuth.currentUser?.uid!!)
+				.get()
+				.addOnCompleteListener { document ->
+					if (document.isSuccessful) {
+						user.value = document.result?.toObject(User::class.java)
+					}
+				}
+		return user
+	}
 
 	override fun removeLike(like : Like) {
 		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
@@ -113,11 +132,53 @@ class PostRepository : IPostRepository, KoinComponent {
 	override fun createNewPost(post : Post) {
 		val documentName = "${post.authorUId}${Date().time}"
 		post.documentName = documentName
-		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-				.document(documentName)
-				.set(getMappedPost(post), SetOptions.merge())
-				.addOnCompleteListener { }
-				.addOnFailureListener {}
+		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+				.document(mAuth.currentUser?.uid!!)
+				.get()
+				.addOnCompleteListener { document ->
+					if (document.isSuccessful) {
+						val user = document.result?.toObject(User::class.java)
+						user?.userPostsCount = user?.userPostsCount!!.plus(1)
+						var title = "Reader"
+						if (user.userPostsCount!! >= 20) {
+							title = "Author"
+						}
+						post.userTitle = title
+						user.userTitle = title
+
+						mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+								.document(documentName)
+								.set(getMappedPost(post), SetOptions.merge())
+								.addOnCompleteListener {
+									updateUser(user)
+								}
+								.addOnFailureListener {}
+					}
+				}
+
+
+	}
+
+	private fun updateUser(user : User?) {
+		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+				.document(user?.userUid!!)
+				.update(getMappedUser(user = user))
+	}
+
+	private fun getMappedUser(user : User) : HashMap<String, Any> {
+		val userMap = HashMap<String, Any>()
+		userMap[Constants.FIRESTORE_USER_UID] = user.userUid!!
+		userMap[Constants.FIRESTORE_USER_IMAGE_URL] = user.userImage!!
+		userMap[Constants.FIRESTORE_USER_NAME] = user.userName!!
+		userMap[FIRESTORE_USER_TITLE] = user.userTitle!!
+		userMap[FIRESTORE_USER_POSTS_COUNT] = user.userPostsCount!!
+		return userMap
+	}
+
+	private fun decreaseUserPostsCount(authorUId : String?) {
+		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+				.document(authorUId!!)
+				.update(FIRESTORE_USER_POSTS_COUNT, FieldValue.increment(-1))
 	}
 
 	private fun getMappedPost(post : Post) : HashMap<String, Any> {
@@ -130,6 +191,7 @@ class PostRepository : IPostRepository, KoinComponent {
 		postMap[FIRESTORE_POSTS_POST_DATE_CREATED] = Date()
 		postMap[FIRESTORE_POSTS_POST_DOC_NAME] = post.documentName!!
 		postMap[FIRESTORE_POSTS_POST_REGISTER_TOKEN] = post.registerToken!!
+		postMap[FIRESTORE_USER_TITLE] = post.userTitle!!
 
 		return postMap
 	}

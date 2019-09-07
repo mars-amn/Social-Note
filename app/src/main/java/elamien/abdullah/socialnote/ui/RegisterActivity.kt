@@ -29,7 +29,7 @@ class RegisterActivity : AppCompatActivity() {
 	private lateinit var mBinding : ActivityRegisterBinding
 	private var mGoogleSignInClient : GoogleSignInClient? = null
 	private val mViewModel : AuthenticationViewModel by inject()
-	val mFirebaseAuth : FirebaseAuth  by inject()
+	val mFirebaseAuth : FirebaseAuth by inject()
 
 	override fun onCreate(savedInstanceState : Bundle?) {
 		super.onCreate(savedInstanceState)

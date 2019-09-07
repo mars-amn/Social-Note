@@ -16,11 +16,11 @@ data class Post(var registerToken : String? = null,
 				var categoryName : String? = null,
 				var authorUId : String? = null,
 				var authorImage : String? = null,
-				private var dateCreated : Timestamp? = null) {
+				private var dateCreated : Timestamp? = null,
+				var userTitle : String? = null) {
 
 	var likes : ArrayList<Like>? = null
 	var comments : List<Comment>? = null
-	//	private var dateCreated : Timestamp? = null
 	var documentName : String? = null
 
 	fun getDateCreated() : Date {
