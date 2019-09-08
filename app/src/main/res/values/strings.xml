@@ -63,4 +63,6 @@
     <string name="share_title">Share Post</string>
     <string name="reader_title">Reader</string>
     <string name="author_title">Author</string>
+    <string name="empty_note_state_label">Your note list is empty, Press the create button to add your first note</string>
+    <string name="type_comment_hint">Type your comment ..</string>
 </resources>

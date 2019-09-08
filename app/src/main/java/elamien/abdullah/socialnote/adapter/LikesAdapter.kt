@@ -36,6 +36,24 @@ class LikesAdapter(private val context: Context, private val mLikes: List<Like>)
 
         fun bind(like: Like) {
             mBinding.like = like
+            setUserTitle(like)
+        }
+
+        private fun setUserTitle(like: Like) {
+            when (like.userTitle) {
+                "Author" -> showAuthorTitle()
+                "Reader" -> showReaderTitle()
+            }
+        }
+
+        private fun showReaderTitle() {
+            mBinding.listItemUserAuthorTitle.visibility = View.GONE
+            mBinding.listItemUserReaderTitle.visibility = View.VISIBLE
+        }
+
+        private fun showAuthorTitle() {
+            mBinding.listItemUserAuthorTitle.visibility = View.VISIBLE
+            mBinding.listItemUserReaderTitle.visibility = View.GONE
         }
 
         fun onLikeUserImageClick(view: View) {

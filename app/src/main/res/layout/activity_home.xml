@@ -86,7 +86,7 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:paddingTop="12dp"
-                        android:text="Your note list is empty"
+                        android:text="@string/empty_note_state_label"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
                     <com.airbnb.lottie.LottieAnimationView
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
-                android:layout_margin="16dp"
+                android:layout_margin="@dimen/add_note_fab_margin"
                 android:onClick="@{handlers::onNewNoteFabClick}"
                 app:backgroundTint="@color/secondaryColor"
                 app:srcCompat="@drawable/ic_author"

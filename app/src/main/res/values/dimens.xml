@@ -36,4 +36,27 @@
     <dimen name="list_item_comment_author_name_margin_start">8dp</dimen>
     <dimen name="list_item_comment_author_body_margin_top">4dp</dimen>
     <dimen name="list_item_comment_author_body_padding">8dp</dimen>
+    <dimen name="list_item_post_like_user_image_width">50dp</dimen>
+    <dimen name="list_item_post_like_user_image_height">50dp</dimen>
+    <dimen name="list_item_post_like_user_image_margin">8dp</dimen>
+    <dimen name="list_item_post_like_user_name_margin">8dp</dimen>
+    <dimen name="list_item_post_like_user_name_text_size">14sp</dimen>
+    <dimen name="list_item_post_like_user_title_margin">8dp</dimen>
+    <dimen name="list_item_feed_parent_margin">4dp</dimen>
+    <dimen name="list_item_feed_parent_corner_radius">4dp</dimen>
+    <dimen name="list_item_feed_parent_elevation">1dp</dimen>
+    <dimen name="list_item_feed_like_counter_margin">4dp</dimen>
+    <dimen name="list_item_feed_like_counter_padding">2dp</dimen>
+    <dimen name="list_item_feed_like_counter_text_size">14sp</dimen>
+    <dimen name="list_item_feed_social_interact_button_width">50dp</dimen>
+    <dimen name="list_item_feed_social_interact_button_height">50dp</dimen>
+    <dimen name="list_item_feed_social_interact_button_margin">4dp</dimen>
+    <dimen name="list_item_feed_user_name_margin">4dp</dimen>
+    <dimen name="list_item_feed_user_name_text_size">14sp</dimen>
+    <dimen name="list_item_feed_user_title_margin">16dp</dimen>
+    <dimen name="add_note_fab_margin">16dp</dimen>
+    <dimen name="feed_recyclerview_margin_top">8dp</dimen>
+    <dimen name="comment_input_parent_margin_start">8dp</dimen>
+    <dimen name="comment_input_parent_margin_bottom">8dp</dimen>
+    <dimen name="comment_input_padding">4dp</dimen>
 </resources>

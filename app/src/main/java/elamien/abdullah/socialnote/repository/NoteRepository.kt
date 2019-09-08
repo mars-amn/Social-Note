@@ -62,18 +62,19 @@ class NoteRepository : INoteRepository, KoinComponent {
 
     override fun insertNote(note: Note): LiveData<Long> {
         val id = MutableLiveData<Long>()
-        mDisposables.add(mNotesDao.insertNote(note).subscribeOn(Schedulers.io()).observeOn(
-            AndroidSchedulers.mainThread()
-        ).subscribeWith(object :
-            DisposableSingleObserver<Long>() {
-            override fun onSuccess(t: Long) {
-                id.value = t
-            }
+        mDisposables.add(
+            mNotesDao.insertNote(note).subscribeOn(Schedulers.io()).observeOn(
+                AndroidSchedulers.mainThread()
+            ).subscribeWith(object :
+                DisposableSingleObserver<Long>() {
+                override fun onSuccess(t: Long) {
+                    id.value = t
+                }
 
-            override fun onError(e: Throwable) {
-            }
+                override fun onError(e: Throwable) {
+                }
 
-        })
+            })
         )
         return id
     }

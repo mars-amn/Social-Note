@@ -20,9 +20,9 @@
 
         <ImageView
             android:id="@+id/listItemUserLikesImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="8dp"
+            android:layout_width="@dimen/list_item_post_like_user_image_width"
+            android:layout_height="@dimen/list_item_post_like_user_image_height"
+            android:layout_margin="@dimen/list_item_post_like_user_image_margin"
             android:onClick="@{handlers::onLikeUserImageClick}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,19 +34,39 @@
             android:id="@+id/listItemUserLikeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/list_item_post_like_user_name_margin"
             android:text="@{like.userName}"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="@dimen/list_item_post_like_user_name_text_size"
             app:layout_constraintStart_toEndOf="@+id/listItemUserLikesImage"
             app:layout_constraintTop_toTopOf="@+id/listItemUserLikesImage" />
 
         <!-- a feature under study process-->
+
         <TextView
-            android:id="@+id/listItemUserLikesTitle"
-            android:layout_width="wrap_content"
+            android:id="@+id/listItemUserReaderTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@{like.userTitle}"
+            android:layout_margin="@dimen/list_item_post_like_user_title_margin"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="@string/reader_title"
+            android:textColor="@color/reader_title_color"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/listItemUserLikesImage"
+            app:layout_constraintStart_toEndOf="@+id/listItemUserLikesImage"
+            app:layout_constraintTop_toBottomOf="@+id/listItemUserLikeName" />
+
+        <TextView
+            android:id="@+id/listItemUserAuthorTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/list_item_post_like_user_title_margin"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="@string/author_title"
+            android:textColor="@color/author_title_color"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/listItemUserLikesImage"
             app:layout_constraintStart_toEndOf="@+id/listItemUserLikesImage"
             app:layout_constraintTop_toBottomOf="@+id/listItemUserLikeName" />
