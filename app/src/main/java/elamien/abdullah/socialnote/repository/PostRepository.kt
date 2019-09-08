@@ -12,6 +12,7 @@ import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.utils.Constants
+import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN
@@ -41,6 +42,7 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POS
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_USERS_COLLECTION_NAME
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_USER_POSTS_COUNT
 import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_USER_TITLE
+import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import java.util.*
@@ -152,9 +154,9 @@ class PostRepository : IPostRepository, KoinComponent {
                 if (document.isSuccessful) {
                     val user = document.result?.toObject(User::class.java)
                     user?.userPostsCount = user?.userPostsCount!!.plus(1)
-                    var title = "Reader"
+                    var title = READER_TITLE
                     if (user.userPostsCount!! >= 20) {
-                        title = "Author"
+                        title = AUTHOR_TITLE
                     }
                     post.userTitle = title
                     user.userTitle = title

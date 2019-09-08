@@ -26,6 +26,8 @@ import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ListItemFeedBinding
 import elamien.abdullah.socialnote.ui.LikesActivity
 import elamien.abdullah.socialnote.utils.Constants
+import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import kotlin.math.ln
@@ -118,8 +120,8 @@ class PostsFeedAdapter(
 
         private fun setUserTitle(post: Post) {
             when (post.userTitle) {
-                context.getString(R.string.reader_title) -> showReaderTitle()
-                context.getString(R.string.author_title) -> showAuthorTitle()
+                READER_TITLE -> showReaderTitle()
+                AUTHOR_TITLE -> showAuthorTitle()
             }
         }
 

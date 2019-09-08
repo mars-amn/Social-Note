@@ -128,6 +128,14 @@ class Constants {
         const val FIRESTORE_USER_NAME = "userName"
         const val FIRESTORE_USER_POSTS_COUNT = "userPostsCount"
         const val FIRESTORE_USER_TITLE = "userTitle"
+
+        /**
+         * Title related constants
+         */
+
+        const val AUTHOR_TITLE = "Author"
+        const val READER_TITLE = "Reader"
+
     }
 
 }

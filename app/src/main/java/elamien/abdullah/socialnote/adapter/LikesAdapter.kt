@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.databinding.ListItemUserLikesBinding
+import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 
 /**
  * Created by AbdullahAtta on 06-Sep-19.
@@ -41,8 +43,8 @@ class LikesAdapter(private val context: Context, private val mLikes: List<Like>)
 
         private fun setUserTitle(like: Like) {
             when (like.userTitle) {
-                "Author" -> showAuthorTitle()
-                "Reader" -> showReaderTitle()
+                AUTHOR_TITLE -> showAuthorTitle()
+                READER_TITLE -> showReaderTitle()
             }
         }
 
