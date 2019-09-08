@@ -11,11 +11,12 @@ import elamien.abdullah.socialnote.database.remote.firestore.models.User
  */
 interface IPostRepository {
 
-	fun createNewPost(post : Post)
-	fun getPostsFeed() : LiveData<List<Post>>
-	fun createComment(documentName : String, comment : Comment)
-	fun getCommentsFeed(documentName : String) : LiveData<List<Comment>>
-	fun createLikeOnPost(like : Like)
-	fun removeLike(like : Like)
-	fun getUser() : LiveData<User>
+    fun createNewPost(post: Post)
+    fun getPostsFeed(): LiveData<List<Post>>
+    fun createComment(documentName: String, comment: Comment)
+    fun getCommentsFeed(documentName: String): LiveData<List<Comment>>
+    fun createLikeOnPost(like: Like)
+    fun removeLike(like: Like)
+    fun getUser(): LiveData<User>
+    fun loadPost(documentName: String?): LiveData<Post>
 }

@@ -11,35 +11,35 @@ import elamien.abdullah.socialnote.databinding.ListItemUserLikesBinding
 /**
  * Created by AbdullahAtta on 06-Sep-19.
  */
-class LikesAdapter(private val context : Context, private val mLikes : List<Like>) :
-	RecyclerView.Adapter<LikesAdapter.LikesViewHolder>() {
+class LikesAdapter(private val context: Context, private val mLikes: List<Like>) :
+    RecyclerView.Adapter<LikesAdapter.LikesViewHolder>() {
 
-	override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : LikesViewHolder {
-		val inflater = LayoutInflater.from(context)
-		val binding = ListItemUserLikesBinding.inflate(inflater, parent, false)
-		return LikesViewHolder(binding)
-	}
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikesViewHolder {
+        val inflater = LayoutInflater.from(context)
+        val binding = ListItemUserLikesBinding.inflate(inflater, parent, false)
+        return LikesViewHolder(binding)
+    }
 
-	override fun onBindViewHolder(holder : LikesViewHolder, position : Int) {
-		holder.bind(mLikes[position])
-	}
+    override fun onBindViewHolder(holder: LikesViewHolder, position: Int) {
+        holder.bind(mLikes[position])
+    }
 
-	override fun getItemCount() : Int = mLikes.size
+    override fun getItemCount(): Int = mLikes.size
 
 
-	inner class LikesViewHolder(private val mBinding : ListItemUserLikesBinding) :
-		RecyclerView.ViewHolder(mBinding.root) {
+    inner class LikesViewHolder(private val mBinding: ListItemUserLikesBinding) :
+        RecyclerView.ViewHolder(mBinding.root) {
 
-		init {
-			mBinding.handlers = this
-		}
+        init {
+            mBinding.handlers = this
+        }
 
-		fun bind(like : Like) {
-			mBinding.like = like
-		}
+        fun bind(like: Like) {
+            mBinding.like = like
+        }
 
-		fun onLikeUserImageClick(view : View) {
-			//open user profile
-		}
-	}
+        fun onLikeUserImageClick(view: View) {
+            //open user profile
+        }
+    }
 }

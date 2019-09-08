@@ -9,13 +9,13 @@ import elamien.abdullah.socialnote.database.local.notes.Note
  */
 interface INoteRepository {
 
-	fun insertNote(note : Note) : LiveData<Long>
-	fun dispose()
-	fun loadPagedNotes() : LiveData<PagedList<Note>>
-	fun getNote(noteId : Long) : LiveData<Note>
-	fun updateNote(note : Note)
-	fun deleteNote(note : Note)
-	fun searchForNote(query : String) : LiveData<PagedList<Note>>
-	fun deleteAllRows()
-	fun getAllNoteGeofences() : List<Note>
+    fun insertNote(note: Note): LiveData<Long>
+    fun dispose()
+    fun loadPagedNotes(): LiveData<PagedList<Note>>
+    fun getNote(noteId: Long): LiveData<Note>
+    fun updateNote(note: Note)
+    fun deleteNote(note: Note)
+    fun searchForNote(query: String): LiveData<PagedList<Note>>
+    fun deleteAllRows()
+    fun getAllNoteGeofences(): List<Note>
 }

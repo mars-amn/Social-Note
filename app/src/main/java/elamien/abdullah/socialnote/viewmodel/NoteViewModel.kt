@@ -13,34 +13,34 @@ import org.koin.core.inject
  */
 class NoteViewModel : ViewModel(), KoinComponent {
 
-	private val mNoteRepository : NoteRepository by inject()
-	fun insertNewNote(note : Note) : LiveData<Long> {
-		return mNoteRepository.insertNote(note)
-	}
+    private val mNoteRepository: NoteRepository by inject()
+    fun insertNewNote(note: Note): LiveData<Long> {
+        return mNoteRepository.insertNote(note)
+    }
 
-	fun loadPagedNotes() : LiveData<PagedList<Note>> {
-		return mNoteRepository.loadPagedNotes()
-	}
+    fun loadPagedNotes(): LiveData<PagedList<Note>> {
+        return mNoteRepository.loadPagedNotes()
+    }
 
-	fun getNote(noteId : Long) : LiveData<Note> {
-		return mNoteRepository.getNote(noteId)
-	}
+    fun getNote(noteId: Long): LiveData<Note> {
+        return mNoteRepository.getNote(noteId)
+    }
 
-	fun updateNote(note : Note) {
-		mNoteRepository.updateNote(note)
-	}
+    fun updateNote(note: Note) {
+        mNoteRepository.updateNote(note)
+    }
 
-	fun deleteNote(note : Note?) {
-		mNoteRepository.deleteNote(note!!)
-	}
+    fun deleteNote(note: Note?) {
+        mNoteRepository.deleteNote(note!!)
+    }
 
-	fun searchForNote(query : String) : LiveData<PagedList<Note>> {
-		return mNoteRepository.searchForNote(query)
-	}
+    fun searchForNote(query: String): LiveData<PagedList<Note>> {
+        return mNoteRepository.searchForNote(query)
+    }
 
-	override fun onCleared() {
-		super.onCleared()
-		mNoteRepository.dispose()
-	}
+    override fun onCleared() {
+        super.onCleared()
+        mNoteRepository.dispose()
+    }
 
 }

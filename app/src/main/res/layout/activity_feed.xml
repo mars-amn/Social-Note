@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools">
-	
-	<data>
-		
-		<variable
-				name="handlers"
-				type="elamien.abdullah.socialnote.ui.FeedActivity" />
-	</data>
-	
-	<androidx.constraintlayout.widget.ConstraintLayout
-			android:id="@+id/postsFeedParent"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			tools:context=".ui.FeedActivity">
-		
-		<ImageView
-				android:id="@+id/userImageView"
-				android:layout_width="@dimen/author_image_width"
-				android:layout_height="@dimen/author_image_height"
-				android:layout_margin="4dp"
-				android:onClick="@{handlers::onPostClick}"
-				app:layout_constraintBottom_toBottomOf="@+id/postButton"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="@id/postButton" />
-		
-		<com.google.android.material.textview.MaterialTextView
-				android:id="@+id/postButton"
-				style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:background="?attr/selectableItemBackgroundBorderless"
-				android:clickable="true"
-				android:focusable="true"
-				android:onClick="@{handlers::onPostClick}"
-				android:text="@string/create_post_label"
-				android:textAllCaps="false"
-				app:layout_constraintStart_toEndOf="@id/userImageView"
-				app:layout_constraintTop_toTopOf="parent" />
-		
-		<com.airbnb.lottie.LottieAnimationView
-				android:id="@+id/loadingAnimationView"
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:visibility="visible"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@id/postButton"
-				app:lottie_autoPlay="true"
-				app:lottie_loop="true"
-				app:lottie_rawRes="@raw/posts_loading" />
-		
-		<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/feedRecyclerView"
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layout_marginTop="8dp"
-				android:background="@color/gray_background_color"
-				android:layoutAnimation="@anim/layout_anim_from_bottom"
-				android:orientation="vertical"
-				android:visibility="gone"
-				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toBottomOf="@+id/postButton"
-				tools:listitem="@layout/list_item_feed" />
-	</androidx.constraintlayout.widget.ConstraintLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.ui.FeedActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/postsFeedParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.FeedActivity">
+
+        <ImageView
+            android:id="@+id/userImageView"
+            android:layout_width="@dimen/author_image_width"
+            android:layout_height="@dimen/author_image_height"
+            android:layout_margin="4dp"
+            android:onClick="@{handlers::onPostClick}"
+            app:layout_constraintBottom_toBottomOf="@+id/postButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/postButton" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/postButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{handlers::onPostClick}"
+            android:text="@string/create_post_label"
+            android:textAllCaps="false"
+            app:layout_constraintStart_toEndOf="@id/userImageView"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loadingAnimationView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/postButton"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/posts_loading" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feedRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/gray_background_color"
+            android:layoutAnimation="@anim/layout_anim_from_bottom"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/postButton"
+            tools:listitem="@layout/list_item_feed" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

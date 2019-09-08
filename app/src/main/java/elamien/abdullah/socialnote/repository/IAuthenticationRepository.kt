@@ -8,5 +8,5 @@ import com.google.android.gms.tasks.Task
  */
 interface IAuthenticationRepository {
 
-	fun registerGoogleUser(task : Task<GoogleSignInAccount>)
+    fun registerGoogleUser(task: Task<GoogleSignInAccount>)
 }

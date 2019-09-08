@@ -1,166 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto">
-	
-	<data>
-		
-		
-		<variable
-				name="post"
-				type="elamien.abdullah.socialnote.database.remote.firestore.models.Post" />
-		
-		<variable
-				name="handlers"
-				type="elamien.abdullah.socialnote.adapter.PostsFeedAdapter.PostsFeedViewHolder" />
-	
-	</data>
-	
-	<androidx.cardview.widget.CardView
-			android:id="@+id/listItemFeedPostParent"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_margin="4dp"
-			app:cardCornerRadius="4dp"
-			app:cardElevation="1dp">
-		
-		<androidx.constraintlayout.widget.ConstraintLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
-			
-			
-			<ImageView
-					android:id="@+id/listItemFeedAuthorImage"
-					android:layout_width="@dimen/post_image_width"
-					android:layout_height="@dimen/post_image_height"
-					android:layout_margin="@dimen/post_image_margin"
-					app:authorPostImageUrl="@{post.authorImage}"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent" />
-			
-			<TextView
-					android:id="@+id/listItemFeedDate"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_margin="@dimen/post_date_height"
-					android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-					android:textSize="14sp"
-					app:layout_constraintBottom_toBottomOf="@id/listItemFeedAuthorImage"
-					app:layout_constraintStart_toEndOf="@id/listItemFeedAuthorImage"
-					app:layout_constraintTop_toTopOf="@id/listItemFeedAuthorImage" />
-			
-			<TextView
-					android:id="@+id/listItemFeedBodyText"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_margin="@dimen/post_body_margin"
-					app:autoSizeTextType="uniform"
-					app:layout_constraintBottom_toTopOf="@+id/socialInteractParent"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />
-			
-			<LinearLayout
-					android:id="@+id/socialInteractParent"
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:orientation="horizontal"
-					app:layout_constraintBottom_toBottomOf="parent"
-					app:layout_constraintStart_toStartOf="parent">
-				
-				<TextView
-						android:id="@+id/listItemLikesCounter"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:gravity="center"
-						android:onClick="@{handlers::onLikesCounterClick}"
-						android:padding="2dp"
-						android:text="12"
-						android:textSize="14sp" />
-				
-				<ImageButton
-						android:id="@+id/listItemFeedLikeButton"
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:background="?attr/selectableItemBackgroundBorderless"
-						android:clickable="true"
-						android:focusable="true"
-						android:gravity="center"
-						android:onClick="@{handlers::onLikeButtonClick}"
-						app:srcCompat="@drawable/ic_like_normal" />
-				
-				<ImageButton
-						android:id="@+id/listItemFeedUnLikeButton"
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:background="?attr/selectableItemBackgroundBorderless"
-						android:clickable="true"
-						android:focusable="true"
-						android:gravity="center"
-						android:onClick="@{handlers::onUnLikeButtonClick}"
-						android:visibility="gone"
-						app:srcCompat="@drawable/ic_like_state" />
-				
-				<ImageButton
-						android:id="@+id/listItemFeedCommentButton"
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:background="?attr/selectableItemBackgroundBorderless"
-						android:clickable="true"
-						android:focusable="true"
-						android:onClick="@{handlers::onCommentButtonClick}"
-						app:srcCompat="@drawable/ic_comment" />
-				
-				<Space
-						android:layout_width="0dp"
-						android:layout_height="0dp"
-						android:layout_weight="1" />
-				
-				
-				<ImageButton
-						android:id="@+id/listItemFeedSharePostButton"
-						android:layout_width="50dp"
-						android:layout_height="50dp"
-						android:layout_gravity="center"
-						android:layout_margin="4dp"
-						android:background="?attr/selectableItemBackgroundBorderless"
-						android:clickable="true"
-						android:focusable="true"
-						android:onClick="@{handlers::onSharePostClick}"
-						app:srcCompat="@drawable/ic_share_post" />
-			</LinearLayout>
-			
-			<TextView
-					android:id="@+id/listItemFeedAuthorName"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_margin="4dp"
-					android:text="@{post.authorName}"
-					android:textAppearance="@style/TextAppearance.AppCompat.Title"
-					android:textSize="16sp"
-					app:layout_constraintBottom_toTopOf="@+id/listItemFeedDate"
-					app:layout_constraintStart_toStartOf="@+id/listItemFeedDate"
-					app:layout_constraintTop_toTopOf="@+id/listItemFeedAuthorImage" />
-			
-			<com.google.android.material.chip.Chip
-					android:id="@+id/listItemFeedUserTitle"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:layout_margin="8dp"
-					app:chipBackgroundColor="@drawable/title_chip_background"
-					app:chipStrokeColor="@color/primaryDarkColor"
-					app:chipStrokeWidth="0.5dp"
-					app:layout_constraintBottom_toBottomOf="@id/listItemFeedDate"
-					app:layout_constraintStart_toEndOf="@+id/listItemFeedAuthorName"
-					app:layout_constraintTop_toTopOf="@id/listItemFeedAuthorName" />
-		</androidx.constraintlayout.widget.ConstraintLayout>
-	
-	</androidx.cardview.widget.CardView>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+
+        <variable
+            name="post"
+            type="elamien.abdullah.socialnote.database.remote.firestore.models.Post" />
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.adapter.PostsFeedAdapter.PostsFeedViewHolder" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/listItemFeedPostParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <ImageView
+                android:id="@+id/listItemFeedAuthorImage"
+                android:layout_width="@dimen/post_image_width"
+                android:layout_height="@dimen/post_image_height"
+                android:layout_margin="@dimen/post_image_margin"
+                app:authorPostImageUrl="@{post.authorImage}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/listItemFeedDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/post_date_height"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@id/listItemFeedAuthorImage"
+                app:layout_constraintStart_toEndOf="@id/listItemFeedAuthorImage"
+                app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorName" />
+
+            <TextView
+                android:id="@+id/listItemFeedBodyText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/post_body_margin"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@+id/socialInteractParent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />
+
+            <LinearLayout
+                android:id="@+id/socialInteractParent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <TextView
+                    android:id="@+id/listItemLikesCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:gravity="center"
+                    android:onClick="@{handlers::onLikesCounterClick}"
+                    android:padding="2dp"
+                    android:text="12"
+                    android:textSize="14sp" />
+
+                <ImageButton
+                    android:id="@+id/listItemFeedLikeButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:onClick="@{handlers::onLikeButtonClick}"
+                    app:srcCompat="@drawable/ic_like_normal" />
+
+                <ImageButton
+                    android:id="@+id/listItemFeedUnLikeButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:onClick="@{handlers::onUnLikeButtonClick}"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_like_state" />
+
+                <ImageButton
+                    android:id="@+id/listItemFeedCommentButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{handlers::onCommentButtonClick}"
+                    app:srcCompat="@drawable/ic_comment" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+
+                <ImageButton
+                    android:id="@+id/listItemFeedSharePostButton"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="4dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:onClick="@{handlers::onSharePostClick}"
+                    app:srcCompat="@drawable/ic_share_post" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/listItemFeedAuthorName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:gravity="center"
+                android:text="@{post.authorName}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toTopOf="@+id/listItemFeedDate"
+                app:layout_constraintStart_toEndOf="@+id/listItemFeedAuthorImage"
+                app:layout_constraintTop_toTopOf="@+id/listItemFeedAuthorImage" />
+
+            <TextView
+                android:id="@+id/listItemFeedUserAuthorTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/author_title"
+                android:textColor="@color/author_title_color"
+                android:visibility="gone"
+                app:layout_constraintBaseline_toBaselineOf="@id/listItemFeedAuthorName"
+                app:layout_constraintBottom_toBottomOf="@id/listItemFeedAuthorName"
+                app:layout_constraintStart_toEndOf="@+id/listItemFeedAuthorName"
+                app:layout_constraintTop_toTopOf="@id/listItemFeedAuthorName" />
+
+            <TextView
+                android:id="@+id/listItemFeedUserReaderTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center"
+                android:text="@string/reader_title"
+                android:textColor="@color/reader_title_color"
+                android:visibility="gone"
+                app:layout_constraintBaseline_toBaselineOf="@id/listItemFeedAuthorName"
+                app:layout_constraintBottom_toBottomOf="@id/listItemFeedAuthorName"
+                app:layout_constraintStart_toEndOf="@+id/listItemFeedAuthorName"
+                app:layout_constraintTop_toTopOf="@id/listItemFeedAuthorName" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
 </layout>

@@ -8,12 +8,12 @@ import elamien.abdullah.socialnote.database.local.notes.Note
  */
 class NotesDiffCallback : DiffUtil.ItemCallback<Note>() {
 
-	override fun areItemsTheSame(oldItem : Note, newItem : Note) : Boolean {
-		return oldItem.id == newItem.id
-	}
+    override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
+        return oldItem.id == newItem.id
+    }
 
-	override fun areContentsTheSame(oldItem : Note, newItem : Note) : Boolean {
-		return oldItem == newItem
-	}
+    override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
+        return oldItem == newItem
+    }
 
 }

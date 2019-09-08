@@ -1,38 +1,30 @@
 <!--?xml version="1.0" encoding="UTF-8"?-->
 <resources>
-	<color name="colorPrimary">#ba68c8</color>
-	<color name="colorPrimaryDark">#883997</color>
-	<color name="colorAccent">#E13237</color>
-	
-	<color name="primaryColor">#e91e63</color>
-	<color name="primaryLightColor">#ff6090</color>
-	<color name="primaryDarkColor">#b0003a</color>
-	<color name="secondaryColor">#c51162</color>
-	<color name="secondaryLightColor">#fd558f</color>
-	<color name="secondaryDarkColor">#8e0038</color>
-	<color name="primaryTextColor">#000000</color>
-	<color name="secondaryTextColor">#ffffff</color>
-	<color name="stated_color">#faca7a</color>
-	<color name="text_color_hint">#bdbdbd</color>
-	<color name="text_title_color">#000</color>
-	<color name="network_state_text_color">#455a64</color>
-	<color name="normal_like_state_color">#808080</color>
-	<color name="liked_state_color">@color/colorAccent</color>
-	<!-- recycler view-->
-	<array name="recyclerViewBackgroundColors">
-		<item>@color/recyclerViewColor</item>
-		<item>@color/recyclerViewColor02</item>
-		<item>@color/recyclerViewColor03</item>
-		<item>@color/recyclerViewColor04</item>
-	</array>
-	<color name="recyclerViewColor">#F87BB4</color>
-	<color name="recyclerViewColor02">#90C6F8</color>
-	<color name="recyclerViewColor03">#F8F884</color>
-	<color name="recyclerViewColor04">#77F5F8</color>
-	
-	<color name="circle_map_color">#66ba68c8</color>
-	<color name="circle_stroke_color">#66E13237</color>
-	<color name="request_permission_dialog_ok_button_color">#388e3c</color>
-	<color name="request_permission_dialog_cancel_button_color">#c62828</color>
-	<color name="gray_background_color">#F1F1F6</color>
+    <color name="colorPrimary">#ba68c8</color>
+    <color name="colorPrimaryDark">#883997</color>
+    <color name="colorAccent">#E13237</color>
+
+    <color name="primaryColor">#e91e63</color>
+    <color name="primaryDarkColor">#b0003a</color>
+    <color name="secondaryColor">#c51162</color>
+    <color name="text_color_hint">#bdbdbd</color>
+    <color name="text_title_color">#000</color>
+    <color name="network_state_text_color">#455a64</color>
+    <color name="reader_title_color">#24394E</color>
+    <color name="author_title_color">#488FEC</color>
+    <!-- recycler view-->
+    <array name="recyclerViewBackgroundColors">
+        <item>@color/recyclerViewColor</item>
+        <item>@color/recyclerViewColor02</item>
+        <item>@color/recyclerViewColor03</item>
+        <item>@color/recyclerViewColor04</item>
+    </array>
+    <color name="recyclerViewColor">#F87BB4</color>
+    <color name="recyclerViewColor02">#90C6F8</color>
+    <color name="recyclerViewColor03">#F8F884</color>
+    <color name="recyclerViewColor04">#77F5F8</color>
+
+    <color name="circle_map_color">#66ba68c8</color>
+    <color name="circle_stroke_color">#66E13237</color>
+    <color name="gray_background_color">#F1F1F6</color>
 </resources>

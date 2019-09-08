@@ -1,106 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-	
-	<data>
-		
-		<variable
-				name="comment"
-				type="elamien.abdullah.socialnote.database.remote.firestore.models.Comment" />
-	</data>
-	
-	<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			xmlns:app="http://schemas.android.com/apk/res-auto"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-		
-		<androidx.cardview.widget.CardView
-				android:id="@+id/imageCardViewParent"
-				android:layout_width="0dp"
-				android:layout_height="@dimen/image_card_view_parent_height"
-				android:layout_margin="@dimen/image_card_view_parent_margin"
-				android:orientation="vertical"
-				app:cardCornerRadius="@dimen/image_card_view_parent_radius"
-				app:cardElevation="0dp"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toStartOf="@id/guideline"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent">
-			
-			<ImageView
-					android:id="@+id/listItemCommentRightImage"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:scaleType="centerCrop"
-					android:src="@color/gray_background_color" />
-		</androidx.cardview.widget.CardView>
-		
-		<androidx.cardview.widget.CardView
-				android:id="@+id/commentCardViewParent"
-				android:layout_width="@dimen/comment_card_view_parent_width"
-				android:layout_height="@dimen/comment_card_view_parent_height"
-				android:layout_margin="@dimen/comment_card_view_parent_margin"
-				android:background="@color/gray_background_color"
-				android:orientation="vertical"
-				app:cardCornerRadius="@dimen/comment_card_view_parent_radius"
-				app:cardElevation="@dimen/comment_card_view_parent_elevation"
-				app:layout_constraintBottom_toBottomOf="@+id/imageCardViewParent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintTop_toTopOf="@+id/imageCardViewParent">
-			
-			<androidx.constraintlayout.widget.ConstraintLayout
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical">
-				
-				<ImageView
-						android:id="@+id/listItemCommentAuthorImage"
-						android:layout_width="@dimen/comment_image_width"
-						android:layout_height="@dimen/comment_image_height"
-						android:layout_margin="@dimen/comment_image_margin"
-						app:authorCommentImageUrl="@{comment.authorImage}"
-						app:layout_constraintStart_toStartOf="parent"
-						app:layout_constraintTop_toTopOf="parent" />
-				
-				<TextView
-						android:id="@+id/listItemCommentDate"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_marginStart="@dimen/list_item_comment_date_margin_start"
-						app:layout_constraintStart_toEndOf="@id/listItemCommentAuthorImage"
-						app:layout_constraintTop_toTopOf="@id/listItemCommentAuthorImage" />
-				
-				<TextView
-						android:id="@+id/listItemCommentAuthorName"
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:layout_marginStart="@dimen/list_item_comment_author_name_margin_start"
-						android:text="@{comment.authorName}"
-						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorImage"
-						app:layout_constraintStart_toEndOf="@id/listItemCommentAuthorImage"
-						app:layout_constraintTop_toBottomOf="@id/listItemCommentDate" />
-				
-				<TextView
-						android:id="@+id/listItemCommentBody"
-						android:layout_width="0dp"
-						android:layout_height="0dp"
-						android:layout_marginTop="@dimen/list_item_comment_author_body_margin_top"
-						android:padding="@dimen/list_item_comment_author_body_padding"
-						android:text="@{comment.comment}"
-						android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-						app:layout_constraintBottom_toBottomOf="parent"
-						app:layout_constraintEnd_toEndOf="parent"
-						app:layout_constraintStart_toStartOf="parent"
-						app:layout_constraintTop_toBottomOf="@id/listItemCommentAuthorImage" />
-			</androidx.constraintlayout.widget.ConstraintLayout>
-		</androidx.cardview.widget.CardView>
-		
-		<androidx.constraintlayout.widget.Guideline
-				android:id="@+id/guideline"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:orientation="vertical"
-				app:layout_constraintGuide_percent="0.63" />
-	</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <data>
+
+        <variable
+            name="comment"
+            type="elamien.abdullah.socialnote.database.remote.firestore.models.Comment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/imageCardViewParent"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/image_card_view_parent_height"
+            android:layout_margin="@dimen/image_card_view_parent_margin"
+            android:orientation="vertical"
+            app:cardCornerRadius="@dimen/image_card_view_parent_radius"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/listItemCommentRightImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@color/gray_background_color" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/commentCardViewParent"
+            android:layout_width="@dimen/comment_card_view_parent_width"
+            android:layout_height="@dimen/comment_card_view_parent_height"
+            android:layout_margin="@dimen/comment_card_view_parent_margin"
+            android:background="@color/gray_background_color"
+            android:orientation="vertical"
+            app:cardCornerRadius="@dimen/comment_card_view_parent_radius"
+            app:cardElevation="@dimen/comment_card_view_parent_elevation"
+            app:layout_constraintBottom_toBottomOf="@+id/imageCardViewParent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageCardViewParent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/listItemCommentAuthorImage"
+                    android:layout_width="@dimen/comment_image_width"
+                    android:layout_height="@dimen/comment_image_height"
+                    android:layout_margin="@dimen/comment_image_margin"
+                    app:authorCommentImageUrl="@{comment.authorImage}"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/listItemCommentDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/list_item_comment_date_margin_start"
+                    app:layout_constraintStart_toEndOf="@id/listItemCommentAuthorImage"
+                    app:layout_constraintTop_toTopOf="@id/listItemCommentAuthorImage" />
+
+                <TextView
+                    android:id="@+id/listItemCommentAuthorName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/list_item_comment_author_name_margin_start"
+                    android:text="@{comment.authorName}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorImage"
+                    app:layout_constraintStart_toEndOf="@id/listItemCommentAuthorImage"
+                    app:layout_constraintTop_toBottomOf="@id/listItemCommentDate" />
+
+                <TextView
+                    android:id="@+id/listItemCommentBody"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/list_item_comment_author_body_margin_top"
+                    android:padding="@dimen/list_item_comment_author_body_padding"
+                    android:text="@{comment.comment}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/listItemCommentAuthorImage" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.63" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

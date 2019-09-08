@@ -9,41 +9,41 @@ import elamien.abdullah.socialnote.utils.NotificationsUtils
  */
 class FMService : FirebaseMessagingService() {
 
-	override fun onMessageReceived(message : RemoteMessage) {
-		when (message.data["type"]) {
-			"COMMENT" -> notifyUserWithPostComment(message)
-			"LIKE" -> notifyUserWithPostLike(message)
-			else -> {
-				return
-			}
-		}
-	}
+    override fun onMessageReceived(message: RemoteMessage) {
+        when (message.data["type"]) {
+            "COMMENT" -> notifyUserWithPostComment(message)
+            "LIKE" -> notifyUserWithPostLike(message)
+            else -> {
+                return
+            }
+        }
+    }
 
-	private fun notifyUserWithPostLike(message : RemoteMessage) {
-		val authorToken = message.data["authorToken"]
-		val userLikerToken = message.data["userLikerToken"]
-		if (authorToken == userLikerToken) {
-			return
-		}
-		val title = message.data["title"]
-		val documentId = message.data["documentId"]
-		notifyAuthor("", title!!, documentId!!, authorToken!!)
-	}
+    private fun notifyUserWithPostLike(message: RemoteMessage) {
+        val authorToken = message.data["authorToken"]
+        val userLikerToken = message.data["userLikerToken"]
+        if (authorToken == userLikerToken) {
+            return
+        }
+        val title = message.data["title"]
+        val documentId = message.data["documentId"]
+        notifyAuthor("", title!!, documentId!!, authorToken!!)
+    }
 
-	private fun notifyUserWithPostComment(message : RemoteMessage) {
-		val token = message.data["token"]
-		val commentAuthToken = message.data["commentAuthToken"]
-		if (commentAuthToken == token) {
-			return
-		}
-		val comment = message.data["comment"]
-		val title = message.data["title"]
-		val documentId = message.data["documentId"]
-		notifyAuthor(comment!!, title!!, documentId!!, token!!)
-	}
+    private fun notifyUserWithPostComment(message: RemoteMessage) {
+        val token = message.data["token"]
+        val commentAuthToken = message.data["commentAuthToken"]
+        if (commentAuthToken == token) {
+            return
+        }
+        val comment = message.data["comment"]
+        val title = message.data["title"]
+        val documentId = message.data["documentId"]
+        notifyAuthor(comment!!, title!!, documentId!!, token!!)
+    }
 
-	private fun notifyAuthor(text : String, title : String, documentId : String, token : String) {
-		NotificationsUtils.getNotificationUtils()
-				.sendPostInteractNotification(applicationContext, text, title, documentId, token)
-	}
+    private fun notifyAuthor(text: String, title: String, documentId: String, token: String) {
+        NotificationsUtils.getNotificationUtils()
+            .sendPostInteractNotification(applicationContext, text, title, documentId, token)
+    }
 }

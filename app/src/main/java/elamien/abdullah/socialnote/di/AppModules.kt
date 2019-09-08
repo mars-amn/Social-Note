@@ -18,25 +18,25 @@ import org.koin.dsl.module
  * Created by AbdullahAtta on 7/23/2019.
  */
 val appModules = module {
-	single {
-		Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db")
-				.build()
-	}
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db")
+            .build()
+    }
 
-	single { get<AppDatabase>().notesDao() }
+    single { get<AppDatabase>().notesDao() }
 }
 val repositoriesModules = module {
-	single { NoteRepository() }
-	single { AuthenticationRepository() }
-	single { PostRepository() }
+    single { NoteRepository() }
+    single { AuthenticationRepository() }
+    single { PostRepository() }
 }
 val viewModelsModules = module {
-	viewModel { NoteViewModel() }
-	viewModel { AuthenticationViewModel() }
-	viewModel { PostViewModel() }
+    viewModel { NoteViewModel() }
+    viewModel { AuthenticationViewModel() }
+    viewModel { PostViewModel() }
 }
 
 val firebaseModules = module {
-	single { FirebaseAuth.getInstance() }
-	single { FirebaseFirestore.getInstance() }
+    single { FirebaseAuth.getInstance() }
+    single { FirebaseFirestore.getInstance() }
 }

@@ -1,69 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res-auto"
-		xmlns:tools="http://schemas.android.com/tools">
-	
-	<data>
-		
-		<variable
-				name="handlers"
-				type="elamien.abdullah.socialnote.ui.CommentActivity" />
-	</data>
-	
-	<androidx.constraintlayout.widget.ConstraintLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			tools:context=".ui.CommentActivity">
-		
-		<LinearLayout
-				android:id="@+id/commentInputParent"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_marginStart="8dp"
-				android:layout_marginBottom="8dp"
-				android:focusableInTouchMode="true"
-				android:orientation="horizontal"
-				app:layout_constraintBottom_toBottomOf="parent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent">
-			
-			<com.google.android.material.textfield.TextInputEditText
-					android:id="@+id/commentInputEditText"
-					android:layout_width="0dp"
-					android:layout_height="@dimen/comment_author_input_height"
-					android:layout_weight="3"
-					android:background="@drawable/comment_input_background"
-					android:hint="Type your comment .."
-					android:padding="4dp"
-					app:layout_constraintEnd_toStartOf="@+id/commentSubmitButton"
-					app:layout_constraintStart_toStartOf="parent"
-					app:layout_constraintTop_toTopOf="parent" />
-			
-			<com.google.android.material.floatingactionbutton.FloatingActionButton
-					android:id="@+id/commentSubmitButton"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:onClick="@{handlers::onSubmitButtonClick}"
-					android:text="@string/comment_submit_button_label"
-					app:backgroundTint="@color/colorPrimaryDark"
-					app:fabSize="mini"
-					app:layout_constraintEnd_toEndOf="parent"
-					app:layout_constraintTop_toTopOf="parent"
-					app:srcCompat="@drawable/ic_send"
-					app:tint="#fff" />
-		</LinearLayout>
-		
-		<androidx.recyclerview.widget.RecyclerView
-				android:id="@+id/commentsRecyclerView"
-				android:layout_width="match_parent"
-				android:layout_height="0dp"
-				android:layoutAnimation="@anim/layout_anim_from_bottom"
-				android:orientation="vertical"
-				app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-				app:layout_constraintBottom_toTopOf="@id/commentInputParent"
-				app:layout_constraintEnd_toEndOf="parent"
-				app:layout_constraintStart_toStartOf="parent"
-				app:layout_constraintTop_toTopOf="parent"
-				tools:listitem="@layout/list_item_comment_right" />
-	</androidx.constraintlayout.widget.ConstraintLayout>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.ui.CommentActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.CommentActivity">
+
+        <LinearLayout
+            android:id="@+id/commentInputParent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/commentInputEditText"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/comment_author_input_height"
+                android:layout_weight="3"
+                android:background="@drawable/comment_input_background"
+                android:hint="Type your comment .."
+                android:padding="4dp"
+                app:layout_constraintEnd_toStartOf="@+id/commentSubmitButton"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/commentSubmitButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{handlers::onSubmitButtonClick}"
+                android:text="@string/comment_submit_button_label"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:fabSize="mini"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_send"
+                app:tint="#fff" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/commentsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layoutAnimation="@anim/layout_anim_from_bottom"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/commentInputParent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/list_item_comment_right" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

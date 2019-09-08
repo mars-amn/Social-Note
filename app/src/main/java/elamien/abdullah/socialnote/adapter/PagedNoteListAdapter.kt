@@ -21,78 +21,80 @@ import kotlin.collections.ArrayList
 /**
  * Created by AbdullahAtta on 7/23/2019.
  */
-class PagedNoteListAdapter(private val listener : LongClickListener,
-						   private val context : Context) :
-	PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
+class PagedNoteListAdapter(
+    private val listener: LongClickListener,
+    private val context: Context
+) :
+    PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
 
-	val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors)
-			.toCollection(ArrayList())
+    val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors)
+        .toCollection(ArrayList())
 
-	override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : NotesViewHolder {
-		val inflater = LayoutInflater.from(context)
-		val binding = ListItemNotesBinding.inflate(inflater, parent, false)
-		return NotesViewHolder(binding)
-	}
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
+        val inflater = LayoutInflater.from(context)
+        val binding = ListItemNotesBinding.inflate(inflater, parent, false)
+        return NotesViewHolder(binding)
+    }
 
-	override fun onBindViewHolder(holder : NotesViewHolder, position : Int) {
-		holder.bind(getItem(position))
-	}
+    override fun onBindViewHolder(holder: NotesViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
 
-	var previousRandomColor = 0
-	var colorBeforePrevious = 1
+    var previousRandomColor = 0
+    var colorBeforePrevious = 1
 
-	inner class NotesViewHolder(var mBinding : ListItemNotesBinding) :
-		RecyclerView.ViewHolder(mBinding.root) {
+    inner class NotesViewHolder(var mBinding: ListItemNotesBinding) :
+        RecyclerView.ViewHolder(mBinding.root) {
 
-		init {
-			mBinding.handlers = this
-		}
+        init {
+            mBinding.handlers = this
+        }
 
-		fun bind(note : Note?) {
-			mBinding.note = note
-			setNoteBackground()
-		}
+        fun bind(note: Note?) {
+            mBinding.note = note
+            setNoteBackground()
+        }
 
-		private fun setNoteBackground() {
-			var newRandomColor : Int
-			do {
-				newRandomColor = getRandomColor()
-			} while (newRandomColor == previousRandomColor || newRandomColor == colorBeforePrevious)
-			mBinding.listItemNoteParent.setBackgroundColor(newRandomColor)
-			colorBeforePrevious = previousRandomColor
-			previousRandomColor = newRandomColor
-		}
+        private fun setNoteBackground() {
+            var newRandomColor: Int
+            do {
+                newRandomColor = getRandomColor()
+            } while (newRandomColor == previousRandomColor || newRandomColor == colorBeforePrevious)
+            mBinding.listItemNoteParent.setBackgroundColor(newRandomColor)
+            colorBeforePrevious = previousRandomColor
+            previousRandomColor = newRandomColor
+        }
 
-		private fun getRandomColor() = backgroundColors[Random().nextInt(backgroundColors.size)]
+        private fun getRandomColor() = backgroundColors[Random().nextInt(backgroundColors.size)]
 
 
-		fun onNoteLongClick(view : View) : Boolean {
-			MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.delete_note_dialog_title))
-					.setMessage(context.getString(R.string.delete_note_dialog_message))
-					.setPositiveButton(context.getString(R.string.delete_note_dialog_positive_button_label)) { dialog, _ ->
-						deleteNote()
-						dialog.dismiss()
-					}
-					.setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
-						dialog.dismiss()
-					}
-					.show()
+        fun onNoteLongClick(view: View): Boolean {
+            MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.delete_note_dialog_title))
+                .setMessage(context.getString(R.string.delete_note_dialog_message))
+                .setPositiveButton(context.getString(R.string.delete_note_dialog_positive_button_label)) { dialog, _ ->
+                    deleteNote()
+                    dialog.dismiss()
+                }
+                .setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
 
-			return true
-		}
+            return true
+        }
 
-		private fun deleteNote() {
-			listener.onLongClickListener(getItem(adapterPosition)!!)
-		}
+        private fun deleteNote() {
+            listener.onLongClickListener(getItem(adapterPosition)!!)
+        }
 
-		fun onNoteClick(view : View) {
-			val noteIntent = Intent(context, AddEditNoteActivity::class.java)
-			noteIntent.putExtra(Constants.NOTE_INTENT_KEY, getItem(adapterPosition)?.id)
-			context.startActivity(noteIntent)
-		}
-	}
+        fun onNoteClick(view: View) {
+            val noteIntent = Intent(context, AddEditNoteActivity::class.java)
+            noteIntent.putExtra(Constants.NOTE_INTENT_KEY, getItem(adapterPosition)?.id)
+            context.startActivity(noteIntent)
+        }
+    }
 
-	interface LongClickListener {
-		fun onLongClickListener(note : Note)
-	}
+    interface LongClickListener {
+        fun onLongClickListener(note: Note)
+    }
 }

@@ -5,129 +5,129 @@ package elamien.abdullah.socialnote.utils
  */
 class Constants {
 
-	companion object {
+    companion object {
 
 
-		const val USER_OBJECT_INTENT_KEY = "elamien.abdullah.socialnote.user_intent_key"
-		/**
-		 * Intent & Notification Keys
-		 */
-		const val NOTE_NOTIFICATION_TEXT_INTENT_KEY =
-			"elamien.abdullah.socialnote.note_notification_body_intent_key"
-		const val ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN =
-			"elamien.abdullah.socialnote.notification_open_activity"
-		const val NOTE_TIME_REMINDER_ACTION =
-			"elamien.abdullah.socialnote.open_note_notification_action"
-		const val DISMISS_NOTE_TIME_REMINDER_NOTIFICATION =
-			"elamien.abdullah.socialnote.dimiss_notification"
-		const val NOTE_INTENT_KEY = "elamien.abdullah.socialnote.note_intent_key"
-		const val NOTE_INTENT_ID = "elamien.abdullah.socialnote.note_intent_id_key"
+        const val USER_OBJECT_INTENT_KEY = "elamien.abdullah.socialnote.user_intent_key"
+        /**
+         * Intent & Notification Keys
+         */
+        const val NOTE_NOTIFICATION_TEXT_INTENT_KEY =
+            "elamien.abdullah.socialnote.note_notification_body_intent_key"
+        const val ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN =
+            "elamien.abdullah.socialnote.notification_open_activity"
+        const val NOTE_TIME_REMINDER_ACTION =
+            "elamien.abdullah.socialnote.open_note_notification_action"
+        const val DISMISS_NOTE_TIME_REMINDER_NOTIFICATION =
+            "elamien.abdullah.socialnote.dimiss_notification"
+        const val NOTE_INTENT_KEY = "elamien.abdullah.socialnote.note_intent_key"
+        const val NOTE_INTENT_ID = "elamien.abdullah.socialnote.note_intent_id_key"
 
 
-		/**
-		 * EventBust
-		 */
-		const val AUTH_EVENT_FAIL = "elamien.abdullah.socialnote.auth_fail"
-		const val AUTH_EVENT_SUCCESS = "elamien.abdullah.socialnote.auth_success"
+        /**
+         * EventBust
+         */
+        const val AUTH_EVENT_FAIL = "elamien.abdullah.socialnote.auth_fail"
+        const val AUTH_EVENT_SUCCESS = "elamien.abdullah.socialnote.auth_success"
 
-		/**
-		 * Geofence related constants
-		 */
-		const val ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN =
-			"elamien.abdullah.socialnote.geofence_notification_open_activity"
-		const val DISMISS_NOTE_GEOFENCE_NOTIFICATION =
-			"elamien.abdullah.socialnote.dimiss_geofence_notification"
-		const val NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY =
-			"elamien.abdullah.socialnote.note_geofence_latlng_intent_key"
-		const val NOTE_GEOFENCE_REMINDER_ACTION = "elamien.abdullah.socialnote.note_geofence_action"
-		const val NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY =
-			"elamien.abdullah.socialnote.note_geofence_id"
-		const val GEOFENCE_REMINDER_RADIUS = 300.0f
-		const val GEOFENCE_REMINDER_MAP_RADIUS = GEOFENCE_REMINDER_RADIUS.toDouble()
-		const val GEOFENCE_EXPIRE_DATE = 2160000000L // 25 days
+        /**
+         * Geofence related constants
+         */
+        const val ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN =
+            "elamien.abdullah.socialnote.geofence_notification_open_activity"
+        const val DISMISS_NOTE_GEOFENCE_NOTIFICATION =
+            "elamien.abdullah.socialnote.dimiss_geofence_notification"
+        const val NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY =
+            "elamien.abdullah.socialnote.note_geofence_latlng_intent_key"
+        const val NOTE_GEOFENCE_REMINDER_ACTION = "elamien.abdullah.socialnote.note_geofence_action"
+        const val NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY =
+            "elamien.abdullah.socialnote.note_geofence_id"
+        const val GEOFENCE_REMINDER_RADIUS = 300.0f
+        const val GEOFENCE_REMINDER_MAP_RADIUS = GEOFENCE_REMINDER_RADIUS.toDouble()
+        const val GEOFENCE_EXPIRE_DATE = 2160000000L // 25 days
 
-		/**
-		 * Geofence & Time reminder JobIntentService related constants
-		 */
-		const val RE_ADD_GEOFNECES_INTENT_ACTION = "elamien.abdullah.socialnote.re_add_geofences"
-		const val GEOFENCE_RETRIEVER_INTENT_JOB_ID = 3
-		const val RE_ADD_TIME_REMINDER_INTENT_ACTION =
-			"elamien.abdullah.socialnote.re_add_time_reminders"
-		const val TIME_REMINDER_INTENT_JOB_ID = 10
+        /**
+         * Geofence & Time reminder JobIntentService related constants
+         */
+        const val RE_ADD_GEOFNECES_INTENT_ACTION = "elamien.abdullah.socialnote.re_add_geofences"
+        const val GEOFENCE_RETRIEVER_INTENT_JOB_ID = 3
+        const val RE_ADD_TIME_REMINDER_INTENT_ACTION =
+            "elamien.abdullah.socialnote.re_add_time_reminders"
+        const val TIME_REMINDER_INTENT_JOB_ID = 10
 
-		/**
-		 * Sync related constants
-		 */
-		const val SYNC_UPDATE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_update_note"
-		const val SYNC_ALL_NOTES_INTENT_ACTION = "elamien.abdullah.socialnote.sync_all_notes"
-		const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION =
-			"elamien.abdullah.socialnote.sync_notes_need_update"
-		const val SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION =
-			"elamien.abdullah.socialnote.get_notes_remote_populate_room"
-		const val SYNC_NEW_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_new_note"
-		const val SYNC_DELETE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_delete_note"
-		const val SYNC_NOTE_ID_INTENT_KEY = "elamien.abdullah.socialnote.sync_note_id_intent_key"
-		const val SYNC_NOTE_SERVICE_JOB_ID = 8
-		/**
-		 * Firebase syncing related constants
-		 */
-		const val FIRESTORE_SYNCED_NOTES_COLLECTION_NAME = "SocialNote"
-		const val FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME = "SyncedNotes"
-		const val FIRESTORE_SYNCED_NOTE_ID = "noteId"
-		const val FIRESTORE_SYNCED_NOTE_BODY = "noteBody"
-		const val FIRESTORE_SYNCED_NOTE_TITLE = "noteTitle"
-		const val FIRESTORE_SYNCED_NOTE_DATE_CREATED = "dateCreated"
-		const val FIRESTORE_SYNCED_NOTE_DATE_MODIFIED = "dateModified"
-		const val FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER = "geofenceLocation"
-		const val FIRESTORE_SYNCED_NOTE_TIME_REMINDER = "timeReminder"
-		const val FIRESTORE_SYNCED_NOTE_IS_SYNCED = "isSynced"
-		/**
-		 * Firebase post related constants
-		 */
-		const val FIRESTORE_POST_DOC_INTENT_KEY =
-			"elamien.abdullah.socialnote.post_document_name_key"
-		const val FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY =
-			"elamien.abdullah.socialnote.post_author_register_key"
-		const val OPEN_FROM_NOTIFICATION_COMMENT =
-			"elamien.abdullah.socialnote.open_from_notification"
-		const val DISMISS_POST_COMMENT_NOTIFICATION_ACTION =
-			"elamien.abdullah.socialnote.dismiss_post_comment_notification"
-		const val USER_LIKES_INTENT_KEY = "elamien.abdullah.socialnote.user_likes_intent_key"
-		const val FIRESTORE_POSTS_COLLECTION_NAME = "Posts"
-		const val FIRESTORE_POSTS_POST_BODY = "post"
-		const val FIRESTORE_POSTS_POST_AUTHOR_NAME = "authorName"
-		const val FIRESTORE_POSTS_POST_CATEGORY_NAME = "categoryName"
-		const val FIRESTORE_POSTS_POST_AUTHOR_ID = "authorUID"
-		const val FIRESTORE_POSTS_POST_AUTHOR_IMAGE = "authorImage"
-		const val FIRESTORE_POSTS_POST_DATE_CREATED = "dateCreated"
-		const val FIRESTORE_POSTS_POST_LIKES = "likes"
-		const val FIRESTORE_POSTS_POST_COMMENTS = "comments"
-		const val FIRESTORE_POSTS_POST_REGISTER_TOKEN = "registerToken"
-		const val FIRESTORE_POSTS_POST_DOC_NAME = "documentName"
+        /**
+         * Sync related constants
+         */
+        const val SYNC_UPDATE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_update_note"
+        const val SYNC_ALL_NOTES_INTENT_ACTION = "elamien.abdullah.socialnote.sync_all_notes"
+        const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION =
+            "elamien.abdullah.socialnote.sync_notes_need_update"
+        const val SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION =
+            "elamien.abdullah.socialnote.get_notes_remote_populate_room"
+        const val SYNC_NEW_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_new_note"
+        const val SYNC_DELETE_NOTE_INTENT_ACTION = "elamien.abdullah.socialnote.sync_delete_note"
+        const val SYNC_NOTE_ID_INTENT_KEY = "elamien.abdullah.socialnote.sync_note_id_intent_key"
+        const val SYNC_NOTE_SERVICE_JOB_ID = 8
+        /**
+         * Firebase syncing related constants
+         */
+        const val FIRESTORE_SYNCED_NOTES_COLLECTION_NAME = "SocialNote"
+        const val FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME = "SyncedNotes"
+        const val FIRESTORE_SYNCED_NOTE_ID = "noteId"
+        const val FIRESTORE_SYNCED_NOTE_BODY = "noteBody"
+        const val FIRESTORE_SYNCED_NOTE_TITLE = "noteTitle"
+        const val FIRESTORE_SYNCED_NOTE_DATE_CREATED = "dateCreated"
+        const val FIRESTORE_SYNCED_NOTE_DATE_MODIFIED = "dateModified"
+        const val FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER = "geofenceLocation"
+        const val FIRESTORE_SYNCED_NOTE_TIME_REMINDER = "timeReminder"
+        const val FIRESTORE_SYNCED_NOTE_IS_SYNCED = "isSynced"
+        /**
+         * Firebase post related constants
+         */
+        const val FIRESTORE_POST_DOC_INTENT_KEY =
+            "elamien.abdullah.socialnote.post_document_name_key"
+        const val FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY =
+            "elamien.abdullah.socialnote.post_author_register_key"
+        const val OPEN_FROM_NOTIFICATION_COMMENT =
+            "elamien.abdullah.socialnote.open_from_notification"
+        const val DISMISS_POST_COMMENT_NOTIFICATION_ACTION =
+            "elamien.abdullah.socialnote.dismiss_post_comment_notification"
+        const val USER_LIKES_INTENT_KEY = "elamien.abdullah.socialnote.user_likes_intent_key"
+        const val FIRESTORE_POSTS_COLLECTION_NAME = "Posts"
+        const val FIRESTORE_POSTS_POST_BODY = "post"
+        const val FIRESTORE_POSTS_POST_AUTHOR_NAME = "authorName"
+        const val FIRESTORE_POSTS_POST_CATEGORY_NAME = "categoryName"
+        const val FIRESTORE_POSTS_POST_AUTHOR_ID = "authorUID"
+        const val FIRESTORE_POSTS_POST_AUTHOR_IMAGE = "authorImage"
+        const val FIRESTORE_POSTS_POST_DATE_CREATED = "dateCreated"
+        const val FIRESTORE_POSTS_POST_LIKES = "likes"
+        const val FIRESTORE_POSTS_POST_COMMENTS = "comments"
+        const val FIRESTORE_POSTS_POST_REGISTER_TOKEN = "registerToken"
+        const val FIRESTORE_POSTS_POST_DOC_NAME = "documentName"
 
-		const val FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME = "CommentNotification"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_COMMENT = "comment"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE = "authorImage"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME = "authorName"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_UID = "authorUId"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED = "dateCreated"
-		const val FIRESTORE_COMMENTS_POST_COMMENT_DOC_ID = "documentId"
-		const val FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN = "commentAuthorToken"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME = "CommentNotification"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_COMMENT = "comment"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE = "authorImage"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME = "authorName"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_UID = "authorUId"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED = "dateCreated"
+        const val FIRESTORE_COMMENTS_POST_COMMENT_DOC_ID = "documentId"
+        const val FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN = "commentAuthorToken"
 
-		const val FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME = "LikesNotification"
-		const val FIRESTORE_LIKES_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"
-		const val FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN = "userRegisterToken"
-		const val FIRESTORE_LIKES_NOTIFICATION_USER_NAME = "userName"
-		const val FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID = "documentId"
-		const val FIRESTORE_LIKES_NOTIFICATION_USER_ID = "userLikerUId"
+        const val FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME = "LikesNotification"
+        const val FIRESTORE_LIKES_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"
+        const val FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN = "userRegisterToken"
+        const val FIRESTORE_LIKES_NOTIFICATION_USER_NAME = "userName"
+        const val FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID = "documentId"
+        const val FIRESTORE_LIKES_NOTIFICATION_USER_ID = "userLikerUId"
 
-		const val FIRESTORE_USERS_COLLECTION_NAME = "Users"
-		const val FIRESTORE_USER_UID = "userUid"
-		const val FIRESTORE_USER_IMAGE_URL = "userImage"
-		const val FIRESTORE_USER_NAME = "userName"
-		const val FIRESTORE_USER_POSTS_COUNT = "userPostsCount"
-		const val FIRESTORE_USER_TITLE = "userTitle"
-	}
+        const val FIRESTORE_USERS_COLLECTION_NAME = "Users"
+        const val FIRESTORE_USER_UID = "userUid"
+        const val FIRESTORE_USER_IMAGE_URL = "userImage"
+        const val FIRESTORE_USER_NAME = "userName"
+        const val FIRESTORE_USER_POSTS_COUNT = "userPostsCount"
+        const val FIRESTORE_USER_TITLE = "userTitle"
+    }
 
 }

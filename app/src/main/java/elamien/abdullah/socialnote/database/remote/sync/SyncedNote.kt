@@ -11,27 +11,27 @@ import java.util.*
  */
 class SyncedNote {
 
-	var noteTitle : String? = null
-	var noteBody : String? = null
-	private var dateCreated : Timestamp? = null
-	private var dateModified : Timestamp? = null
-	var geofenceLocation : GeoPoint? = null
-	var timeReminder : Long? = null
-	var isSynced : Boolean = false
-	var noteId : Long? = null
-	fun getDateCreated() : Date {
-		return dateCreated!!.toDate()
-	}
+    var noteTitle: String? = null
+    var noteBody: String? = null
+    private var dateCreated: Timestamp? = null
+    private var dateModified: Timestamp? = null
+    var geofenceLocation: GeoPoint? = null
+    var timeReminder: Long? = null
+    var isSynced: Boolean = false
+    var noteId: Long? = null
+    fun getDateCreated(): Date {
+        return dateCreated!!.toDate()
+    }
 
-	fun setDateCreated(date : Timestamp) {
-		this.dateCreated = date
-	}
+    fun setDateCreated(date: Timestamp) {
+        this.dateCreated = date
+    }
 
-	fun getDateModified() : Date {
-		return dateModified!!.toDate()
-	}
+    fun getDateModified(): Date {
+        return dateModified!!.toDate()
+    }
 
-	fun setDateModified(date : Timestamp) {
-		this.dateModified = date
-	}
+    fun setDateModified(date: Timestamp) {
+        this.dateModified = date
+    }
 }

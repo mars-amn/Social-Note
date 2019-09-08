@@ -27,82 +27,83 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
 
-	private val mPostViewModel : PostViewModel by viewModel()
-	private val mFirebaseAuth : FirebaseAuth by inject()
+    private val mPostViewModel: PostViewModel by viewModel()
+    private val mFirebaseAuth: FirebaseAuth by inject()
 
 
-	private lateinit var mBinding : ActivityFeedBinding
-	private lateinit var mAdapter : PostsFeedAdapter
-	private lateinit var mUser : User
-	override fun onCreate(savedInstanceState : Bundle?) {
-		super.onCreate(savedInstanceState)
-		mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
-		mBinding.handlers = this
-		mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
+    private lateinit var mBinding: ActivityFeedBinding
+    private lateinit var mAdapter: PostsFeedAdapter
+    private lateinit var mUser: User
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
+        mBinding.handlers = this
+        mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
 
-		loadPosts()
-		loadUser()
-		mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
-			transformations(CircleCropTransformation())
-		}
-	}
+        loadPosts()
+        loadUser()
+        mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
+            transformations(CircleCropTransformation())
+        }
+    }
 
-	private fun loadUser() {
-		mPostViewModel.getUser()
-				.observe(this@FeedActivity, Observer { user ->
-					mUser = user
-				})
-	}
+    private fun loadUser() {
+        mPostViewModel.getUser()
+            .observe(this@FeedActivity, Observer { user ->
+                mUser = user
+            })
+    }
 
-	private fun loadPosts() {
-		showLoadingView()
-		mPostViewModel.getPosts()
-				.observe(this, Observer { posts ->
-					if (posts.isNotEmpty()) {
-						mAdapter.addPosts(posts)
-						mBinding.feedRecyclerView.adapter = mAdapter
-						hideLoadingView()
-					}
-				})
-	}
+    private fun loadPosts() {
+        showLoadingView()
+        mPostViewModel.getPosts()
+            .observe(this@FeedActivity, Observer { posts ->
+                if (posts.isNotEmpty()) {
+                    mAdapter.addPosts(posts)
+                    mBinding.feedRecyclerView.adapter = mAdapter
+                    hideLoadingView()
+                }
+            })
+    }
 
-	private fun showLoadingView() {
-		applyAnimation()
-		mBinding.feedRecyclerView.visibility = View.GONE
-		mBinding.loadingAnimationView.visibility = View.VISIBLE
-	}
+    private fun showLoadingView() {
+        applyAnimation()
+        mBinding.feedRecyclerView.visibility = View.GONE
+        mBinding.loadingAnimationView.visibility = View.VISIBLE
+    }
 
-	private fun applyAnimation() {
-		val set = TransitionSet().addTransition(Scale(0.7f))
-				.addTransition(Fade())
-				.setInterpolator(FastOutLinearInInterpolator())
-		TransitionManager.beginDelayedTransition(mBinding.postsFeedParent, set)
-	}
+    private fun applyAnimation() {
+        val set = TransitionSet().addTransition(Scale(0.7f))
+            .addTransition(Fade())
+            .setInterpolator(FastOutLinearInInterpolator())
+        TransitionManager.beginDelayedTransition(mBinding.postsFeedParent, set)
+    }
 
-	fun onPostClick(view : View) {
-		startActivity(Intent(this@FeedActivity, CreatePostActivity::class.java))
-	}
+    fun onPostClick(view: View) {
+        startActivity(Intent(this@FeedActivity, CreatePostActivity::class.java))
+    }
 
-	private fun hideLoadingView() {
-		applyAnimation()
-		mBinding.loadingAnimationView.visibility = View.GONE
-		mBinding.feedRecyclerView.visibility = View.VISIBLE
-	}
+    private fun hideLoadingView() {
+        applyAnimation()
+        mBinding.loadingAnimationView.visibility = View.GONE
+        mBinding.feedRecyclerView.visibility = View.VISIBLE
+    }
 
-	override fun onCommentButtonClick(post : Post) {
-		val intent = Intent(this@FeedActivity, CommentActivity::class.java)
-		intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
-		intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
-		intent.putExtra(Constants.USER_OBJECT_INTENT_KEY, mUser)
-		startActivity(intent)
-	}
+    override fun onCommentButtonClick(post: Post) {
+        val intent = Intent(this@FeedActivity, CommentActivity::class.java)
+        intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
+        intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
+        intent.putExtra(Constants.USER_OBJECT_INTENT_KEY, mUser)
+        startActivity(intent)
+    }
 
-	override fun onLikeButtonClick(like : Like) {
-		like.userTitle = mUser.userTitle!!
-		mPostViewModel.createLikeOnPost(like)
-	}
+    override fun onLikeButtonClick(like: Like) {
+        like.userTitle = mUser.userTitle!!
+        mPostViewModel.createLikeOnPost(like)
+    }
 
-	override fun onUnLikeButtonClick(like : Like) {
-		mPostViewModel.removeLikePost(like)
-	}
+    override fun onUnLikeButtonClick(like: Like) {
+        like.userTitle = mUser.userTitle!!
+        mPostViewModel.removeLikePost(like)
+    }
 }

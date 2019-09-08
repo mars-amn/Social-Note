@@ -16,20 +16,22 @@ import elamien.abdullah.socialnote.database.local.notes.NoteDao
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
-	companion object {
-		private var sInstance : AppDatabase? = null
-		fun getDatabase(context : Context) : AppDatabase? {
-			if (sInstance == null) {
-				synchronized(AppDatabase::class) {
-					sInstance = Room.databaseBuilder(context.applicationContext,
-							AppDatabase::class.java,
-							"notes.db")
-							.build()
-				}
-			}
-			return sInstance
-		}
-	}
+    companion object {
+        private var sInstance: AppDatabase? = null
+        fun getDatabase(context: Context): AppDatabase? {
+            if (sInstance == null) {
+                synchronized(AppDatabase::class) {
+                    sInstance = Room.databaseBuilder(
+                        context.applicationContext,
+                        AppDatabase::class.java,
+                        "notes.db"
+                    )
+                        .build()
+                }
+            }
+            return sInstance
+        }
+    }
 
-	abstract fun notesDao() : NoteDao
+    abstract fun notesDao(): NoteDao
 }

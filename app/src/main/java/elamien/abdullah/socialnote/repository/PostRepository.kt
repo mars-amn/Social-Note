@@ -53,185 +53,198 @@ import kotlin.collections.HashMap
 class PostRepository : IPostRepository, KoinComponent {
 
 
-	private val mFirestore : FirebaseFirestore by inject()
-	private val mAuth : FirebaseAuth by inject()
-	override fun getUser() : LiveData<User> {
-		val user = MutableLiveData<User>()
-		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-				.document(mAuth.currentUser?.uid!!)
-				.get()
-				.addOnCompleteListener { document ->
-					if (document.isSuccessful) {
-						user.value = document.result?.toObject(User::class.java)
-					}
-				}
-		return user
-	}
+    private val mFirestore: FirebaseFirestore by inject()
+    private val mAuth: FirebaseAuth by inject()
+    override fun loadPost(documentName: String?): LiveData<Post> {
+        val post = MutableLiveData<Post>()
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .document(documentName!!)
+            .get()
+            .addOnCompleteListener { document ->
+                if (document.isSuccessful) {
+                    post.value = document.result?.toObject(Post::class.java)
+                }
+            }
+        return post
+    }
 
-	override fun removeLike(like : Like) {
-		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-				.document(like.documentId!!)
-				.update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayRemove(like))
-				.addOnCompleteListener { }
-				.addOnFailureListener { }
-	}
+    override fun getUser(): LiveData<User> {
+        val user = MutableLiveData<User>()
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+            .document(mAuth.currentUser?.uid!!)
+            .get()
+            .addOnCompleteListener { document ->
+                if (document.isSuccessful) {
+                    user.value = document.result?.toObject(User::class.java)
+                }
+            }
+        return user
+    }
 
-	override fun createLikeOnPost(like : Like) {
-		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-				.document(like.documentId!!)
-				.update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayUnion(like))
-				.addOnCompleteListener { }
-				.addOnFailureListener { }
+    override fun removeLike(like: Like) {
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .document(like.documentId!!)
+            .update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayRemove(like))
+            .addOnCompleteListener { }
+            .addOnFailureListener { }
+    }
 
-		mFirestore.collection(FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME)
-				.document()
-				.set(getMappedLike(like))
-				.addOnCompleteListener { }
-				.addOnFailureListener { }
-	}
+    override fun createLikeOnPost(like: Like) {
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .document(like.documentId!!)
+            .update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayUnion(like))
+            .addOnCompleteListener { }
+            .addOnFailureListener { }
 
-	private fun getMappedLike(like : Like) : HashMap<String, Any> {
-		val likeMap = HashMap<String, Any>()
-		likeMap[FIRESTORE_LIKES_NOTIFICATION_AUTHOR_REGISTER_TOKEN] = like.authorRegisterToken!!
-		likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN] = like.userRegisterToken!!
-		likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_NAME] = like.userName!!
-		likeMap[FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID] = like.documentId!!
-		likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_ID] = like.userLikerUId!!
-		return likeMap
-	}
+        mFirestore.collection(FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME)
+            .document()
+            .set(getMappedLike(like))
+            .addOnCompleteListener { }
+            .addOnFailureListener { }
+    }
 
-	override fun createComment(documentName : String, comment : Comment) {
-		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-				.document(documentName)
-				.update(FIRESTORE_POSTS_POST_COMMENTS, FieldValue.arrayUnion(comment))
-				.addOnCompleteListener { }
-				.addOnFailureListener { }
+    private fun getMappedLike(like: Like): HashMap<String, Any> {
+        val likeMap = HashMap<String, Any>()
+        likeMap[FIRESTORE_LIKES_NOTIFICATION_AUTHOR_REGISTER_TOKEN] = like.authorRegisterToken!!
+        likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN] = like.userRegisterToken!!
+        likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_NAME] = like.userName!!
+        likeMap[FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID] = like.documentId!!
+        likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_ID] = like.userLikerUId!!
+        return likeMap
+    }
 
-		mFirestore.collection(FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME)
-				.document()
-				.set(getMappedComment(comment))
-				.addOnCompleteListener { }
-				.addOnFailureListener { }
-	}
+    override fun createComment(documentName: String, comment: Comment) {
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .document(documentName)
+            .update(FIRESTORE_POSTS_POST_COMMENTS, FieldValue.arrayUnion(comment))
+            .addOnCompleteListener { }
+            .addOnFailureListener { }
 
-	private fun getMappedComment(comment : Comment) : HashMap<String, Any> {
-		val commentMap = HashMap<String, Any>()
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN] =
-			comment.authorRegisterToken!!
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_COMMENT] = comment.comment!!
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME] = comment.authorName!!
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE] = comment.authorImage!!
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_UID] = comment.authorUId!!
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED] = comment.getDateCreated()
-		commentMap[FIRESTORE_COMMENTS_POST_COMMENT_DOC_ID] = comment.documentId!!
-		commentMap[FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN] =
-			comment.commentAuthorToken!!
-		return commentMap
-	}
+        mFirestore.collection(FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME)
+            .document()
+            .set(getMappedComment(comment))
+            .addOnCompleteListener { }
+            .addOnFailureListener { }
+    }
 
-	override fun createNewPost(post : Post) {
-		val documentName = "${post.authorUId}${Date().time}"
-		post.documentName = documentName
-		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-				.document(mAuth.currentUser?.uid!!)
-				.get()
-				.addOnCompleteListener { document ->
-					if (document.isSuccessful) {
-						val user = document.result?.toObject(User::class.java)
-						user?.userPostsCount = user?.userPostsCount!!.plus(1)
-						var title = "Reader"
-						if (user.userPostsCount!! >= 20) {
-							title = "Author"
-						}
-						post.userTitle = title
-						user.userTitle = title
+    private fun getMappedComment(comment: Comment): HashMap<String, Any> {
+        val commentMap = HashMap<String, Any>()
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN] =
+            comment.authorRegisterToken!!
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_COMMENT] = comment.comment!!
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME] = comment.authorName!!
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE] = comment.authorImage!!
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_UID] = comment.authorUId!!
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED] = comment.getDateCreated()
+        commentMap[FIRESTORE_COMMENTS_POST_COMMENT_DOC_ID] = comment.documentId!!
+        commentMap[FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN] =
+            comment.commentAuthorToken!!
+        return commentMap
+    }
 
-						mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-								.document(documentName)
-								.set(getMappedPost(post), SetOptions.merge())
-								.addOnCompleteListener {
-									updateUser(user)
-								}
-								.addOnFailureListener {}
-					}
-				}
+    override fun createNewPost(post: Post) {
+        val documentName = "${post.authorUId}${Date().time}"
+        post.documentName = documentName
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+            .document(mAuth.currentUser?.uid!!)
+            .get()
+            .addOnCompleteListener { document ->
+                if (document.isSuccessful) {
+                    val user = document.result?.toObject(User::class.java)
+                    user?.userPostsCount = user?.userPostsCount!!.plus(1)
+                    var title = "Reader"
+                    if (user.userPostsCount!! >= 20) {
+                        title = "Author"
+                    }
+                    post.userTitle = title
+                    user.userTitle = title
+
+                    mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+                        .document(documentName)
+                        .set(getMappedPost(post), SetOptions.merge())
+                        .addOnCompleteListener {
+                            updateUser(user)
+                        }
+                        .addOnFailureListener {}
+                }
+            }
 
 
-	}
+    }
 
-	private fun updateUser(user : User?) {
-		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-				.document(user?.userUid!!)
-				.update(getMappedUser(user = user))
-	}
+    private fun updateUser(user: User?) {
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+            .document(user?.userUid!!)
+            .update(getMappedUser(user = user))
+    }
 
-	private fun getMappedUser(user : User) : HashMap<String, Any> {
-		val userMap = HashMap<String, Any>()
-		userMap[Constants.FIRESTORE_USER_UID] = user.userUid!!
-		userMap[Constants.FIRESTORE_USER_IMAGE_URL] = user.userImage!!
-		userMap[Constants.FIRESTORE_USER_NAME] = user.userName!!
-		userMap[FIRESTORE_USER_TITLE] = user.userTitle!!
-		userMap[FIRESTORE_USER_POSTS_COUNT] = user.userPostsCount!!
-		return userMap
-	}
+    private fun getMappedUser(user: User): HashMap<String, Any> {
+        val userMap = HashMap<String, Any>()
+        userMap[Constants.FIRESTORE_USER_UID] = user.userUid!!
+        userMap[Constants.FIRESTORE_USER_IMAGE_URL] = user.userImage!!
+        userMap[Constants.FIRESTORE_USER_NAME] = user.userName!!
+        userMap[FIRESTORE_USER_TITLE] = user.userTitle!!
+        userMap[FIRESTORE_USER_POSTS_COUNT] = user.userPostsCount!!
+        return userMap
+    }
 
-	private fun decreaseUserPostsCount(authorUId : String?) {
-		mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-				.document(authorUId!!)
-				.update(FIRESTORE_USER_POSTS_COUNT, FieldValue.increment(-1))
-	}
+    private fun decreaseUserPostsCount(authorUId: String?) {
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+            .document(authorUId!!)
+            .update(FIRESTORE_USER_POSTS_COUNT, FieldValue.increment(-1))
+    }
 
-	private fun getMappedPost(post : Post) : HashMap<String, Any> {
-		val postMap = HashMap<String, Any>()
-		postMap[FIRESTORE_POSTS_POST_BODY] = post.post!!
-		postMap[FIRESTORE_POSTS_POST_AUTHOR_NAME] = post.authorName!!
-		postMap[FIRESTORE_POSTS_POST_AUTHOR_ID] = post.authorUId!!
-		postMap[FIRESTORE_POSTS_POST_AUTHOR_IMAGE] = post.authorImage!!
-		postMap[FIRESTORE_POSTS_POST_CATEGORY_NAME] = post.categoryName!!
-		postMap[FIRESTORE_POSTS_POST_DATE_CREATED] = Date()
-		postMap[FIRESTORE_POSTS_POST_DOC_NAME] = post.documentName!!
-		postMap[FIRESTORE_POSTS_POST_REGISTER_TOKEN] = post.registerToken!!
-		postMap[FIRESTORE_USER_TITLE] = post.userTitle!!
+    private fun getMappedPost(post: Post): HashMap<String, Any> {
+        val postMap = HashMap<String, Any>()
+        postMap[FIRESTORE_POSTS_POST_BODY] = post.post!!
+        postMap[FIRESTORE_POSTS_POST_AUTHOR_NAME] = post.authorName!!
+        postMap[FIRESTORE_POSTS_POST_AUTHOR_ID] = post.authorUId!!
+        postMap[FIRESTORE_POSTS_POST_AUTHOR_IMAGE] = post.authorImage!!
+        postMap[FIRESTORE_POSTS_POST_CATEGORY_NAME] = post.categoryName!!
+        postMap[FIRESTORE_POSTS_POST_DATE_CREATED] = Date()
+        postMap[FIRESTORE_POSTS_POST_DOC_NAME] = post.documentName!!
+        postMap[FIRESTORE_POSTS_POST_REGISTER_TOKEN] = post.registerToken!!
+        postMap[FIRESTORE_USER_TITLE] = post.userTitle!!
 
-		return postMap
-	}
+        return postMap
+    }
 
-	override fun getPostsFeed() : LiveData<List<Post>> {
-		val posts = MutableLiveData<List<Post>>()
-		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-				.orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
-				.get()
-				.addOnCompleteListener { querySnapshot ->
-					if (querySnapshot.isSuccessful) {
-						val postsList = ArrayList<Post>()
-						querySnapshot.result?.forEach { document ->
-							postsList.add(document.toObject(Post::class.java))
-						}
-						posts.value = postsList
-					}
-				}
-		return posts
-	}
+    override fun getPostsFeed(): LiveData<List<Post>> {
+        val posts = MutableLiveData<List<Post>>()
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { querySnapshot ->
+                if (querySnapshot.isSuccessful) {
+                    val postsList = ArrayList<Post>()
+                    querySnapshot.result?.forEach { document ->
+                        postsList.add(document.toObject(Post::class.java))
+                    }
+                    posts.value = postsList
+                }
+            }
+        return posts
+    }
 
-	override fun getCommentsFeed(documentName : String) : LiveData<List<Comment>> {
-		val comments = MutableLiveData<List<Comment>>()
-		mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-				.document(documentName)
-				.addSnapshotListener { snapshot, e ->
-					if (e != null) {
+    override fun getCommentsFeed(documentName: String): LiveData<List<Comment>> {
+        val comments = MutableLiveData<List<Comment>>()
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .document(documentName)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
 
-					} else {
-						val commentList = ArrayList<Comment>()
-						val post = snapshot?.toObject(Post::class.java)
-						post?.comments?.forEach { comment ->
-							if (!comment.isCommentEmpty()) {
-								commentList.add(comment)
-							}
-						}
-						comments.value = commentList
-					}
-				}
-		return comments
-	}
+                } else {
+                    val commentList = ArrayList<Comment>()
+                    val post = snapshot?.toObject(Post::class.java)
+                    post?.comments?.forEach { comment ->
+                        if (!comment.isCommentEmpty()) {
+                            commentList.add(comment)
+                        }
+                    }
+                    comments.value = commentList
+                }
+            }
+        return comments
+    }
 
 }

@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:aztec="http://schemas.android.com/apk/res-auto">
-	
-	<data>
-		
-		<variable
-				name="handlers"
-				type="elamien.abdullah.socialnote.ui.CreatePostActivity" />
-	</data>
-	
-	<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:background="@color/white"
-			android:focusableInTouchMode="true"
-			android:orientation="vertical">
-		
-		<ImageButton
-				android:id="@+id/createPostButton"
-				android:layout_width="100dp"
-				android:layout_height="100dp"
-				android:layout_gravity="center"
-				android:onClick="@{handlers::onCreatePostButtonClick}" />
-		
-		<RelativeLayout
-				android:layout_width="match_parent"
-				android:layout_height="match_parent">
-			
-			<org.wordpress.aztec.toolbar.AztecToolbar
-					android:id="@+id/formatting_toolbar"
-					android:layout_width="match_parent"
-					android:layout_height="@dimen/aztec_format_bar_height"
-					android:layout_alignParentBottom="true" />
-			
-			<ScrollView
-					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
-					android:layout_above="@+id/formatting_toolbar"
-					android:layout_alignParentTop="true"
-					android:fillViewport="true">
-				
-				<FrameLayout
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content">
-					
-					<org.wordpress.aztec.AztecText
-							android:id="@+id/aztec"
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:gravity="top|start"
-							android:imeOptions="flagNoExtractUi"
-							android:padding="@dimen/editor_padding"
-							android:scrollbars="vertical"
-							aztec:backgroundColor="#fff"
-							aztec:historyEnable="true"
-							aztec:historySize="10"
-							aztec:textColor="#000" />
-					
-					<org.wordpress.aztec.source.SourceViewEditText
-							android:id="@+id/source"
-							android:layout_width="match_parent"
-							android:layout_height="match_parent"
-							android:gravity="top|start"
-							android:imeOptions="flagNoExtractUi"
-							android:inputType="textNoSuggestions|textMultiLine"
-							android:padding="@dimen/editor_padding"
-							android:scrollbars="vertical"
-							
-							android:textSize="@dimen/editor_text_size"
-							android:visibility="gone"
-							aztec:codeBackgroundColor="@android:color/transparent"
-							aztec:codeTextColor="@android:color/white" />
-				
-				</FrameLayout>
-			
-			</ScrollView>
-		
-		</RelativeLayout>
-	
-	</LinearLayout>
+    xmlns:aztec="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.ui.CreatePostActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/createPostButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:onClick="@{handlers::onCreatePostButtonClick}" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <org.wordpress.aztec.toolbar.AztecToolbar
+                android:id="@+id/formatting_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/aztec_format_bar_height"
+                android:layout_alignParentBottom="true" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/formatting_toolbar"
+                android:layout_alignParentTop="true"
+                android:fillViewport="true">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <org.wordpress.aztec.AztecText
+                        android:id="@+id/aztec"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:imeOptions="flagNoExtractUi"
+                        android:padding="@dimen/editor_padding"
+                        android:scrollbars="vertical"
+                        aztec:backgroundColor="#fff"
+                        aztec:historyEnable="true"
+                        aztec:historySize="10"
+                        aztec:textColor="#000" />
+
+                    <org.wordpress.aztec.source.SourceViewEditText
+                        android:id="@+id/source"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textNoSuggestions|textMultiLine"
+                        android:padding="@dimen/editor_padding"
+                        android:scrollbars="vertical"
+
+                        android:textSize="@dimen/editor_text_size"
+                        android:visibility="gone"
+                        aztec:codeBackgroundColor="@android:color/transparent"
+                        aztec:codeTextColor="@android:color/white" />
+
+                </FrameLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 </layout>

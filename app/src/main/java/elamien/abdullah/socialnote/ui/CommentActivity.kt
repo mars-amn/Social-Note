@@ -29,92 +29,101 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 class CommentActivity : AppCompatActivity() {
-	private val mPostViewModel : PostViewModel by viewModel()
-	private val mFirebaseAuth : FirebaseAuth by inject()
-	private lateinit var mBinding : ActivityCommentBinding
-	private var mDocumentName : String? = null
-	private var mAuthorRegisterToken : String? = null
-	private lateinit var mAdapter : CommentsAdapter
-	private lateinit var mUser : User
-	private var mRegisterToken : String? = null
+    private val mPostViewModel: PostViewModel by viewModel()
+    private val mFirebaseAuth: FirebaseAuth by inject()
+    private lateinit var mBinding: ActivityCommentBinding
+    private var mDocumentName: String? = null
+    private var mAuthorRegisterToken: String? = null
+    private lateinit var mAdapter: CommentsAdapter
+    private lateinit var mUser: User
+    private var mRegisterToken: String? = null
 
 
-	override fun onCreate(savedInstanceState : Bundle?) {
-		super.onCreate(savedInstanceState)
-		mBinding = DataBindingUtil.setContentView(this@CommentActivity, R.layout.activity_comment)
-		mBinding.handlers = this
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mBinding = DataBindingUtil.setContentView(this@CommentActivity, R.layout.activity_comment)
+        mBinding.handlers = this
 
-		if (intent != null && intent.hasExtra(FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(
-					FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY) && intent.hasExtra(
-					USER_OBJECT_INTENT_KEY)) {
-			mDocumentName = intent.getStringExtra(FIRESTORE_POST_DOC_INTENT_KEY)
-			mAuthorRegisterToken = intent.getStringExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
-			mUser = intent.getParcelableExtra(USER_OBJECT_INTENT_KEY)!!
-			mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
-			mBinding.commentsRecyclerView.adapter = mAdapter
-			getRegisterToken()
-			loadPostComments()
-		}
+        if (intent != null && intent.hasExtra(FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(
+                FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY
+            ) && intent.hasExtra(
+                USER_OBJECT_INTENT_KEY
+            )
+        ) {
+            mDocumentName = intent.getStringExtra(FIRESTORE_POST_DOC_INTENT_KEY)
+            mAuthorRegisterToken = intent.getStringExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
+            mUser = intent.getParcelableExtra(USER_OBJECT_INTENT_KEY)!!
+            mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
+            mBinding.commentsRecyclerView.adapter = mAdapter
+            getRegisterToken()
+            loadPostComments()
+        }
 
-		if (isPostFromNotification()) {
-			dismissNotification()
-		}
-	}
+        if (isPostFromNotification()) {
+            dismissNotification()
+        }
+    }
 
-	private fun dismissNotification() {
-		val dismissIntent = Intent(this@CommentActivity, NotificationReceiver::class.java)
-		dismissIntent.action = DISMISS_POST_COMMENT_NOTIFICATION_ACTION
-		dismissIntent.putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
-				intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1))
-		PendingIntent.getBroadcast(this@CommentActivity,
-				0,
-				dismissIntent,
-				PendingIntent.FLAG_UPDATE_CURRENT)
-		sendBroadcast(dismissIntent)
-	}
+    private fun dismissNotification() {
+        val dismissIntent = Intent(this@CommentActivity, NotificationReceiver::class.java)
+        dismissIntent.action = DISMISS_POST_COMMENT_NOTIFICATION_ACTION
+        dismissIntent.putExtra(
+            DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
+            intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1)
+        )
+        PendingIntent.getBroadcast(
+            this@CommentActivity,
+            0,
+            dismissIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+        sendBroadcast(dismissIntent)
+    }
 
-	private fun isPostFromNotification() : Boolean =
-		intent.getBooleanExtra(OPEN_FROM_NOTIFICATION_COMMENT, false)
+    private fun isPostFromNotification(): Boolean =
+        intent.getBooleanExtra(OPEN_FROM_NOTIFICATION_COMMENT, false)
 
 
-	private fun loadPostComments() {
-		mPostViewModel.getComments(mDocumentName!!)
-				.observe(this, Observer { comments ->
-					if (comments.isNotEmpty()) {
-						mAdapter.addComments(comments)
-						mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
-					}
-				})
-	}
+    private fun loadPostComments() {
+        mPostViewModel.getComments(mDocumentName!!)
+            .observe(this, Observer { comments ->
+                if (comments.isNotEmpty()) {
+                    mAdapter.addComments(comments)
+                    mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
+                }
+            })
+    }
 
-	fun onSubmitButtonClick(view : View) {
-		val commentBody = mBinding.commentInputEditText.text.toString()
-		if (commentBody == "") return
+    fun onSubmitButtonClick(view: View) {
+        val commentBody = mBinding.commentInputEditText.text.toString()
+        if (commentBody == "") return
 
-		val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-		imm?.hideSoftInputFromWindow(view.windowToken, 0)
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
 
-		val authorName = mFirebaseAuth.currentUser?.displayName
-		val authorUId = mFirebaseAuth.currentUser?.uid.toString()
-		val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
+        val authorName = mFirebaseAuth.currentUser?.displayName
+        val authorUId = mFirebaseAuth.currentUser?.uid.toString()
+        val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
 
-		val comment = Comment(mRegisterToken,
-				mAuthorRegisterToken,
-				mDocumentName,
-				commentBody,
-				authorImage,
-				authorName,
-				authorUId,
-				Timestamp(Date()),
-				mUser.userTitle)
-		mPostViewModel.createComment(mDocumentName!!, comment)
-		mBinding.commentInputEditText.setText("")
-	}
+        val comment = Comment(
+            mRegisterToken,
+            mAuthorRegisterToken,
+            mDocumentName,
+            commentBody,
+            authorImage,
+            authorName,
+            authorUId,
+            Timestamp(Date()),
+            mUser.userTitle
+        )
+        mPostViewModel.createComment(mDocumentName!!, comment)
+        mBinding.commentInputEditText.setText("")
+    }
 
-	private fun getRegisterToken() {
-		FirebaseInstanceId.getInstance()
-				.instanceId.addOnSuccessListener { instanceIdResult ->
-			mRegisterToken = instanceIdResult.token
-		}
-	}
+    private fun getRegisterToken() {
+        FirebaseInstanceId.getInstance()
+            .instanceId.addOnSuccessListener { instanceIdResult ->
+            mRegisterToken = instanceIdResult.token
+        }
+    }
 }

@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<array name="preloaded_fonts" translatable="false">
-		<item>@font/average_sans</item>
-		<item>@font/cabin_medium</item>
-		<item>@font/cabin_semibold</item>
-	</array>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/average_sans</item>
+        <item>@font/cabin_medium</item>
+        <item>@font/cabin_semibold</item>
+        <item>@font/oxygen</item>
+        <item>@font/oxygen_bold</item>
+        <item>@font/poppins_medium</item>
+    </array>
 </resources>

@@ -16,13 +16,13 @@ import org.koin.core.logger.Level
  */
 class NotesApplication : Application() {
 
-	override fun onCreate() {
-		super.onCreate()
-		FirebaseApp.initializeApp(applicationContext)
-		startKoin {
-			androidContext(this@NotesApplication)
-			androidLogger(Level.DEBUG)
-			modules(listOf(appModules, viewModelsModules, repositoriesModules, firebaseModules))
-		}
-	}
+    override fun onCreate() {
+        super.onCreate()
+        FirebaseApp.initializeApp(applicationContext)
+        startKoin {
+            androidContext(this@NotesApplication)
+            androidLogger(Level.DEBUG)
+            modules(listOf(appModules, viewModelsModules, repositoriesModules, firebaseModules))
+        }
+    }
 }
