@@ -128,7 +128,9 @@ class Constants {
         const val FIRESTORE_USER_NAME = "userName"
         const val FIRESTORE_USER_POSTS_COUNT = "userPostsCount"
         const val FIRESTORE_USER_TITLE = "userTitle"
+        const val FIRESTORE_USER_COVER_IMAGE = "coverImage"
 
+        const val USER_UID_INTENT_KEY = "elamien.abdullah.socialnote.user_uid_intent_key"
         /**
          * Title related constants
          */

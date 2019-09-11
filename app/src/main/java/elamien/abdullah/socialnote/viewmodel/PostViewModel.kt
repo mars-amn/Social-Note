@@ -48,4 +48,21 @@ class PostViewModel : ViewModel(), KoinComponent {
     fun loadPost(documentName: String?): LiveData<Post> {
         return mPostRepository.loadPost(documentName)
     }
+
+    fun getUser(userUid: String?): LiveData<User> {
+        return mPostRepository.getUser(userUid)
+    }
+
+    fun getUserPosts(userUid: String?): LiveData<List<Post>> {
+        return mPostRepository.getUserPosts(userUid)
+
+    }
+
+    fun getUserPosts(): LiveData<List<Post>> {
+        return mPostRepository.getUserPosts()
+    }
+
+    fun updateUser(user: User) {
+        mPostRepository.updateUser(user)
+    }
 }

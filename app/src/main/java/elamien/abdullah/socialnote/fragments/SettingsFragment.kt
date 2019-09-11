@@ -10,6 +10,7 @@ import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import elamien.abdullah.socialnote.R
+
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.ui.RegisterActivity
 import elamien.abdullah.socialnote.utils.Constants
@@ -45,8 +46,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
         if (key == getString(R.string.note_sync_key)) {
             val isEnabled = sharedPreferences?.getBoolean(key, false)!!
             if (isEnabled && mFirebaseAuth.currentUser == null) {
-                val switchPreference = findPreference(key) as SwitchPreferenceCompat
-                switchPreference.isChecked = false
+                val switchPreference = findPreference(key) as SwitchPreferenceCompat?
+                switchPreference?.isChecked = false
                 showRegisterRequestDialog()
                 return
             } else if (isEnabled && mFirebaseAuth.currentUser != null) {
@@ -105,8 +106,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_OK && isUserNotNull()) {
             val switchPreference =
-                findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat
-            switchPreference.isChecked = true
+                findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
+            switchPreference?.isChecked = true
             startSyncService()
         }
     }

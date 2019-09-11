@@ -38,7 +38,7 @@ import kotlin.math.pow
  * Created by AbdullahAtta on 26-Aug-19.
  */
 class PostsFeedAdapter(
-    private val listener: LikeClickListener,
+    private val listener: PostInteractListener,
     private val context: Context,
     private var mPostsFeed: List<Post>
 ) :
@@ -59,7 +59,7 @@ class PostsFeedAdapter(
     override fun getItemCount(): Int = mPostsFeed.size
 
 
-    interface LikeClickListener {
+    interface PostInteractListener {
         fun onLikeButtonClick(like: Like)
         fun onUnLikeButtonClick(like: Like)
         fun onCommentButtonClick(post: Post)

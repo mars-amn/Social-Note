@@ -19,4 +19,8 @@ interface IPostRepository {
     fun removeLike(like: Like)
     fun getUser(): LiveData<User>
     fun loadPost(documentName: String?): LiveData<Post>
+    fun getUser(userUid: String?): LiveData<User>
+    fun getUserPosts(userUid: String?): LiveData<List<Post>>
+    fun getUserPosts(): LiveData<List<Post>>
+    fun updateUser(user: User?)
 }

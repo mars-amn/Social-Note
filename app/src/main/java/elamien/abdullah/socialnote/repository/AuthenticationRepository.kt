@@ -12,6 +12,8 @@ import elamien.abdullah.socialnote.utils.Constants
 import org.greenrobot.eventbus.EventBus
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * Created by AbdullahAtta on 8/9/2019.
@@ -60,6 +62,7 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
         userMap[Constants.FIRESTORE_USER_NAME] = user.displayName!!
         userMap[Constants.FIRESTORE_USER_TITLE] = "Reader"
         userMap[Constants.FIRESTORE_USER_POSTS_COUNT] = 0
+        userMap[Constants.FIRESTORE_USER_COVER_IMAGE] = getRandomImage()
         return userMap
     }
 
@@ -67,4 +70,17 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
         EventBus.getDefault()
             .post(AuthenticationEvent(event))
     }
+
+    private fun getRandomImage() = images[Random().nextInt(images.size)]
+
+    private val images = arrayOf(
+        "http://bit.ly/2PhvwfN",
+        "http://bit.ly/2HpJ2aH",
+        "http://bit.ly/327HLNz",
+        "http://bit.ly/2Pd352y",
+        "http://bit.ly/2MFbiKO",
+        "http://bit.ly/341m7wh",
+        "http://bit.ly/2U6i0dL",
+        "http://bit.ly/2KZJ5fy"
+    )
 }

@@ -65,4 +65,5 @@
     <string name="author_title">Author</string>
     <string name="empty_note_state_label">Your note list is empty, Press the create button to add your first note</string>
     <string name="type_comment_hint">Type your comment ..</string>
+    <string name="user_profile_recent_posts_label">Recent Posts</string>
 </resources>

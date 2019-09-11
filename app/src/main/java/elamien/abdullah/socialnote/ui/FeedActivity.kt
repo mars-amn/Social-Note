@@ -25,7 +25,7 @@ import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FeedActivity : AppCompatActivity(), PostsFeedAdapter.LikeClickListener {
+class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener {
 
     private val mPostViewModel: PostViewModel by viewModel()
     private val mFirebaseAuth: FirebaseAuth by inject()

@@ -27,4 +27,5 @@
     <color name="circle_map_color">#66ba68c8</color>
     <color name="circle_stroke_color">#66E13237</color>
     <color name="gray_background_color">#F1F1F6</color>
+    <color name="user_name_color">#fff</color>
 </resources>

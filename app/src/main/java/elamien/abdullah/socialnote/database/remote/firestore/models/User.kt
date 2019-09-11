@@ -1,6 +1,10 @@
 package elamien.abdullah.socialnote.database.remote.firestore.models
 
 import android.os.Parcelable
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import coil.api.load
+import coil.transform.CircleCropTransformation
 import com.google.firebase.Timestamp
 import kotlinx.android.parcel.Parcelize
 import java.util.*
@@ -15,7 +19,8 @@ data class User(
     var userImage: String? = null,
     var userPostsCount: Int? = null,
     var userTitle: String? = null,
-    private var dateSignup: Timestamp? = null
+    private var dateSignup: Timestamp? = null,
+    var coverImage: String? = null
 ) : Parcelable {
 
     fun getDateSignup(): Date {
@@ -24,5 +29,26 @@ data class User(
 
     fun setDateSignup(date: Timestamp) {
         this.dateSignup = date
+    }
+
+    companion object {
+        @BindingAdapter("userProfileImageUrl")
+        @JvmStatic
+        fun loadUserProfileImage(view: ImageView, imageUrl: String) {
+            view.load(imageUrl) {
+                crossfade(true)
+                transformations(CircleCropTransformation())
+            }
+
+        }
+
+        @BindingAdapter("userProfileCoverImageUrl")
+        @JvmStatic
+        fun loadUserProfileCoverImage(view: ImageView, imageUrl: String) {
+            view.load(imageUrl) {
+                crossfade(true)
+            }
+
+        }
     }
 }

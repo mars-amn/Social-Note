@@ -3,6 +3,7 @@ package elamien.abdullah.socialnote.di
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import elamien.abdullah.socialnote.database.local.AppDatabase
 import elamien.abdullah.socialnote.repository.AuthenticationRepository
 import elamien.abdullah.socialnote.repository.NoteRepository
@@ -39,4 +40,5 @@ val viewModelsModules = module {
 val firebaseModules = module {
     single { FirebaseAuth.getInstance() }
     single { FirebaseFirestore.getInstance() }
+    single { FirebaseStorage.getInstance() }
 }

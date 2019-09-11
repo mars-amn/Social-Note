@@ -59,4 +59,12 @@
     <dimen name="comment_input_parent_margin_start">8dp</dimen>
     <dimen name="comment_input_parent_margin_bottom">8dp</dimen>
     <dimen name="comment_input_padding">4dp</dimen>
+    <dimen name="user_profile_cover_image_height">400dp</dimen>
+    <dimen name="user_profile_name_title_background_height">60dp</dimen>
+    <dimen name="user_profile_image_width">70dp</dimen>
+    <dimen name="user_profile_image_height">70dp</dimen>
+    <dimen name="user_name_profile_margin">8dp</dimen>
+    <dimen name="user_profile_name_text_size">18sp</dimen>
+    <dimen name="user_profile_recent_posts_margin">8dp</dimen>
+    <dimen name="user_profile_change_cover_margin">8dp</dimen>
 </resources>

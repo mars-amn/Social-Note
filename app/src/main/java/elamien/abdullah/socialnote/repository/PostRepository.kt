@@ -1,5 +1,6 @@
 package elamien.abdullah.socialnote.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -57,17 +58,55 @@ class PostRepository : IPostRepository, KoinComponent {
 
     private val mFirestore: FirebaseFirestore by inject()
     private val mAuth: FirebaseAuth by inject()
-    override fun loadPost(documentName: String?): LiveData<Post> {
-        val post = MutableLiveData<Post>()
+
+    override fun getUserPosts(): LiveData<List<Post>> {
+        val posts = MutableLiveData<List<Post>>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-            .document(documentName!!)
+            .whereEqualTo(FIRESTORE_POSTS_POST_AUTHOR_ID, mAuth.currentUser?.uid)
+            .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { querySnapshot ->
+                if (querySnapshot.isSuccessful) {
+                    val postsList = ArrayList<Post>()
+                    querySnapshot.result?.forEach { document ->
+                        postsList.add(document.toObject(Post::class.java))
+                    }
+                    posts.value = postsList
+                }
+            }
+            .addOnFailureListener { Log.d("ProfileActivity", it.message!!) }
+        return posts
+    }
+
+    override fun getUserPosts(userUid: String?): LiveData<List<Post>> {
+        val posts = MutableLiveData<List<Post>>()
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .whereEqualTo(FIRESTORE_POSTS_POST_AUTHOR_ID, userUid)
+            .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
+            .get()
+            .addOnCompleteListener { querySnapshot ->
+                if (querySnapshot.isSuccessful) {
+                    val postsList = ArrayList<Post>()
+                    querySnapshot.result?.forEach { document ->
+                        postsList.add(document.toObject(Post::class.java))
+                    }
+                    posts.value = postsList
+                }
+            }.addOnFailureListener { Log.d("ProfileActivity", it.message!!) }
+        return posts
+    }
+
+    override fun getUser(userUid: String?): LiveData<User> {
+        val user = MutableLiveData<User>()
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
+            .document(userUid!!)
             .get()
             .addOnCompleteListener { document ->
                 if (document.isSuccessful) {
-                    post.value = document.result?.toObject(Post::class.java)
+                    user.value = document.result?.toObject(User::class.java)
                 }
             }
-        return post
+        return user
     }
 
     override fun getUser(): LiveData<User> {
@@ -81,6 +120,19 @@ class PostRepository : IPostRepository, KoinComponent {
                 }
             }
         return user
+    }
+
+    override fun loadPost(documentName: String?): LiveData<Post> {
+        val post = MutableLiveData<Post>()
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+            .document(documentName!!)
+            .get()
+            .addOnCompleteListener { document ->
+                if (document.isSuccessful) {
+                    post.value = document.result?.toObject(Post::class.java)
+                }
+            }
+        return post
     }
 
     override fun removeLike(like: Like) {
@@ -174,7 +226,7 @@ class PostRepository : IPostRepository, KoinComponent {
 
     }
 
-    private fun updateUser(user: User?) {
+    override fun updateUser(user: User?) {
         mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
             .document(user?.userUid!!)
             .update(getMappedUser(user = user))
@@ -187,6 +239,7 @@ class PostRepository : IPostRepository, KoinComponent {
         userMap[Constants.FIRESTORE_USER_NAME] = user.userName!!
         userMap[FIRESTORE_USER_TITLE] = user.userTitle!!
         userMap[FIRESTORE_USER_POSTS_COUNT] = user.userPostsCount!!
+        userMap[Constants.FIRESTORE_USER_COVER_IMAGE] = user.coverImage!!
         return userMap
     }
 
