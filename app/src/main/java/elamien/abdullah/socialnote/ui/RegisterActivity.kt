@@ -45,8 +45,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerEventBus() {
-        EventBus.getDefault()
-            .register(this)
+        EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
@@ -55,15 +54,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun unregisterEventBus() {
-        EventBus.getDefault()
-            .unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 
     private fun setupFullScreen() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
     fun onGoogleClick(view: View) {
@@ -74,9 +70,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getSignInOptions(): GoogleSignInOptions? {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.web_api_key))
-            .requestEmail()
-            .build()
+                .requestIdToken(getString(R.string.web_api_key)).requestEmail().build()
 
     }
 
@@ -97,12 +91,9 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
         } else if (event.authenticationEventMessage == Constants.AUTH_EVENT_FAIL) {
-            Toast.makeText(
-                this@RegisterActivity,
-                getString(R.string.auth_failed_msg),
-                Toast.LENGTH_LONG
-            )
-                .show()
+            Toast.makeText(this@RegisterActivity,
+                           getString(R.string.auth_failed_msg),
+                           Toast.LENGTH_LONG).show()
         }
     }
 
@@ -128,9 +119,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun applyAnimation() {
-        val set = TransitionSet().addTransition(Scale(0.7f))
-            .addTransition(Fade())
-            .setInterpolator(FastOutLinearInInterpolator())
+        val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
+                .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.parent, set)
     }
 

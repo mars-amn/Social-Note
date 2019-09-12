@@ -17,7 +17,7 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.USER_UID_INTENT_KEY
  * Created by AbdullahAtta on 06-Sep-19.
  */
 class LikesAdapter(private val context: Context, private val mLikes: List<Like>) :
-    RecyclerView.Adapter<LikesAdapter.LikesViewHolder>() {
+        RecyclerView.Adapter<LikesAdapter.LikesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikesViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -33,7 +33,7 @@ class LikesAdapter(private val context: Context, private val mLikes: List<Like>)
 
 
     inner class LikesViewHolder(private val mBinding: ListItemUserLikesBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+            RecyclerView.ViewHolder(mBinding.root) {
 
         init {
             mBinding.handlers = this

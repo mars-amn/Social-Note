@@ -1,19 +1,16 @@
 package elamien.abdullah.socialnote.ui
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ActivityCreatePostBinding
-import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -30,8 +27,8 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
     var mRegisterToken: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding =
-            DataBindingUtil.setContentView(this@CreatePostActivity, R.layout.activity_create_post)
+        mBinding = DataBindingUtil
+                .setContentView(this@CreatePostActivity, R.layout.activity_create_post)
         mBinding.handlers = this
         initTextEditor()
         getRegisterToken()
@@ -50,40 +47,23 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
         val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
         val categoryName = ""
         val authorName = mFirebaseAuth.currentUser?.displayName
-        val post = Post(
-            mRegisterToken,
-            body,
-            authorName,
-            categoryName,
-            authorId,
-            authorImage,
-            Timestamp(Date())
-        )
+        val post = Post(mRegisterToken,
+                        body,
+                        authorName,
+                        categoryName,
+                        authorId,
+                        authorImage,
+                        Timestamp(Date()))
         mPostViewModel.createPost(post)
-        updateUserTitle()
         finish()
     }
 
-    private fun updateUserTitle() {
-        mPostViewModel.getUser()
-            .observe(this@CreatePostActivity, Observer { user ->
-                val editor = getSharedPreferences(
-                    Constants.USER_OBJECT_INTENT_KEY,
-                    Context.MODE_PRIVATE
-                ).edit()
-                editor.putString(Constants.FIRESTORE_USER_TITLE, user.userTitle)
-                editor.putInt(Constants.FIRESTORE_USER_POSTS_COUNT, user.userPostsCount!!)
-                editor.apply()
-            })
-
-    }
 
     private fun getRegisterToken() {
-        FirebaseInstanceId.getInstance()
-            .instanceId.addOnSuccessListener { instanceIdResult ->
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
             mRegisterToken = instanceIdResult.token
             Toast.makeText(this@CreatePostActivity, instanceIdResult.token, Toast.LENGTH_LONG)
-                .show()
+                    .show()
         }
     }
 

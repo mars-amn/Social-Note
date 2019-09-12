@@ -36,23 +36,21 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
 
     private fun authWithFirebase(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    if (task.result?.additionalUserInfo?.isNewUser!!) {
-                        addNewUserToFirestore(task.result?.user!!)
-                    }
-                    postAuthEvent(Constants.AUTH_EVENT_SUCCESS)
-                } else {
-                    postAuthEvent(Constants.AUTH_EVENT_FAIL)
+        mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                if (task.result?.additionalUserInfo?.isNewUser!!) {
+                    addNewUserToFirestore(task.result?.user!!)
                 }
+                postAuthEvent(Constants.AUTH_EVENT_SUCCESS)
+            } else {
+                postAuthEvent(Constants.AUTH_EVENT_FAIL)
             }
+        }
     }
 
     private fun addNewUserToFirestore(user: FirebaseUser) {
-        mFirestore.collection(Constants.FIRESTORE_USERS_COLLECTION_NAME)
-            .document(user.uid)
-            .set(getMappedUser(user))
+        mFirestore.collection(Constants.FIRESTORE_USERS_COLLECTION_NAME).document(user.uid)
+                .set(getMappedUser(user))
     }
 
     private fun getMappedUser(user: FirebaseUser): HashMap<String, Any> {
@@ -67,20 +65,17 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
     }
 
     private fun postAuthEvent(event: String) {
-        EventBus.getDefault()
-            .post(AuthenticationEvent(event))
+        EventBus.getDefault().post(AuthenticationEvent(event))
     }
 
     private fun getRandomImage() = images[Random().nextInt(images.size)]
 
-    private val images = arrayOf(
-        "http://bit.ly/2PhvwfN",
-        "http://bit.ly/2HpJ2aH",
-        "http://bit.ly/327HLNz",
-        "http://bit.ly/2Pd352y",
-        "http://bit.ly/2MFbiKO",
-        "http://bit.ly/341m7wh",
-        "http://bit.ly/2U6i0dL",
-        "http://bit.ly/2KZJ5fy"
-    )
+    private val images = arrayOf("http://bit.ly/2PhvwfN",
+                                 "http://bit.ly/2HpJ2aH",
+                                 "http://bit.ly/327HLNz",
+                                 "http://bit.ly/2Pd352y",
+                                 "http://bit.ly/2MFbiKO",
+                                 "http://bit.ly/341m7wh",
+                                 "http://bit.ly/2U6i0dL",
+                                 "http://bit.ly/2KZJ5fy")
 }

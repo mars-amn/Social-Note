@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.ui.ProfileActivity" />
+
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/profile_scene">
+
+        <ImageView
+            android:id="@+id/userProfileCoverImage"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/user_profile_cover_image_height"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
+
+        <View
+            android:id="@+id/gradientView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/user_profile_name_title_background_height"
+            android:background="@drawable/profile_cover_gradient"
+            app:layout_constraintBottom_toBottomOf="@id/userProfileCoverImage"
+            app:layout_constraintEnd_toEndOf="@id/userProfileCoverImage"
+            app:layout_constraintStart_toStartOf="@id/userProfileCoverImage" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/userPostsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profileRecentPostsLabel"
+            tools:listitem="@layout/list_item_feed" />
+
+        <ImageView
+            android:id="@+id/userProfileImage"
+            android:layout_width="@dimen/user_profile_image_width"
+            android:layout_height="@dimen/user_profile_image_height"
+            android:layout_marginBottom="@dimen/user_profile_name_title_background_height"
+            app:layout_constraintBottom_toBottomOf="@id/userProfileCoverImage"
+            app:layout_constraintEnd_toEndOf="@+id/userProfileCoverImage"
+            app:layout_constraintStart_toStartOf="@+id/userProfileCoverImage"
+
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/userProfileName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/user_name_profile_margin"
+            android:textColor="@color/user_name_color"
+            android:textSize="@dimen/user_profile_name_text_size"
+            app:layout_constraintBottom_toTopOf="@+id/userProfileTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userProfileImage" />
+
+        <TextView
+            android:id="@+id/userProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/user_name_profile_margin"
+            android:textSize="@dimen/user_profile_name_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/userProfileCoverImage"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/profileRecentPostsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/user_profile_recent_posts_margin"
+            android:text="@string/user_profile_recent_posts_label"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/userProfileCoverImage" />
+
+        <ImageButton
+            android:id="@+id/userProfileChangeCoverImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/user_profile_change_cover_margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{handlers::onChangeCoverImageClick}"
+            app:layout_constraintEnd_toEndOf="@id/userProfileCoverImage"
+            app:layout_constraintTop_toTopOf="@id/userProfileCoverImage"
+            app:srcCompat="@drawable/ic_edit" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

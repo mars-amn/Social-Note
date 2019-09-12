@@ -27,10 +27,9 @@ class LikesActivity : AppCompatActivity() {
     }
 
     private fun loadUserLikes(documentName: String?) {
-        mPostViewModel.loadPost(documentName)
-            .observe(this@LikesActivity, Observer { post ->
-                val adapter = LikesAdapter(this@LikesActivity, post?.likes as List<Like>)
-                mBinding.userLikesRecyclerView.adapter = adapter
-            })
+        mPostViewModel.loadPost(documentName).observe(this@LikesActivity, Observer { post ->
+            val adapter = LikesAdapter(this@LikesActivity, post?.likes as List<Like>)
+            mBinding.userLikesRecyclerView.adapter = adapter
+        })
     }
 }

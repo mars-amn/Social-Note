@@ -44,6 +44,6 @@ class FMService : FirebaseMessagingService() {
 
     private fun notifyAuthor(text: String, title: String, documentId: String, token: String) {
         NotificationsUtils.getNotificationUtils()
-            .sendPostInteractNotification(applicationContext, text, title, documentId, token)
+                .sendPostInteractNotification(applicationContext, text, title, documentId, token)
     }
 }

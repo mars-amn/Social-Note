@@ -31,7 +31,8 @@ import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener,
-    NavigationView.OnNavigationItemSelectedListener, PagedNoteListAdapter.LongClickListener {
+                     NavigationView.OnNavigationItemSelectedListener,
+                     PagedNoteListAdapter.LongClickListener {
 
     private lateinit var adapter: PagedNoteListAdapter
     private lateinit var mBinding: ActivityHomeBinding
@@ -68,13 +69,11 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         get() {
             mBinding.navigationView.itemIconTintList = null
             setSupportActionBar(mBinding.toolbar)
-            return object : ActionBarDrawerToggle(
-                this,
-                mBinding.drawerLayout,
-                mBinding.toolbar,
-                R.string.nav_drawer_open,
-                R.string.nav_drawer_close
-            ) {
+            return object : ActionBarDrawerToggle(this,
+                                                  mBinding.drawerLayout,
+                                                  mBinding.toolbar,
+                                                  R.string.nav_drawer_open,
+                                                  R.string.nav_drawer_close) {
                 override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                     super.onDrawerSlide(drawerView, slideOffset)
 
@@ -92,26 +91,24 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun loadNotes() {
-        mViewModel.loadPagedNotes()
-            .observe(this, Observer<PagedList<Note>> { list ->
-                when {
-                    list.isNotEmpty() -> {
-                        addNotesToRecyclerView(list)
-                    }
-                    isSyncingEnabled -> {
-                        hideRecyclerView()
-                        getSyncedNotes()
-                    }
-                    else -> hideRecyclerView()
+        mViewModel.loadPagedNotes().observe(this, Observer<PagedList<Note>> { list ->
+            when {
+                list.isNotEmpty() -> {
+                    addNotesToRecyclerView(list)
                 }
-            })
+                isSyncingEnabled -> {
+                    hideRecyclerView()
+                    getSyncedNotes()
+                }
+                else -> hideRecyclerView()
+            }
+        })
     }
 
     private fun getSyncedNotes() {
         val syncService = Intent(this@HomeActivity, SyncingService::class.java)
         syncService.action = Constants.SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION
-        SyncingService.getSyncingService()
-            .enqueueCallSyncedNotes(this@HomeActivity, syncService)
+        SyncingService.getSyncingService().enqueueCallSyncedNotes(this@HomeActivity, syncService)
     }
 
     private fun addNotesToRecyclerView(list: PagedList<Note>) {
@@ -155,8 +152,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         val syncService = Intent(this@HomeActivity, SyncingService::class.java)
         syncService.action = Constants.SYNC_DELETE_NOTE_INTENT_ACTION
         syncService.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, id)
-        SyncingService.getSyncingService()
-            .enqueueSyncDeleteNote(this@HomeActivity, syncService)
+        SyncingService.getSyncingService().enqueueSyncDeleteNote(this@HomeActivity, syncService)
     }
 
     private fun setupSearchView() {
@@ -170,9 +166,8 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     override fun onQueryTextChange(newText: String?): Boolean {
         val searchSubject = BehaviorSubject.create<String>()
         searchSubject.onNext(newText!!)
-        mDisposables.add(searchSubject.debounce(700, TimeUnit.MILLISECONDS).observeOn(
-            AndroidSchedulers.mainThread()
-        ).subscribe { query ->
+        mDisposables.add(searchSubject.debounce(700,
+                                                TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe { query ->
             searchNotes(query)
         })
         return false
@@ -180,11 +175,11 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun searchNotes(query: String?) {
         mViewModel.searchForNote("%$query%")
-            .observe(this@HomeActivity, Observer<PagedList<Note>> { list ->
-                if (list.isNotEmpty()) {
-                    applySearchResults(list)
-                }
-            })
+                .observe(this@HomeActivity, Observer<PagedList<Note>> { list ->
+                    if (list.isNotEmpty()) {
+                        applySearchResults(list)
+                    }
+                })
     }
 
     private fun applySearchResults(list: PagedList<Note>) {
@@ -202,8 +197,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
             R.id.feedMenuItem -> if (userIsLoggedIn()) {
                 openFeedActivity()
             } else {
-                Toast.makeText(this@HomeActivity, "You have to login", Toast.LENGTH_LONG)
-                    .show()
+                Toast.makeText(this@HomeActivity, "You have to login", Toast.LENGTH_LONG).show()
             }
         }
         return true
@@ -225,8 +219,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         when {
             mBinding.searchView.isSearchOpen -> mBinding.searchView.closeSearch()
             mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(
-                GravityCompat.START
-            )
+                GravityCompat.START)
             else -> super.onBackPressed()
         }
     }

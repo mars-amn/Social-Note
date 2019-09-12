@@ -25,6 +25,7 @@ import elamien.abdullah.socialnote.database.remote.firestore.models.Like
 import elamien.abdullah.socialnote.database.remote.firestore.models.Post
 import elamien.abdullah.socialnote.databinding.ListItemFeedBinding
 import elamien.abdullah.socialnote.ui.LikesActivity
+import elamien.abdullah.socialnote.ui.ProfileActivity
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
@@ -37,12 +38,10 @@ import kotlin.math.pow
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class PostsFeedAdapter(
-    private val listener: PostInteractListener,
-    private val context: Context,
-    private var mPostsFeed: List<Post>
-) :
-    RecyclerView.Adapter<PostsFeedAdapter.PostsFeedViewHolder>(), KoinComponent {
+class PostsFeedAdapter(private val listener: PostInteractListener,
+                       private val context: Context,
+                       private var mPostsFeed: List<Post>) :
+        RecyclerView.Adapter<PostsFeedAdapter.PostsFeedViewHolder>(), KoinComponent {
 
     private val mFirebaseAuth: FirebaseAuth by inject()
     val likedArray = ArrayList<String>()
@@ -67,8 +66,7 @@ class PostsFeedAdapter(
 
     private var mRegisterToken: String? = null
     private fun getRegisterToken() {
-        FirebaseInstanceId.getInstance()
-            .instanceId.addOnSuccessListener { instanceIdResult ->
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
             mRegisterToken = instanceIdResult.token
         }
     }
@@ -85,7 +83,7 @@ class PostsFeedAdapter(
     }
 
     inner class PostsFeedViewHolder(private val mBinding: ListItemFeedBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+            RecyclerView.ViewHolder(mBinding.root) {
 
         init {
             mBinding.handlers = this
@@ -96,8 +94,8 @@ class PostsFeedAdapter(
             mBinding.post = post
             setUserTitle(post)
             mBinding.listItemFeedBodyText.text = getPost(post.post!!)
-            mBinding.listItemFeedDate.text =
-                DateUtils.getRelativeTimeSpanString(post.getDateCreated().time)
+            mBinding.listItemFeedDate.text = DateUtils
+                    .getRelativeTimeSpanString(post.getDateCreated().time)
             if (likedArray.contains(post.documentName!!)) {
                 showLikedButton()
             }
@@ -105,9 +103,7 @@ class PostsFeedAdapter(
                 setupLikesCounter(numberCalculation(post.likes!!.size))
                 post.likes?.forEach { like ->
                     if (like.userLikerUId == mFirebaseAuth.currentUser?.uid || likedArray.contains(
-                            post.documentName!!
-                        )
-                    ) {
+                            post.documentName!!)) {
                         showLikedButton()
                     } else {
                         hideLikedButton()
@@ -160,9 +156,8 @@ class PostsFeedAdapter(
         }
 
         private fun applyAnimation() {
-            val set = TransitionSet().addTransition(Scale(0.7f))
-                .addTransition(Fade())
-                .setInterpolator(FastOutLinearInInterpolator())
+            val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
+                    .setInterpolator(FastOutLinearInInterpolator())
             TransitionManager.beginDelayedTransition(mBinding.listItemFeedPostParent, set)
         }
 
@@ -180,15 +175,13 @@ class PostsFeedAdapter(
             } else {
                 setupLikesCounter("1")
             }
-            val like = Like(
-                mFirebaseAuth.currentUser?.uid,
+            val like = Like(mFirebaseAuth.currentUser?.uid,
 
-                post.registerToken,
-                mRegisterToken,
-                mFirebaseAuth.currentUser?.displayName,
-                post.documentName,
-                mFirebaseAuth.currentUser?.photoUrl.toString()
-            )
+                            post.registerToken,
+                            mRegisterToken,
+                            mFirebaseAuth.currentUser?.displayName,
+                            post.documentName,
+                            mFirebaseAuth.currentUser?.photoUrl.toString())
             listener.onLikeButtonClick(like)
             likedArray.add(post.documentName!!)
         }
@@ -203,24 +196,17 @@ class PostsFeedAdapter(
             hideLikedButton()
             val post = mPostsFeed[adapterPosition]
             if (post.likes != null) {
-                setupLikesCounter(
-                    numberCalculation(
-                        mBinding.listItemLikesCounter.text.toString().toInt().minus(
-                            1
-                        )
-                    )
-                )
+                setupLikesCounter(numberCalculation(mBinding.listItemLikesCounter.text.toString().toInt().minus(
+                    1)))
             } else {
                 hideLikeCounter()
             }
-            val like = Like(
-                mFirebaseAuth.currentUser?.uid,
-                post.registerToken,
-                mRegisterToken,
-                mFirebaseAuth.currentUser?.displayName,
-                post.documentName,
-                mFirebaseAuth.currentUser?.photoUrl.toString()
-            )
+            val like = Like(mFirebaseAuth.currentUser?.uid,
+                            post.registerToken,
+                            mRegisterToken,
+                            mFirebaseAuth.currentUser?.displayName,
+                            post.documentName,
+                            mFirebaseAuth.currentUser?.photoUrl.toString())
             listener.onUnLikeButtonClick(like)
             likedArray.remove(post.documentName!!)
         }
@@ -228,15 +214,10 @@ class PostsFeedAdapter(
         fun onSharePostClick(view: View) {
             val post = mPostsFeed[adapterPosition]
 
-            ShareCompat.IntentBuilder.from(context as AppCompatActivity)
-                .setType("text/plain")
-                .setText(
-                    "Checkout what ${post.authorName} posted on Social Note \n\n" + "${getPost(
-                        post.post!!
-                    )}"
-                )
-                .setChooserTitle(context.getString(R.string.share_title))
-                .startChooser()
+            ShareCompat.IntentBuilder.from(context as AppCompatActivity).setType("text/plain")
+                    .setText("Checkout what ${post.authorName} posted on Social Note \n\n" + "${getPost(
+                        post.post!!)}").setChooserTitle(context.getString(R.string.share_title))
+                    .startChooser()
         }
 
         @Suppress("DEPRECATION")
@@ -253,6 +234,13 @@ class PostsFeedAdapter(
             val post = mPostsFeed[adapterPosition]
             val intent = Intent(context, LikesActivity::class.java)
             intent.putExtra(Constants.USER_LIKES_INTENT_KEY, post.documentName)
+            context.startActivity(intent)
+        }
+
+        fun onUserImageClick(view: View) {
+            val userUid = mPostsFeed[adapterPosition].authorUID!!
+            val intent = Intent(context, ProfileActivity::class.java)
+            intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
             context.startActivity(intent)
         }
     }

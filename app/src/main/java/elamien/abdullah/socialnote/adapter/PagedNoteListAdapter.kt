@@ -21,14 +21,11 @@ import kotlin.collections.ArrayList
 /**
  * Created by AbdullahAtta on 7/23/2019.
  */
-class PagedNoteListAdapter(
-    private val listener: LongClickListener,
-    private val context: Context
-) :
-    PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
+class PagedNoteListAdapter(private val listener: LongClickListener, private val context: Context) :
+        PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
 
     val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors)
-        .toCollection(ArrayList())
+            .toCollection(ArrayList())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -44,7 +41,7 @@ class PagedNoteListAdapter(
     var colorBeforePrevious = 1
 
     inner class NotesViewHolder(var mBinding: ListItemNotesBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+            RecyclerView.ViewHolder(mBinding.root) {
 
         init {
             mBinding.handlers = this
@@ -69,16 +66,16 @@ class PagedNoteListAdapter(
 
 
         fun onNoteLongClick(view: View): Boolean {
-            MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.delete_note_dialog_title))
-                .setMessage(context.getString(R.string.delete_note_dialog_message))
-                .setPositiveButton(context.getString(R.string.delete_note_dialog_positive_button_label)) { dialog, _ ->
-                    deleteNote()
-                    dialog.dismiss()
-                }
-                .setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .show()
+            MaterialAlertDialogBuilder(context)
+                    .setTitle(context.getString(R.string.delete_note_dialog_title))
+                    .setMessage(context.getString(R.string.delete_note_dialog_message))
+                    .setPositiveButton(context.getString(R.string.delete_note_dialog_positive_button_label)) { dialog, _ ->
+                        deleteNote()
+                        dialog.dismiss()
+                    }
+                    .setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
+                        dialog.dismiss()
+                    }.show()
 
             return true
         }

@@ -20,8 +20,7 @@ import org.koin.dsl.module
  */
 val appModules = module {
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db")
-            .build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db").build()
     }
 
     single { get<AppDatabase>().notesDao() }

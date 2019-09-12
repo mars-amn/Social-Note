@@ -29,41 +29,39 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
 
     private val mPostViewModel: PostViewModel by viewModel()
     private val mFirebaseAuth: FirebaseAuth by inject()
+    private lateinit var mUser: User
 
 
     private lateinit var mBinding: ActivityFeedBinding
     private lateinit var mAdapter: PostsFeedAdapter
-    private lateinit var mUser: User
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
         mBinding.handlers = this
         mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
-
-        loadPosts()
         loadUser()
+        loadPosts()
         mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
             transformations(CircleCropTransformation())
         }
     }
 
     private fun loadUser() {
-        mPostViewModel.getUser()
-            .observe(this@FeedActivity, Observer { user ->
-                mUser = user
-            })
+        mPostViewModel.getUser().observe(this@FeedActivity, Observer { user ->
+            mUser = user
+        })
     }
 
     private fun loadPosts() {
         showLoadingView()
-        mPostViewModel.getPosts()
-            .observe(this@FeedActivity, Observer { posts ->
-                if (posts.isNotEmpty()) {
-                    mAdapter.addPosts(posts)
-                    mBinding.feedRecyclerView.adapter = mAdapter
-                    hideLoadingView()
-                }
-            })
+        mPostViewModel.getPosts().observe(this@FeedActivity, Observer { posts ->
+            if (posts.isNotEmpty()) {
+                mAdapter.addPosts(posts)
+                mBinding.feedRecyclerView.adapter = mAdapter
+                hideLoadingView()
+            }
+        })
     }
 
     private fun showLoadingView() {
@@ -73,9 +71,8 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
     }
 
     private fun applyAnimation() {
-        val set = TransitionSet().addTransition(Scale(0.7f))
-            .addTransition(Fade())
-            .setInterpolator(FastOutLinearInInterpolator())
+        val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
+                .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.postsFeedParent, set)
     }
 
@@ -93,7 +90,13 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         val intent = Intent(this@FeedActivity, CommentActivity::class.java)
         intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
         intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
-        intent.putExtra(Constants.USER_OBJECT_INTENT_KEY, mUser)
+        startActivity(intent)
+    }
+
+    fun onUserImageClick(view: View) {
+        val userUid = mUser.userUid
+        val intent = Intent(this, ProfileActivity::class.java)
+        intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
         startActivity(intent)
     }
 

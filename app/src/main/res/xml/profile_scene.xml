@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Transition
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start"
+        app:duration="1000">
+        <OnSwipe
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@+id/profileRecentPostsLabel"
+            app:touchAnchorSide="top" />
+    </Transition>
+    <ConstraintSet android:id="@+id/start">
+
+    </ConstraintSet>
+    <ConstraintSet android:id="@+id/end">
+
+        <Constraint
+            android:id="@id/userProfileCoverImage"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </Constraint>
+        <Constraint
+            android:id="@id/userProfileImage"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+
+            android:alpha="1"
+            app:layout_constraintBottom_toBottomOf="@id/userProfileCoverImage"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </Constraint>
+        <Constraint
+            android:id="@id/userProfileName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="1"
+            app:layout_constraintBottom_toTopOf="@+id/userProfileTitle"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        </Constraint>
+        <Constraint
+            android:id="@id/userProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:alpha="1"
+            app:layout_constraintBottom_toBottomOf="@id/userProfileCoverImage"
+            app:layout_constraintEnd_toEndOf="parent">
+
+        </Constraint>
+
+    </ConstraintSet>
+</MotionScene>

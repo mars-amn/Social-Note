@@ -45,8 +45,8 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_location_map)
         mBinding.handlers = this
         if (intent != null && intent.hasExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)) {
-            mGeofenceLocation =
-                intent.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+            mGeofenceLocation = intent
+                    .getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
         }
         mMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mMapFragment.getMapAsync(this)
@@ -79,10 +79,8 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun setFullScreen() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
     @SuppressLint("MissingPermission")
@@ -100,20 +98,14 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
                     showPlaceDialogConfirm(addresses, latLng)
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    Toast.makeText(
-                        this@GeofencePickerActivity,
-                        getString(R.string.error_msg),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
+                    Toast.makeText(this@GeofencePickerActivity,
+                                   getString(R.string.error_msg),
+                                   Toast.LENGTH_LONG).show()
                 } catch (e: IllegalArgumentException) {
                     e.printStackTrace()
-                    Toast.makeText(
-                        this@GeofencePickerActivity,
-                        getString(R.string.error_msg),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
+                    Toast.makeText(this@GeofencePickerActivity,
+                                   getString(R.string.error_msg),
+                                   Toast.LENGTH_LONG).show()
                 }
 
             }
@@ -131,35 +123,22 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.clear()
         mMap.addMarker(MarkerOptions().position(latLng).icon(getMapMarker()))
 
-        mMap.addCircle(
-            CircleOptions().center(latLng).radius(Constants.GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
-                ContextCompat.getColor(
+        mMap
+                .addCircle(CircleOptions().center(latLng).radius(Constants.GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
+                    ContextCompat.getColor(this@GeofencePickerActivity,
+                                           R.color.circle_stroke_color)).fillColor(ContextCompat.getColor(
                     this@GeofencePickerActivity,
-                    R.color.circle_stroke_color
-                )
-            ).fillColor(
-                ContextCompat.getColor(
-                    this@GeofencePickerActivity,
-                    R.color.circle_map_color
-                )
-            )
-        )
+                    R.color.circle_map_color)))
     }
 
     private fun getMapMarker(): BitmapDescriptor {
-        val markerDrawable =
-            ContextCompat.getDrawable(this@GeofencePickerActivity, R.drawable.ic_marker)
-        markerDrawable?.setBounds(
-            0,
-            0,
-            markerDrawable.intrinsicWidth,
-            markerDrawable.intrinsicHeight
-        )
-        val markerBitmap = Bitmap.createBitmap(
-            markerDrawable?.intrinsicWidth!!,
-            markerDrawable.intrinsicHeight,
-            Bitmap.Config.ARGB_8888
-        )
+        val markerDrawable = ContextCompat
+                .getDrawable(this@GeofencePickerActivity, R.drawable.ic_marker)
+        markerDrawable
+                ?.setBounds(0, 0, markerDrawable.intrinsicWidth, markerDrawable.intrinsicHeight)
+        val markerBitmap = Bitmap.createBitmap(markerDrawable?.intrinsicWidth!!,
+                                               markerDrawable.intrinsicHeight,
+                                               Bitmap.Config.ARGB_8888)
         val canvas = Canvas(markerBitmap)
         markerDrawable.draw(canvas)
         return BitmapDescriptorFactory.fromBitmap(markerBitmap)
@@ -180,28 +159,26 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
                 } else {
                     ""
                 }
-                message(
-                    null,
-                    "${getString(R.string.place_picker_dialog_message)} $subAdminArea , $featureName ?"
-                )
+                message(null,
+                        "${getString(R.string.place_picker_dialog_message)} $subAdminArea , $featureName ?")
                 cornerRadius(resources.getInteger(R.integer.place_picker_dialog_corner_radius).toFloat())
                 negativeButton(null,
-                    getString(R.string.place_picker_dialog_button_negative_label),
-                    object : DialogCallback {
-                        override fun invoke(dialog: MaterialDialog) {
-                            dialog.dismiss()
-                        }
+                               getString(R.string.place_picker_dialog_button_negative_label),
+                               object : DialogCallback {
+                                   override fun invoke(dialog: MaterialDialog) {
+                                       dialog.dismiss()
+                                   }
 
-                    })
+                               })
                 positiveButton(null,
-                    getString(R.string.place_picker_dialog_button_positive_label),
-                    object : DialogCallback {
-                        override fun invoke(dialog: MaterialDialog) {
-                            dialog.dismiss()
-                            getUserPreferredLocation(latLng)
-                        }
+                               getString(R.string.place_picker_dialog_button_positive_label),
+                               object : DialogCallback {
+                                   override fun invoke(dialog: MaterialDialog) {
+                                       dialog.dismiss()
+                                       getUserPreferredLocation(latLng)
+                                   }
 
-                    })
+                               })
             }
         }
     }

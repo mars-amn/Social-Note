@@ -7,11 +7,17 @@
         <variable
             name="comment"
             type="elamien.abdullah.socialnote.database.remote.firestore.models.Comment" />
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.adapter.CommentsAdapter.LeftCommentsViewHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content">
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/imageCardViewParent"
@@ -36,7 +42,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/commentCardViewParent"
             android:layout_width="@dimen/comment_card_view_parent_width"
-            android:layout_height="@dimen/comment_card_view_parent_height"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/comment_card_view_parent_margin"
             android:background="@color/gray_background_color"
             android:orientation="vertical"
@@ -56,6 +62,8 @@
                     android:layout_width="@dimen/comment_image_width"
                     android:layout_height="@dimen/comment_image_height"
                     android:layout_margin="@dimen/comment_image_margin"
+                    android:onClick="@{handlers::onUserImageClick}"
+
                     app:authorCommentImageUrl="@{comment.authorImage}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -82,7 +90,7 @@
                 <TextView
                     android:id="@+id/listItemCommentBody"
                     android:layout_width="0dp"
-                    android:layout_height="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/list_item_comment_author_body_margin_top"
                     android:padding="@dimen/list_item_comment_author_body_padding"
                     android:text="@{comment.comment}"
@@ -91,6 +99,37 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/listItemCommentAuthorImage" />
+
+                <TextView
+                    android:id="@+id/listItemFeedUserAuthorTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/list_item_feed_user_title_margin"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:text="@string/author_title"
+                    android:textColor="@color/author_title_color"
+                    android:visibility="gone"
+                    app:layout_constraintBaseline_toBaselineOf="@id/listItemCommentAuthorName"
+                    app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorName"
+                    app:layout_constraintStart_toEndOf="@+id/listItemCommentAuthorName"
+                    app:layout_constraintTop_toTopOf="@+id/listItemCommentAuthorName" />
+
+                <TextView
+                    android:id="@+id/listItemFeedUserReaderTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/list_item_feed_user_title_margin"
+                    android:fontFamily="@font/poppins_medium"
+                    android:gravity="center"
+                    android:text="@string/reader_title"
+                    android:textColor="@color/reader_title_color"
+                    android:visibility="gone"
+                    app:layout_constraintBaseline_toBaselineOf="@id/listItemCommentAuthorName"
+                    app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorName"
+                    app:layout_constraintStart_toEndOf="@+id/listItemCommentAuthorName"
+                    app:layout_constraintTop_toTopOf="@+id/listItemCommentAuthorName" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

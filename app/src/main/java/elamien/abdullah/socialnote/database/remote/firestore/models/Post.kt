@@ -10,16 +10,14 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-data class Post(
-    var registerToken: String? = null,
-    var post: String? = null,
-    var authorName: String? = null,
-    var categoryName: String? = null,
-    var authorUId: String? = null,
-    var authorImage: String? = null,
-    private var dateCreated: Timestamp? = null,
-    var userTitle: String? = null
-) {
+data class Post(var registerToken: String? = null,
+                var post: String? = null,
+                var authorName: String? = null,
+                var categoryName: String? = null,
+                var authorUID: String? = null,
+                var authorImage: String? = null,
+                private var dateCreated: Timestamp? = null,
+                var userTitle: String? = null) {
 
     var likes: ArrayList<Like>? = null
     var comments: List<Comment>? = null

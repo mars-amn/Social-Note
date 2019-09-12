@@ -12,13 +12,9 @@ import java.util.*
  * Created by AbdullahAtta on 7/19/2019.
  */
 @Entity(tableName = "Notes")
-class Note(
-    @ColumnInfo(name = "note_title") var noteTitle: String?, @ColumnInfo(name = "note_body") var note: String?, @ColumnInfo(
-        name = "date_created"
-    ) var dateCreated: Date?, @ColumnInfo(name = "date_modified") var dateModified: Date?, @Embedded(
-        prefix = "location_"
-    ) var geofence: NoteGeofence? = null, @Embedded(prefix = "preferred_") var timeReminder: NoteReminder? = null
-) {
+class Note(@ColumnInfo(name = "note_title") var noteTitle: String?, @ColumnInfo(name = "note_body") var note: String?, @ColumnInfo(
+    name = "date_created") var dateCreated: Date?, @ColumnInfo(name = "date_modified") var dateModified: Date?, @Embedded(
+    prefix = "location_") var geofence: NoteGeofence? = null, @Embedded(prefix = "preferred_") var timeReminder: NoteReminder? = null) {
 
     @PrimaryKey
     @ColumnInfo(name = "note_id")
