@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="elamien.abdullah.socialnote.database.remote.firestore.models.User" />
+
+        <variable
+            name="handlers"
+            type="elamien.abdullah.socialnote.ui.HomeActivity" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="1dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="1dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/profileCoverHeaderImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/nav_header_cover_image_height"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:userProfileCoverImageUrl="@{user.coverImage}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/profileHeaderImage"
+                android:layout_width="@dimen/nav_header_image_width"
+                android:layout_height="@dimen/nav_header_image_height"
+                android:layout_marginStart="@dimen/nav_header_image_margin_start"
+                android:layout_marginBottom="@dimen/nav_header_image_margin_bottom"
+                android:onClick="@{handlers::onProfileImageClick}"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="@id/profileCoverHeaderImage"
+                app:layout_constraintStart_toStartOf="parent"
+                app:userProfileImageUrl="@{user.userImage}"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

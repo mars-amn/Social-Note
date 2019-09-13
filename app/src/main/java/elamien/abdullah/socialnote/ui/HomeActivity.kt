@@ -19,14 +19,18 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
 import elamien.abdullah.socialnote.database.local.notes.Note
+import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.databinding.ActivityHomeBinding
+import elamien.abdullah.socialnote.databinding.NavHeaderLayoutBinding
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
+import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -40,6 +44,9 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     private val mFirebaseAuth: FirebaseAuth by inject()
     private val mDisposables = CompositeDisposable()
     private var isSyncingEnabled = false
+    private val mPostViewModel: PostViewModel by viewModel()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_home)
@@ -62,7 +69,34 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         mBinding.drawerLayout.addDrawerListener(toggle)
         mBinding.navigationView.setNavigationItemSelectedListener(this@HomeActivity)
         toggle.syncState()
+        setupUserHeader()
+    }
 
+    private fun setupUserHeader() {
+        if (mFirebaseAuth.currentUser != null) {
+            mPostViewModel.getUser().observe(this@HomeActivity, Observer { user ->
+                showUserHeader(user)
+            })
+        }
+    }
+
+    private fun showUserHeader(user: User?) {
+        val headerBinding: NavHeaderLayoutBinding = DataBindingUtil
+                .inflate(layoutInflater, R.layout.nav_header_layout, mBinding.navigationView, false)
+        mBinding.navigationView.addHeaderView(headerBinding.root)
+        headerBinding.user = user!!
+        headerBinding.handlers = this
+    }
+
+    fun onProfileImageClick(view: View) {
+        startUserProfileActivity()
+    }
+
+    private fun startUserProfileActivity() {
+        val userUid = mFirebaseAuth.currentUser?.uid
+        val intent = Intent(this@HomeActivity, ProfileActivity::class.java)
+        intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
+        startActivity(intent)
     }
 
     private val actionBarDrawerToggle: ActionBarDrawerToggle

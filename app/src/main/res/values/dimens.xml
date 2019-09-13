@@ -69,4 +69,9 @@
     <dimen name="user_profile_change_cover_margin">8dp</dimen>
     <dimen name="social_login_buttons_margin">32dp</dimen>
     <dimen name="social_register_button_height">40dp</dimen>
+    <dimen name="nav_header_cover_image_height">300dp</dimen>
+    <dimen name="nav_header_image_width">70dp</dimen>
+    <dimen name="nav_header_image_height">70dp</dimen>
+    <dimen name="nav_header_image_margin_start">8dp</dimen>
+    <dimen name="nav_header_image_margin_bottom">8dp</dimen>
 </resources>
