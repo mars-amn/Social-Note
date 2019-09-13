@@ -3,6 +3,7 @@ package elamien.abdullah.socialnote.repository
 import android.net.Uri
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,10 +39,13 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
                         val user = task.result?.user
                         val imageUrl = "https://graph.facebook.com/$facebookUserId/picture?height=500"
                         val userProfileChangeRequest = UserProfileChangeRequest.Builder()
-                                .setPhotoUri(Uri.parse("https://graph.facebook.com/$facebookUserId/picture?height=500"))
-                                .build()
-                        user?.updateProfile(userProfileChangeRequest)
-                        addNewUserToFirestore(user!!, imageUrl)
+                                .setPhotoUri(Uri.parse(imageUrl)).build()
+                        user?.updateProfile(userProfileChangeRequest)?.addOnSuccessListener {
+                            OnSuccessListener<Void> {
+                                val updatedUser = mAuth.currentUser
+                                addNewUserToFirestore(updatedUser!!)
+                            }
+                        }
                     } else {
                         addNewUserToFirestore(task.result?.user!!)
                     }
@@ -52,23 +56,6 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
             }
         }.addOnFailureListener { e ->
         }
-    }
-
-    private fun addNewUserToFirestore(user: FirebaseUser, imageUrl: String) {
-        mFirestore.collection(Constants.FIRESTORE_USERS_COLLECTION_NAME).document(user.uid)
-                .set(getMappedUser(user, imageUrl))
-    }
-
-    private fun getMappedUser(user: FirebaseUser,
-                              imageUrl: String): java.util.HashMap<String, Any> {
-        val userMap = HashMap<String, Any>()
-        userMap[Constants.FIRESTORE_USER_UID] = user.uid
-        userMap[Constants.FIRESTORE_USER_IMAGE_URL] = imageUrl
-        userMap[Constants.FIRESTORE_USER_NAME] = user.displayName!!
-        userMap[Constants.FIRESTORE_USER_TITLE] = "Reader"
-        userMap[Constants.FIRESTORE_USER_POSTS_COUNT] = 0
-        userMap[Constants.FIRESTORE_USER_COVER_IMAGE] = getRandomImage()
-        return userMap
     }
 
     override fun registerGoogleUser(task: Task<GoogleSignInAccount>) {
