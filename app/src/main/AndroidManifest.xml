@@ -60,10 +60,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
-                <meta-data
-                    android:name="android.app.shortcuts"
-                    android:resource="@xml/app_shortcuts" />
+
             </intent-filter>
+            <meta-data
+            android:name="android.app.shortcuts"
+            android:resource="@xml/app_shortcuts" />
         </activity>
         <activity
             android:name=".ui.AddEditNoteActivity"

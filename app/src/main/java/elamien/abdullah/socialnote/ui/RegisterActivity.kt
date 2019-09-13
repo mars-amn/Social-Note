@@ -11,6 +11,7 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
+import coil.api.load
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -153,6 +154,9 @@ class RegisterActivity : AppCompatActivity() {
     fun onRegisterButtonClick(view: View) {
         applyAnimation()
         mBinding.animationGroup.visibility = View.GONE
+        mBinding.registerImageBackground.load(R.drawable.register_background) {
+            crossfade(true)
+        }
         mBinding.registerGroup.visibility = View.VISIBLE
     }
 

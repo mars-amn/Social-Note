@@ -16,6 +16,16 @@
         android:layout_height="match_parent"
         tools:context=".ui.RegisterActivity">
 
+        <ImageView
+            android:id="@+id/registerImageBackground"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/cloudAnimationView"
             android:layout_width="match_parent"
@@ -34,10 +44,13 @@
             android:id="@+id/registerLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/cabin_medium"
             android:gravity="center"
+            android:padding="4dp"
             android:text="@string/register_label_text"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="#fff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -66,12 +79,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/registerButton" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/facebookAppLoginButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/social_register_button_height"
             android:layout_margin="@dimen/social_login_buttons_margin"
-            android:background="@color/facebook_button_background_color"
+            android:background="@drawable/button_background"
             android:drawableStart="@drawable/ic_facebook"
             android:gravity="center"
             android:onClick="@{handlers::onFacebookButtonClick}"
@@ -79,43 +93,45 @@
             android:textAllCaps="false"
             android:textColor="@color/facebook_button_text_color"
             app:backgroundTint="@color/facebook_button_background_color"
+            app:layout_constraintBottom_toTopOf="@+id/GoogleLoginButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/registerLabel" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/GoogleLoginButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/social_register_button_height"
             android:layout_margin="@dimen/social_login_buttons_margin"
-            android:background="@color/google_button_background_color"
+            android:background="@drawable/button_background"
+            android:drawableStart="@drawable/ic_google"
             android:gravity="center"
             android:onClick="@{handlers::onGoogleClick}"
             android:text="@string/login_google_label"
             android:textAllCaps="false"
             android:textColor="@color/google_button_text_color"
             app:backgroundTint="@color/google_button_background_color"
+            app:layout_constraintBottom_toTopOf="@+id/twitterLoginButton"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/facebookAppLoginButton" />
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/twitterLoginButton"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/social_register_button_height"
             android:layout_margin="@dimen/social_login_buttons_margin"
-            android:background="@color/twitter_button_background_color"
+            android:background="@drawable/button_background"
+            android:drawableStart="@drawable/ic_twitter"
             android:gravity="center"
             android:onClick="@{handlers::onTwitterButtonClick}"
             android:text="@string/login_twitter_label"
             android:textAllCaps="false"
             android:textColor="@color/twitter_button_text_color"
             app:backgroundTint="@color/twitter_button_background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/GoogleLoginButton" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.facebook.login.widget.LoginButton
             android:id="@+id/facebookLoginButton"
@@ -142,6 +158,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="facebookAppLoginButton,GoogleLoginButton,twitterLoginButton" />
+            app:constraint_referenced_ids="registerImageBackground,facebookAppLoginButton,GoogleLoginButton,twitterLoginButton" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
