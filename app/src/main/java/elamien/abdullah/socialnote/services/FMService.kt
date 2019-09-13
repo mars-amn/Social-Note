@@ -3,6 +3,7 @@ package elamien.abdullah.socialnote.services
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import elamien.abdullah.socialnote.utils.NotificationsUtils
+import elamien.abdullah.socialnote.utils.PreferenceUtils
 
 /**
  * Created by AbdullahAtta on 27-Aug-19.
@@ -10,6 +11,8 @@ import elamien.abdullah.socialnote.utils.NotificationsUtils
 class FMService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
+        if (!PreferenceUtils.getPreferenceUtils().isPushNotificationsEnabled(baseContext)) return
+
         when (message.data["type"]) {
             "COMMENT" -> notifyUserWithPostComment(message)
             "LIKE" -> notifyUserWithPostLike(message)

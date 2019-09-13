@@ -7,4 +7,14 @@
         app:key="@string/note_sync_key"
         app:summary="Enable note syncing"
         app:title="Sync Notes" />
+
+    <SwitchPreferenceCompat
+        app:defaultValue="true"
+        app:iconSpaceReserved="false"
+        app:key="@string/push_notifications_key"
+        app:summary="Enable push notification for your posts"
+        app:summaryOff="@string/push_notification_summary_off"
+        app:summaryOn="@string/push_notification_summary_on"
+        app:title="@string/push_notification_summary_title" />
+
 </PreferenceScreen>

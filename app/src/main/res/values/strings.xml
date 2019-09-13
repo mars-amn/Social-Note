@@ -73,4 +73,8 @@
     <string name="login_twitter_label">Continue with Twitter</string>
     <string name="login_google_label">Continue with Google</string>
     <string name="login_facebook_label">Continue with Facebook</string>
+    <string name="push_notifications_key">push-notification-key</string>
+    <string name="push_notification_summary_on">Enabled</string>
+    <string name="push_notification_summary_off">Disabled</string>
+    <string name="push_notification_summary_title">Push Notifications</string>
 </resources>
