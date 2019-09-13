@@ -270,9 +270,9 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 
     private fun getGeofenceBuilder(id: Long): Geofence {
         return Geofence.Builder().setRequestId("geo_fence_reminder_$id").setCircularRegion(
-                    mGeofenceLocation?.latitude!!,
-                    mGeofenceLocation?.longitude!!,
-                    Constants.GEOFENCE_REMINDER_RADIUS)
+            mGeofenceLocation?.latitude!!,
+            mGeofenceLocation?.longitude!!,
+            Constants.GEOFENCE_REMINDER_RADIUS)
                 .setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build()

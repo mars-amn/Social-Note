@@ -11,9 +11,15 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
+import com.facebook.AccessToken
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.transitionseverywhere.extra.Scale
 import elamien.abdullah.socialnote.R
@@ -28,8 +34,9 @@ import org.koin.android.ext.android.inject
 class RegisterActivity : AppCompatActivity() {
     private lateinit var mBinding: ActivityRegisterBinding
     private var mGoogleSignInClient: GoogleSignInClient? = null
-    private val mViewModel: AuthenticationViewModel by inject()
+    private val mAuthViewModel: AuthenticationViewModel by inject()
     val mFirebaseAuth: FirebaseAuth by inject()
+    private var mCallbackManager: CallbackManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,8 +47,38 @@ class RegisterActivity : AppCompatActivity() {
         if (mFirebaseAuth.currentUser != null) {
             startHomeActivity()
         } else {
-
+            setupFacebookRegister()
         }
+    }
+
+    private fun setupFacebookRegister() {
+        mCallbackManager = CallbackManager.Factory.create()
+        mBinding.facebookLoginButton.setPermissions("email", "public_profile")
+        mBinding.facebookLoginButton
+                .registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
+                    override fun onSuccess(loginResult: LoginResult) {
+                        registerFacebookUser(loginResult.accessToken)
+                    }
+
+                    override fun onCancel() {
+                    }
+
+                    override fun onError(error: FacebookException) {
+                    }
+                })
+    }
+
+    fun onFacebookButtonClick(view: View) {
+        mBinding.facebookLoginButton.performClick()
+    }
+
+
+    fun onTwitterButtonClick(view: View) {
+        // waiting for twitter to accept the developer account
+    }
+
+    private fun registerFacebookUser(token: AccessToken) {
+        mAuthViewModel.registerFacebookUser(FacebookAuthProvider.getCredential(token.token))
     }
 
     private fun registerEventBus() {
@@ -75,9 +112,10 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        mCallbackManager?.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE && resultCode == RESULT_OK) {
-            mViewModel.registerGoogleUser(GoogleSignIn.getSignedInAccountFromIntent(data))
+            mAuthViewModel.registerGoogleUser(GoogleSignIn.getSignedInAccountFromIntent(data))
         }
     }
 

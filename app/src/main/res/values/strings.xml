@@ -24,8 +24,12 @@
 
     <string name="set_reminder_label">SET REMINDER</string>
     <string name="empty_editor_msg">Nothing to save</string>
-    <string name="register_label_text">Register to continue ..</string>
+    <string name="register_label_text">Register to be able to share posts and sync your notes to the cloud ..</string>
+
     <string name="web_api_key">key</string>
+    <string name="facebook_app_id">key</string>
+    <string name="fb_login_protocol_scheme">key</string>
+
     <string name="auth_failed_msg">Authentication Failed!</string>
     <string name="create_note_shortcut_short_label">Create a new Note</string>
     <string name="create_note_shortcut_long_label">Tap to create a new Note</string>
@@ -66,4 +70,7 @@
     <string name="empty_note_state_label">Your note list is empty, Press the create button to add your first note</string>
     <string name="type_comment_hint">Type your comment ..</string>
     <string name="user_profile_recent_posts_label">Recent Posts</string>
+    <string name="login_twitter_label">Continue with Twitter</string>
+    <string name="login_google_label">Continue with Google</string>
+    <string name="login_facebook_label">Continue with Facebook</string>
 </resources>

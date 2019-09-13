@@ -3,6 +3,7 @@ package elamien.abdullah.socialnote.viewmodel
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthCredential
 import elamien.abdullah.socialnote.repository.AuthenticationRepository
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -16,4 +17,9 @@ class AuthenticationViewModel : ViewModel(), KoinComponent {
     fun registerGoogleUser(task: Task<GoogleSignInAccount>) {
         return mAuthRepository.registerGoogleUser(task)
     }
+
+    fun registerFacebookUser(credential: AuthCredential) {
+        mAuthRepository.registerFacebookUser(credential)
+    }
+
 }

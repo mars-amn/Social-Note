@@ -94,6 +94,12 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:5.0.0'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
     implementation 'com.google.firebase:firebase-storage:19.0.0'
+
+    /**
+     * Auth
+     */
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+
     /**
      * RxJava & RxAndroid
      */

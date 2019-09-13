@@ -67,4 +67,5 @@
     <dimen name="user_profile_name_text_size">18sp</dimen>
     <dimen name="user_profile_recent_posts_margin">8dp</dimen>
     <dimen name="user_profile_change_cover_margin">8dp</dimen>
+    <dimen name="social_login_buttons_margin">32dp</dimen>
 </resources>

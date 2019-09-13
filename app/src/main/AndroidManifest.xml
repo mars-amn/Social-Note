@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".base.NotesApplication"
@@ -55,26 +56,45 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
         </activity>
-        <activity android:name=".ui.RegisterActivity" />
+        <activity android:name=".ui.RegisterActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <meta-data
+                    android:name="android.app.shortcuts"
+                    android:resource="@xml/app_shortcuts" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.AddEditNoteActivity"
             android:parentActivityName=".ui.HomeActivity"
             android:theme="@style/EditorTheme" />
         <activity android:name=".ui.HomeActivity">
+
+        </activity>
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name" />
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/app_shortcuts" />
         </activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <service
             android:name=".services.GeofenceService"
