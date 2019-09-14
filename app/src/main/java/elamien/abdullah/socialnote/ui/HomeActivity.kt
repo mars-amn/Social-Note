@@ -24,6 +24,8 @@ import elamien.abdullah.socialnote.databinding.ActivityHomeBinding
 import elamien.abdullah.socialnote.databinding.NavHeaderLayoutBinding
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.utils.Constants
+import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -81,11 +83,27 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun showUserHeader(user: User?) {
-        val headerBinding: NavHeaderLayoutBinding = DataBindingUtil
+        val navHeaderBinding: NavHeaderLayoutBinding = DataBindingUtil
                 .inflate(layoutInflater, R.layout.nav_header_layout, mBinding.navigationView, false)
-        mBinding.navigationView.addHeaderView(headerBinding.root)
-        headerBinding.user = user!!
-        headerBinding.handlers = this
+        mBinding.navigationView.addHeaderView(navHeaderBinding.root)
+        navHeaderBinding.user = user!!
+        navHeaderBinding.handlers = this
+        showUserTitle(user, navHeaderBinding)
+    }
+
+    private fun showUserTitle(user: User, navHeaderBinding: NavHeaderLayoutBinding) {
+        when (user.userTitle) {
+            READER_TITLE -> showReaderTitle(navHeaderBinding)
+            AUTHOR_TITLE -> showAuthorTitle(navHeaderBinding)
+        }
+    }
+
+    private fun showAuthorTitle(navHeaderBinding: NavHeaderLayoutBinding) {
+        navHeaderBinding.navHeaderUserAuthorTitle.visibility = View.VISIBLE
+    }
+
+    private fun showReaderTitle(navHeaderBinding: NavHeaderLayoutBinding) {
+        navHeaderBinding.navHeaderUserReaderTitle.visibility = View.VISIBLE
     }
 
     fun onProfileImageClick(view: View) {

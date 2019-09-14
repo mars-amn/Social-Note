@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.OAuthProvider
 import com.transitionseverywhere.extra.Scale
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.databinding.ActivityRegisterBinding
@@ -75,7 +76,29 @@ class RegisterActivity : AppCompatActivity() {
 
 
     fun onTwitterButtonClick(view: View) {
-        // waiting for twitter to accept the developer account
+        val provider = OAuthProvider.newBuilder("twitter.com")
+        val pendingResultTask = mFirebaseAuth.pendingAuthResult
+        if (pendingResultTask != null) {
+            pendingResultTask.addOnSuccessListener { authResult ->
+                mAuthViewModel.loginTwitterUser(authResult)
+                startHomeActivity()
+            }.addOnFailureListener {
+                Toast.makeText(this@RegisterActivity,
+                               "Something went wrong! " + it.message,
+                               Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            mFirebaseAuth
+                    .startActivityForSignInWithProvider(this@RegisterActivity, provider.build())
+                    .addOnSuccessListener { authResult ->
+                        mAuthViewModel.loginTwitterUser(authResult)
+                        startHomeActivity()
+                    }.addOnFailureListener {
+                        Toast.makeText(this@RegisterActivity,
+                                       "Something went wrong! " + it.message,
+                                       Toast.LENGTH_SHORT).show()
+                    }
+        }
     }
 
     private fun registerFacebookUser(token: AccessToken) {
