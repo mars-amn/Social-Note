@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
+import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.google.firebase.auth.FirebaseAuth
 import com.transitionseverywhere.extra.Scale

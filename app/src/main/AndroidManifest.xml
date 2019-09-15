@@ -18,7 +18,18 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.ProfileActivity"></activity>
+        <activity android:name=".ui.OnBoardingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/app_shortcuts" />
+        </activity>
+        <activity android:name=".ui.ProfileActivity" />
         <activity android:name=".ui.LikesActivity" />
         <activity
             android:name=".ui.CommentActivity"
@@ -57,22 +68,13 @@
                 android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
         </activity>
         <activity android:name=".ui.RegisterActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
 
-            </intent-filter>
-            <meta-data
-                android:name="android.app.shortcuts"
-                android:resource="@xml/app_shortcuts" />
         </activity>
         <activity
             android:name=".ui.AddEditNoteActivity"
             android:parentActivityName=".ui.HomeActivity"
             android:theme="@style/EditorTheme" />
-        <activity android:name=".ui.HomeActivity">
-
-        </activity>
+        <activity android:name=".ui.HomeActivity"></activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

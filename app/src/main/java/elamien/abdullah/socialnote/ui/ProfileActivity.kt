@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task

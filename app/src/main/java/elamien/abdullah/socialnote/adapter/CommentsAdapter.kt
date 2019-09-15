@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.api.load
 import elamien.abdullah.socialnote.database.remote.firestore.models.Comment
 import elamien.abdullah.socialnote.databinding.ListItemCommentLeftBinding
 import elamien.abdullah.socialnote.databinding.ListItemCommentRightBinding

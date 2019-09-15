@@ -79,4 +79,11 @@
     <string name="push_notification_summary_title">Push Notifications</string>
     <string name="set_time_reminder_menu_item_label">Set Time Reminder</string>
     <string name="set_location_reminder_menu_item_label">Set Location Reminder</string>
+    <string name="on_boarding_finish_button_title">Start</string>
+    <string name="on_boarding_first_card_title">Sync</string>
+    <string name="on_boarding_first_card_description">Keep your stored notes with sync in the clouds</string>
+    <string name="on_boarding_second_card_title">Geofencing</string>
+    <string name="on_boarding_second_card_description">Get a notification whenever you enter a specific location</string>
+    <string name="on_boarding_third_card_title">Share Ideas</string>
+    <string name="on_boarding_third_card_description"><![CDATA[Share what comes in your mind like thoughts, ideas & poems and engage in the community]]></string>
 </resources>

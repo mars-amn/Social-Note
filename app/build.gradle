@@ -135,7 +135,9 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:core:3.1.0'
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.1.0'
 
-    implementation("io.coil-kt:coil:0.6.1")
+    implementation("io.coil-kt:coil:0.7.0")
+
+    implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
 
 }
 apply plugin: 'com.google.gms.google-services'
