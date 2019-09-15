@@ -16,46 +16,17 @@
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
-        <LinearLayout
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/noteTitleInputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="@color/white"
+            android:hint="@string/text_title_label"
+            android:padding="@dimen/title_text_padding"
+            android:textColor="@color/text_title_color"
+            android:textColorHint="@color/text_color_hint" />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/noteTitleInputText"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/title_text_height"
-                android:layout_weight="2"
-                android:background="@color/white"
-                android:hint="@string/text_title_label"
-                android:padding="@dimen/title_text_padding"
-                android:textColor="@color/text_title_color"
-                android:textColorHint="@color/text_color_hint" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:onClick="@{handlers::onLocationReminderClick}"
-                android:text="@string/location_reminder_label"
-                android:textColor="@color/secondaryColor" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:onClick="@{handlers::onSetReminderClick}"
-                android:text="@string/set_reminder_label"
-                android:textColor="@color/secondaryColor" />
-        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

@@ -49,6 +49,9 @@ class PagedNoteListAdapter(private val listener: LongClickListener, private val 
 
         fun bind(note: Note?) {
             mBinding.note = note
+            if (note?.noteTitle == null || note?.noteTitle == "") {
+                mBinding.listItemNoteTitle.visibility = View.GONE
+            }
             setNoteBackground()
         }
 

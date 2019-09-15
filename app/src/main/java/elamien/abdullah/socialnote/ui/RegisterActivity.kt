@@ -11,7 +11,6 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
-import coil.api.load
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback

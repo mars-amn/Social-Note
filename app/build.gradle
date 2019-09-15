@@ -98,7 +98,7 @@ dependencies {
     /**
      * Auth
      */
-    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+    implementation 'com.facebook.android:facebook-android-sdk:5.5.1'
 
     /**
      * RxJava & RxAndroid

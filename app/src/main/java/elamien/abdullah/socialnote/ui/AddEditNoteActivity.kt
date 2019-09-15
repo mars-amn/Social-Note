@@ -10,7 +10,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
@@ -126,6 +125,12 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
                     showUnsavedNoteDialog()
                 }
                 return true
+            }
+            R.id.noteTimeReminderMenuItem -> {
+                onTimeReminderClick()
+            }
+            R.id.noteGeofenceReminderMenuItem -> {
+                onLocationReminderClick()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -278,8 +283,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
                 .build()
     }
 
-
-    fun onSetReminderClick(view: View) {
+    private fun onTimeReminderClick() {
         SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity).title("Pick Date")
                 .displayYears(false).displayDays(true).displayHours(true).displayMinutes(true)
                 .minutesStep(1)
@@ -292,7 +296,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
                 }.display()
     }
 
-    fun onLocationReminderClick(view: View) {
+    private fun onLocationReminderClick() {
         if (!EasyPermissions.hasPermissions(this@AddEditNoteActivity, *locationsPermissions)) {
             EasyPermissions.requestPermissions(this@AddEditNoteActivity,
                                                getString(R.string.request_location_rational_dialog),
