@@ -26,20 +26,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/cloudAnimationView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/cloud_animation_height"
-            android:layout_marginBottom="@dimen/cloud_animation_margin"
-            android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintBottom_toTopOf="@+id/registerButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:lottie_autoPlay="true"
-
-            app:lottie_rawRes="@raw/floating_cloud" />
-
         <TextView
             android:id="@+id/registerLabel"
             android:layout_width="wrap_content"
@@ -55,29 +41,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/registerButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/register_buttons_margin"
-            android:onClick="@{handlers::onRegisterButtonClick}"
-            android:text="@string/register_button_label"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cloudAnimationView" />
-
-        <Button
-            android:id="@+id/skipButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/register_buttons_margin"
-            android:onClick="@{handlers::onSkipButtonClick}"
-            android:text="@string/skip_register_button_label"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="@+id/registerButton"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/registerButton" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/facebookAppLoginButton"
@@ -129,6 +92,22 @@
             android:textAllCaps="false"
             android:textColor="@color/twitter_button_text_color"
             app:backgroundTint="@color/twitter_button_background_color"
+            app:layout_constraintBottom_toTopOf="@+id/skipLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/skipLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/cabin_medium"
+            android:gravity="center"
+            android:onClick="@{handlers::onSkipRegistrationClick}"
+            android:padding="4dp"
+            android:text="or skip for now"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="#fff"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -145,13 +124,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/animationGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:constraint_referenced_ids="registerButton,skipButton,cloudAnimationView" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/registerGroup"

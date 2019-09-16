@@ -1,5 +1,6 @@
 package elamien.abdullah.socialnote.fragments
 
+import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,10 +11,10 @@ import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import elamien.abdullah.socialnote.R
-
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.ui.RegisterActivity
 import elamien.abdullah.socialnote.utils.Constants
+import elamien.abdullah.socialnote.utils.Constants.Companion.CONSIDER_REGISTER_KEY
 import org.koin.android.ext.android.inject
 
 
@@ -26,9 +27,17 @@ class SettingsFragment : PreferenceFragmentCompat(),
         registerPreferenceListener()
     }
 
+    override fun onResume() {
+        super.onResume()
+        registerPreferenceListener()
+    }
 
     override fun onStop() {
         super.onStop()
+        if (mRegisterDialog != null) {
+            mRegisterDialog?.create()?.dismiss()
+
+        }
         unregisterPreferenceChangeListener()
     }
 
@@ -50,9 +59,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 switchPreference?.isChecked = false
                 showRegisterRequestDialog()
                 return
-            } else if (isEnabled && mFirebaseAuth.currentUser != null) {
+            } else if (isEnabled && isUserNotNull()) {
                 startSyncService()
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_OK && isUserNotNull()) {
+            val switchPreference = findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
+            switchPreference?.isChecked = true
+            startSyncService()
+        } else if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_CANCELED || !isUserNotNull()) {
+            val switchPreference = findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
+            switchPreference?.isChecked = false
         }
     }
 
@@ -81,8 +102,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
         SyncingService.getSyncingService().enqueueSyncAllNotes(context!!, syncService)
     }
 
+    private var mRegisterDialog: MaterialAlertDialogBuilder? = null
     private fun showRegisterRequestDialog() {
-        MaterialAlertDialogBuilder(context).setTitle(getString(R.string.sync_notes_dialog_title))
+        mRegisterDialog = MaterialAlertDialogBuilder(context)
+                .setTitle(getString(R.string.sync_notes_dialog_title))
                 .setMessage(getString(R.string.sync_notes_dialog_message))
                 .setNegativeButton(getString(R.string.sync_notes_dialog_neg_button_label)) { dialog, id ->
                     dialog.dismiss()
@@ -90,22 +113,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .setPositiveButton(getString(R.string.sync_notes_dialog_pos_button_label)) { dialog, id ->
                     dialog.dismiss()
                     startRegisterActivity()
-                }.show()
+                }
+        mRegisterDialog?.show()
     }
 
     private fun startRegisterActivity() {
         val intent = Intent(context, RegisterActivity::class.java)
+        intent.putExtra(CONSIDER_REGISTER_KEY, CONSIDER_REGISTER_KEY)
         startActivityForResult(intent, REGISTER_REQUEST_CODE)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_OK && isUserNotNull()) {
-            val switchPreference = findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
-            switchPreference?.isChecked = true
-            startSyncService()
-        }
-    }
 
     private fun isUserNotNull() = mFirebaseAuth.currentUser != null
 

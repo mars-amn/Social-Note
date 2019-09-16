@@ -7,7 +7,10 @@ class Constants {
 
     companion object {
 
-
+        const val APP_PREFERENCE_NAME = "elamien.abdullah.socialnote"
+        const val FIRST_LAUNCH_KEY = "elamien.abdullah.socialnote.utils.first_launch_key"
+        const val SKIP_REGISTER_KEY = "elamien.abdullah.socialnote.utils.skip_register_key"
+        const val CONSIDER_REGISTER_KEY = "elamien.abdullah.socialnote.utils.consider_register_key"
         /**
          * Intent & Notification Keys
          */

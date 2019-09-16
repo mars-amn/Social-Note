@@ -48,10 +48,19 @@ class RegisterActivity : AppCompatActivity() {
         registerEventBus()
         if (mFirebaseAuth.currentUser != null) {
             startHomeActivity()
-        } else {
+        } else if (intent.hasExtra(Constants.CONSIDER_REGISTER_KEY) || !isUserSkipRegister) {
+            setupRegisterScreen()
             setupFacebookRegister()
+        } else if (isUserSkipRegister) {
+            startHomeActivity()
         }
     }
+
+    private val isUserSkipRegister: Boolean
+        get() {
+            val preferences = getSharedPreferences(Constants.APP_PREFERENCE_NAME, MODE_PRIVATE)
+            return preferences.getBoolean(Constants.SKIP_REGISTER_KEY, false)
+        }
 
     private fun setupFacebookRegister() {
         mCallbackManager = CallbackManager.Factory.create()
@@ -159,10 +168,12 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    fun onSkipButtonClick(view: View) {
+    fun onSkipRegistrationClick(view: View) {
         if (callingActivity == null) {
+            saveUserSkipRegister()
             startHomeActivity()
-        } else {
+        } else if (callingActivity != null) {
+            saveUserSkipRegister()
             setResult(RESULT_CANCELED)
             finish()
         }
@@ -174,9 +185,8 @@ class RegisterActivity : AppCompatActivity() {
         finish()
     }
 
-    fun onRegisterButtonClick(view: View) {
+    private fun setupRegisterScreen() {
         applyAnimation()
-        mBinding.animationGroup.visibility = View.GONE
         mBinding.registerImageBackground.load(R.drawable.register_background) {
             crossfade(true)
         }
@@ -187,6 +197,12 @@ class RegisterActivity : AppCompatActivity() {
         val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
                 .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.parent, set)
+    }
+
+    private fun saveUserSkipRegister() {
+        val editor = getSharedPreferences(Constants.APP_PREFERENCE_NAME, MODE_PRIVATE).edit()
+        editor.putBoolean(Constants.SKIP_REGISTER_KEY, true)
+        editor.apply()
     }
 
     companion object {

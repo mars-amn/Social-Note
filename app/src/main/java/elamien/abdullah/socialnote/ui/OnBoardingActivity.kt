@@ -1,9 +1,12 @@
 package elamien.abdullah.socialnote.ui
 
+import android.content.Intent
 import android.os.Bundle
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity
 import com.codemybrainsout.onboarder.AhoyOnboarderCard
 import elamien.abdullah.socialnote.R
+import elamien.abdullah.socialnote.utils.Constants.Companion.APP_PREFERENCE_NAME
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRST_LAUNCH_KEY
 
 
 class OnBoardingActivity : AhoyOnboarderActivity() {
@@ -12,7 +15,6 @@ class OnBoardingActivity : AhoyOnboarderActivity() {
         super.onCreate(savedInstanceState)
         startOnBoardingCards()
         setupOnBoardingCards()
-
     }
 
     private fun setupOnBoardingCards() {
@@ -58,6 +60,19 @@ class OnBoardingActivity : AhoyOnboarderActivity() {
     }
 
     override fun onFinishButtonPressed() {
+        saveUserFirstLaunch()
+        startRegisterActivity()
     }
 
+    private fun startRegisterActivity() {
+        val intent = Intent(this, RegisterActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun saveUserFirstLaunch() {
+        val editor = getSharedPreferences(APP_PREFERENCE_NAME, MODE_PRIVATE).edit()
+        editor.putBoolean(FIRST_LAUNCH_KEY, true)
+        editor.apply()
+    }
 }
