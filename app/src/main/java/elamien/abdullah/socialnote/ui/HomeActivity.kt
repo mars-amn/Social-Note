@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.preference.PreferenceManager
+import coil.api.load
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.miguelcatalan.materialsearchview.MaterialSearchView
@@ -21,10 +22,12 @@ import elamien.abdullah.socialnote.adapter.PagedNoteListAdapter
 import elamien.abdullah.socialnote.database.local.notes.Note
 import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.databinding.ActivityHomeBinding
+import elamien.abdullah.socialnote.databinding.EmptyHeaderBinding
 import elamien.abdullah.socialnote.databinding.NavHeaderLayoutBinding
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import elamien.abdullah.socialnote.utils.Constants.Companion.CONSIDER_REGISTER_KEY
 import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
@@ -79,7 +82,25 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
             mPostViewModel.getUser().observe(this@HomeActivity, Observer { user ->
                 showUserHeader(user)
             })
+        } else {
+            showEmptyHeader()
         }
+    }
+
+    private fun showEmptyHeader() {
+        val navHeaderBinding: EmptyHeaderBinding = DataBindingUtil
+                .inflate(layoutInflater, R.layout.empty_header, mBinding.navigationView, false)
+        mBinding.navigationView.addHeaderView(navHeaderBinding.root)
+        navHeaderBinding.handlers = this
+        navHeaderBinding.emptyHeaderView.load(R.drawable.register_background) {
+            crossfade(true)
+        }
+    }
+
+    fun onSigninClick(view: View) {
+        val intent = Intent(this@HomeActivity, RegisterActivity::class.java)
+        intent.putExtra(CONSIDER_REGISTER_KEY, CONSIDER_REGISTER_KEY)
+        startActivity(intent)
     }
 
     private fun showUserHeader(user: User?) {

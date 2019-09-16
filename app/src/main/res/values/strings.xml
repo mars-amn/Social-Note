@@ -94,4 +94,5 @@
     <string name="delete_post_dialog_message">Do you want to delete your post?</string>
     <string name="delete_post_dialog_negative_button">No</string>
     <string name="delete_post_dialog_positive_button">Yes, Delete</string>
+    <string name="empty_header_text">You\'re not signed in, Click here to sign in!</string>
 </resources>
