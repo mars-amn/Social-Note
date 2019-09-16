@@ -121,10 +121,14 @@ class Constants {
         /**
          * Title related constants
          */
-
         const val AUTHOR_TITLE = "Author"
         const val READER_TITLE = "Reader"
 
+        /**
+         * Firestorage related constants
+         */
+        const val FIRESTORE_COVER_IMAGES = "cover_images"
+        const val FIRESTORE_PROFILE_IMAGES = "profile_images"
     }
 
 }

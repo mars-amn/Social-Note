@@ -98,5 +98,15 @@
             app:layout_constraintTop_toTopOf="@id/userProfileCoverImage"
             app:srcCompat="@drawable/ic_edit" />
 
+        <ImageButton
+            android:id="@+id/changeProfileImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{handlers::onChangeProfileImageClick}"
+            app:layout_constraintEnd_toEndOf="@+id/userProfileImage"
+            app:layout_constraintTop_toTopOf="@+id/userProfileImage"
+            app:srcCompat="@drawable/ic_camera" />
+
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

@@ -27,6 +27,8 @@ import elamien.abdullah.socialnote.database.remote.firestore.models.User
 import elamien.abdullah.socialnote.databinding.ActivityProfileBinding
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_COVER_IMAGES
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_PROFILE_IMAGES
 import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 import elamien.abdullah.socialnote.utils.Constants.Companion.USER_UID_INTENT_KEY
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
@@ -63,7 +65,7 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     }
 
     private fun loadUser() {
-        hideChangeCoverImageButton()
+        hideProfileUtilsButtons()
         val userUid = intent.getStringExtra(USER_UID_INTENT_KEY)
         mPostViewModel.getUser(userUid).observe(this@ProfileActivity, Observer { user ->
             showUserDetails(user)
@@ -102,8 +104,9 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
                 .setTextColor(ContextCompat.getColor(this, R.color.reader_title_color))
     }
 
-    private fun hideChangeCoverImageButton() {
+    private fun hideProfileUtilsButtons() {
         mBinding.userProfileChangeCoverImageButton.visibility = View.GONE
+        mBinding.changeProfileImageButton.visibility = View.GONE
     }
 
     private fun loadCurrentUser() {
@@ -119,28 +122,37 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     }
 
     fun onChangeCoverImageClick(view: View) {
+        startImagePickChooser(COVER_IMAGE_PICK_REQUEST_CODE)
+    }
+
+    private fun startImagePickChooser(requestCode: Int) {
         val imageIntent = Intent(ACTION_GET_CONTENT)
         imageIntent.type = "image/*"
         val chooser = Intent.createChooser(imageIntent, "Choose picture with")
-        startActivityForResult(chooser, IMAGE_PICK_REQUEST_CODE)
+        startActivityForResult(chooser, requestCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (data != null && requestCode == IMAGE_PICK_REQUEST_CODE && resultCode == RESULT_OK) {
+        if (data != null && requestCode == COVER_IMAGE_PICK_REQUEST_CODE && resultCode == RESULT_OK) {
             val uri = data.data!!
             val imageStream = contentResolver.openInputStream(uri)!!
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
-            uploadImageToFirestore(imageBitmap!!)
+            uploadImageToFirestore(imageBitmap!!, FIRESTORE_COVER_IMAGES)
+        } else if (data != null && requestCode == PROFILE_IMAGE_PICK_REQUEST_CODE && resultCode == RESULT_OK) {
+            val uri = data.data!!
+            val imageStream = contentResolver.openInputStream(uri)!!
+            val imageBitmap = BitmapFactory.decodeStream(imageStream)
+            uploadImageToFirestore(imageBitmap!!, FIRESTORE_PROFILE_IMAGES)
         }
     }
 
-    private fun uploadImageToFirestore(imageBitmap: Bitmap) {
+    private fun uploadImageToFirestore(imageBitmap: Bitmap, where: String) {
         val baos = ByteArrayOutputStream()
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val bytes = baos.toByteArray()
-        val coverImageRef = mFirebaseStorage.getReference("cover_images").child(mUser.userUid!!)
-        var uploadTask = coverImageRef.putBytes(bytes)
+        val coverImageRef = mFirebaseStorage.getReference(where).child(mUser.userUid!! + where)
+        val uploadTask = coverImageRef.putBytes(bytes)
         uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
                 Toast.makeText(this@ProfileActivity, "Failed uploading image", Toast.LENGTH_SHORT)
@@ -149,13 +161,38 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
             return@Continuation coverImageRef.downloadUrl
         }).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                mUser.coverImage = task.result.toString()
-                updateUserInformation()
-                mBinding.userProfileCoverImage.load(task.result) {
-                    crossfade(true)
+                when (where) {
+                    FIRESTORE_COVER_IMAGES -> {
+                        updateUserCoverImage(task.result.toString())
+                    }
+                    FIRESTORE_PROFILE_IMAGES -> {
+                        updateUserProfileImage(task.result.toString())
+                    }
+
                 }
             }
         }
+    }
+
+    private fun updateUserCoverImage(imageUrl: String) {
+        mUser.coverImage = imageUrl
+        mBinding.userProfileCoverImage.load(imageUrl) {
+            crossfade(true)
+        }
+        updateUserInformation()
+    }
+
+    private fun updateUserProfileImage(imageUrl: String) {
+        mUser.userImage = imageUrl
+        mBinding.userProfileImage.load(imageUrl) {
+            crossfade(true)
+            transformations(CircleCropTransformation())
+        }
+        updateUserInformation()
+    }
+
+    fun onChangeProfileImageClick(view: View) {
+        startImagePickChooser(PROFILE_IMAGE_PICK_REQUEST_CODE)
     }
 
     private fun updateUserInformation() {
@@ -180,6 +217,7 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     }
 
     companion object {
-        const val IMAGE_PICK_REQUEST_CODE = 8
+        const val COVER_IMAGE_PICK_REQUEST_CODE = 8
+        const val PROFILE_IMAGE_PICK_REQUEST_CODE = 33
     }
 }

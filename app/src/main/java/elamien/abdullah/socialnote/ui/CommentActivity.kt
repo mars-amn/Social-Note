@@ -101,7 +101,7 @@ class CommentActivity : AppCompatActivity() {
 
         val authorName = mFirebaseAuth.currentUser?.displayName
         val authorUId = mFirebaseAuth.currentUser?.uid.toString()
-        val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
+        val authorImage = mUser.userImage
 
         val comment = Comment(mRegisterToken,
                               mAuthorRegisterToken,

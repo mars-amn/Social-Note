@@ -102,11 +102,13 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
 
     override fun onLikeButtonClick(like: Like) {
         like.userTitle = mUser.userTitle!!
+        like.userImage = mUser.userImage
         mPostViewModel.createLikeOnPost(like)
     }
 
     override fun onUnLikeButtonClick(like: Like) {
         like.userTitle = mUser.userTitle!!
+        like.userImage = mUser.userImage
         mPostViewModel.removeLikePost(like)
     }
 }
