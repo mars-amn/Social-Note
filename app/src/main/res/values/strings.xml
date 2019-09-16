@@ -90,4 +90,8 @@
     <string name="delete_author_comment_dialog_message">Do you want to delete this comment?</string>
     <string name="delete_author_comment_dialog_negative_button">No</string>
     <string name="delete_author_comment_dialog_positive_button">Yes, Delete</string>
+    <string name="delete_post_dialog_title">Delete Post</string>
+    <string name="delete_post_dialog_message">Do you want to delete your post?</string>
+    <string name="delete_post_dialog_negative_button">No</string>
+    <string name="delete_post_dialog_positive_button">Yes, Delete</string>
 </resources>

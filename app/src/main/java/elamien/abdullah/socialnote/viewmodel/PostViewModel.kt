@@ -69,4 +69,8 @@ class PostViewModel : ViewModel(), KoinComponent {
     fun deleteComment(comment: Comment) {
         mPostRepository.deleteComment(comment)
     }
+
+    fun deletePost(post: Post) {
+        mPostRepository.deletePost(post)
+    }
 }

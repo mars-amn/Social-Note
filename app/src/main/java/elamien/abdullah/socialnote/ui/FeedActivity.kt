@@ -12,6 +12,7 @@ import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
 import coil.api.load
 import coil.transform.CircleCropTransformation
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.transitionseverywhere.extra.Scale
 import elamien.abdullah.socialnote.R
@@ -110,5 +111,19 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         like.userTitle = mUser.userTitle!!
         like.userImage = mUser.userImage
         mPostViewModel.removeLikePost(like)
+    }
+
+    override fun onPostLongClickListener(post: Post) {
+        if (mUser.userUid == post.authorUID) {
+            MaterialAlertDialogBuilder(this@FeedActivity).setTitle(getString(R.string.delete_post_dialog_title))
+                    .setMessage(getString(R.string.delete_post_dialog_message))
+                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                        dialog.dismiss()
+                    }.setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                        mPostViewModel.deletePost(post)
+                        loadPosts()
+                        dialog.dismiss()
+                    }.show()
+        }
     }
 }

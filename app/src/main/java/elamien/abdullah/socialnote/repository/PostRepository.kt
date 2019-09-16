@@ -59,6 +59,11 @@ class PostRepository : IPostRepository, KoinComponent {
     private val mFirestore: FirebaseFirestore by inject()
     private val mAuth: FirebaseAuth by inject()
 
+    override fun deletePost(post: Post) {
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME).document(post.documentName!!)
+                .delete()
+    }
+
     override fun deleteComment(comment: Comment) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME).document(comment.documentId!!)
                 .update(FIRESTORE_POSTS_POST_COMMENTS, FieldValue.arrayRemove(comment))

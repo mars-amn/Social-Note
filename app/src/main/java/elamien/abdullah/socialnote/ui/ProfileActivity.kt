@@ -16,6 +16,7 @@ import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
@@ -70,6 +71,10 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
         mPostViewModel.getUser(userUid).observe(this@ProfileActivity, Observer { user ->
             showUserDetails(user)
         })
+        loadUserPosts(userUid)
+    }
+
+    private fun loadUserPosts(userUid: String?) {
         mPostViewModel.getUserPosts(userUid).observe(this@ProfileActivity, Observer { posts ->
             if (posts.isNotEmpty()) {
                 mAdapter.addPosts(posts)
@@ -113,6 +118,10 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
         mPostViewModel.getUser().observe(this@ProfileActivity, Observer { user ->
             showUserDetails(user)
         })
+        loadUserPosts()
+    }
+
+    private fun loadUserPosts() {
         mPostViewModel.getUserPosts().observe(this@ProfileActivity, Observer { posts ->
             if (posts.isNotEmpty()) {
                 mAdapter.addPosts(posts)
@@ -214,6 +223,21 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     override fun onUnLikeButtonClick(like: Like) {
         like.userTitle = mUser.userTitle!!
         mPostViewModel.removeLikePost(like)
+    }
+
+    override fun onPostLongClickListener(post: Post) {
+        if (mUser.userUid == post.authorUID) {
+            MaterialAlertDialogBuilder(this@ProfileActivity)
+                    .setTitle(getString(R.string.delete_post_dialog_title))
+                    .setMessage(getString(R.string.delete_post_dialog_message))
+                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                        dialog.dismiss()
+                    }.setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                        mPostViewModel.deletePost(post)
+                        loadUserPosts()
+                        dialog.dismiss()
+                    }.show()
+        }
     }
 
     companion object {

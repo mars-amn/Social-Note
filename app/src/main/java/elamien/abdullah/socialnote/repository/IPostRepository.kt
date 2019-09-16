@@ -24,4 +24,5 @@ interface IPostRepository {
     fun getUserPosts(): LiveData<List<Post>>
     fun updateUser(user: User?)
     fun deleteComment(comment: Comment)
+    fun deletePost(post: Post)
 }

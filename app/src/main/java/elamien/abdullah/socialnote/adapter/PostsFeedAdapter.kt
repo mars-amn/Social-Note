@@ -51,6 +51,7 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
 
     }
 
+
     override fun onBindViewHolder(holder: PostsFeedViewHolder, position: Int) {
         holder.bind(mPostsFeed[position])
     }
@@ -62,6 +63,7 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
         fun onLikeButtonClick(like: Like)
         fun onUnLikeButtonClick(like: Like)
         fun onCommentButtonClick(post: Post)
+        fun onPostLongClickListener(post: Post)
     }
 
     private var mRegisterToken: String? = null
@@ -242,6 +244,11 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
             val intent = Intent(context, ProfileActivity::class.java)
             intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
             context.startActivity(intent)
+        }
+
+        fun onPostLongClick(view: View): Boolean {
+            listener.onPostLongClickListener(mPostsFeed[adapterPosition])
+            return true
         }
     }
 }
