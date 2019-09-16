@@ -65,4 +65,8 @@ class PostViewModel : ViewModel(), KoinComponent {
     fun updateUser(user: User) {
         mPostRepository.updateUser(user)
     }
+
+    fun deleteComment(comment: Comment) {
+        mPostRepository.deleteComment(comment)
+    }
 }

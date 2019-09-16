@@ -43,6 +43,7 @@
             android:id="@+id/commentCardViewParent"
             android:layout_width="@dimen/comment_card_view_parent_width"
             android:layout_height="wrap_content"
+            android:onLongClick="@{handlers::onCommentLongClick}"
             android:layout_margin="@dimen/comment_card_view_parent_margin"
             android:background="@color/gray_background_color"
             android:orientation="vertical"

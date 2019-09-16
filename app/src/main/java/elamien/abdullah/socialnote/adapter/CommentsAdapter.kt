@@ -14,12 +14,13 @@ import elamien.abdullah.socialnote.databinding.ListItemCommentRightBinding
 import elamien.abdullah.socialnote.ui.ProfileActivity
 import elamien.abdullah.socialnote.utils.Constants
 import java.util.*
+import kotlin.properties.Delegates
 
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class CommentsAdapter(private val context: Context, private var mComments: List<Comment>) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CommentsAdapter(private val context: Context, private val mCommentListener: CommentListener) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>(), AutoUpdatableAdapter {
 
     private val images = arrayOf("http://bit.ly/2PhvwfN",
                                  "http://bit.ly/2HpJ2aH",
@@ -29,6 +30,14 @@ class CommentsAdapter(private val context: Context, private var mComments: List<
                                  "http://bit.ly/341m7wh",
                                  "http://bit.ly/2U6i0dL",
                                  "http://bit.ly/2KZJ5fy")
+
+    interface CommentListener {
+        fun onCommentLongClick(comment: Comment)
+    }
+
+    var mComments: List<Comment> by Delegates.observable(emptyList()) { prop, old, new ->
+        autoNotify(old, new) { o, n -> o.getDateCreated() == n.getDateCreated() }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (viewType) {
@@ -119,6 +128,11 @@ class CommentsAdapter(private val context: Context, private var mComments: List<
             intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
             context.startActivity(intent)
         }
+
+        fun onCommentLongClick(view: View): Boolean {
+            mCommentListener.onCommentLongClick(mComments[adapterPosition])
+            return true
+        }
     }
 
     inner class LeftCommentsViewHolder(private val mBinding: ListItemCommentLeftBinding) :
@@ -160,13 +174,14 @@ class CommentsAdapter(private val context: Context, private var mComments: List<
             intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
             context.startActivity(intent)
         }
+
+        fun onCommentLongClick(view: View): Boolean {
+            mCommentListener.onCommentLongClick(mComments[adapterPosition])
+            return true
+        }
     }
 
     private fun getRandomImage() = images[Random().nextInt(images.size)]
-    fun addComments(comments: List<Comment>?) {
-        mComments = comments!!
-        notifyItemInserted(mComments.lastIndex)
-    }
 
     companion object {
         const val RIGHT_TYPE = 1

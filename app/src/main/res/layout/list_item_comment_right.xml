@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/comment_card_view_parent_margin"
             android:background="@color/gray_background_color"
+            android:onLongClick="@{handlers::onCommentLongClick}"
             android:orientation="vertical"
             app:cardCornerRadius="@dimen/comment_card_view_parent_radius"
             app:cardElevation="@dimen/comment_card_view_parent_elevation"

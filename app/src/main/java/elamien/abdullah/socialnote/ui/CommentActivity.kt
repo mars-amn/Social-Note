@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
@@ -27,7 +28,8 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
-class CommentActivity : AppCompatActivity() {
+class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
+
     private val mPostViewModel: PostViewModel by viewModel()
     private val mFirebaseAuth: FirebaseAuth by inject()
     private lateinit var mBinding: ActivityCommentBinding
@@ -48,9 +50,9 @@ class CommentActivity : AppCompatActivity() {
             loadUser()
             mDocumentName = intent.getStringExtra(FIRESTORE_POST_DOC_INTENT_KEY)
             mAuthorRegisterToken = intent.getStringExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
-            mAdapter = CommentsAdapter(this@CommentActivity, ArrayList())
+            mAdapter = CommentsAdapter(this@CommentActivity, this@CommentActivity)
             mBinding.commentsRecyclerView.adapter = mAdapter
-            getRegisterToken()
+            loadRegistrationToken()
             loadPostComments()
         }
 
@@ -86,7 +88,7 @@ class CommentActivity : AppCompatActivity() {
     private fun loadPostComments() {
         mPostViewModel.getComments(mDocumentName!!).observe(this, Observer { comments ->
             if (comments.isNotEmpty()) {
-                mAdapter.addComments(comments)
+                mAdapter.mComments = comments
                 mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
             }
         })
@@ -116,9 +118,24 @@ class CommentActivity : AppCompatActivity() {
         mBinding.commentInputEditText.setText("")
     }
 
-    private fun getRegisterToken() {
+    private fun loadRegistrationToken() {
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
             mRegisterToken = instanceIdResult.token
+        }
+    }
+
+    override fun onCommentLongClick(comment: Comment) {
+        if (comment.authorUId == mUser.userUid) {
+            MaterialAlertDialogBuilder(this@CommentActivity)
+                    .setTitle(getString(R.string.delete_author_comment_dialog_title))
+                    .setMessage(getString(R.string.delete_author_comment_dialog_message))
+                    .setNegativeButton(getString(R.string.delete_author_comment_dialog_negative_button)) { dialog, id ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton(getString(R.string.delete_author_comment_dialog_positive_button)) { dialog, id ->
+                        mPostViewModel.deleteComment(comment)
+                        dialog.dismiss()
+                    }.show()
         }
     }
 }
