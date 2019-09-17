@@ -5,11 +5,11 @@
 
         <variable
             name="comment"
-            type="elamien.abdullah.socialnote.database.remote.firestore.models.Comment" />
+            type="playground.develop.socialnote.database.remote.firestore.models.Comment" />
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.adapter.CommentsAdapter.RightCommentsViewHolder" />
+            type="playground.develop.socialnote.adapter.CommentsAdapter.RightCommentsViewHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

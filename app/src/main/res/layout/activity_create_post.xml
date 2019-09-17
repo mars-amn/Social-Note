@@ -6,46 +6,46 @@
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.CreatePostActivity" />
+            type="playground.develop.socialnote.ui.CreatePostActivity" />
     </data>
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <HorizontalScrollView
+            android:id="@+id/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#e6e6e6"
+            android:scrollbars="none">
+
+            <include layout="@layout/editor_toolbar" />
+
+
+        </HorizontalScrollView>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="40dp"
+            android:scrollbars="vertical">
 
-            <HorizontalScrollView
-                android:id="@+id/tools"
+
+            <com.github.irshulx.Editor
+                android:id="@+id/editor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="#e6e6e6"
-                android:scrollbars="none">
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="100dp"
+                app:placeholder="Start writing here..."
+                app:render_type="Editor" />
 
-                <include layout="@layout/editor_toolbar" />
-
-
-            </HorizontalScrollView>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="40dp"
-                android:scrollbars="vertical">
-
-
-                    <com.github.irshulx.Editor
-                        android:id="@+id/editor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingTop="10dp"
-                        android:paddingRight="20dp"
-                        android:paddingBottom="100dp"
-                        app:placeholder="Start writing here..."
-                        app:render_type="Editor"/>
-
-            </ScrollView>
-        </RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
 </layout>

@@ -7,7 +7,7 @@
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.RegisterActivity" />
+            type="playground.develop.socialnote.ui.RegisterActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

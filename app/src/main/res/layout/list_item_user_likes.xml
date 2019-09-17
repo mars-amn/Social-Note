@@ -7,11 +7,11 @@
 
         <variable
             name="like"
-            type="elamien.abdullah.socialnote.database.remote.firestore.models.Like" />
+            type="playground.develop.socialnote.database.remote.firestore.models.Like" />
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.adapter.LikesAdapter.LikesViewHolder" />
+            type="playground.develop.socialnote.adapter.LikesAdapter.LikesViewHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -8,7 +8,7 @@
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.HomeActivity" />
+            type="playground.develop.socialnote.ui.HomeActivity" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout

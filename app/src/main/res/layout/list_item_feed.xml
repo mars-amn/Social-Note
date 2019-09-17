@@ -7,11 +7,11 @@
 
         <variable
             name="post"
-            type="elamien.abdullah.socialnote.database.remote.firestore.models.Post" />
+            type="playground.develop.socialnote.database.remote.firestore.models.Post" />
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.adapter.PostsFeedAdapter.PostsFeedViewHolder" />
+            type="playground.develop.socialnote.adapter.PostsFeedAdapter.PostsFeedViewHolder" />
 
     </data>
 

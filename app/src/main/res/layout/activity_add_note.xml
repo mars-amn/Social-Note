@@ -6,64 +6,63 @@
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
+            type="playground.develop.socialnote.ui.AddEditNoteActivity" />
     </data>
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
-        <RelativeLayout
+        <HorizontalScrollView
+            android:id="@+id/tools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="#e6e6e6"
+            android:scrollbars="none">
+
+            <include layout="@layout/editor_toolbar" />
+
+
+        </HorizontalScrollView>
+
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="40dp"
+            android:scrollbars="vertical">
 
-            <HorizontalScrollView
-                android:id="@+id/tools"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="#e6e6e6"
-                android:scrollbars="none">
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
 
-                <include layout="@layout/editor_toolbar" />
-
-
-            </HorizontalScrollView>
-
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
-                android:layout_marginBottom="40dp"
-                android:scrollbars="vertical">
-
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/noteTitleInputText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:focusableInTouchMode="true"
-                    android:orientation="vertical">
+                    android:background="@color/white"
+                    android:hint="@string/text_title_label"
+                    android:padding="@dimen/title_text_padding"
+                    android:textColor="@color/text_title_color"
+                    android:textColorHint="@color/text_color_hint" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/noteTitleInputText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:hint="@string/text_title_label"
-                        android:padding="@dimen/title_text_padding"
-                        android:textColor="@color/text_title_color"
-                        android:textColorHint="@color/text_color_hint" />
-
-                    <com.github.irshulx.Editor
-                        android:id="@+id/editor"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="20dp"
-                        android:paddingTop="10dp"
-                        android:paddingRight="20dp"
-                        android:paddingBottom="100dp"
-                        app:placeholder="Start writing here..."
-                        app:render_type="Editor"/>
-                </LinearLayout>
-            </ScrollView>
-        </RelativeLayout>
+                <com.github.irshulx.Editor
+                    android:id="@+id/editor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="100dp"
+                    app:placeholder="Start writing here..."
+                    app:render_type="Editor" />
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
 
 </layout>

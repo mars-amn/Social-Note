@@ -6,11 +6,11 @@
 
         <variable
             name="comment"
-            type="elamien.abdullah.socialnote.database.remote.firestore.models.Comment" />
+            type="playground.develop.socialnote.database.remote.firestore.models.Comment" />
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.adapter.CommentsAdapter.LeftCommentsViewHolder" />
+            type="playground.develop.socialnote.adapter.CommentsAdapter.LeftCommentsViewHolder" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,9 +43,9 @@
             android:id="@+id/commentCardViewParent"
             android:layout_width="@dimen/comment_card_view_parent_width"
             android:layout_height="wrap_content"
-            android:onLongClick="@{handlers::onCommentLongClick}"
             android:layout_margin="@dimen/comment_card_view_parent_margin"
             android:background="@color/gray_background_color"
+            android:onLongClick="@{handlers::onCommentLongClick}"
             android:orientation="vertical"
             app:cardCornerRadius="@dimen/comment_card_view_parent_radius"
             app:cardElevation="@dimen/comment_card_view_parent_elevation"

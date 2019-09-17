@@ -12,7 +12,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "elamien.abdullah.socialnote"
+        applicationId "playground.develop.socialnote"
         minSdkVersion 19
         targetSdkVersion 29
         versionCode 1

@@ -105,8 +105,8 @@
         android:id="@+id/action_unordered_numbered"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:laout_gravity="center"
         android:padding="@dimen/editor_action_padding"
         app:srcCompat="@drawable/ic_number_list" />
 

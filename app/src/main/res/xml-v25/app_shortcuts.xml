@@ -8,8 +8,8 @@
         android:shortcutShortLabel="@string/create_note_shortcut_short_label">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="elamien.abdullah.socialnote.ui.AddEditNoteActivity"
-            android:targetPackage="elamien.abdullah.socialnote" />
+            android:targetClass="playground.develop.socialnote.ui.AddEditNoteActivity"
+            android:targetPackage="playground.develop.socialnote" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 

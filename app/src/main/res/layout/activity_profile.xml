@@ -7,7 +7,7 @@
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.ProfileActivity" />
+            type="playground.develop.socialnote.ui.ProfileActivity" />
 
     </data>
 

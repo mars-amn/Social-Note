@@ -6,11 +6,11 @@
 
         <variable
             name="note"
-            type="elamien.abdullah.socialnote.database.local.notes.Note" />
+            type="playground.develop.socialnote.database.local.notes.Note" />
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.adapter.PagedNoteListAdapter.NotesViewHolder" />
+            type="playground.develop.socialnote.adapter.PagedNoteListAdapter.NotesViewHolder" />
     </data>
 
     <androidx.cardview.widget.CardView

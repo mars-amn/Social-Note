@@ -7,11 +7,11 @@
 
         <variable
             name="user"
-            type="elamien.abdullah.socialnote.database.remote.firestore.models.User" />
+            type="playground.develop.socialnote.database.remote.firestore.models.User" />
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.HomeActivity" />
+            type="playground.develop.socialnote.ui.HomeActivity" />
     </data>
 
     <androidx.cardview.widget.CardView

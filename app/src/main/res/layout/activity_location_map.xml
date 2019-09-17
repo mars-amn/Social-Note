@@ -5,7 +5,7 @@
 
         <variable
             name="handlers"
-            type="elamien.abdullah.socialnote.ui.GeofencePickerActivity" />
+            type="playground.develop.socialnote.ui.GeofencePickerActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
