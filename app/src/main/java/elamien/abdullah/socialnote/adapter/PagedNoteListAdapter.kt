@@ -14,6 +14,7 @@ import elamien.abdullah.socialnote.databinding.ListItemNotesBinding
 import elamien.abdullah.socialnote.ui.AddEditNoteActivity
 import elamien.abdullah.socialnote.utils.Constants
 import elamien.abdullah.socialnote.utils.NotesDiffCallback
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,7 +50,9 @@ class PagedNoteListAdapter(private val listener: LongClickListener, private val 
 
         fun bind(note: Note?) {
             mBinding.note = note
-            if (note?.noteTitle == null || note?.noteTitle == "") {
+            mBinding.listItemNoteBody
+                    .setHtml(note?.note!!, HtmlHttpImageGetter(mBinding.listItemNoteBody))
+            if (note.noteTitle == null || note.noteTitle == "") {
                 mBinding.listItemNoteTitle.visibility = View.GONE
             }
             setNoteBackground()

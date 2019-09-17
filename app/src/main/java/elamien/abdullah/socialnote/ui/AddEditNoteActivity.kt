@@ -25,6 +25,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
+import com.flask.colorpicker.ColorPickerView
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.github.irshulx.EditorListener
 import com.github.irshulx.models.EditorTextStyle
@@ -50,7 +52,6 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_NOTES_IMA
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
 import pub.devrel.easypermissions.EasyPermissions
-import top.defaults.colorpicker.ColorPickerPopup
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -88,6 +89,14 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         } else if (isOpenFromNotification()) {
             dismissNoteTimeReminderNotification()
         }
+        if (savedInstanceState != null) {
+            mBinding.editor.render(savedInstanceState.getString(EDITOR_SAVE_STATE_KEY))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(CreatePostActivity.EDITOR_SAVE_STATE_KEY, mBinding.editor.contentAsHTML)
     }
 
     private fun initEditor() {
@@ -125,15 +134,17 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
 
         findViewById<View>(R.id.action_color).setOnClickListener {
-            ColorPickerPopup.Builder(this@AddEditNoteActivity).initialColor(Color.RED)
-                    .enableAlpha(true).okTitle("Pick").cancelTitle("Cancel").showIndicator(true)
-                    .showValue(true).build().show(findViewById<View>(android.R.id.content),
-                                                  object : ColorPickerPopup.ColorPickerObserver() {
-                                                      override fun onColorPicked(color: Int) {
-                                                          mBinding.editor
-                                                                  .updateTextColor(colorHex(color))
-                                                      }
-                                                  })
+            ColorPickerDialogBuilder.with(this)
+                    .setTitle(getString(R.string.color_pick_choose_title)).initialColor(Color.RED)
+                    .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                    .setOnColorSelectedListener { color ->
+                        mBinding.editor.updateTextColor(colorHex(color))
+                    }
+                    .setPositiveButton(getString(R.string.color_picker_positive_button)) { dialog, color, colors ->
+                        mBinding.editor.updateTextColor(colorHex(color))
+                    }
+                    .setNegativeButton(getString(R.string.color_picker_negative_button)) { dialog, which -> }
+                    .build().show()
         }
 
         findViewById<View>(R.id.action_insert_image)
@@ -167,7 +178,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                         .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                             if (!task.isSuccessful) {
                                 Toast.makeText(this@AddEditNoteActivity,
-                                               "Failed uploading image",
+                                               getString(R.string.failed_upolad_message),
                                                Toast.LENGTH_SHORT).show()
                             }
                             return@Continuation coverImageRef.downloadUrl
@@ -441,7 +452,6 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
             val imageStream = contentResolver.openInputStream(uri)!!
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
             mBinding.editor.insertImage(imageBitmap)
-        } else if (resultCode == RESULT_CANCELED) {
         }
 
     }
@@ -506,5 +516,6 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 252
         private const val GEOFENCE_NOTE_REMINDER_REQUEST_CODE = 7
+        const val EDITOR_SAVE_STATE_KEY = "EDITOR-SAVE-STATE-KEY"
     }
 }

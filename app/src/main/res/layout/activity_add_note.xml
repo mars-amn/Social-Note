@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -8,20 +9,12 @@
             type="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
 
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             android:background="@color/white">
-
-
-            <!-- Begin Editor toolbar -->
 
             <HorizontalScrollView
                 android:id="@+id/tools"
@@ -35,7 +28,7 @@
 
 
             </HorizontalScrollView>
-            <!--End of Editor toolbar -->
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -46,6 +39,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusableInTouchMode="true"
                     android:orientation="vertical">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -67,10 +61,9 @@
                         android:paddingRight="20dp"
                         android:paddingBottom="100dp"
                         app:placeholder="Start writing here..."
-                        app:render_type="Editor"></com.github.irshulx.Editor>
+                        app:render_type="Editor"/>
                 </LinearLayout>
             </ScrollView>
         </RelativeLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

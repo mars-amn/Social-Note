@@ -4,8 +4,6 @@
 
     <data>
 
-        <import type="android.text.Html" />
-
         <variable
             name="note"
             type="elamien.abdullah.socialnote.database.local.notes.Note" />
@@ -42,12 +40,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"
                 android:visibility="visible" />
 
-            <TextView
+            <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/listItemNoteBody"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:padding="2dp"
-                android:text="@{Html.fromHtml(note.note)}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="14sp" />
 

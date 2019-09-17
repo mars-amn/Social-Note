@@ -38,7 +38,10 @@
         <activity
             android:name=".ui.CommentActivity"
             android:parentActivityName=".ui.FeedActivity" />
-        <activity android:name=".ui.CreatePostActivity" />
+        <activity
+            android:name=".ui.CreatePostActivity"
+            android:theme="@style/EditorTheme"
+            android:parentActivityName=".ui.FeedActivity" />
         <activity android:name=".ui.FeedActivity" />
         <activity android:name=".ui.SettingsActivity" />
 

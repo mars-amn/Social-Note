@@ -7,15 +7,22 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.Html
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
+import com.flask.colorpicker.ColorPickerView
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.github.irshulx.EditorListener
 import com.github.irshulx.models.EditorTextStyle
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
@@ -28,7 +35,6 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_POST_IMAG
 import elamien.abdullah.socialnote.viewmodel.PostViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import top.defaults.colorpicker.ColorPickerPopup
 import java.io.ByteArrayOutputStream
 import java.util.*
 
@@ -47,6 +53,15 @@ class CreatePostActivity : AppCompatActivity() {
         mBinding.handlers = this
         initEditor()
         getRegisterToken()
+
+        if (savedInstanceState != null) {
+            mBinding.editor.render(savedInstanceState.getString(EDITOR_SAVE_STATE_KEY))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EDITOR_SAVE_STATE_KEY, mBinding.editor.contentAsHTML)
     }
 
     private fun initEditor() {
@@ -84,15 +99,17 @@ class CreatePostActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.action_color).setOnClickListener {
-            ColorPickerPopup.Builder(this@CreatePostActivity).initialColor(Color.RED)
-                    .enableAlpha(true).okTitle("Pick").cancelTitle("Cancel").showIndicator(true)
-                    .showValue(true).build().show(findViewById<View>(android.R.id.content),
-                                                  object : ColorPickerPopup.ColorPickerObserver() {
-                                                      override fun onColorPicked(color: Int) {
-                                                          mBinding.editor
-                                                                  .updateTextColor(colorHex(color))
-                                                      }
-                                                  })
+            ColorPickerDialogBuilder.with(this)
+                    .setTitle(getString(R.string.color_pick_choose_title)).initialColor(Color.RED)
+                    .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                    .setOnColorSelectedListener { color ->
+                        mBinding.editor.updateTextColor(colorHex(color))
+                    }
+                    .setPositiveButton(getString(R.string.color_picker_positive_button)) { dialog, color, colors ->
+                        mBinding.editor.updateTextColor(colorHex(color))
+                    }
+                    .setNegativeButton(getString(R.string.color_picker_negative_button)) { dialog, which -> }
+                    .build().show()
         }
 
         findViewById<View>(R.id.action_insert_image)
@@ -126,7 +143,7 @@ class CreatePostActivity : AppCompatActivity() {
                         .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                             if (!task.isSuccessful) {
                                 Toast.makeText(this@CreatePostActivity,
-                                               "Failed uploading image",
+                                               getString(R.string.failed_upolad_message),
                                                Toast.LENGTH_SHORT).show()
                             }
                             return@Continuation coverImageRef.downloadUrl
@@ -149,7 +166,23 @@ class CreatePostActivity : AppCompatActivity() {
         return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b)
     }
 
-    fun onCreatePostButtonClick(view: View) {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.post_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.postMenuItem -> createNewPost()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun createNewPost() {
+        if (stripHtml() == "" || stripHtml().isEmpty()) {
+            Toast.makeText(this, getString(R.string.empty_post_message), Toast.LENGTH_LONG).show()
+            return
+        }
         val body = mBinding.editor.contentAsHTML
         val authorId = mFirebaseAuth.currentUser?.uid
         val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
@@ -164,6 +197,16 @@ class CreatePostActivity : AppCompatActivity() {
                         Timestamp(Date()))
         mPostViewModel.createPost(post)
         finish()
+
+    }
+
+    private fun stripHtml(): String {
+        val text = mBinding.editor.contentAsHTML
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            Html.fromHtml(text).toString()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -173,17 +216,41 @@ class CreatePostActivity : AppCompatActivity() {
             val imageStream = contentResolver.openInputStream(uri)!!
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
             mBinding.editor.insertImage(imageBitmap)
-        } else if (resultCode == RESULT_CANCELED) {
         }
     }
 
     private fun getRegisterToken() {
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
             mRegisterToken = instanceIdResult.token
-            Toast.makeText(this@CreatePostActivity, instanceIdResult.token, Toast.LENGTH_LONG)
-                    .show()
         }
     }
 
+    override fun onBackPressed() {
+        if (stripHtml() == "" || stripHtml().isEmpty()) {
+            super.onBackPressed()
+        } else {
+            showPostAlertDialog()
+        }
+    }
 
+    private fun showPostAlertDialog() {
+        MaterialAlertDialogBuilder(this).setTitle("Unsaved work")
+                .setMessage("Do you want to discard the post?")
+                .setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
+                    dialog.dismiss()
+                    navigateUp()
+                }
+                .setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
+                    dialog.dismiss()
+                }.show()
+    }
+
+    private fun navigateUp() {
+        NavUtils.navigateUpFromSameTask(this)
+        finish()
+    }
+
+    companion object {
+        const val EDITOR_SAVE_STATE_KEY = "EDITOR-SAVE-STATE-KEY"
+    }
 }
