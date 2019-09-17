@@ -128,7 +128,7 @@ dependencies {
     implementation "com.airbnb.android:lottie:$lottie_version"
 
     implementation 'pub.devrel:easypermissions:3.0.0'
-
+    implementation "org.jetbrains.anko:anko-commons:0.10.8"
     implementation "com.andkulikov:transitionseverywhere:2.0.0"
     implementation 'com.miguelcatalan:materialsearchview:1.4.0'
     implementation 'com.github.florent37:singledateandtimepicker:2.1.5'

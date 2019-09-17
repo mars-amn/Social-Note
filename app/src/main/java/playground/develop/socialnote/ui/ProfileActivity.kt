@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,6 +19,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import playground.develop.socialnote.R
@@ -164,8 +165,7 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
         val uploadTask = coverImageRef.putBytes(bytes)
         uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
-                Toast.makeText(this@ProfileActivity, "Failed uploading image", Toast.LENGTH_SHORT)
-                        .show()
+                toast("Failed uploading image")
             }
             return@Continuation coverImageRef.downloadUrl
         }).addOnCompleteListener { task ->
@@ -209,10 +209,8 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     }
 
     override fun onCommentButtonClick(post: Post) {
-        val intent = Intent(this@ProfileActivity, CommentActivity::class.java)
-        intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
-        intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
-        startActivity(intent)
+        startActivity(intentFor<CommentActivity>(Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
+                                                 Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken))
     }
 
     override fun onLikeButtonClick(like: Like) {

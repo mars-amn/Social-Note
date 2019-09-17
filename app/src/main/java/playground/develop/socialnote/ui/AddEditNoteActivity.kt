@@ -18,7 +18,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
@@ -39,6 +38,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import playground.develop.socialnote.R
 import playground.develop.socialnote.database.local.geofence.NoteGeofence
@@ -168,7 +168,6 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
             override fun onUpload(image: Bitmap, uuid: String) {
                 val baos = ByteArrayOutputStream()
-                Toast.makeText(this@AddEditNoteActivity, uuid, Toast.LENGTH_LONG).show()
                 image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val bytes = baos.toByteArray()
                 val coverImageRef = mFirebaseStorage.getReference(FIRESTORE_NOTES_IMAGES)
@@ -177,9 +176,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 uploadTask
                         .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                             if (!task.isSuccessful) {
-                                Toast.makeText(this@AddEditNoteActivity,
-                                               getString(R.string.failed_upolad_message),
-                                               Toast.LENGTH_SHORT).show()
+                                toast(getString(R.string.failed_upolad_message))
                             }
                             return@Continuation coverImageRef.downloadUrl
                         }).addOnCompleteListener { task ->
@@ -255,9 +252,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     private fun onSaveMenuItemClick() {
         if (stripHtml() == "" || stripHtml().isEmpty()) {
-            Toast.makeText(this@AddEditNoteActivity,
-                           getString(R.string.empty_editor_msg),
-                           Toast.LENGTH_LONG).show()
+            toast(getString(R.string.empty_editor_msg))
             return
         }
         val currentDate = Date()

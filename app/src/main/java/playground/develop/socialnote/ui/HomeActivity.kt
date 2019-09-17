@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -20,6 +19,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.BehaviorSubject
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import playground.develop.socialnote.R
@@ -98,9 +99,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     fun onSigninClick(view: View) {
-        val intent = Intent(this@HomeActivity, RegisterActivity::class.java)
-        intent.putExtra(CONSIDER_REGISTER_KEY, CONSIDER_REGISTER_KEY)
-        startActivity(intent)
+        startActivity(intentFor<RegisterActivity>(CONSIDER_REGISTER_KEY to CONSIDER_REGISTER_KEY))
     }
 
     private fun showUserHeader(user: User?) {
@@ -133,9 +132,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun startUserProfileActivity() {
         val userUid = mFirebaseAuth.currentUser?.uid
-        val intent = Intent(this@HomeActivity, ProfileActivity::class.java)
-        intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
-        startActivity(intent)
+        startActivity(intentFor<ProfileActivity>(Constants.USER_UID_INTENT_KEY to userUid))
     }
 
     private val actionBarDrawerToggle: ActionBarDrawerToggle
@@ -210,8 +207,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     fun onNewNoteFabClick(view: View) {
-        val intent = Intent(this@HomeActivity, AddEditNoteActivity::class.java)
-        startActivity(intent)
+        startActivity(intentFor<AddEditNoteActivity>())
     }
 
     override fun onLongClickListener(note: Note) {
@@ -270,7 +266,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
             R.id.feedMenuItem -> if (userIsLoggedIn()) {
                 openFeedActivity()
             } else {
-                Toast.makeText(this@HomeActivity, "You have to login", Toast.LENGTH_LONG).show()
+                toast("You have to login")
             }
         }
         return true
@@ -281,11 +277,11 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun openFeedActivity() {
-        startActivity(Intent(this@HomeActivity, FeedActivity::class.java))
+        startActivity(intentFor<FeedActivity>())
     }
 
     private fun openSettingsActivity() {
-        startActivity(Intent(this@HomeActivity, SettingsActivity::class.java))
+        startActivity(intentFor<SettingsActivity>())
     }
 
     override fun onBackPressed() {

@@ -15,6 +15,7 @@ import coil.transform.CircleCropTransformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.transitionseverywhere.extra.Scale
+import org.jetbrains.anko.intentFor
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import playground.develop.socialnote.R
@@ -78,7 +79,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
     }
 
     fun onPostClick(view: View) {
-        startActivity(Intent(this@FeedActivity, CreatePostActivity::class.java))
+        startActivity(intentFor<CreatePostActivity>())
     }
 
     private fun hideLoadingView() {
@@ -91,14 +92,13 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         val intent = Intent(this@FeedActivity, CommentActivity::class.java)
         intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
         intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
-        startActivity(intent)
+        startActivity(intentFor<CommentActivity>(Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
+                                                 Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken))
     }
 
     fun onUserImageClick(view: View) {
         val userUid = mUser.userUid
-        val intent = Intent(this, ProfileActivity::class.java)
-        intent.putExtra(Constants.USER_UID_INTENT_KEY, userUid)
-        startActivity(intent)
+        startActivity(intentFor<ProfileActivity>(Constants.USER_UID_INTENT_KEY to userUid))
     }
 
     override fun onLikeButtonClick(like: Like) {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import org.jetbrains.anko.intentFor
 import playground.develop.socialnote.R
 import playground.develop.socialnote.utils.Constants.Companion.APP_PREFERENCE_NAME
 import playground.develop.socialnote.utils.Constants.Companion.FIRST_LAUNCH_KEY
@@ -26,14 +27,12 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun startHomeActivity() {
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
+        startActivity(intentFor<HomeActivity>())
         finish()
     }
 
     private fun startRegisterActivity() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
+        startActivity(intentFor<RegisterActivity>())
         finish()
     }
 

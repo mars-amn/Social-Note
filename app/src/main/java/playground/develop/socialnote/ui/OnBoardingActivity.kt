@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity
 import com.codemybrainsout.onboarder.AhoyOnboarderCard
+import org.jetbrains.anko.intentFor
 import playground.develop.socialnote.R
 import playground.develop.socialnote.utils.Constants.Companion.APP_PREFERENCE_NAME
 import playground.develop.socialnote.utils.Constants.Companion.FIRST_LAUNCH_KEY
@@ -65,8 +66,7 @@ class OnBoardingActivity : AhoyOnboarderActivity() {
     }
 
     private fun startRegisterActivity() {
-        val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
+        startActivity(intentFor<RegisterActivity>())
         finish()
     }
 

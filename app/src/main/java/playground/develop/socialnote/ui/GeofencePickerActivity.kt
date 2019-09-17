@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import org.jetbrains.anko.toast
 import playground.develop.socialnote.R
 import playground.develop.socialnote.databinding.ActivityLocationMapBinding
 import playground.develop.socialnote.utils.ConnectionUtils
@@ -98,14 +99,10 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
                     showPlaceDialogConfirm(addresses, latLng)
                 } catch (e: IOException) {
                     e.printStackTrace()
-                    Toast.makeText(this@GeofencePickerActivity,
-                                   getString(R.string.error_msg),
-                                   Toast.LENGTH_LONG).show()
+                    toast(getString(R.string.error_msg))
                 } catch (e: IllegalArgumentException) {
                     e.printStackTrace()
-                    Toast.makeText(this@GeofencePickerActivity,
-                                   getString(R.string.error_msg),
-                                   Toast.LENGTH_LONG).show()
+                    toast(getString(R.string.error_msg))
                 }
 
             }

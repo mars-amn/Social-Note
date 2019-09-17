@@ -26,6 +26,8 @@ import com.google.firebase.auth.OAuthProvider
 import com.transitionseverywhere.extra.Scale
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import playground.develop.socialnote.R
 import playground.develop.socialnote.databinding.ActivityRegisterBinding
@@ -92,9 +94,7 @@ class RegisterActivity : AppCompatActivity() {
                 mAuthViewModel.loginTwitterUser(authResult)
                 startHomeActivity()
             }.addOnFailureListener {
-                Toast.makeText(this@RegisterActivity,
-                               "Something went wrong! " + it.message,
-                               Toast.LENGTH_SHORT).show()
+                toast(getString(R.string.error_msg))
             }
         } else {
             mFirebaseAuth
@@ -103,9 +103,7 @@ class RegisterActivity : AppCompatActivity() {
                         mAuthViewModel.loginTwitterUser(authResult)
                         startHomeActivity()
                     }.addOnFailureListener {
-                        Toast.makeText(this@RegisterActivity,
-                                       "Something went wrong! " + it.message,
-                                       Toast.LENGTH_SHORT).show()
+                        toast(getString(R.string.error_msg))
                     }
         }
     }
@@ -162,9 +160,7 @@ class RegisterActivity : AppCompatActivity() {
                 finish()
             }
         } else if (event.authenticationEventMessage == Constants.AUTH_EVENT_FAIL) {
-            Toast.makeText(this@RegisterActivity,
-                           getString(R.string.auth_failed_msg),
-                           Toast.LENGTH_LONG).show()
+            toast(getString(R.string.auth_failed_msg))
         }
     }
 
@@ -180,8 +176,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun startHomeActivity() {
-        val intent = Intent(this@RegisterActivity, HomeActivity::class.java)
-        startActivity(intent)
+        startActivity(intentFor<HomeActivity>())
         finish()
     }
 

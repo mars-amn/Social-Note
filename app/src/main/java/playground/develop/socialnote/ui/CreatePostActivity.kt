@@ -28,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import playground.develop.socialnote.R
@@ -142,9 +143,7 @@ class CreatePostActivity : AppCompatActivity() {
                 uploadTask
                         .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
                             if (!task.isSuccessful) {
-                                Toast.makeText(this@CreatePostActivity,
-                                               getString(R.string.failed_upolad_message),
-                                               Toast.LENGTH_SHORT).show()
+                                toast(getString(R.string.failed_upolad_message))
                             }
                             return@Continuation coverImageRef.downloadUrl
                         }).addOnCompleteListener { task ->
@@ -180,7 +179,7 @@ class CreatePostActivity : AppCompatActivity() {
 
     private fun createNewPost() {
         if (stripHtml() == "" || stripHtml().isEmpty()) {
-            Toast.makeText(this, getString(R.string.empty_post_message), Toast.LENGTH_LONG).show()
+            toast(getString(R.string.empty_post_message))
             return
         }
         val body = mBinding.editor.contentAsHTML
