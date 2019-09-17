@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:aztec="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -25,57 +25,60 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="?attr/actionBarSize"
+            android:background="@color/white">
 
-            <org.wordpress.aztec.toolbar.AztecToolbar
-                android:id="@+id/formatting_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/aztec_format_bar_height"
-                android:layout_alignParentBottom="true" />
 
-            <ScrollView
+            <!-- Begin Editor toolbar -->
+
+            <HorizontalScrollView
+                android:id="@+id/tools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_above="@+id/formatting_toolbar"
+                android:layout_alignParentBottom="true"
+                android:background="#e6e6e6"
+                android:scrollbars="none">
+
+                <include layout="@layout/editor_toolbar" />
+
+
+            </HorizontalScrollView>
+            <!--End of Editor toolbar -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignParentTop="true"
-                android:fillViewport="true">
+                android:layout_marginBottom="40dp"
+                android:scrollbars="vertical">
 
-                <FrameLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <org.wordpress.aztec.AztecText
-                        android:id="@+id/aztec"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/noteTitleInputText"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="top|start"
-                        android:imeOptions="flagNoExtractUi"
-                        android:padding="@dimen/editor_padding"
-                        android:scrollbars="vertical"
-                        aztec:backgroundColor="#fff"
-                        aztec:historyEnable="true"
-                        aztec:historySize="10"
-                        aztec:textColor="#000" />
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:hint="@string/text_title_label"
+                        android:padding="@dimen/title_text_padding"
+                        android:textColor="@color/text_title_color"
+                        android:textColorHint="@color/text_color_hint" />
 
-                    <org.wordpress.aztec.source.SourceViewEditText
-                        android:id="@+id/source"
+                    <com.github.irshulx.Editor
+                        android:id="@+id/editor"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="top|start"
-                        android:imeOptions="flagNoExtractUi"
-                        android:inputType="textNoSuggestions|textMultiLine"
-                        android:padding="@dimen/editor_padding"
-                        android:scrollbars="vertical"
-
-                        android:textSize="@dimen/editor_text_size"
-                        android:visibility="gone"
-                        aztec:codeBackgroundColor="@android:color/transparent"
-                        aztec:codeTextColor="@android:color/white" />
-
-                </FrameLayout>
-
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="20dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="20dp"
+                        android:paddingBottom="100dp"
+                        app:placeholder="Start writing here..."
+                        app:render_type="Editor"></com.github.irshulx.Editor>
+                </LinearLayout>
             </ScrollView>
-
         </RelativeLayout>
 
     </LinearLayout>

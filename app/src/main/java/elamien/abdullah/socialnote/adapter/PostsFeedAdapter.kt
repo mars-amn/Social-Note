@@ -31,6 +31,7 @@ import elamien.abdullah.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import elamien.abdullah.socialnote.utils.Constants.Companion.READER_TITLE
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import kotlin.math.ln
 import kotlin.math.pow
 
@@ -95,7 +96,8 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
             hideLikedButton()
             mBinding.post = post
             setUserTitle(post)
-            mBinding.listItemFeedBodyText.text = getPost(post.post!!)
+            mBinding.listItemFeedBodyText
+                    .setHtml(post.post!!, HtmlHttpImageGetter(mBinding.listItemFeedBodyText))
             mBinding.listItemFeedDate.text = DateUtils
                     .getRelativeTimeSpanString(post.getDateCreated().time)
             if (likedArray.contains(post.documentName!!)) {
@@ -143,7 +145,6 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
             applyAnimation()
             mBinding.listItemLikesCounter.visibility = View.VISIBLE
         }
-
 
         private fun hideLikedButton() {
             applyAnimation()

@@ -129,6 +129,8 @@ class Constants {
          */
         const val FIRESTORE_COVER_IMAGES = "cover_images"
         const val FIRESTORE_PROFILE_IMAGES = "profile_images"
+        const val FIRESTORE_NOTES_IMAGES = "notes_images"
+        const val FIRESTORE_POST_IMAGES = "post_images"
     }
 
 }

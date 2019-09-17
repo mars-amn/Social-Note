@@ -115,7 +115,7 @@ dependencies {
     /**
      * Rich Editor
      */
-    api('com.github.wordpress-mobile.WordPress-Aztec-Android:aztec:v1.3.30')
+    implementation 'com.github.irshulx:laser-native-editor:3.0.3'
 
     /**
      * EventBus
@@ -139,5 +139,7 @@ dependencies {
 
     implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
 
+    implementation 'com.github.duanhong169:colorpicker:1.1.6'
+    implementation 'org.sufficientlysecure:html-textview:3.6'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -7,9 +7,17 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.text.Editable
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
@@ -18,11 +26,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
+import com.github.irshulx.EditorListener
+import com.github.irshulx.models.EditorTextStyle
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import elamien.abdullah.socialnote.R
 import elamien.abdullah.socialnote.database.local.geofence.NoteGeofence
 import elamien.abdullah.socialnote.database.local.notes.Note
@@ -32,18 +46,17 @@ import elamien.abdullah.socialnote.receiver.GeofenceReminderReceiver
 import elamien.abdullah.socialnote.receiver.NoteReminderReceiver
 import elamien.abdullah.socialnote.services.SyncingService
 import elamien.abdullah.socialnote.utils.Constants
+import elamien.abdullah.socialnote.utils.Constants.Companion.FIRESTORE_NOTES_IMAGES
 import elamien.abdullah.socialnote.viewmodel.NoteViewModel
 import org.koin.android.ext.android.inject
-import org.wordpress.aztec.Aztec
-import org.wordpress.aztec.ITextFormat
-import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import pub.devrel.easypermissions.EasyPermissions
+import top.defaults.colorpicker.ColorPickerPopup
+import java.io.ByteArrayOutputStream
 import java.util.*
 
 
-class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
-                            EasyPermissions.PermissionCallbacks {
-
+class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+    private val mFirebaseStorage: FirebaseStorage by inject()
     private val mViewModel: NoteViewModel by inject()
     private lateinit var mBinding: ActivityAddNoteBinding
     private lateinit var mExistedNote: Note
@@ -78,9 +91,103 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
     }
 
     private fun initEditor() {
-        Aztec.with(mBinding.aztec, mBinding.source, mBinding.formattingToolbar, this)
-        mBinding.aztec.setCalypsoMode(false)
-        mBinding.source.setCalypsoMode(false)
+        findViewById<View>(R.id.action_h1)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H1) }
+
+        findViewById<View>(R.id.action_h2)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H2) }
+
+        findViewById<View>(R.id.action_h3)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H3) }
+
+        findViewById<View>(R.id.action_bold)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.BOLD) }
+
+        findViewById<View>(R.id.action_Italic)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC) }
+
+        findViewById<View>(R.id.action_indent)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.INDENT) }
+
+        findViewById<View>(R.id.action_blockquote)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE) }
+
+        findViewById<View>(R.id.action_outdent)
+                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT) }
+
+        findViewById<View>(R.id.action_bulleted)
+                .setOnClickListener { mBinding.editor.insertList(false) }
+
+        findViewById<View>(R.id.action_unordered_numbered)
+                .setOnClickListener { mBinding.editor.insertList(true) }
+
+        findViewById<View>(R.id.action_hr).setOnClickListener { mBinding.editor.insertDivider() }
+
+
+        findViewById<View>(R.id.action_color).setOnClickListener {
+            ColorPickerPopup.Builder(this@AddEditNoteActivity).initialColor(Color.RED)
+                    .enableAlpha(true).okTitle("Pick").cancelTitle("Cancel").showIndicator(true)
+                    .showValue(true).build().show(findViewById<View>(android.R.id.content),
+                                                  object : ColorPickerPopup.ColorPickerObserver() {
+                                                      override fun onColorPicked(color: Int) {
+                                                          mBinding.editor
+                                                                  .updateTextColor(colorHex(color))
+                                                      }
+                                                  })
+        }
+
+        findViewById<View>(R.id.action_insert_image)
+                .setOnClickListener { mBinding.editor.openImagePicker() }
+
+        findViewById<View>(R.id.action_insert_link)
+                .setOnClickListener { mBinding.editor.insertLink() }
+
+
+        findViewById<View>(R.id.action_erase)
+                .setOnClickListener { mBinding.editor.clearAllContents() }
+        mBinding.editor.editorListener = object : EditorListener {
+            override fun onRenderMacro(name: String?,
+                                       props: MutableMap<String, Any>?,
+                                       index: Int): View {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onTextChanged(editText: EditText, text: Editable) {
+            }
+
+            override fun onUpload(image: Bitmap, uuid: String) {
+                val baos = ByteArrayOutputStream()
+                Toast.makeText(this@AddEditNoteActivity, uuid, Toast.LENGTH_LONG).show()
+                image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val bytes = baos.toByteArray()
+                val coverImageRef = mFirebaseStorage.getReference(FIRESTORE_NOTES_IMAGES)
+                        .child(Date().time.toString())
+                val uploadTask = coverImageRef.putBytes(bytes)
+                uploadTask
+                        .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                            if (!task.isSuccessful) {
+                                Toast.makeText(this@AddEditNoteActivity,
+                                               "Failed uploading image",
+                                               Toast.LENGTH_SHORT).show()
+                            }
+                            return@Continuation coverImageRef.downloadUrl
+                        }).addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                mBinding.editor.onImageUploadComplete(task.result.toString(), uuid)
+                            }
+                        }
+
+            }
+
+
+        }
+    }
+
+    private fun colorHex(color: Int): String {
+        val r = Color.red(color)
+        val g = Color.green(color)
+        val b = Color.blue(color)
+        return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b)
     }
 
     private fun setupToolbar(label: String) {
@@ -93,8 +200,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
         mViewModel.getNote(noteId).observe(this, Observer<Note> { note ->
             if (note != null) {
                 mExistedNote = note
-                mBinding.aztec.fromHtml(mExistedNote.note.toString(), true)
-                mBinding.noteTitleInputText.setText(note.noteTitle!!)
+                mBinding.editor.render(mExistedNote.note.toString())
                 if (note.geofence != null) {
                     isGeofence = true
                     mGeofenceLocation = LatLng(note.geofence?.noteGeofenceLatitude!!,
@@ -119,7 +225,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
         when (item.itemId) {
             R.id.saveNoteMenuItem -> onSaveMenuItemClick()
             android.R.id.home -> {
-                if (mBinding.aztec.toFormattedHtml() == "") {
+                if (stripHtml() == "" || stripHtml().isEmpty()) {
                     navigateUp()
                 } else {
                     showUnsavedNoteDialog()
@@ -137,7 +243,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
     }
 
     private fun onSaveMenuItemClick() {
-        if (mBinding.aztec.toFormattedHtml() == "") {
+        if (stripHtml() == "" || stripHtml().isEmpty()) {
             Toast.makeText(this@AddEditNoteActivity,
                            getString(R.string.empty_editor_msg),
                            Toast.LENGTH_LONG).show()
@@ -151,9 +257,18 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
         }
     }
 
+    private fun stripHtml(): String {
+        val text = mBinding.editor.contentAsHTML
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString()
+        } else {
+            Html.fromHtml(text).toString()
+        }
+    }
+
     private fun updateNote(currentDate: Date) {
         mExistedNote.dateModified = currentDate
-        mExistedNote.note = mBinding.aztec.toFormattedHtml()
+        mExistedNote.note = mBinding.editor.contentAsHTML
         mExistedNote.noteTitle = noteTitle()
         if (isReminder) {
             mExistedNote.timeReminder = getTimeReminder()
@@ -207,7 +322,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
 
 
     private fun insertNewNote(currentDate: Date) {
-        val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
+        val note = Note(noteTitle(), mBinding.editor.contentAsHTML, currentDate, currentDate)
         note.id = Date().time
         if (isGeofence) {
             note.geofence = getGeofenceLocation()
@@ -218,7 +333,7 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
         mViewModel.insertNewNote(note).observe(this, Observer<Long> { noteId ->
             if (noteId != null) {
                 if (isReminder) {
-                    setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
+                    setupReminder(mBinding.editor.contentAsHTML, noteId)
                 }
                 if (isGeofence) {
                     createNoteGeofence(noteId)
@@ -320,8 +435,15 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
         if (requestCode == GEOFENCE_NOTE_REMINDER_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             isGeofence = true
             mGeofenceLocation = data
-                    .getParcelableExtra<LatLng>(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+                    .getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+        } else if (requestCode == mBinding.editor.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
+            val uri = data.data!!
+            val imageStream = contentResolver.openInputStream(uri)!!
+            val imageBitmap = BitmapFactory.decodeStream(imageStream)
+            mBinding.editor.insertImage(imageBitmap)
+        } else if (resultCode == RESULT_CANCELED) {
         }
+
     }
 
 
@@ -373,35 +495,13 @@ class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
     }
 
     override fun onBackPressed() {
-        if (mBinding.aztec.toFormattedHtml() == "") {
+        if (stripHtml() == "" || stripHtml().isEmpty()) {
             super.onBackPressed()
         } else {
             showUnsavedNoteDialog()
         }
     }
 
-    override fun onToolbarHtmlButtonClicked() {
-
-    }
-
-    override fun onToolbarListButtonClicked() {
-    }
-
-    override fun onToolbarMediaButtonClicked(): Boolean {
-        return false
-    }
-
-    override fun onToolbarCollapseButtonClicked() {
-    }
-
-    override fun onToolbarExpandButtonClicked() {
-    }
-
-    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {
-    }
-
-    override fun onToolbarHeadingButtonClicked() {
-    }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 252

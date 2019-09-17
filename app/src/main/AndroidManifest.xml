@@ -32,9 +32,7 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/app_shortcuts" />
         </activity>
-        <activity android:name=".ui.OnBoardingActivity">
-
-        </activity>
+        <activity android:name=".ui.OnBoardingActivity"></activity>
         <activity android:name=".ui.ProfileActivity" />
         <activity android:name=".ui.LikesActivity" />
         <activity
@@ -74,7 +72,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="elamien.abdullah.socialnote.ui.AddEditNoteActivity" />
         </activity>
-        <activity android:name=".ui.RegisterActivity"></activity>
+        <activity android:name=".ui.RegisterActivity" />
         <activity
             android:name=".ui.AddEditNoteActivity"
             android:parentActivityName=".ui.HomeActivity"
