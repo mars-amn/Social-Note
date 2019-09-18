@@ -59,6 +59,17 @@ class PostRepository : IPostRepository, KoinComponent {
     private val mFirestore: FirebaseFirestore by inject()
     private val mAuth: FirebaseAuth by inject()
 
+    override fun getPost(documentName: String?): LiveData<Post> {
+        val post = MutableLiveData<Post>()
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME).document(documentName!!).get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        post.value = task.result?.toObject(Post::class.java)
+                    }
+                }
+        return post
+    }
+
     override fun deletePost(post: Post) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME).document(post.documentName!!)
                 .delete()

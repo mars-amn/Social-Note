@@ -179,7 +179,6 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
                 setupLikesCounter("1")
             }
             val like = Like(mFirebaseAuth.currentUser?.uid,
-
                             post.registerToken,
                             mRegisterToken,
                             mFirebaseAuth.currentUser?.displayName,
