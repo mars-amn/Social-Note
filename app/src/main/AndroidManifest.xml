@@ -32,17 +32,23 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/app_shortcuts" />
         </activity>
-        <activity android:name="playground.develop.socialnote.ui.OnBoardingActivity"></activity>
+        <activity android:name="playground.develop.socialnote.ui.OnBoardingActivity">
+
+        </activity>
         <activity android:name="playground.develop.socialnote.ui.ProfileActivity" />
         <activity android:name="playground.develop.socialnote.ui.LikesActivity" />
         <activity
             android:name="playground.develop.socialnote.ui.CommentActivity"
-            android:parentActivityName="playground.develop.socialnote.ui.FeedActivity" />
+            android:label="@string/comments_toolbar_label"
+            android:parentActivityName="playground.develop.socialnote.ui.FeedActivity"
+            android:theme="@style/EditorTheme" />
         <activity
             android:name="playground.develop.socialnote.ui.CreatePostActivity"
             android:parentActivityName="playground.develop.socialnote.ui.FeedActivity"
             android:theme="@style/EditorTheme" />
-        <activity android:name="playground.develop.socialnote.ui.FeedActivity" />
+        <activity
+            android:name="playground.develop.socialnote.ui.FeedActivity"
+            android:launchMode="singleTop" />
         <activity android:name="playground.develop.socialnote.ui.SettingsActivity" />
 
         <meta-data

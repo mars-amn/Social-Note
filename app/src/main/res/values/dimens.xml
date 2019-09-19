@@ -35,9 +35,9 @@
     <dimen name="list_item_feed_parent_margin">4dp</dimen>
     <dimen name="list_item_feed_parent_corner_radius">4dp</dimen>
     <dimen name="list_item_feed_parent_elevation">1dp</dimen>
-    <dimen name="list_item_feed_like_counter_margin">4dp</dimen>
+    <dimen name="list_item_feed_like_counter_margin">2dp</dimen>
     <dimen name="list_item_feed_like_counter_padding">2dp</dimen>
-    <dimen name="list_item_feed_like_counter_text_size">14sp</dimen>
+    <dimen name="list_item_feed_like_counter_text_size">16sp</dimen>
     <dimen name="list_item_feed_social_interact_button_width">50dp</dimen>
     <dimen name="list_item_feed_social_interact_button_height">50dp</dimen>
     <dimen name="list_item_feed_social_interact_button_margin">4dp</dimen>

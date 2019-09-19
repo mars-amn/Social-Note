@@ -74,7 +74,7 @@ class PostViewModel : ViewModel(), KoinComponent {
         mPostRepository.deletePost(post)
     }
 
-    fun getPost(documentName: String?) :LiveData<Post>{
+    fun getPost(documentName: String?): LiveData<Post> {
         return mPostRepository.getPost(documentName)
     }
 }

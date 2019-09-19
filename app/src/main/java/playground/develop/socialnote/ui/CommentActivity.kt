@@ -6,17 +6,25 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
+import androidx.transition.TransitionSet
 import coil.api.load
 import coil.transform.CircleCropTransformation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
+import com.transitionseverywhere.extra.Scale
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
@@ -39,9 +47,9 @@ import playground.develop.socialnote.utils.Constants.Companion.OPEN_FROM_NOTIFIC
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import playground.develop.socialnote.viewmodel.PostViewModel
 import java.util.*
-import java.util.Collections.reverse
 import kotlin.math.ln
 import kotlin.math.pow
+
 
 class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
 
@@ -75,6 +83,8 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
         if (isPostFromNotification()) {
             dismissNotification()
         }
+
+
     }
 
     private fun loadPost() {
@@ -87,7 +97,6 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
     }
 
     private fun showPost(post: Post) {
-
         bindPostBody(post.post)
         bindAuthorImage(post.authorImage!!)
         bindAuthorName(post.authorName)
@@ -188,11 +197,13 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
 
 
     private fun showLikeButton() {
+        applyAnimation(mBinding.postParent)
         mBinding.postUnLikeButton.visibility = View.GONE
         mBinding.postLikeButton.visibility = View.VISIBLE
     }
 
     private fun showUnlikeButton() {
+        applyAnimation(mBinding.postParent)
         mBinding.postLikeButton.visibility = View.GONE
         mBinding.postUnLikeButton.visibility = View.VISIBLE
     }
@@ -248,15 +259,48 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
                 if (oldCommentsSize == comments.size) {
 
                 } else {
-                    reverse(comments)
                     mAdapter.mComments = comments
-                    if (comments[0].authorUId == mFirebaseAuth.currentUser?.uid) {
-                        mBinding.commentsRecyclerView.scrollToPosition(0)
+                    if (comments[comments.lastIndex].authorUId == mFirebaseAuth.currentUser?.uid) {
+                        mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
                     }
                     oldCommentsSize = comments.size
                 }
             }
         })
+        mBinding.commentsRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val position = layoutManager.findFirstVisibleItemPosition()
+                if (dy > 0 || position == 0) {
+                    hideScrollFAB()
+                } else {
+                    showScrollFAB()
+                }
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+    }
+
+    private fun showScrollFAB() {
+        mBinding.floatingActionButton.setImageResource(R.drawable.ic_arrow_up)
+        mBinding.floatingActionButton.show()
+    }
+
+    private fun hideScrollFAB() {
+        mBinding.floatingActionButton.setImageResource(R.drawable.ic_arrow_up)
+        mBinding.floatingActionButton.hide()
+    }
+
+    fun onScrollUpClick(view: View) {
+        if (mAdapter.mComments.isNotEmpty()) {
+            mBinding.commentsRecyclerView.smoothScrollToPosition(0)
+        }
+    }
+
+    private fun applyAnimation(view: ViewGroup) {
+        val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
+                .setInterpolator(FastOutLinearInInterpolator())
+        TransitionManager.beginDelayedTransition(view, set)
     }
 
     fun onSubmitButtonClick(view: View) {

@@ -97,4 +97,6 @@
     <string name="empty_post_message">Nothing to share!</string>
     <string name="color_picker_positive_button">Ok</string>
     <string name="color_picker_negative_button">Cancel</string>
+    <string name="comments_for_label">Comments for</string>
+    <string name="comments_toolbar_label">Comments</string>
 </resources>

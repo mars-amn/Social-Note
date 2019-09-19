@@ -27,6 +27,7 @@ import playground.develop.socialnote.databinding.ActivityFeedBinding
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.viewmodel.PostViewModel
 
+
 class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener {
 
     private val mPostViewModel: PostViewModel by viewModel()
@@ -47,7 +48,26 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
             transformations(CircleCropTransformation())
         }
+
     }
+
+    //    fun getUserCountry(): String? {
+    //        try {
+    //            val tm = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
+    //            val simCountry = tm.simCountryIso
+    //            if (simCountry != null && simCountry.length == 2) {
+    //                return simCountry.toLowerCase(Locale.US)
+    //            } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
+    //                val networkCountry = tm.networkCountryIso
+    //                if (networkCountry != null && networkCountry.length == 2) {
+    //                    return networkCountry.toLowerCase(Locale.US)
+    //                }
+    //            }
+    //        } catch (e: Exception) {
+    //        }
+    //
+    //        return ""
+    //    }
 
     private fun loadUser() {
         mPostViewModel.getUser().observe(this@FeedActivity, Observer { user ->

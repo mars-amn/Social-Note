@@ -1,6 +1,5 @@
 package playground.develop.socialnote.ui
 
-import android.content.Intent
 import android.os.Bundle
 import com.codemybrainsout.onboarder.AhoyOnboarderActivity
 import com.codemybrainsout.onboarder.AhoyOnboarderCard
