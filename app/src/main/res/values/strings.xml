@@ -99,4 +99,7 @@
     <string name="color_picker_negative_button">Cancel</string>
     <string name="comments_for_label">Comments for</string>
     <string name="comments_toolbar_label">Comments</string>
+    <string name="post_alert_dialog_message">Do you want to discard the post?</string>
+    <string name="post_alert_dialog_title">Unsaved work</string>
+    <string name="image_picker_chooser_title">Choose picture with</string>
 </resources>

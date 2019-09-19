@@ -9,7 +9,7 @@
             type="playground.develop.socialnote.ui.CreatePostActivity" />
     </data>
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white">
@@ -20,19 +20,41 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="#e6e6e6"
-            android:scrollbars="none">
-
-            <include layout="@layout/editor_toolbar" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <include
+                android:id="@+id/toolbarEditor"
+                layout="@layout/editor_toolbar" />
 
 
         </HorizontalScrollView>
 
+        <ImageView
+            android:id="@+id/postImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toTopOf="@id/tools"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <ImageButton
+            android:id="@+id/removeSelectedImageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:onClick="@{handlers::onRemoveImageClick}"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@id/postImage"
+            app:layout_constraintTop_toTopOf="@id/postImage"
+            app:srcCompat="@drawable/ic_remove" />
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="40dp"
-            android:scrollbars="vertical">
+            android:layout_height="0dp"
+            android:scrollbars="vertical"
+            app:layout_constraintBottom_toTopOf="@id/postImage"
+            app:layout_constraintTop_toTopOf="parent">
 
 
             <com.github.irshulx.Editor
@@ -47,5 +69,5 @@
                 app:render_type="Editor" />
 
         </ScrollView>
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

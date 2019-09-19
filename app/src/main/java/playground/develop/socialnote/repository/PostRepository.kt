@@ -1,6 +1,5 @@
 package playground.develop.socialnote.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -40,6 +39,7 @@ import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_P
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_COMMENTS
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_DATE_CREATED
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_DOC_NAME
+import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_IMAGE_URL
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_LIKES
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POSTS_POST_REGISTER_TOKEN
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_USERS_COLLECTION_NAME
@@ -94,7 +94,7 @@ class PostRepository : IPostRepository, KoinComponent {
                         }
                         posts.value = postsList
                     }
-                }.addOnFailureListener { Log.d("ProfileActivity", it.message!!) }
+                }.addOnFailureListener { }
         return posts
     }
 
@@ -111,7 +111,7 @@ class PostRepository : IPostRepository, KoinComponent {
                         }
                         posts.value = postsList
                     }
-                }.addOnFailureListener { Log.d("ProfileActivity", it.message!!) }
+                }.addOnFailureListener { }
         return posts
     }
 
@@ -254,7 +254,9 @@ class PostRepository : IPostRepository, KoinComponent {
         postMap[FIRESTORE_POSTS_POST_DOC_NAME] = post.documentName!!
         postMap[FIRESTORE_POSTS_POST_REGISTER_TOKEN] = post.registerToken!!
         postMap[FIRESTORE_USER_TITLE] = post.userTitle!!
-
+        if (post.imageUrl != null) {
+            postMap[FIRESTORE_POSTS_POST_IMAGE_URL] = post.imageUrl!!
+        }
         return postMap
     }
 

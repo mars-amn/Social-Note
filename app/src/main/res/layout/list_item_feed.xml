@@ -55,10 +55,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/post_body_margin"
-                app:layout_constraintBottom_toTopOf="@+id/socialInteractParent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />
+
+            <ImageView
+                android:id="@+id/listItemFeedPostImage"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/list_item_feed_post_image_margin"
+                android:layout_height="@dimen/list_item_feed_post_image_height"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@id/socialInteractParent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/listItemFeedBodyText" />
 
             <LinearLayout
                 android:id="@+id/socialInteractParent"

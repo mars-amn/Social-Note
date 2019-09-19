@@ -65,4 +65,6 @@
     <dimen name="nav_header_image_margin_start">8dp</dimen>
     <dimen name="nav_header_image_margin_bottom">8dp</dimen>
     <dimen name="editor_action_padding">2.5dp</dimen>
+    <dimen name="list_item_feed_post_image_height">300dp</dimen>
+    <dimen name="list_item_feed_post_image_margin">4dp</dimen>
 </resources>

@@ -91,6 +91,7 @@ class Constants {
         const val FIRESTORE_POSTS_POST_COMMENTS = "comments"
         const val FIRESTORE_POSTS_POST_REGISTER_TOKEN = "registerToken"
         const val FIRESTORE_POSTS_POST_DOC_NAME = "documentName"
+        const val FIRESTORE_POSTS_POST_IMAGE_URL = "imageUrl"
 
         const val FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME = "CommentNotification"
         const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"

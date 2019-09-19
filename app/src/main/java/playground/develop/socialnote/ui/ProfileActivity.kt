@@ -138,7 +138,7 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     private fun startImagePickChooser(requestCode: Int) {
         val imageIntent = Intent(ACTION_GET_CONTENT)
         imageIntent.type = "image/*"
-        val chooser = Intent.createChooser(imageIntent, "Choose picture with")
+        val chooser = Intent.createChooser(imageIntent, getString(R.string.image_picker_chooser_title))
         startActivityForResult(chooser, requestCode)
     }
 

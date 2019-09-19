@@ -6,19 +6,16 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
+import coil.api.load
 import com.flask.colorpicker.ColorPickerView
 import com.flask.colorpicker.builder.ColorPickerDialogBuilder
-import com.github.irshulx.EditorListener
 import com.github.irshulx.models.EditorTextStyle
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
@@ -47,6 +44,7 @@ class CreatePostActivity : AppCompatActivity() {
 
     private val mPostViewModel: PostViewModel by viewModel()
     var mRegisterToken: String? = null
+    private var mSelectedImage: Bitmap? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil
@@ -95,7 +93,6 @@ class CreatePostActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.action_unordered_numbered)
                 .setOnClickListener { mBinding.editor.insertList(true) }
-
         findViewById<View>(R.id.action_hr).setOnClickListener { mBinding.editor.insertDivider() }
 
 
@@ -113,8 +110,7 @@ class CreatePostActivity : AppCompatActivity() {
                     .build().show()
         }
 
-        findViewById<View>(R.id.action_insert_image)
-                .setOnClickListener { mBinding.editor.openImagePicker() }
+        findViewById<View>(R.id.action_insert_image).setOnClickListener { startImagePicker() }
 
         findViewById<View>(R.id.action_insert_link)
                 .setOnClickListener { mBinding.editor.insertLink() }
@@ -122,40 +118,13 @@ class CreatePostActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.action_erase)
                 .setOnClickListener { mBinding.editor.clearAllContents() }
-        mBinding.editor.editorListener = object : EditorListener {
-            override fun onRenderMacro(name: String?,
-                                       props: MutableMap<String, Any>?,
-                                       index: Int): View {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+    }
 
-            override fun onTextChanged(editText: EditText, text: Editable) {
-            }
-
-            override fun onUpload(image: Bitmap, uuid: String) {
-                val baos = ByteArrayOutputStream()
-                Toast.makeText(this@CreatePostActivity, uuid, Toast.LENGTH_LONG).show()
-                image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val bytes = baos.toByteArray()
-                val coverImageRef = mFirebaseStorage.getReference(FIRESTORE_POST_IMAGES)
-                        .child(Date().time.toString())
-                val uploadTask = coverImageRef.putBytes(bytes)
-                uploadTask
-                        .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                            if (!task.isSuccessful) {
-                                toast(getString(R.string.failed_upolad_message))
-                            }
-                            return@Continuation coverImageRef.downloadUrl
-                        }).addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                mBinding.editor.onImageUploadComplete(task.result.toString(), uuid)
-                            }
-                        }
-
-            }
-
-
-        }
+    private fun startImagePicker() {
+        val imageIntent = Intent(Intent.ACTION_GET_CONTENT)
+        imageIntent.type = "image/*"
+        val chooser = Intent.createChooser(imageIntent, getString(R.string.image_picker_chooser_title))
+        startActivityForResult(chooser, PICK_IMAGE_REQUEST_CODE)
     }
 
     private fun colorHex(color: Int): String {
@@ -182,20 +151,68 @@ class CreatePostActivity : AppCompatActivity() {
             toast(getString(R.string.empty_post_message))
             return
         }
+
+        if (mSelectedImage != null) {
+            postWithImage()
+        } else {
+            uploadPostWithoutImage()
+        }
+    }
+
+
+    private fun uploadPostWithoutImage() {
+        val post = getPost()
+        post.imageUrl = ""
+        mPostViewModel.createPost(post)
+        finish()
+    }
+
+    private fun postWithImage() {
+        val baos = ByteArrayOutputStream()
+        mSelectedImage!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val bytes = baos.toByteArray()
+        val postImageRef = mFirebaseStorage.getReference(FIRESTORE_POST_IMAGES)
+                .child(Date().time.toString())
+        val uploadTask = postImageRef.putBytes(bytes)
+        uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                toast(getString(R.string.failed_upolad_message))
+            }
+            return@Continuation postImageRef.downloadUrl
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val body = mBinding.editor.contentAsHTML
+                val authorId = mFirebaseAuth.currentUser?.uid
+                val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
+                val categoryName = ""
+                val authorName = mFirebaseAuth.currentUser?.displayName
+                val post = Post(mRegisterToken,
+                                body,
+                                authorName,
+                                categoryName,
+                                authorId,
+                                authorImage,
+                                Timestamp(Date()),
+                                imageUrl = task.result.toString())
+                mPostViewModel.createPost(post)
+                finish()
+            }
+        }
+    }
+
+    private fun getPost(): Post {
         val body = mBinding.editor.contentAsHTML
         val authorId = mFirebaseAuth.currentUser?.uid
         val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
         val categoryName = ""
         val authorName = mFirebaseAuth.currentUser?.displayName
-        val post = Post(mRegisterToken,
-                        body,
-                        authorName,
-                        categoryName,
-                        authorId,
-                        authorImage,
-                        Timestamp(Date()))
-        mPostViewModel.createPost(post)
-        finish()
+        return Post(mRegisterToken,
+                    body,
+                    authorName,
+                    categoryName,
+                    authorId,
+                    authorImage,
+                    Timestamp(Date()))
 
     }
 
@@ -210,12 +227,28 @@ class CreatePostActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == mBinding.editor.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && resultCode == RESULT_OK && data != null && data.data != null) {
             val uri = data.data!!
             val imageStream = contentResolver.openInputStream(uri)!!
             val imageBitmap = BitmapFactory.decodeStream(imageStream)
-            mBinding.editor.insertImage(imageBitmap)
+            showImage(imageBitmap)
+            mSelectedImage = imageBitmap
         }
+    }
+
+    private fun showImage(imageBitmap: Bitmap?) {
+        mBinding.postImage.visibility = View.VISIBLE
+        mBinding.removeSelectedImageButton.visibility = View.VISIBLE
+        mBinding.postImage.load(imageBitmap) {
+            crossfade(true)
+        }
+    }
+
+    fun onRemoveImageClick(view: View) {
+        mBinding.postImage.setImageResource(android.R.color.transparent)
+        mBinding.postImage.visibility = View.GONE
+        mBinding.removeSelectedImageButton.visibility = View.GONE
+        mSelectedImage = null
     }
 
     private fun getRegisterToken() {
@@ -233,8 +266,8 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun showPostAlertDialog() {
-        MaterialAlertDialogBuilder(this).setTitle("Unsaved work")
-                .setMessage("Do you want to discard the post?")
+        MaterialAlertDialogBuilder(this).setTitle(getString(R.string.post_alert_dialog_title))
+                .setMessage(getString(R.string.post_alert_dialog_message))
                 .setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
                     dialog.dismiss()
                     navigateUp()
@@ -251,5 +284,6 @@ class CreatePostActivity : AppCompatActivity() {
 
     companion object {
         const val EDITOR_SAVE_STATE_KEY = "EDITOR-SAVE-STATE-KEY"
+        const val PICK_IMAGE_REQUEST_CODE = 7
     }
 }

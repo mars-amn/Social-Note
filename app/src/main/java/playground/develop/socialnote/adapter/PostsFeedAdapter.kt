@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.transition.TransitionSet
+import coil.api.load
+import coil.transform.RoundedCornersTransformation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.transitionseverywhere.extra.Scale
@@ -96,8 +98,9 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
             hideLikedButton()
             mBinding.post = post
             setUserTitle(post)
+            bindPostImage(post)
             mBinding.listItemFeedBodyText
-                    .setHtml(post.post!!, HtmlHttpImageGetter(mBinding.listItemFeedBodyText))
+                    .setHtml(post.post!!)
             mBinding.listItemFeedDate.text = DateUtils
                     .getRelativeTimeSpanString(post.getDateCreated().time)
             if (likedArray.contains(post.documentName!!)) {
@@ -115,6 +118,19 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
                 }
             } else {
                 hideLikeCounter()
+            }
+        }
+
+        private fun bindPostImage(post: Post) {
+            if (post.imageUrl != null) {
+                applyAnimation()
+                mBinding.listItemFeedPostImage.load(post.imageUrl!!) {
+                    crossfade(true)
+                    transformations(RoundedCornersTransformation(4f))
+                }
+                mBinding.listItemFeedPostImage.visibility = View.VISIBLE
+            } else {
+                mBinding.listItemFeedPostImage.visibility = View.GONE
             }
         }
 
