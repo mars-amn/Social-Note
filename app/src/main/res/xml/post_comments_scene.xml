@@ -1,14 +1,19 @@
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:motion="http://schemas.android.com/tools">
     <Transition
+
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
         app:duration="1000">
-        <OnSwipe
+        <OnSwipe        motion:visibilityMode="ignore"
+
             app:dragDirection="dragUp"
             app:touchAnchorId="@+id/commentsRecyclerView"
             app:touchAnchorSide="top" />
+
     </Transition>
+
     <ConstraintSet android:id="@+id/start">
 
     </ConstraintSet>

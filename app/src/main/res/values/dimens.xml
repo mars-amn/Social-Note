@@ -67,4 +67,5 @@
     <dimen name="editor_action_padding">2.5dp</dimen>
     <dimen name="list_item_feed_post_image_height">300dp</dimen>
     <dimen name="list_item_feed_post_image_margin">4dp</dimen>
+    <dimen name="comments_post_image_height">200dp</dimen>
 </resources>

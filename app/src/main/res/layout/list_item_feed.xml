@@ -62,9 +62,9 @@
             <ImageView
                 android:id="@+id/listItemFeedPostImage"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/list_item_feed_post_image_margin"
                 android:layout_height="@dimen/list_item_feed_post_image_height"
-                android:visibility="visible"
+                android:layout_margin="@dimen/list_item_feed_post_image_margin"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@id/socialInteractParent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

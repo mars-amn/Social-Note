@@ -98,9 +98,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/post_body_margin"
+                    app:layout_constraintBottom_toTopOf="@id/postImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/postAuthorImage" />
+
+                <ImageView
+                    android:id="@+id/postImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/comments_post_image_height"
+                    android:layout_margin="@dimen/list_item_feed_post_image_margin"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/postBodyText" />
 
                 <LinearLayout
                     android:id="@+id/postSocialInteractParent"
@@ -109,7 +120,7 @@
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/postBodyText">
+                    app:layout_constraintTop_toBottomOf="@id/postImage">
 
                     <TextView
                         android:id="@+id/postLikesCounter"
@@ -230,26 +241,15 @@
             android:id="@+id/commentsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layoutAnimation="@anim/layout_anim_from_top"
             android:orientation="vertical"
+            android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/commentInputParent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/postParent"
+            app:reverseLayout="true"
             tools:listitem="@layout/list_item_comment_right" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{handlers::onScrollUpClick}"
-            app:backgroundTint="@color/colorPrimaryDark"
-            app:fabSize="mini"
-            app:layout_constraintBottom_toTopOf="@id/commentInputParent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/ic_arrow_up"
-            app:tint="#fff" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

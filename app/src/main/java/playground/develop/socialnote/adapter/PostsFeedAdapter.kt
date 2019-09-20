@@ -24,7 +24,6 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.transitionseverywhere.extra.Scale
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import playground.develop.socialnote.R
 import playground.develop.socialnote.database.remote.firestore.models.Like
 import playground.develop.socialnote.database.remote.firestore.models.Post
@@ -99,8 +98,7 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
             mBinding.post = post
             setUserTitle(post)
             bindPostImage(post)
-            mBinding.listItemFeedBodyText
-                    .setHtml(post.post!!)
+            mBinding.listItemFeedBodyText.setHtml(post.post!!)
             mBinding.listItemFeedDate.text = DateUtils
                     .getRelativeTimeSpanString(post.getDateCreated().time)
             if (likedArray.contains(post.documentName!!)) {
@@ -122,15 +120,16 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
         }
 
         private fun bindPostImage(post: Post) {
-            if (post.imageUrl != null) {
+            if (post.imageUrl == null || post.imageUrl == "") {
+                mBinding.listItemFeedPostImage.visibility = View.GONE
+            } else {
                 applyAnimation()
                 mBinding.listItemFeedPostImage.load(post.imageUrl!!) {
                     crossfade(true)
                     transformations(RoundedCornersTransformation(4f))
                 }
                 mBinding.listItemFeedPostImage.visibility = View.VISIBLE
-            } else {
-                mBinding.listItemFeedPostImage.visibility = View.GONE
+
             }
         }
 
