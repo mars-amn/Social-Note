@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="playground.develop.socialnote.base.NotesApplication"
+        android:name=".base.NotesApplication"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -20,7 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="playground.develop.socialnote.ui.SplashActivity"
+            android:name=".ui.AboutActivity"
+            android:label="@string/about_menu_item_label"
+            android:parentActivityName=".ui.HomeActivity"
+            android:theme="@style/EditorTheme" />
+        <activity
+            android:name=".ui.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,31 +37,29 @@
                 android:name="android.app.shortcuts"
                 android:resource="@xml/app_shortcuts" />
         </activity>
-        <activity android:name="playground.develop.socialnote.ui.OnBoardingActivity">
-
-        </activity>
-        <activity android:name="playground.develop.socialnote.ui.ProfileActivity" />
-        <activity android:name="playground.develop.socialnote.ui.LikesActivity" />
+        <activity android:name=".ui.OnBoardingActivity" />
+        <activity android:name=".ui.ProfileActivity" />
+        <activity android:name=".ui.LikesActivity" />
         <activity
-            android:name="playground.develop.socialnote.ui.CommentActivity"
+            android:name=".ui.CommentActivity"
             android:label="@string/comments_toolbar_label"
-            android:parentActivityName="playground.develop.socialnote.ui.FeedActivity"
+            android:parentActivityName=".ui.FeedActivity"
             android:theme="@style/EditorTheme" />
         <activity
-            android:name="playground.develop.socialnote.ui.CreatePostActivity"
-            android:parentActivityName="playground.develop.socialnote.ui.FeedActivity"
+            android:name=".ui.CreatePostActivity"
+            android:parentActivityName=".ui.FeedActivity"
             android:theme="@style/EditorTheme" />
         <activity
-            android:name="playground.develop.socialnote.ui.FeedActivity"
+            android:name=".ui.FeedActivity"
             android:launchMode="singleTop" />
-        <activity android:name="playground.develop.socialnote.ui.SettingsActivity" />
+        <activity android:name=".ui.SettingsActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <receiver
-            android:name="playground.develop.socialnote.receiver.RebootReceiver"
+            android:name=".receiver.RebootReceiver"
             android:directBootAware="true"
             tools:targetApi="n">
             <intent-filter>
@@ -65,28 +68,28 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="playground.develop.socialnote.receiver.NoteReminderReceiver"
+            android:name=".receiver.NoteReminderReceiver"
             android:enabled="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="playground.develop.socialnote.receiver.GeofenceReminderReceiver" />
-        <receiver android:name="playground.develop.socialnote.receiver.NotificationReceiver" />
+        <receiver android:name=".receiver.GeofenceReminderReceiver" />
+        <receiver android:name=".receiver.NotificationReceiver" />
 
         <activity
-            android:name="playground.develop.socialnote.ui.GeofencePickerActivity"
+            android:name=".ui.GeofencePickerActivity"
             android:label="@string/title_activity_location_map_actitivty">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="playground.develop.socialnote.ui.AddEditNoteActivity" />
         </activity>
-        <activity android:name="playground.develop.socialnote.ui.RegisterActivity" />
+        <activity android:name=".ui.RegisterActivity" />
         <activity
-            android:name="playground.develop.socialnote.ui.AddEditNoteActivity"
-            android:parentActivityName="playground.develop.socialnote.ui.HomeActivity"
+            android:name=".ui.AddEditNoteActivity"
+            android:parentActivityName=".ui.HomeActivity"
             android:theme="@style/EditorTheme" />
-        <activity android:name="playground.develop.socialnote.ui.HomeActivity" />
+        <activity android:name=".ui.HomeActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -112,19 +115,19 @@
             android:value="@string/facebook_app_id" />
 
         <service
-            android:name="playground.develop.socialnote.services.GeofenceService"
+            android:name=".services.GeofenceService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="playground.develop.socialnote.services.TimeReminderService"
+            android:name=".services.TimeReminderService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="playground.develop.socialnote.services.SyncingService"
+            android:name=".services.SyncingService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name="playground.develop.socialnote.services.FMService"
+            android:name=".services.FMService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

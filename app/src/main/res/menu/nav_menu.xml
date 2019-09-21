@@ -18,4 +18,8 @@
         android:icon="@drawable/ic_logout"
         android:title="@string/login_menu_item"
         android:visible="false" />
+    <item
+        android:id="@+id/aboutMenuItem"
+        android:icon="@drawable/ic_about"
+        android:title="@string/about_menu_item_label" />
 </menu>

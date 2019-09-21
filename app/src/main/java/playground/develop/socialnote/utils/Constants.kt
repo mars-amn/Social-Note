@@ -6,6 +6,9 @@ package playground.develop.socialnote.utils
 class Constants {
 
     companion object {
+        const val APP_FACEBOOK_URL = "https://www.facebook.com/flyingsocialnote"
+        const val APP_TWITTER_ID = 1172239785076899840
+        const val APP_TWITTER_URL = "https://twitter.com/social_note"
 
         const val APP_PREFERENCE_NAME = "playground.develop.socialnote"
         const val FIRST_LAUNCH_KEY = "playground.develop.socialnote.utils.first_launch_key"

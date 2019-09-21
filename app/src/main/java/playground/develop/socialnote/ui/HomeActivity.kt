@@ -297,8 +297,13 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
             }
             R.id.logoutMenuItem -> showUserLogoutDialog()
             R.id.loginMenuItem -> startRegisterActivity()
+            R.id.aboutMenuItem -> startAboutActivity()
         }
         return true
+    }
+
+    private fun startAboutActivity() {
+        startActivity(intentFor<AboutActivity>())
     }
 
     private fun startRegisterActivity() {

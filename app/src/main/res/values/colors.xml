@@ -34,4 +34,5 @@
     <color name="facebook_button_text_color">#fff</color>
     <color name="google_button_text_color">#fff</color>
     <color name="twitter_button_text_color">#fff</color>
+    <color name="aboutScreenBackgroundColor">#eeeeee</color>
 </resources>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="playground.develop.socialnote.ui.AboutActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/aboutScreenBackgroundColor">
+
+        <TextView
+            android:id="@+id/appName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/about_elements_margin"
+            android:fontFamily="@font/cabin_medium"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/appLogoImage"
+            android:layout_width="@dimen/about_app_image_width"
+            android:layout_height="@dimen/about_app_image_height"
+            android:layout_marginTop="@dimen/about_elements_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appName" />
+
+        <TextView
+            android:id="@+id/appVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/about_elements_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appLogoImage"
+            tools:text="AppVersion" />
+
+        <ImageButton
+            android:id="@+id/aboutAppFacebookButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/about_elements_margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="@{handlers::onFacebookButtonClick}"
+            app:layout_constraintEnd_toStartOf="@+id/appVersion"
+            app:layout_constraintTop_toBottomOf="@id/appVersion"
+            app:srcCompat="@drawable/ic_about_facebook" />
+
+        <ImageButton
+            android:id="@+id/aboutAppTwitterButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/about_elements_margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:onClick="@{handlers::onTwitterButtonClick}"
+            app:layout_constraintBottom_toBottomOf="@+id/aboutAppFacebookButton"
+            app:layout_constraintStart_toEndOf="@+id/appVersion"
+            app:layout_constraintTop_toTopOf="@+id/aboutAppFacebookButton"
+            app:srcCompat="@drawable/ic_about_twitter" />
+
+        <TextView
+            android:id="@+id/licensesText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/about_elements_margin"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:onClick="@{handlers::onLicensesClick}"
+            android:text="@string/acknowledgements_label"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="@dimen/licenses_text_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

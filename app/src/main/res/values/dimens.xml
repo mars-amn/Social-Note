@@ -68,4 +68,8 @@
     <dimen name="list_item_feed_post_image_height">300dp</dimen>
     <dimen name="list_item_feed_post_image_margin">4dp</dimen>
     <dimen name="comments_post_image_height">200dp</dimen>
+    <dimen name="about_elements_margin">16dp</dimen>
+    <dimen name="licenses_text_size">20sp</dimen>
+    <dimen name="about_app_image_width">150dp</dimen>
+    <dimen name="about_app_image_height">150dp</dimen>
 </resources>
