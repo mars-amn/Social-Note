@@ -97,8 +97,7 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
 
         fun bindRightComment(comment: Comment) {
             mBinding.comment = comment
-            mBinding.listItemCommentDate.text = DateUtils
-                    .getRelativeTimeSpanString(comment.getDateCreated().time)
+            mBinding.listItemCommentDate.text = DateUtils.getRelativeTimeSpanString(comment.getDateCreated().time)
             mBinding.listItemCommentRightImage.load(getRandomImage()) {
                 crossfade(true)
             }
@@ -143,8 +142,7 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
 
         fun bindLeftComment(comment: Comment) {
             mBinding.comment = comment
-            mBinding.listItemCommentDate.text = DateUtils
-                    .getRelativeTimeSpanString(comment.getDateCreated().time)
+            mBinding.listItemCommentDate.text = DateUtils.getRelativeTimeSpanString(comment.getDateCreated().time)
             mBinding.listItemCommentLeftImage.load(getRandomImage()) {
                 crossfade(true)
             }

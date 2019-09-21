@@ -13,6 +13,7 @@ exports.sendPostCommentNotification = functions.firestore
         const comment = newValue.comment
         const documentId = newValue.documentId
         const commenterImage = newValue.authorImage
+         const countryCode = newValue.countryCode
         const type = 'COMMENT'
 
 
@@ -23,6 +24,7 @@ exports.sendPostCommentNotification = functions.firestore
                     commentAuthToken: commentToken,
                     comment: comment,
                     documentId: documentId,
+                    countryCode:countryCode,
              	      type : type
                 }
             };
@@ -42,6 +44,7 @@ exports.sendPostLikeNotification = functions.firestore
         const userLikerToken = newValue.userRegisterToken
         const name = newValue.userName
         const documentId = newValue.documentId
+        const countryCode = newValue.countryCode
  		const type = 'LIKE'
 
 
@@ -51,7 +54,8 @@ exports.sendPostLikeNotification = functions.firestore
                     authorToken: authorToken,
                     userLikerToken: userLikerToken,
                     documentId: documentId,
-                    type : type
+                    countryCode: countryCode,
+                 type : type
                 }
             };
 

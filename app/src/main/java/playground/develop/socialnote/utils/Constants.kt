@@ -11,6 +11,8 @@ class Constants {
         const val FIRST_LAUNCH_KEY = "playground.develop.socialnote.utils.first_launch_key"
         const val SKIP_REGISTER_KEY = "playground.develop.socialnote.utils.skip_register_key"
         const val CONSIDER_REGISTER_KEY = "playground.develop.socialnote.utils.consider_register_key"
+        const val USER_COUNTRY_ISO_KEY = "playground.develop.socialnote.utils.user_country_iso_key"
+        const val USER_COUNTRY_ISO_ERROR_KEY = "not-available"
         /**
          * Intent & Notification Keys
          */
@@ -92,6 +94,7 @@ class Constants {
         const val FIRESTORE_POSTS_POST_REGISTER_TOKEN = "registerToken"
         const val FIRESTORE_POSTS_POST_DOC_NAME = "documentName"
         const val FIRESTORE_POSTS_POST_IMAGE_URL = "imageUrl"
+        const val FIRESTORE_USER_COUNTRY_CODE = "countryCode"
 
         const val FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME = "CommentNotification"
         const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN = "authorRegisterToken"
@@ -101,6 +104,7 @@ class Constants {
         const val FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_UID = "authorUID"
         const val FIRESTORE_COMMENTS_NOTIFICATION_DATE_CREATED = "dateCreated"
         const val FIRESTORE_COMMENTS_POST_COMMENT_DOC_ID = "documentId"
+        const val FIRESTORE_COMMENTS_POST_COMMENT_AUTHOR_COUNTRY_CODE = "countryCode"
         const val FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN = "commentAuthorToken"
 
         const val FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME = "LikesNotification"
@@ -108,6 +112,7 @@ class Constants {
         const val FIRESTORE_LIKES_NOTIFICATION_USER_TOKEN = "userRegisterToken"
         const val FIRESTORE_LIKES_NOTIFICATION_USER_NAME = "userName"
         const val FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID = "documentId"
+        const val FIRESTORE_LIKES_NOTIFICATION_COUNTRY_CODE = "countryCode"
         const val FIRESTORE_LIKES_NOTIFICATION_USER_ID = "userLikerUId"
 
         const val FIRESTORE_USERS_COLLECTION_NAME = "Users"

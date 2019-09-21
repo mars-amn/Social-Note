@@ -66,12 +66,14 @@ class GeofenceService : JobIntentService(), KoinComponent {
 
     private fun createGeofenceRequest(geofence: Geofence): GeofencingRequest {
         return GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER).addGeofence(geofence)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .addGeofence(geofence)
                 .build()
     }
 
     private fun createAGeofencing(latLng: LatLng, id: Long): Geofence {
-        return Geofence.Builder().setRequestId("geo_fence_reminder$id")
+        return Geofence.Builder()
+                .setRequestId("geo_fence_reminder$id")
                 .setCircularRegion(latLng.latitude,
                                    latLng.longitude,
                                    Constants.GEOFENCE_REMINDER_RADIUS)

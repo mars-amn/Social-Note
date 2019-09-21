@@ -9,6 +9,7 @@ import playground.develop.socialnote.R
 import playground.develop.socialnote.adapter.LikesAdapter
 import playground.develop.socialnote.database.remote.firestore.models.Like
 import playground.develop.socialnote.databinding.ActivityLikesBinding
+import playground.develop.socialnote.utils.Constants.Companion.USER_COUNTRY_ISO_KEY
 import playground.develop.socialnote.utils.Constants.Companion.USER_LIKES_INTENT_KEY
 import playground.develop.socialnote.viewmodel.PostViewModel
 
@@ -20,16 +21,19 @@ class LikesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this@LikesActivity, R.layout.activity_likes)
         if (intent != null && intent.hasExtra(USER_LIKES_INTENT_KEY)) {
-            loadUserLikes(intent.getStringExtra(USER_LIKES_INTENT_KEY))
+
+            loadUserLikes(intent.getStringExtra(USER_LIKES_INTENT_KEY),
+                          intent.getStringExtra(USER_COUNTRY_ISO_KEY))
         } else {
             finish()
         }
     }
 
-    private fun loadUserLikes(documentName: String?) {
-        mPostViewModel.loadPost(documentName).observe(this@LikesActivity, Observer { post ->
-            val adapter = LikesAdapter(this@LikesActivity, post?.likes as List<Like>)
-            mBinding.userLikesRecyclerView.adapter = adapter
-        })
+    private fun loadUserLikes(documentName: String?, postCountryCode: String?) {
+        mPostViewModel.loadPost(documentName, postCountryCode!!)
+                .observe(this@LikesActivity, Observer { post ->
+                    val adapter = LikesAdapter(this@LikesActivity, post?.likes as List<Like>)
+                    mBinding.userLikesRecyclerView.adapter = adapter
+                })
     }
 }

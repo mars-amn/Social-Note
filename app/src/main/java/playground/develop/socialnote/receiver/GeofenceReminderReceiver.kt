@@ -28,7 +28,8 @@ class GeofenceReminderReceiver : BroadcastReceiver() {
 
     private fun sendNoteGeofenceNotification(context: Context, intent: Intent) {
         AsyncTask.execute {
-            val note = AppDatabase.getDatabase(context)?.notesDao()
+            val note = AppDatabase.getDatabase(context)
+                    ?.notesDao()
                     ?.getGeofenceNote(intent.getLongExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY,
                                                           -1))
             if (note != null) {

@@ -32,6 +32,7 @@ import playground.develop.socialnote.R
 import playground.develop.socialnote.database.remote.firestore.models.Post
 import playground.develop.socialnote.databinding.ActivityCreatePostBinding
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POST_IMAGES
+import playground.develop.socialnote.utils.PreferenceUtils
 import playground.develop.socialnote.viewmodel.PostViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
@@ -47,8 +48,8 @@ class CreatePostActivity : AppCompatActivity() {
     private var mSelectedImage: Bitmap? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil
-                .setContentView(this@CreatePostActivity, R.layout.activity_create_post)
+        mBinding = DataBindingUtil.setContentView(this@CreatePostActivity,
+                                                  R.layout.activity_create_post)
         mBinding.handlers = this
         initEditor()
         getRegisterToken()
@@ -64,41 +65,52 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun initEditor() {
-        findViewById<View>(R.id.action_h1)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H1) }
+        findViewById<View>(R.id.action_h1).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.H1)
+        }
 
-        findViewById<View>(R.id.action_h2)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H2) }
+        findViewById<View>(R.id.action_h2).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.H2)
+        }
 
-        findViewById<View>(R.id.action_h3)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H3) }
+        findViewById<View>(R.id.action_h3).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.H3)
+        }
 
-        findViewById<View>(R.id.action_bold)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.BOLD) }
+        findViewById<View>(R.id.action_bold).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.BOLD)
+        }
 
-        findViewById<View>(R.id.action_Italic)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC) }
+        findViewById<View>(R.id.action_Italic).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC)
+        }
 
-        findViewById<View>(R.id.action_indent)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.INDENT) }
+        findViewById<View>(R.id.action_indent).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.INDENT)
+        }
 
-        findViewById<View>(R.id.action_blockquote)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE) }
+        findViewById<View>(R.id.action_blockquote).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE)
+        }
 
-        findViewById<View>(R.id.action_outdent)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT) }
+        findViewById<View>(R.id.action_outdent).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT)
+        }
 
-        findViewById<View>(R.id.action_bulleted)
-                .setOnClickListener { mBinding.editor.insertList(false) }
+        findViewById<View>(R.id.action_bulleted).setOnClickListener {
+            mBinding.editor.insertList(false)
+        }
 
-        findViewById<View>(R.id.action_unordered_numbered)
-                .setOnClickListener { mBinding.editor.insertList(true) }
+        findViewById<View>(R.id.action_unordered_numbered).setOnClickListener {
+            mBinding.editor.insertList(true)
+        }
         findViewById<View>(R.id.action_hr).setOnClickListener { mBinding.editor.insertDivider() }
 
 
         findViewById<View>(R.id.action_color).setOnClickListener {
             ColorPickerDialogBuilder.with(this)
-                    .setTitle(getString(R.string.color_pick_choose_title)).initialColor(Color.RED)
+                    .setTitle(getString(R.string.color_pick_choose_title))
+                    .initialColor(Color.RED)
                     .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                     .setOnColorSelectedListener { color ->
                         mBinding.editor.updateTextColor(colorHex(color))
@@ -107,23 +119,23 @@ class CreatePostActivity : AppCompatActivity() {
                         mBinding.editor.updateTextColor(colorHex(color))
                     }
                     .setNegativeButton(getString(R.string.color_picker_negative_button)) { dialog, which -> }
-                    .build().show()
+                    .build()
+                    .show()
         }
 
         findViewById<View>(R.id.action_insert_image).setOnClickListener { startImagePicker() }
 
-        findViewById<View>(R.id.action_insert_link)
-                .setOnClickListener { mBinding.editor.insertLink() }
+        findViewById<View>(R.id.action_insert_link).setOnClickListener { mBinding.editor.insertLink() }
 
 
-        findViewById<View>(R.id.action_erase)
-                .setOnClickListener { mBinding.editor.clearAllContents() }
+        findViewById<View>(R.id.action_erase).setOnClickListener { mBinding.editor.clearAllContents() }
     }
 
     private fun startImagePicker() {
         val imageIntent = Intent(Intent.ACTION_GET_CONTENT)
         imageIntent.type = "image/*"
-        val chooser = Intent.createChooser(imageIntent, getString(R.string.image_picker_chooser_title))
+        val chooser = Intent.createChooser(imageIntent,
+                                           getString(R.string.image_picker_chooser_title))
         startActivityForResult(chooser, PICK_IMAGE_REQUEST_CODE)
     }
 
@@ -151,7 +163,6 @@ class CreatePostActivity : AppCompatActivity() {
             toast(getString(R.string.empty_post_message))
             return
         }
-
         if (mSelectedImage != null) {
             postWithImage()
         } else {
@@ -163,9 +174,15 @@ class CreatePostActivity : AppCompatActivity() {
     private fun uploadPostWithoutImage() {
         val post = getPost()
         post.imageUrl = ""
-        mPostViewModel.createPost(post)
+        mPostViewModel.createPost(post, mUserCountryCode!!)
         finish()
     }
+
+    private val mUserCountryCode: String?
+        get() {
+            return PreferenceUtils.getPreferenceUtils()
+                    .getUserCountryCode(this)
+        }
 
     private fun postWithImage() {
         val baos = ByteArrayOutputStream()
@@ -179,25 +196,27 @@ class CreatePostActivity : AppCompatActivity() {
                 toast(getString(R.string.failed_upolad_message))
             }
             return@Continuation postImageRef.downloadUrl
-        }).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val body = mBinding.editor.contentAsHTML
-                val authorId = mFirebaseAuth.currentUser?.uid
-                val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
-                val categoryName = ""
-                val authorName = mFirebaseAuth.currentUser?.displayName
-                val post = Post(mRegisterToken,
-                                body,
-                                authorName,
-                                categoryName,
-                                authorId,
-                                authorImage,
-                                Timestamp(Date()),
-                                imageUrl = task.result.toString())
-                mPostViewModel.createPost(post)
-                finish()
-            }
-        }
+        })
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val body = mBinding.editor.contentAsHTML
+                        val authorId = mFirebaseAuth.currentUser?.uid
+                        val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
+                        val categoryName = ""
+                        val authorName = mFirebaseAuth.currentUser?.displayName
+                        val post = Post(mRegisterToken,
+                                        body,
+                                        authorName,
+                                        categoryName,
+                                        authorId,
+                                        authorImage,
+                                        Timestamp(Date()),
+                                        imageUrl = task.result.toString(),
+                                        countryCode = mUserCountryCode)
+                        mPostViewModel.createPost(post, mUserCountryCode!!)
+                        finish()
+                    }
+                }
     }
 
     private fun getPost(): Post {
@@ -212,16 +231,19 @@ class CreatePostActivity : AppCompatActivity() {
                     categoryName,
                     authorId,
                     authorImage,
-                    Timestamp(Date()))
+                    Timestamp(Date()),
+                    countryCode = mUserCountryCode)
 
     }
 
     private fun stripHtml(): String {
         val text = mBinding.editor.contentAsHTML
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString()
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+                    .toString()
         } else {
-            Html.fromHtml(text).toString()
+            Html.fromHtml(text)
+                    .toString()
         }
     }
 
@@ -252,7 +274,8 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     private fun getRegisterToken() {
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
+        FirebaseInstanceId.getInstance()
+                .instanceId.addOnSuccessListener { instanceIdResult ->
             mRegisterToken = instanceIdResult.token
         }
     }
@@ -274,7 +297,8 @@ class CreatePostActivity : AppCompatActivity() {
                 }
                 .setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
                     dialog.dismiss()
-                }.show()
+                }
+                .show()
     }
 
     private fun navigateUp() {

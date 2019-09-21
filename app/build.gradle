@@ -138,6 +138,7 @@ dependencies {
     implementation("io.coil-kt:coil:0.7.0")
 
     implementation 'com.codemybrainsout.onboarding:onboarder:1.0.4'
+    compile 'com.github.mukeshsolanki:country-picker-android:2.0.1'
 
     implementation 'com.github.QuadFlask:colorpicker:0.0.13'
     implementation 'org.sufficientlysecure:html-textview:3.6'

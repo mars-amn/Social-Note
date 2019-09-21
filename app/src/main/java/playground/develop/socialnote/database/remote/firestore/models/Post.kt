@@ -18,7 +18,8 @@ data class Post(var registerToken: String? = null,
                 var authorImage: String? = null,
                 private var dateCreated: Timestamp? = null,
                 var userTitle: String? = null,
-                var imageUrl: String? = null) {
+                var imageUrl: String? = null,
+                var countryCode: String? = null) {
 
     var likes: ArrayList<Like>? = null
     var comments: List<Comment>? = null

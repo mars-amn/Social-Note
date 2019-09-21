@@ -17,44 +17,44 @@ class PostViewModel : ViewModel(), KoinComponent {
 
     private val mPostRepository: PostRepository by inject()
 
-    fun createPost(post: Post) {
-        mPostRepository.createNewPost(post)
+    fun createPost(post: Post, countryCode: String) {
+        mPostRepository.createNewPost(post, countryCode)
     }
 
-    fun getPosts(): LiveData<List<Post>> {
-        return mPostRepository.getPostsFeed()
+    fun getPosts(countryCode: String): LiveData<List<Post>> {
+        return mPostRepository.getPostsFeed(countryCode)
     }
 
-    fun createComment(postDocName: String, comment: Comment) {
-        mPostRepository.createComment(postDocName, comment)
+    fun createComment(postDocName: String, comment: Comment, countryCode: String) {
+        mPostRepository.createComment(postDocName, comment, countryCode)
     }
 
-    fun getComments(documentName: String): LiveData<List<Comment>> {
-        return mPostRepository.getCommentsFeed(documentName)
+    fun getComments(documentName: String, mUserCountryCode: String?): LiveData<List<Comment>> {
+        return mPostRepository.getCommentsFeed(documentName, mUserCountryCode)
     }
 
-    fun createLikeOnPost(like: Like) {
-        mPostRepository.createLikeOnPost(like)
+    fun createLikeOnPost(like: Like, countryCode: String?) {
+        mPostRepository.createLikeOnPost(like, countryCode)
     }
 
-    fun removeLikePost(like: Like) { // aka Unlike
-        mPostRepository.removeLike(like)
+    fun removeLikePost(like: Like, countryCode: String) { // aka Unlike
+        mPostRepository.removeLike(like, countryCode)
     }
 
     fun getUser(): LiveData<User> {
         return mPostRepository.getUser()
     }
 
-    fun loadPost(documentName: String?): LiveData<Post> {
-        return mPostRepository.loadPost(documentName)
+    fun loadPost(documentName: String?, postCountryName: String): LiveData<Post> {
+        return mPostRepository.loadPost(documentName, postCountryName)
     }
 
     fun getUser(userUid: String?): LiveData<User> {
         return mPostRepository.getUser(userUid)
     }
 
-    fun getUserPosts(userUid: String?): LiveData<List<Post>> {
-        return mPostRepository.getUserPosts(userUid)
+    fun getUserPosts(userUid: String?, countryCode: String): LiveData<List<Post>> {
+        return mPostRepository.getUserPosts(userUid, countryCode)
 
     }
 
@@ -66,15 +66,15 @@ class PostViewModel : ViewModel(), KoinComponent {
         mPostRepository.updateUser(user)
     }
 
-    fun deleteComment(comment: Comment) {
-        mPostRepository.deleteComment(comment)
+    fun deleteComment(comment: Comment, countryCode: String) {
+        mPostRepository.deleteComment(comment, countryCode)
     }
 
     fun deletePost(post: Post) {
         mPostRepository.deletePost(post)
     }
 
-    fun getPost(documentName: String?): LiveData<Post> {
-        return mPostRepository.getPost(documentName)
+    fun getPost(documentName: String?, mUserCountryCode: String?): LiveData<Post> {
+        return mPostRepository.getPost(documentName, mUserCountryCode)
     }
 }

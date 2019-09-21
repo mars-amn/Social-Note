@@ -8,4 +8,14 @@
         android:id="@+id/feedMenuItem"
         android:icon="@drawable/ic_feed"
         android:title="@string/feed_menu_item_label" />
+    <item
+        android:id="@+id/logoutMenuItem"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/logout_menu_item_label"
+        android:visible="false" />
+    <item
+        android:id="@+id/loginMenuItem"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/login_menu_item"
+        android:visible="false" />
 </menu>

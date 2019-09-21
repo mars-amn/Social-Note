@@ -45,8 +45,7 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_location_map)
         mBinding.handlers = this
         if (intent != null && intent.hasExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)) {
-            mGeofenceLocation = intent
-                    .getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+            mGeofenceLocation = intent.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
         }
         mMapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mMapFragment.getMapAsync(this)
@@ -119,19 +118,20 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.clear()
         mMap.addMarker(MarkerOptions().position(latLng).icon(getMapMarker()))
 
-        mMap
-                .addCircle(CircleOptions().center(latLng).radius(Constants.GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
-                    ContextCompat.getColor(this@GeofencePickerActivity,
-                                           R.color.circle_stroke_color)).fillColor(ContextCompat.getColor(
-                    this@GeofencePickerActivity,
-                    R.color.circle_map_color)))
+        mMap.addCircle(CircleOptions().center(latLng).radius(Constants.GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
+            ContextCompat.getColor(this@GeofencePickerActivity,
+                                   R.color.circle_stroke_color)).fillColor(ContextCompat.getColor(
+            this@GeofencePickerActivity,
+            R.color.circle_map_color)))
     }
 
     private fun getMapMarker(): BitmapDescriptor {
-        val markerDrawable = ContextCompat
-                .getDrawable(this@GeofencePickerActivity, R.drawable.ic_marker)
-        markerDrawable
-                ?.setBounds(0, 0, markerDrawable.intrinsicWidth, markerDrawable.intrinsicHeight)
+        val markerDrawable = ContextCompat.getDrawable(this@GeofencePickerActivity,
+                                                       R.drawable.ic_marker)
+        markerDrawable?.setBounds(0,
+                                  0,
+                                  markerDrawable.intrinsicWidth,
+                                  markerDrawable.intrinsicHeight)
         val markerBitmap = Bitmap.createBitmap(markerDrawable?.intrinsicWidth!!,
                                                markerDrawable.intrinsicHeight,
                                                Bitmap.Config.ARGB_8888)

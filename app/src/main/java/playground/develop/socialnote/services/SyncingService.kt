@@ -83,14 +83,15 @@ class SyncingService : JobIntentService(), KoinComponent {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
                 .document(mFirebaseAuth.currentUser?.uid!!)
                 .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-                .document(getDocumentName(note.id!!)).update(getMappedNote(note))
+                .document(getDocumentName(note.id!!))
+                .update(getMappedNote(note))
                 .addOnSuccessListener {
                     note.isSynced = true
                     note.isNeedUpdate = false
-                    mDisposables
-                            .add(Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
-                                Schedulers.io()).subscribe())
-                }.addOnFailureListener {}
+                    mDisposables.add(Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
+                        Schedulers.io()).subscribe())
+                }
+                .addOnFailureListener {}
     }
 
     private fun syncAllNotes() {
@@ -106,23 +107,23 @@ class SyncingService : JobIntentService(), KoinComponent {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
                 .document(mFirebaseAuth.currentUser?.uid!!)
                 .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-                .document(getDocumentName(note.id!!)).set(getMappedNote(note))
+                .document(getDocumentName(note.id!!))
+                .set(getMappedNote(note))
                 .addOnSuccessListener {
                     note.isSynced = true
-                    mDisposables
-                            .add(Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
-                                Schedulers.io()).subscribe())
-                }.addOnFailureListener { }
+                    mDisposables.add(Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
+                        Schedulers.io()).subscribe())
+                }
+                .addOnFailureListener { }
     }
 
     private fun syncNotesUpdates() {
-        mDisposables
-                .add(Observable.fromCallable { mNotesDao.getNotesNeededForUpdate() }.subscribeOn(
-                    Schedulers.io()).subscribe { notes ->
-                    notes.forEach { note ->
-                        updateNoteInFirestore(note)
-                    }
-                })
+        mDisposables.add(Observable.fromCallable { mNotesDao.getNotesNeededForUpdate() }.subscribeOn(
+            Schedulers.io()).subscribe { notes ->
+            notes.forEach { note ->
+                updateNoteInFirestore(note)
+            }
+        })
     }
 
     private fun deleteSyncNote(id: Long) {
@@ -130,7 +131,10 @@ class SyncingService : JobIntentService(), KoinComponent {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
                 .document(mFirebaseAuth.currentUser?.uid!!)
                 .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-                .document(documentName).delete().addOnSuccessListener { }.addOnFailureListener { }
+                .document(documentName)
+                .delete()
+                .addOnSuccessListener { }
+                .addOnFailureListener { }
     }
 
     private fun getDocumentName(id: Long): String {
@@ -143,7 +147,8 @@ class SyncingService : JobIntentService(), KoinComponent {
     private fun getAllNotesFromFirestore() {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
                 .document(mFirebaseAuth.currentUser?.uid!!)
-                .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME).get()
+                .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
+                .get()
                 .addOnCompleteListener { query ->
                     val syncedNotes = ArrayList<SyncedNote>()
                     val localList = ArrayList<Note>()
@@ -168,22 +173,21 @@ class SyncingService : JobIntentService(), KoinComponent {
 
                                 }
                                 if (geoLocation != null) {
-                                    note
-                                            .geofence = NoteGeofence(syncedNote.geofenceLocation?.latitude,
-                                                                     syncedNote.geofenceLocation?.longitude)
+                                    note.geofence = NoteGeofence(syncedNote.geofenceLocation?.latitude,
+                                                                 syncedNote.geofenceLocation?.longitude)
                                 }
                                 localList.add(note)
                             }
                             populateLocalDatabase(localList)
                         }
                     }
-                }.addOnFailureListener { }
+                }
+                .addOnFailureListener { }
     }
 
     private fun populateLocalDatabase(notesList: List<Note>) {
-        mDisposables
-                .add(Observable.fromCallable { mNotesDao.insertSyncedNotes(notesList) }.subscribeOn(
-                    Schedulers.io()).subscribe())
+        mDisposables.add(Observable.fromCallable { mNotesDao.insertSyncedNotes(notesList) }.subscribeOn(
+            Schedulers.io()).subscribe())
     }
 
     private fun getMappedNote(note: Note): HashMap<String, Any> {

@@ -32,13 +32,11 @@ class NoteRepository : INoteRepository, KoinComponent {
 
         val notesList = RxPagedListBuilder(factory,
                                            PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(
-                                               true).build())
-                .buildFlowable(BackpressureStrategy.LATEST)
+                                               true).build()).buildFlowable(BackpressureStrategy.LATEST)
 
-        mDisposables
-                .add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-                    mNotesList.value = it
-                })
+        mDisposables.add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+            mNotesList.value = it
+        })
         return mNotesList
     }
 
@@ -48,13 +46,11 @@ class NoteRepository : INoteRepository, KoinComponent {
 
         val notesList = RxPagedListBuilder(factory,
                                            PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(
-                                               true).build())
-                .buildFlowable(BackpressureStrategy.LATEST)
+                                               true).build()).buildFlowable(BackpressureStrategy.LATEST)
 
-        mDisposables
-                .add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-                    notes.value = it
-                })
+        mDisposables.add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+            notes.value = it
+        })
         return notes
     }
 
@@ -76,11 +72,10 @@ class NoteRepository : INoteRepository, KoinComponent {
 
     override fun getNote(noteId: Long): LiveData<Note> {
         val note = MutableLiveData<Note>()
-        mDisposables
-                .add(Flowable.fromPublisher(mNotesDao.getNote(noteId).subscribeOn(Schedulers.io()).observeOn(
-                    AndroidSchedulers.mainThread())).subscribe {
-                    note.value = it
-                })
+        mDisposables.add(Flowable.fromPublisher(mNotesDao.getNote(noteId).subscribeOn(Schedulers.io()).observeOn(
+            AndroidSchedulers.mainThread())).subscribe {
+            note.value = it
+        })
         return note
     }
 

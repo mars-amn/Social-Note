@@ -19,9 +19,12 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.OAuthProvider
+import com.mukesh.countrypicker.Country
+import com.mukesh.countrypicker.CountryPicker
 import com.transitionseverywhere.extra.Scale
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -66,18 +69,18 @@ class RegisterActivity : AppCompatActivity() {
     private fun setupFacebookRegister() {
         mCallbackManager = CallbackManager.Factory.create()
         mBinding.facebookLoginButton.setPermissions("email", "public_profile")
-        mBinding.facebookLoginButton
-                .registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
-                    override fun onSuccess(loginResult: LoginResult) {
-                        registerFacebookUser(loginResult.accessToken)
-                    }
+        mBinding.facebookLoginButton.registerCallback(mCallbackManager,
+                                                      object : FacebookCallback<LoginResult> {
+                                                          override fun onSuccess(loginResult: LoginResult) {
+                                                              registerFacebookUser(loginResult.accessToken)
+                                                          }
 
-                    override fun onCancel() {
-                    }
+                                                          override fun onCancel() {
+                                                          }
 
-                    override fun onError(error: FacebookException) {
-                    }
-                })
+                                                          override fun onError(error: FacebookException) {
+                                                          }
+                                                      })
     }
 
     fun onFacebookButtonClick(view: View) {
@@ -91,17 +94,19 @@ class RegisterActivity : AppCompatActivity() {
         if (pendingResultTask != null) {
             pendingResultTask.addOnSuccessListener { authResult ->
                 mAuthViewModel.loginTwitterUser(authResult)
-                startHomeActivity()
-            }.addOnFailureListener {
-                toast(getString(R.string.error_msg))
+                askUserForCountryName()
             }
+                    .addOnFailureListener {
+                        toast(getString(R.string.error_msg))
+                    }
         } else {
-            mFirebaseAuth
-                    .startActivityForSignInWithProvider(this@RegisterActivity, provider.build())
+            mFirebaseAuth.startActivityForSignInWithProvider(this@RegisterActivity,
+                                                             provider.build())
                     .addOnSuccessListener { authResult ->
                         mAuthViewModel.loginTwitterUser(authResult)
-                        startHomeActivity()
-                    }.addOnFailureListener {
+                        askUserForCountryName()
+                    }
+                    .addOnFailureListener {
                         toast(getString(R.string.error_msg))
                     }
         }
@@ -112,7 +117,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerEventBus() {
-        EventBus.getDefault().register(this)
+        EventBus.getDefault()
+                .register(this)
     }
 
     override fun onStop() {
@@ -121,7 +127,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun unregisterEventBus() {
-        EventBus.getDefault().unregister(this)
+        EventBus.getDefault()
+                .unregister(this)
     }
 
     private fun setupFullScreen() {
@@ -137,7 +144,9 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getSignInOptions(): GoogleSignInOptions? {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_api_key)).requestEmail().build()
+                .requestIdToken(getString(R.string.web_api_key))
+                .requestEmail()
+                .build()
 
     }
 
@@ -153,14 +162,37 @@ class RegisterActivity : AppCompatActivity() {
     fun onEvent(event: AuthenticationEvent) {
         if (event.authenticationEventMessage == Constants.AUTH_EVENT_SUCCESS) {
             if (callingActivity == null) {
-                startHomeActivity()
+                askUserForCountryName()
             } else {
-                setResult(RESULT_OK)
-                finish()
+                askUserForCountryNameAndSetResults()
             }
         } else if (event.authenticationEventMessage == Constants.AUTH_EVENT_FAIL) {
             toast(getString(R.string.auth_failed_msg))
         }
+    }
+
+    private fun askUserForCountryNameAndSetResults() {
+        val countryBuilder = CountryPicker.Builder()
+                .with(this)
+                .listener { country ->
+                    saveUserCountryCode(country)
+                    setResult(RESULT_OK)
+                    finish()
+                }
+        MaterialAlertDialogBuilder(this).setTitle(getString(R.string.country_picker_dialog_title))
+                .setMessage(getString(R.string.country_picker_dialog_message))
+                .setPositiveButton(getString(R.string.sync_notes_dialog_pos_button_label)) { dialog, id ->
+                    dialog.dismiss()
+                    val picker = countryBuilder.build()
+                    picker.showBottomSheet(this)
+                }
+                .show()
+    }
+
+    private fun saveUserCountryCode(country: Country) {
+        val editor = getSharedPreferences(Constants.APP_PREFERENCE_NAME, MODE_PRIVATE).edit()
+        editor.putString(Constants.USER_COUNTRY_ISO_KEY, country.code)
+        editor.apply()
     }
 
     fun onSkipRegistrationClick(view: View) {
@@ -179,6 +211,26 @@ class RegisterActivity : AppCompatActivity() {
         finish()
     }
 
+    private fun askUserForCountryName() {
+        val countryBuilder = CountryPicker.Builder()
+                .with(this)
+                .listener { country ->
+                    val editor = getSharedPreferences(Constants.APP_PREFERENCE_NAME,
+                                                      MODE_PRIVATE).edit()
+                    editor.putString(Constants.USER_COUNTRY_ISO_KEY, country.code)
+                    editor.apply()
+                    startHomeActivity()
+                }
+        MaterialAlertDialogBuilder(this).setTitle(getString(R.string.country_picker_dialog_title))
+                .setMessage(getString(R.string.country_picker_dialog_message))
+                .setPositiveButton(getString(R.string.sync_notes_dialog_pos_button_label)) { dialog, id ->
+                    dialog.dismiss()
+                    val picker = countryBuilder.build()
+                    picker.showBottomSheet(this)
+                }
+                .show()
+    }
+
     private fun setupRegisterScreen() {
         applyAnimation()
         mBinding.registerImageBackground.load(R.drawable.register_background) {
@@ -188,7 +240,8 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun applyAnimation() {
-        val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
+        val set = TransitionSet().addTransition(Scale(0.7f))
+                .addTransition(Fade())
                 .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.parent, set)
     }

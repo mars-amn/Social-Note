@@ -102,4 +102,14 @@
     <string name="post_alert_dialog_message">Do you want to discard the post?</string>
     <string name="post_alert_dialog_title">Unsaved work</string>
     <string name="image_picker_chooser_title">Choose picture with</string>
+    <string name="country_picker_dialog_title">Pick Country</string>
+    <string name="country_picker_dialog_message">We recommend you to provide your country name to make the best out of Social Note and it help us provide a valuable experience for our users</string>
+    <string name="comment_notification_title">commented on your post</string>
+    <string name="like_notification_title">liked your post</string>
+    <string name="logout_menu_item_label">Logout</string>
+    <string name="logout_dialog_positivit_button">Logout</string>
+    <string name="logout_dialog_negative_button">Cancel</string>
+    <string name="logout_dialog_tite">Logout</string>
+    <string name="logout_dialog_message">Do you want to logout?</string>
+    <string name="login_menu_item">Login</string>
 </resources>

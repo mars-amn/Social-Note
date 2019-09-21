@@ -35,7 +35,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onStop() {
         super.onStop()
         if (mRegisterDialog != null) {
-            mRegisterDialog?.create()?.dismiss()
+            mRegisterDialog?.create()
+                    ?.dismiss()
 
         }
         unregisterPreferenceChangeListener()
@@ -86,26 +87,28 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun getSyncedNotes() {
         val syncService = Intent(context, SyncingService::class.java)
         syncService.action = Constants.SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION
-        SyncingService.getSyncingService().enqueueCallSyncedNotes(context!!, syncService)
+        SyncingService.getSyncingService()
+                .enqueueCallSyncedNotes(context!!, syncService)
     }
 
     private fun setupNeededSyncUpdatesNotes() {
         val syncService = Intent(context, SyncingService::class.java)
         syncService.action = Constants.SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION
-        SyncingService.getSyncingService().enqueueSyncNeededUpdateNotes(context!!, syncService)
+        SyncingService.getSyncingService()
+                .enqueueSyncNeededUpdateNotes(context!!, syncService)
 
     }
 
     private fun setupSyncingNotes() {
         val syncService = Intent(context, SyncingService::class.java)
         syncService.action = Constants.SYNC_ALL_NOTES_INTENT_ACTION
-        SyncingService.getSyncingService().enqueueSyncAllNotes(context!!, syncService)
+        SyncingService.getSyncingService()
+                .enqueueSyncAllNotes(context!!, syncService)
     }
 
     private var mRegisterDialog: MaterialAlertDialogBuilder? = null
     private fun showRegisterRequestDialog() {
-        mRegisterDialog = MaterialAlertDialogBuilder(context)
-                .setTitle(getString(R.string.sync_notes_dialog_title))
+        mRegisterDialog = MaterialAlertDialogBuilder(context).setTitle(getString(R.string.sync_notes_dialog_title))
                 .setMessage(getString(R.string.sync_notes_dialog_message))
                 .setNegativeButton(getString(R.string.sync_notes_dialog_neg_button_label)) { dialog, id ->
                     dialog.dismiss()

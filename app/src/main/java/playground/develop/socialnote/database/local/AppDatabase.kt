@@ -22,7 +22,8 @@ import playground.develop.socialnote.database.local.notes.NoteDao
                 synchronized(AppDatabase::class) {
                     sInstance = Room.databaseBuilder(context.applicationContext,
                                                      AppDatabase::class.java,
-                                                     "notes.db").build()
+                                                     "notes.db")
+                            .build()
                 }
             }
             return sInstance

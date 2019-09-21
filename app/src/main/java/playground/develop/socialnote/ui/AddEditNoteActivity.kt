@@ -100,42 +100,53 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     private fun initEditor() {
-        findViewById<View>(R.id.action_h1)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H1) }
+        findViewById<View>(R.id.action_h1).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.H1)
+        }
 
-        findViewById<View>(R.id.action_h2)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H2) }
+        findViewById<View>(R.id.action_h2).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.H2)
+        }
 
-        findViewById<View>(R.id.action_h3)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.H3) }
+        findViewById<View>(R.id.action_h3).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.H3)
+        }
 
-        findViewById<View>(R.id.action_bold)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.BOLD) }
+        findViewById<View>(R.id.action_bold).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.BOLD)
+        }
 
-        findViewById<View>(R.id.action_Italic)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC) }
+        findViewById<View>(R.id.action_Italic).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC)
+        }
 
-        findViewById<View>(R.id.action_indent)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.INDENT) }
+        findViewById<View>(R.id.action_indent).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.INDENT)
+        }
 
-        findViewById<View>(R.id.action_blockquote)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE) }
+        findViewById<View>(R.id.action_blockquote).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE)
+        }
 
-        findViewById<View>(R.id.action_outdent)
-                .setOnClickListener { mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT) }
+        findViewById<View>(R.id.action_outdent).setOnClickListener {
+            mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT)
+        }
 
-        findViewById<View>(R.id.action_bulleted)
-                .setOnClickListener { mBinding.editor.insertList(false) }
+        findViewById<View>(R.id.action_bulleted).setOnClickListener {
+            mBinding.editor.insertList(false)
+        }
 
-        findViewById<View>(R.id.action_unordered_numbered)
-                .setOnClickListener { mBinding.editor.insertList(true) }
+        findViewById<View>(R.id.action_unordered_numbered).setOnClickListener {
+            mBinding.editor.insertList(true)
+        }
 
         findViewById<View>(R.id.action_hr).setOnClickListener { mBinding.editor.insertDivider() }
 
 
         findViewById<View>(R.id.action_color).setOnClickListener {
             ColorPickerDialogBuilder.with(this)
-                    .setTitle(getString(R.string.color_pick_choose_title)).initialColor(Color.RED)
+                    .setTitle(getString(R.string.color_pick_choose_title))
+                    .initialColor(Color.RED)
                     .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                     .setOnColorSelectedListener { color ->
                         mBinding.editor.updateTextColor(colorHex(color))
@@ -144,18 +155,16 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                         mBinding.editor.updateTextColor(colorHex(color))
                     }
                     .setNegativeButton(getString(R.string.color_picker_negative_button)) { dialog, which -> }
-                    .build().show()
+                    .build()
+                    .show()
         }
 
-        findViewById<View>(R.id.action_insert_image)
-                .setOnClickListener { mBinding.editor.openImagePicker() }
+        findViewById<View>(R.id.action_insert_image).setOnClickListener { mBinding.editor.openImagePicker() }
 
-        findViewById<View>(R.id.action_insert_link)
-                .setOnClickListener { mBinding.editor.insertLink() }
+        findViewById<View>(R.id.action_insert_link).setOnClickListener { mBinding.editor.insertLink() }
 
 
-        findViewById<View>(R.id.action_erase)
-                .setOnClickListener { mBinding.editor.clearAllContents() }
+        findViewById<View>(R.id.action_erase).setOnClickListener { mBinding.editor.clearAllContents() }
         mBinding.editor.editorListener = object : EditorListener {
             override fun onRenderMacro(name: String?,
                                        props: MutableMap<String, Any>?,
@@ -173,13 +182,13 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 val coverImageRef = mFirebaseStorage.getReference(FIRESTORE_NOTES_IMAGES)
                         .child(Date().time.toString())
                 val uploadTask = coverImageRef.putBytes(bytes)
-                uploadTask
-                        .continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                            if (!task.isSuccessful) {
-                                toast(getString(R.string.failed_upolad_message))
-                            }
-                            return@Continuation coverImageRef.downloadUrl
-                        }).addOnCompleteListener { task ->
+                uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+                    if (!task.isSuccessful) {
+                        toast(getString(R.string.failed_upolad_message))
+                    }
+                    return@Continuation coverImageRef.downloadUrl
+                })
+                        .addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 mBinding.editor.onImageUploadComplete(task.result.toString(), uuid)
                             }
@@ -205,18 +214,19 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     private fun initEditorWithNote(noteId: Long) {
-        mViewModel.getNote(noteId).observe(this, Observer<Note> { note ->
-            if (note != null) {
-                mExistedNote = note
-                mBinding.editor.render(mExistedNote.note.toString())
-                if (note.geofence != null) {
-                    isGeofence = true
-                    mGeofenceLocation = LatLng(note.geofence?.noteGeofenceLatitude!!,
-                                               note.geofence?.noteGeofenceLongitude!!)
-                }
-            }
+        mViewModel.getNote(noteId)
+                .observe(this, Observer<Note> { note ->
+                    if (note != null) {
+                        mExistedNote = note
+                        mBinding.editor.render(mExistedNote.note.toString())
+                        if (note.geofence != null) {
+                            isGeofence = true
+                            mGeofenceLocation = LatLng(note.geofence?.noteGeofenceLatitude!!,
+                                                       note.geofence?.noteGeofenceLongitude!!)
+                        }
+                    }
 
-        })
+                })
     }
 
     private fun setupSyncing() {
@@ -266,9 +276,11 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     private fun stripHtml(): String {
         val text = mBinding.editor.contentAsHTML
         return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY).toString()
+            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
+                    .toString()
         } else {
-            Html.fromHtml(text).toString()
+            Html.fromHtml(text)
+                    .toString()
         }
     }
 
@@ -297,16 +309,16 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     private fun setupReminder(body: String, id: Long) {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        val alarmIntent = Intent(this@AddEditNoteActivity, NoteReminderReceiver::class.java)
-                .let { intent ->
-                    intent.action = Constants.NOTE_TIME_REMINDER_ACTION
-                    intent.putExtra(Constants.NOTE_INTENT_KEY, id)
-                    intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
-                    PendingIntent.getBroadcast(this@AddEditNoteActivity,
-                                               id.toInt(),
-                                               intent,
-                                               PendingIntent.FLAG_UPDATE_CURRENT)
-                }
+        val alarmIntent = Intent(this@AddEditNoteActivity,
+                                 NoteReminderReceiver::class.java).let { intent ->
+            intent.action = Constants.NOTE_TIME_REMINDER_ACTION
+            intent.putExtra(Constants.NOTE_INTENT_KEY, id)
+            intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, body)
+            PendingIntent.getBroadcast(this@AddEditNoteActivity,
+                                       id.toInt(),
+                                       intent,
+                                       PendingIntent.FLAG_UPDATE_CURRENT)
+        }
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, mReminderDate?.time!!, alarmIntent)
     }
 
@@ -323,7 +335,8 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         val syncIntent = Intent(this@AddEditNoteActivity, SyncingService::class.java)
         syncIntent.action = action
         syncIntent.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, noteId)
-        SyncingService.getSyncingService().enqueueSyncNewNoteService(this, syncIntent)
+        SyncingService.getSyncingService()
+                .enqueueSyncNewNoteService(this, syncIntent)
     }
 
 
@@ -336,25 +349,25 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         if (isReminder) {
             note.timeReminder = getTimeReminder()
         }
-        mViewModel.insertNewNote(note).observe(this, Observer<Long> { noteId ->
-            if (noteId != null) {
-                if (isReminder) {
-                    setupReminder(mBinding.editor.contentAsHTML, noteId)
-                }
-                if (isGeofence) {
-                    createNoteGeofence(noteId)
-                }
-                if (isSyncingEnabled) {
-                    startSyncService(noteId, Constants.SYNC_NEW_NOTE_INTENT_ACTION)
-                }
-            }
-            navigateUp()
-        })
+        mViewModel.insertNewNote(note)
+                .observe(this, Observer<Long> { noteId ->
+                    if (noteId != null) {
+                        if (isReminder) {
+                            setupReminder(mBinding.editor.contentAsHTML, noteId)
+                        }
+                        if (isGeofence) {
+                            createNoteGeofence(noteId)
+                        }
+                        if (isSyncingEnabled) {
+                            startSyncService(noteId, Constants.SYNC_NEW_NOTE_INTENT_ACTION)
+                        }
+                    }
+                    navigateUp()
+                })
     }
 
     private fun showUnsavedNoteDialog() {
-        MaterialAlertDialogBuilder(this@AddEditNoteActivity)
-                .setTitle(getString(R.string.back_button_dialog_title))
+        MaterialAlertDialogBuilder(this@AddEditNoteActivity).setTitle(getString(R.string.back_button_dialog_title))
                 .setMessage(getString(R.string.back_button_dialog_msg_ptI) + "\n" + getString(R.string.back_button_dialog_msg_ptII))
                 .setPositiveButton(getString(R.string.back_button_dialog_positive_button_label)) { dialog, id ->
                     dialog.dismiss()
@@ -362,7 +375,8 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 }
                 .setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
                     dialog.dismiss()
-                }.show()
+                }
+                .show()
     }
 
     private fun navigateUp() {
@@ -375,7 +389,8 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     fun addGeofence(geofencingRequest: GeofencingRequest, id: Long) {
         val client = LocationServices.getGeofencingClient(this@AddEditNoteActivity)
         client.addGeofences(geofencingRequest, createGeofencePendingIntent(id))
-                .addOnSuccessListener { }.addOnFailureListener { }
+                .addOnSuccessListener { }
+                .addOnFailureListener { }
     }
 
     private fun createGeofencePendingIntent(id: Long): PendingIntent {
@@ -390,31 +405,39 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     private fun createGeofenceRequest(geofence: Geofence): GeofencingRequest {
         return GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER).addGeofence(geofence)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .addGeofence(geofence)
                 .build()
     }
 
     private fun getGeofenceBuilder(id: Long): Geofence {
-        return Geofence.Builder().setRequestId("geo_fence_reminder_$id").setCircularRegion(
-            mGeofenceLocation?.latitude!!,
-            mGeofenceLocation?.longitude!!,
-            Constants.GEOFENCE_REMINDER_RADIUS)
+        return Geofence.Builder()
+                .setRequestId("geo_fence_reminder_$id")
+                .setCircularRegion(mGeofenceLocation?.latitude!!,
+                                   mGeofenceLocation?.longitude!!,
+                                   Constants.GEOFENCE_REMINDER_RADIUS)
                 .setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
                 .build()
     }
 
     private fun onTimeReminderClick() {
-        SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity).title("Pick Date")
-                .displayYears(false).displayDays(true).displayHours(true).displayMinutes(true)
+        SingleDateAndTimePickerDialog.Builder(this@AddEditNoteActivity)
+                .title("Pick Date")
+                .displayYears(false)
+                .displayDays(true)
+                .displayHours(true)
+                .displayMinutes(true)
                 .minutesStep(1)
                 .mainColor(ContextCompat.getColor(this@AddEditNoteActivity, R.color.secondaryColor))
-                .mustBeOnFuture().listener { pickedDate ->
+                .mustBeOnFuture()
+                .listener { pickedDate ->
                     if (pickedDate != null) {
                         isReminder = true
                         mReminderDate = pickedDate
                     }
-                }.display()
+                }
+                .display()
     }
 
     private fun onLocationReminderClick() {
@@ -440,8 +463,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GEOFENCE_NOTE_REMINDER_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
             isGeofence = true
-            mGeofenceLocation = data
-                    .getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+            mGeofenceLocation = data.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
         } else if (requestCode == mBinding.editor.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
             val uri = data.data!!
             val imageStream = contentResolver.openInputStream(uri)!!

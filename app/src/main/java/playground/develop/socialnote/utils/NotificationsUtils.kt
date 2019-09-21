@@ -26,6 +26,7 @@ import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POST_AU
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POST_DOC_INTENT_KEY
 import playground.develop.socialnote.utils.Constants.Companion.NOTE_INTENT_KEY
 import playground.develop.socialnote.utils.Constants.Companion.OPEN_FROM_NOTIFICATION_COMMENT
+import playground.develop.socialnote.utils.Constants.Companion.USER_COUNTRY_ISO_KEY
 import java.util.*
 
 
@@ -41,7 +42,8 @@ class NotificationsUtils {
                                      text: String,
                                      title: String,
                                      documentId: String,
-                                     token: String) {
+                                     token: String,
+                                     countryCode: String?) {
         val notificationId = Date().time
 
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -56,7 +58,8 @@ class NotificationsUtils {
                                                          text,
                                                          title,
                                                          documentId,
-                                                         token)
+                                                         token,
+                                                         countryCode)
         notificationManager.notify(notificationId.toInt(), builder.build())
     }
 
@@ -65,49 +68,60 @@ class NotificationsUtils {
                                                    text: String,
                                                    title: String,
                                                    documentId: String,
-                                                   token: String): NotificationCompat.Builder {
+                                                   token: String,
+                                                   countryCode: String?): NotificationCompat.Builder {
 
-        return NotificationCompat
-                .Builder(context, context.getString(R.string.notification_post_channel_id))
-                .setSmallIcon(R.drawable.ic_notification).setContentTitle(title)
-                .setContentText(text).setContentIntent(getPostContentPendingIntent(context,
-                                                                                   notificationId,
-                                                                                   documentId,
-                                                                                   token))
-                .setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
+        return NotificationCompat.Builder(context,
+                                          context.getString(R.string.notification_post_channel_id))
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setContentIntent(getPostContentPendingIntent(context,
+                                                              notificationId,
+                                                              documentId,
+                                                              token,
+                                                              countryCode))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
                 .addAction(getDismissPostNotificationAction(context, notificationId))
                 .addAction(getOpenPostNotificationAction(context,
                                                          notificationId,
                                                          documentId,
-                                                         token))
+                                                         token,
+                                                         countryCode))
 
     }
 
     private fun getOpenPostNotificationAction(context: Context,
                                               notificationId: Int,
                                               documentId: String,
-                                              token: String): NotificationCompat.Action? {
+                                              token: String,
+                                              countryCode: String?): NotificationCompat.Action? {
         return NotificationCompat.Action(R.drawable.ic_notification_open,
                                          context.getString(R.string.open_post_notification_action_label),
                                          getOpenPostPendingIntent(context,
                                                                   notificationId,
                                                                   documentId,
-                                                                  token))
+                                                                  token,
+                                                                  countryCode))
     }
 
     private fun getOpenPostPendingIntent(context: Context,
                                          notificationId: Int,
                                          documentId: String,
-                                         token: String): PendingIntent? {
+                                         token: String,
+                                         countryCode: String?): PendingIntent? {
         val openIntent = Intent(context, CommentActivity::class.java)
         openIntent.putExtra(OPEN_FROM_NOTIFICATION_COMMENT, true)
         openIntent.putExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, token)
         openIntent.putExtra(FIRESTORE_POST_DOC_INTENT_KEY, documentId)
         openIntent.putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, notificationId)
-        return TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(openIntent)
-            getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        openIntent.putExtra(USER_COUNTRY_ISO_KEY, countryCode)
+        return TaskStackBuilder.create(context)
+                .run {
+                    addNextIntentWithParentStack(openIntent)
+                    getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
     }
 
     private fun getDismissPostNotificationAction(context: Context,
@@ -131,16 +145,19 @@ class NotificationsUtils {
     private fun getPostContentPendingIntent(context: Context,
                                             notificationId: Int,
                                             documentId: String,
-                                            token: String): PendingIntent? {
+                                            token: String,
+                                            countryCode: String?): PendingIntent? {
 
         val commentIntent = Intent(context, CommentActivity::class.java)
         commentIntent.putExtra(FIRESTORE_POST_DOC_INTENT_KEY, documentId)
         commentIntent.putExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, token)
+        commentIntent.putExtra(USER_COUNTRY_ISO_KEY, countryCode)
         commentIntent.putExtra(OPEN_FROM_NOTIFICATION_COMMENT, true)
-        return TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(commentIntent)
-            getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        return TaskStackBuilder.create(context)
+                .run {
+                    addNextIntentWithParentStack(commentIntent)
+                    getPendingIntent(notificationId, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
     }
 
     fun sendNoteGeofenceReminderNotification(context: Context, noteBody: String, noteId: Long) {
@@ -154,9 +171,8 @@ class NotificationsUtils {
 
         val builder = getGeofenceNoteNotificationBuilder(context, noteBody, noteId)
 
-        notificationManager
-                .notify(context.resources.getInteger(R.integer.note_geofence_reminder_notification_id) + noteId.toInt(),
-                        builder?.build())
+        notificationManager.notify(context.resources.getInteger(R.integer.note_geofence_reminder_notification_id) + noteId.toInt(),
+                                   builder?.build())
     }
 
     private fun getGeofenceNoteNotificationBuilder(context: Context,
@@ -168,7 +184,8 @@ class NotificationsUtils {
                 .setContentTitle(context.getString(R.string.note_geofence_notification_title))
                 .setContentText(getBody(noteBody))
                 .setContentIntent(getNoteGeofenceLocationPendingIntent(context, noteId))
-                .setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
                 .addAction(getOpenNoteGeofenceAction(context, noteId))
                 .addAction(dismissNoteGeofenceNotificationAction(context, noteId))
     }
@@ -201,8 +218,7 @@ class NotificationsUtils {
 
     fun dismissNoteGeofenceReminderNotification(context: Context, noteId: Long) {
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager
-                .cancel(context.resources.getInteger(R.integer.note_geofence_reminder_notification_id) + noteId.toInt())
+        notificationManager.cancel(context.resources.getInteger(R.integer.note_geofence_reminder_notification_id) + noteId.toInt())
     }
 
     private fun getNoteGeofenceLocationPendingIntent(context: Context,
@@ -210,10 +226,11 @@ class NotificationsUtils {
         val noteIntent = Intent(context, AddEditNoteActivity::class.java)
         noteIntent.putExtra(ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN, true)
         noteIntent.putExtra(NOTE_INTENT_KEY, noteId)
-        return TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(noteIntent)
-            getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        return TaskStackBuilder.create(context)
+                .run {
+                    addNextIntentWithParentStack(noteIntent)
+                    getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+                }
     }
 
     fun sendNoteTimeReminderNotification(context: Context, noteBody: String, noteId: Long) {
@@ -227,9 +244,8 @@ class NotificationsUtils {
 
         val builder = getNoteTimeReminderNotificationBuilder(context, noteBody, noteId)
 
-        notificationManager
-                .notify(context.resources.getInteger(R.integer.note_reminder_notification_id) + noteId.toInt(),
-                        builder?.build())
+        notificationManager.notify(context.resources.getInteger(R.integer.note_reminder_notification_id) + noteId.toInt(),
+                                   builder?.build())
     }
 
     private fun getNoteTimeReminderNotificationBuilder(context: Context,
@@ -240,7 +256,8 @@ class NotificationsUtils {
                 .setContentTitle(context.getString(R.string.note_time_reminder_notification_title))
                 .setContentText(getBody(noteBody))
                 .setContentIntent(getOpenNoteNotificationPendingIntent(context, noteId))
-                .setPriority(NotificationCompat.PRIORITY_HIGH).setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
                 .addAction(getOpenNoteAction(context, noteId))
                 .addAction(dismissNotificationsAction(context, noteId))
     }
@@ -264,10 +281,11 @@ class NotificationsUtils {
         val noteIntent = Intent(context, AddEditNoteActivity::class.java)
         noteIntent.putExtra(ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN, true)
         noteIntent.putExtra(NOTE_INTENT_KEY, noteId)
-        return TaskStackBuilder.create(context).run {
-            addNextIntentWithParentStack(noteIntent)
-            getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
-        }
+        return TaskStackBuilder.create(context)
+                .run {
+                    addNextIntentWithParentStack(noteIntent)
+                    getPendingIntent(noteId.toInt(), PendingIntent.FLAG_UPDATE_CURRENT)
+                }
     }
 
     private fun getDismissNotificationPendingIntent(context: Context,
@@ -283,8 +301,7 @@ class NotificationsUtils {
 
     fun dismissNoteReminderNotification(context: Context, id: Int) {
         val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager
-                .cancel(context.resources.getInteger(R.integer.note_reminder_notification_id) + id)
+        notificationManager.cancel(context.resources.getInteger(R.integer.note_reminder_notification_id) + id)
     }
 
     @Suppress("DEPRECATION")

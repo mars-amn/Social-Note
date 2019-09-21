@@ -6,11 +6,12 @@
         app:constraintSetEnd="@id/end"
         app:constraintSetStart="@id/start"
         app:duration="1000">
-        <OnSwipe        motion:visibilityMode="ignore"
-
+        <OnSwipe
             app:dragDirection="dragUp"
+
             app:touchAnchorId="@+id/commentsRecyclerView"
-            app:touchAnchorSide="top" />
+            app:touchAnchorSide="top"
+            motion:visibilityMode="ignore" />
 
     </Transition>
 

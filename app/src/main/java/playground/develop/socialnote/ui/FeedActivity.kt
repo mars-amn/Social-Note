@@ -1,6 +1,5 @@
 package playground.develop.socialnote.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -25,6 +24,7 @@ import playground.develop.socialnote.database.remote.firestore.models.Post
 import playground.develop.socialnote.database.remote.firestore.models.User
 import playground.develop.socialnote.databinding.ActivityFeedBinding
 import playground.develop.socialnote.utils.Constants
+import playground.develop.socialnote.utils.PreferenceUtils
 import playground.develop.socialnote.viewmodel.PostViewModel
 
 
@@ -42,48 +42,38 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
         mBinding.handlers = this
+
         mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
         loadUser()
-        loadPosts()
+        loadPosts(mUserCountryCode!!)
         mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
             transformations(CircleCropTransformation())
         }
-
     }
 
-    //    fun getUserCountry(): String? {
-    //        try {
-    //            val tm = getSystemService(TELEPHONY_SERVICE) as TelephonyManager
-    //            val simCountry = tm.simCountryIso
-    //            if (simCountry != null && simCountry.length == 2) {
-    //                return simCountry.toLowerCase(Locale.US)
-    //            } else if (tm.phoneType != TelephonyManager.PHONE_TYPE_CDMA) {
-    //                val networkCountry = tm.networkCountryIso
-    //                if (networkCountry != null && networkCountry.length == 2) {
-    //                    return networkCountry.toLowerCase(Locale.US)
-    //                }
-    //            }
-    //        } catch (e: Exception) {
-    //        }
-    //
-    //        return ""
-    //    }
+    private val mUserCountryCode: String?
+        get() {
+            return PreferenceUtils.getPreferenceUtils()
+                    .getUserCountryCode(this)
+        }
 
     private fun loadUser() {
-        mPostViewModel.getUser().observe(this@FeedActivity, Observer { user ->
-            mUser = user
-        })
+        mPostViewModel.getUser()
+                .observe(this@FeedActivity, Observer { user ->
+                    mUser = user
+                })
     }
 
-    private fun loadPosts() {
+    private fun loadPosts(countryCode: String) {
         showLoadingView()
-        mPostViewModel.getPosts().observe(this@FeedActivity, Observer { posts ->
-            if (posts.isNotEmpty()) {
-                mAdapter.addPosts(posts)
-                mBinding.feedRecyclerView.adapter = mAdapter
-                hideLoadingView()
-            }
-        })
+        mPostViewModel.getPosts(countryCode)
+                .observe(this@FeedActivity, Observer { posts ->
+                    if (posts.isNotEmpty()) {
+                        mAdapter.addPosts(posts)
+                        mBinding.feedRecyclerView.adapter = mAdapter
+                        hideLoadingView()
+                    }
+                })
     }
 
     private fun showLoadingView() {
@@ -93,7 +83,8 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
     }
 
     private fun applyAnimation() {
-        val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
+        val set = TransitionSet().addTransition(Scale(0.7f))
+                .addTransition(Fade())
                 .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.postsFeedParent, set)
     }
@@ -109,11 +100,9 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
     }
 
     override fun onCommentButtonClick(post: Post) {
-        val intent = Intent(this@FeedActivity, CommentActivity::class.java)
-        intent.putExtra(Constants.FIRESTORE_POST_DOC_INTENT_KEY, post.documentName)
-        intent.putExtra(Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, post.registerToken)
         startActivity(intentFor<CommentActivity>(Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
-                                                 Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken))
+                                                 Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken,
+                                                 Constants.USER_COUNTRY_ISO_KEY to post.countryCode))
     }
 
     fun onUserImageClick(view: View) {
@@ -121,31 +110,31 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         startActivity(intentFor<ProfileActivity>(Constants.USER_UID_INTENT_KEY to userUid))
     }
 
-    override fun onLikeButtonClick(like: Like) {
+    override fun onLikeButtonClick(like: Like, postCountryCode: String) {
         like.userTitle = mUser.userTitle!!
         like.userImage = mUser.userImage
-        mPostViewModel.createLikeOnPost(like)
+        mPostViewModel.createLikeOnPost(like, postCountryCode)
     }
 
-    override fun onUnLikeButtonClick(like: Like) {
+    override fun onUnLikeButtonClick(like: Like, postCountryCode: String) {
         like.userTitle = mUser.userTitle!!
         like.userImage = mUser.userImage
-        mPostViewModel.removeLikePost(like)
+        mPostViewModel.removeLikePost(like, postCountryCode)
     }
 
     override fun onPostLongClickListener(post: Post) {
         if (mUser.userUid == post.authorUID) {
-            MaterialAlertDialogBuilder(this@FeedActivity)
-                    .setTitle(getString(R.string.delete_post_dialog_title))
+            MaterialAlertDialogBuilder(this@FeedActivity).setTitle(getString(R.string.delete_post_dialog_title))
                     .setMessage(getString(R.string.delete_post_dialog_message))
                     .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
                         dialog.dismiss()
                     }
                     .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
                         mPostViewModel.deletePost(post)
-                        loadPosts()
+                        loadPosts(mUserCountryCode!!)
                         dialog.dismiss()
-                    }.show()
+                    }
+                    .show()
         }
     }
 }

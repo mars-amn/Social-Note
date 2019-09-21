@@ -20,7 +20,8 @@ import playground.develop.socialnote.viewmodel.PostViewModel
  */
 val appModules = module {
     single {
-        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db").build()
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "notes.db")
+                .build()
     }
 
     single { get<AppDatabase>().notesDao() }

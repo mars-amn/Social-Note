@@ -20,9 +20,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:background="#e6e6e6"
-            app:layout_constraintStart_toStartOf="parent"
             android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
             <include
                 android:id="@+id/toolbarEditor"
                 layout="@layout/editor_toolbar" />
@@ -36,7 +37,7 @@
             android:layout_height="120dp"
             android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/tools"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
             android:id="@+id/removeSelectedImageButton"
