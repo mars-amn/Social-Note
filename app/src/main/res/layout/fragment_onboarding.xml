@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="handlers"
+            type="playground.develop.socialnote.fragments.OnBoardingFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/fragmentParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/onBoardingCardParent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/onboarding_card_height"
+            android:layout_margin="@dimen/onboarding_card_margin"
+            app:cardBackgroundColor="@color/onboarding_card_background_color"
+            app:cardCornerRadius="@dimen/onboarding_card_radius"
+            app:cardElevation="@dimen/onboarding_card_elevation"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/onBoardingImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:padding="@dimen/onboarding_image_padding" />
+
+                <TextView
+                    android:id="@+id/onBoardingDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:padding="@dimen/onboarding_description_padding"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/onBoardingStartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/onboarding_button_height"
+            android:layout_marginTop="@dimen/onboarding_button_margin_top"
+            android:layout_marginBottom="@dimen/onboarding_button_margin_bottom"
+            android:background="@drawable/button_background"
+            android:onClick="@{handlers::onStartButtonClick}"
+            android:text="@string/on_boarding_finish_button_label"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/onBoardingCardParent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

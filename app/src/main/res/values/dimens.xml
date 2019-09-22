@@ -72,4 +72,19 @@
     <dimen name="licenses_text_size">20sp</dimen>
     <dimen name="about_app_image_width">150dp</dimen>
     <dimen name="about_app_image_height">150dp</dimen>
+    <dimen name="onboarding_pager_margin">16dp</dimen>
+    <dimen name="onboarding_indicator_margin_start">8dp</dimen>
+    <dimen name="onboarding_indicator_margin_end">8dp</dimen>
+    <dimen name="onboarding_indicator_radius">8dp</dimen>
+    <dimen name="onboarding_indicator_size">16dp</dimen>
+    <dimen name="onboarding_indicator_spacing">4dp</dimen>
+    <dimen name="onboarding_card_height">400dp</dimen>
+    <dimen name="onboarding_card_margin">16dp</dimen>
+    <dimen name="onboarding_card_radius">16dp</dimen>
+    <dimen name="onboarding_card_elevation">4dp</dimen>
+    <dimen name="onboarding_image_padding">16dp</dimen>
+    <dimen name="onboarding_description_padding">4dp</dimen>
+    <dimen name="onboarding_button_height">32dp</dimen>
+    <dimen name="onboarding_button_margin_top">8dp</dimen>
+    <dimen name="onboarding_button_margin_bottom">8dp</dimen>
 </resources>

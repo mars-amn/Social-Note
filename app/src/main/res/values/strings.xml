@@ -114,4 +114,5 @@
     <string name="login_menu_item">Login</string>
     <string name="about_menu_item_label">About</string>
     <string name="acknowledgements_label">Acknowledgements</string>
+    <string name="on_boarding_finish_button_label">Start</string>
 </resources>

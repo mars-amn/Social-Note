@@ -35,4 +35,7 @@
     <color name="google_button_text_color">#fff</color>
     <color name="twitter_button_text_color">#fff</color>
     <color name="aboutScreenBackgroundColor">#eeeeee</color>
+    <color name="material_blueA200">#1565c0</color>
+    <color name="onboarding_indicator_color">#fff</color>
+    <color name="onboarding_card_background_color">#DCEBF7</color>
 </resources>
