@@ -87,4 +87,5 @@
     <dimen name="onboarding_button_height">32dp</dimen>
     <dimen name="onboarding_button_margin_top">8dp</dimen>
     <dimen name="onboarding_button_margin_bottom">8dp</dimen>
+    <dimen name="list_item_fee_post_height">150dp</dimen>
 </resources>

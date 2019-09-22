@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/list_item_feed_parent_margin"
+        android:onClick="@{handlers::onCommentButtonClick}"
         android:onLongClick="@{handlers::onPostLongClick}"
         app:cardCornerRadius="@dimen/list_item_feed_parent_corner_radius"
         app:cardElevation="@dimen/list_item_feed_parent_elevation">
@@ -53,7 +54,7 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/listItemFeedBodyText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/list_item_fee_post_height"
                 android:layout_margin="@dimen/post_body_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

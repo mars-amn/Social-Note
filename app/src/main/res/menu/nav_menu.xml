@@ -1,25 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/settingsMenuItem"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings_menu_item_label" />
-    <item
         android:id="@+id/feedMenuItem"
         android:icon="@drawable/ic_feed"
         android:title="@string/feed_menu_item_label" />
-    <item
-        android:id="@+id/logoutMenuItem"
-        android:icon="@drawable/ic_logout"
-        android:title="@string/logout_menu_item_label"
-        android:visible="false" />
-    <item
-        android:id="@+id/loginMenuItem"
-        android:icon="@drawable/ic_logout"
-        android:title="@string/login_menu_item"
-        android:visible="false" />
-    <item
-        android:id="@+id/aboutMenuItem"
-        android:icon="@drawable/ic_about"
-        android:title="@string/about_menu_item_label" />
+    <item android:title="@string/application_settings_menu_title">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/settingsMenuItem"
+                    android:icon="@drawable/ic_settings"
+                    android:title="@string/settings_menu_item_label" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/account_menu_title">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/logoutMenuItem"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/logout_menu_item_label"
+                    android:visible="false" />
+                <item
+                    android:id="@+id/loginMenuItem"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/login_menu_item"
+                    android:visible="false" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/application_menu_title">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/aboutMenuItem"
+                    android:icon="@drawable/ic_about"
+                    android:title="@string/about_menu_item_label" />
+            </group>
+        </menu>
+    </item>
 </menu>
