@@ -53,20 +53,27 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/posts_loading" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/feedRecyclerView"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="@dimen/feed_recyclerview_margin_top"
-            android:background="@color/gray_background_color"
-            android:layoutAnimation="@anim/layout_anim_from_bottom"
-            android:orientation="vertical"
-            android:visibility="gone"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/postButton"
-            tools:listitem="@layout/list_item_feed" />
+            app:layout_constraintTop_toBottomOf="@+id/postButton">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/feedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/feed_recyclerview_margin_top"
+                android:background="@color/gray_background_color"
+                android:layoutAnimation="@anim/layout_anim_from_bottom"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/list_item_feed" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

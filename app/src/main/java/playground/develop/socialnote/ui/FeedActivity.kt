@@ -49,6 +49,16 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
             transformations(CircleCropTransformation())
         }
+        setupSwipeToRefresh()
+    }
+
+    private fun setupSwipeToRefresh() {
+        mBinding.swipeRefresh.setColorSchemeResources(R.color.swipe_accent,
+                                                      R.color.swipe_accent2,
+                                                      R.color.swipe_primary)
+        mBinding.swipeRefresh.setOnRefreshListener {
+            loadPosts(mUserCountryCode!!)
+        }
     }
 
     private val mUserCountryCode: String?
@@ -72,6 +82,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
                         mAdapter.addPosts(posts)
                         mBinding.feedRecyclerView.adapter = mAdapter
                         hideLoadingView()
+                        mBinding.swipeRefresh.isRefreshing = false
                     }
                 })
     }
