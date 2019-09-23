@@ -1,5 +1,7 @@
 package playground.develop.socialnote.ui
 
+import android.animation.IntEvaluator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Bitmap
@@ -9,6 +11,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -29,6 +32,7 @@ import playground.develop.socialnote.R
 import playground.develop.socialnote.databinding.ActivityLocationMapBinding
 import playground.develop.socialnote.utils.ConnectionUtils
 import playground.develop.socialnote.utils.Constants
+import playground.develop.socialnote.utils.Constants.Companion.GEOFENCE_REMINDER_MAP_RADIUS
 import java.io.IOException
 import java.util.*
 
@@ -118,11 +122,22 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.clear()
         mMap.addMarker(MarkerOptions().position(latLng).icon(getMapMarker()))
 
-        mMap.addCircle(CircleOptions().center(latLng).radius(Constants.GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
+        val locationCircle = mMap.addCircle(CircleOptions().center(latLng).radius(GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
             ContextCompat.getColor(this@GeofencePickerActivity,
                                    R.color.circle_stroke_color)).fillColor(ContextCompat.getColor(
             this@GeofencePickerActivity,
             R.color.circle_map_color)))
+        val valueAnimator = ValueAnimator()
+        valueAnimator.repeatCount = ValueAnimator.INFINITE
+        valueAnimator.repeatMode = ValueAnimator.RESTART
+        valueAnimator.setIntValues(0, 100)
+        valueAnimator.duration = 2000
+        valueAnimator.setEvaluator(IntEvaluator())
+        valueAnimator.interpolator = AccelerateDecelerateInterpolator()
+        valueAnimator.addUpdateListener { animator ->
+            locationCircle.radius = animator.animatedFraction * GEOFENCE_REMINDER_MAP_RADIUS
+        }
+        valueAnimator.start()
     }
 
     private fun getMapMarker(): BitmapDescriptor {
