@@ -31,9 +31,9 @@ import com.google.android.gms.maps.model.*
 import org.jetbrains.anko.toast
 import playground.develop.socialnote.R
 import playground.develop.socialnote.databinding.ActivityLocationMapBinding
-import playground.develop.socialnote.utils.ConnectionUtils
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.GEOFENCE_REMINDER_MAP_RADIUS
+import playground.develop.socialnote.utils.DeviceUtils
 import java.io.IOException
 import java.util.*
 
@@ -61,7 +61,7 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun checkForConnection() {
-        if (ConnectionUtils.getConnectionUtils(this@GeofencePickerActivity).isDeviceNetworkAvailable()) {
+        if (DeviceUtils.getDeviceUtils(this@GeofencePickerActivity).isDeviceNetworkAvailable()) {
             showMap()
         } else {
             hideMap()

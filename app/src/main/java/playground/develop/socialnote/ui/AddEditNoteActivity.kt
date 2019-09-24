@@ -2,11 +2,11 @@ package playground.develop.socialnote.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -14,6 +14,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
+import android.util.Log.d
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -29,15 +30,17 @@ import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
 import com.github.irshulx.EditorListener
 import com.github.irshulx.models.EditorTextStyle
-import com.google.android.gms.location.Geofence
-import com.google.android.gms.location.GeofencingRequest
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import playground.develop.socialnote.R
@@ -254,6 +257,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 onTimeReminderClick()
             }
             R.id.noteGeofenceReminderMenuItem -> {
+
                 onLocationReminderClick()
             }
         }
@@ -356,6 +360,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                             setupReminder(mBinding.editor.contentAsHTML, noteId)
                         }
                         if (isGeofence) {
+                            d("geofence", "in activity creating a geofence")
                             createNoteGeofence(noteId)
                         }
                         if (isSyncingEnabled) {
@@ -389,8 +394,8 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     fun addGeofence(geofencingRequest: GeofencingRequest, id: Long) {
         val client = LocationServices.getGeofencingClient(this@AddEditNoteActivity)
         client.addGeofences(geofencingRequest, createGeofencePendingIntent(id))
-                .addOnSuccessListener { }
-                .addOnFailureListener { }
+                .addOnSuccessListener { d("geofence", "addGeofence success") }
+                .addOnFailureListener { d("geofence", "failure ${it.message}") }
     }
 
     private fun createGeofencePendingIntent(id: Long): PendingIntent {
@@ -447,8 +452,32 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                                                LOCATION_PERMISSION_REQUEST_CODE,
                                                *locationsPermissions)
         } else {
-            startMapActivity()
+            val responseTask = getLocationNetworkTask()!!
+            responseTask.addOnSuccessListener { startMapActivity() }
+                    .addOnFailureListener {
+                        val apiException = it as ApiException
+                        when (apiException.statusCode) {
+                            CommonStatusCodes.RESOLUTION_REQUIRED -> {
+                                try {
+                                    val exception = it as ResolvableApiException
+                                    exception.startResolutionForResult(this,
+                                                                       NETWORK_LOCATION_REQUEST_CODE)
+                                } catch (e: IntentSender.SendIntentException) {
+                                    longToast(R.string.error_msg)
+                                }
+                            }
+                            LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> longToast(R.string.error_msg)
+                        }
+                    }
         }
+    }
+
+    private fun getLocationNetworkTask(): Task<LocationSettingsResponse>? {
+        val locationRequest = LocationRequest().setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+        val settingsRequest = LocationSettingsRequest.Builder()
+        settingsRequest.addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(this@AddEditNoteActivity)
+        return client.checkLocationSettings(settingsRequest.build())
     }
 
     private fun startMapActivity() {
@@ -461,16 +490,26 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == GEOFENCE_NOTE_REMINDER_REQUEST_CODE && resultCode == Activity.RESULT_OK && data != null) {
-            isGeofence = true
-            mGeofenceLocation = data.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
-        } else if (requestCode == mBinding.editor.PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
-            val uri = data.data!!
-            val imageStream = contentResolver.openInputStream(uri)!!
-            val imageBitmap = BitmapFactory.decodeStream(imageStream)
-            mBinding.editor.insertImage(imageBitmap)
+        if (resultCode == RESULT_OK && data != null) {
+            when (requestCode) {
+                GEOFENCE_NOTE_REMINDER_REQUEST_CODE -> {
+                    isGeofence = true
+                    mGeofenceLocation = data.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
+                }
+                mBinding.editor.PICK_IMAGE_REQUEST -> {
+                    val uri = data.data!!
+                    val imageStream = contentResolver.openInputStream(uri)!!
+                    val imageBitmap = BitmapFactory.decodeStream(imageStream)
+                    mBinding.editor.insertImage(imageBitmap)
+                }
+                NETWORK_LOCATION_REQUEST_CODE -> {
+                    val states = LocationSettingsStates.fromIntent(data)
+                    if (states.isNetworkLocationPresent) {
+                        startMapActivity()
+                    }
+                }
+            }
         }
-
     }
 
 
@@ -533,6 +572,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 252
         private const val GEOFENCE_NOTE_REMINDER_REQUEST_CODE = 7
+        private const val NETWORK_LOCATION_REQUEST_CODE = 84
         const val EDITOR_SAVE_STATE_KEY = "EDITOR-SAVE-STATE-KEY"
     }
 }
