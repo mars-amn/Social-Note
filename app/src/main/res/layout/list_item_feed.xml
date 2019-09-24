@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -54,8 +55,11 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/listItemFeedBodyText"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/list_item_fee_post_height"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/post_body_margin"
+                android:maxLines="4"
+                android:onClick="@{handlers::onCommentButtonClick}"
+                android:onLongClick="@{handlers::onPostLongClick}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />
@@ -88,8 +92,8 @@
                     android:gravity="center"
                     android:onClick="@{handlers::onLikesCounterClick}"
                     android:padding="@dimen/list_item_feed_like_counter_padding"
-                    android:text="12"
-                    android:textSize="@dimen/list_item_feed_like_counter_text_size" />
+                    android:textSize="@dimen/list_item_feed_like_counter_text_size"
+                    tools:text="12" />
 
                 <ImageButton
                     android:id="@+id/listItemFeedLikeButton"

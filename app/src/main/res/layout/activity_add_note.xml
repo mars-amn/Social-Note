@@ -55,13 +55,13 @@
                     android:id="@+id/editor"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
-                    app:auto_focus="true"
-                    android:paddingLeft="20dp"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:paddingLeft="20dp"
                     android:paddingTop="10dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="100dp"
+                    app:auto_focus="true"
                     app:placeholder="Start writing here"
                     app:render_type="Editor" />
             </LinearLayout>

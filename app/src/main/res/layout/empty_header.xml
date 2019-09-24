@@ -11,6 +11,7 @@
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/emptyHeaderParent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1dp"
@@ -31,6 +32,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/profile_cover_gradient"
+                app:layout_constraintBottom_toBottomOf="@id/emptyHeaderView"
+                app:layout_constraintEnd_toEndOf="@+id/emptyHeaderView"
+                app:layout_constraintStart_toStartOf="@+id/emptyHeaderView" />
 
             <TextView
                 android:id="@+id/textView"

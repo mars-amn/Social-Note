@@ -42,56 +42,56 @@
             app:layout_constraintTop_toTopOf="parent" />
 
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/facebookAppLoginButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/social_register_button_height"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/social_login_buttons_margin"
             android:background="@drawable/button_background"
-            android:drawableStart="@drawable/ic_facebook"
             android:gravity="center"
             android:onClick="@{handlers::onFacebookButtonClick}"
             android:text="@string/login_facebook_label"
             android:textAllCaps="false"
             android:textColor="@color/facebook_button_text_color"
             app:backgroundTint="@color/facebook_button_background_color"
+            app:icon="@drawable/ic_facebook"
             app:layout_constraintBottom_toTopOf="@+id/GoogleLoginButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/GoogleLoginButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/social_register_button_height"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/social_login_buttons_margin"
             android:background="@drawable/button_background"
-            android:drawableStart="@drawable/ic_google"
             android:gravity="center"
             android:onClick="@{handlers::onGoogleClick}"
             android:text="@string/login_google_label"
             android:textAllCaps="false"
             android:textColor="@color/google_button_text_color"
             app:backgroundTint="@color/google_button_background_color"
+            app:icon="@drawable/ic_google"
             app:layout_constraintBottom_toTopOf="@+id/twitterLoginButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/twitterLoginButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/social_register_button_height"
+            android:layout_height="wrap_content"
             android:layout_margin="@dimen/social_login_buttons_margin"
             android:background="@drawable/button_background"
-            android:drawableStart="@drawable/ic_twitter"
             android:gravity="center"
             android:onClick="@{handlers::onTwitterButtonClick}"
             android:text="@string/login_twitter_label"
             android:textAllCaps="false"
             android:textColor="@color/twitter_button_text_color"
             app:backgroundTint="@color/twitter_button_background_color"
+            app:icon="@drawable/ic_twitter"
             app:layout_constraintBottom_toTopOf="@+id/skipLabel"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

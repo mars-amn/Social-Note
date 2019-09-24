@@ -57,8 +57,7 @@
     <dimen name="user_profile_name_text_size">18sp</dimen>
     <dimen name="user_profile_recent_posts_margin">8dp</dimen>
     <dimen name="user_profile_change_cover_margin">8dp</dimen>
-    <dimen name="social_login_buttons_margin">32dp</dimen>
-    <dimen name="social_register_button_height">40dp</dimen>
+    <dimen name="social_login_buttons_margin">18dp</dimen>
     <dimen name="nav_header_cover_image_height">300dp</dimen>
     <dimen name="nav_header_image_width">70dp</dimen>
     <dimen name="nav_header_image_height">70dp</dimen>
@@ -87,5 +86,4 @@
     <dimen name="onboarding_button_height">32dp</dimen>
     <dimen name="onboarding_button_margin_top">8dp</dimen>
     <dimen name="onboarding_button_margin_bottom">8dp</dimen>
-    <dimen name="list_item_fee_post_height">150dp</dimen>
 </resources>

@@ -73,7 +73,7 @@ class NotificationsUtils {
 
         return NotificationCompat.Builder(context,
                                           context.getString(R.string.notification_post_channel_id))
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable.ic_logo_notification)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setContentIntent(getPostContentPendingIntent(context,
@@ -97,7 +97,7 @@ class NotificationsUtils {
                                               documentId: String,
                                               token: String,
                                               countryCode: String?): NotificationCompat.Action? {
-        return NotificationCompat.Action(R.drawable.ic_notification_open,
+        return NotificationCompat.Action(R.drawable.ic_open,
                                          context.getString(R.string.open_post_notification_action_label),
                                          getOpenPostPendingIntent(context,
                                                                   notificationId,
@@ -126,7 +126,7 @@ class NotificationsUtils {
 
     private fun getDismissPostNotificationAction(context: Context,
                                                  notificationId: Int): NotificationCompat.Action? {
-        return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
+        return NotificationCompat.Action(R.drawable.ic_dismiss,
                                          context.getString(R.string.note_notification_dismiss_action_label),
                                          getDismissPostNotificationIntent(context, notificationId))
     }
@@ -180,7 +180,7 @@ class NotificationsUtils {
                                                    noteId: Long): NotificationCompat.Builder? {
         return NotificationCompat.Builder(context,
                                           context.getString(R.string.note_geofence_notification_channel_name))
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable.ic_logo_notification)
                 .setContentTitle(context.getString(R.string.note_geofence_notification_title))
                 .setContentText(getBody(noteBody))
                 .setContentIntent(getNoteGeofenceLocationPendingIntent(context, noteId))
@@ -203,7 +203,7 @@ class NotificationsUtils {
 
     private fun dismissNoteGeofenceNotificationAction(context: Context,
                                                       noteId: Long): NotificationCompat.Action {
-        return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
+        return NotificationCompat.Action(R.drawable.ic_dismiss,
                                          context.getString(R.string.note_notification_dismiss_action_label),
                                          getDismissNoteGeofenceNotificationPendingIntent(context,
                                                                                          noteId))
@@ -211,7 +211,7 @@ class NotificationsUtils {
 
     private fun getOpenNoteGeofenceAction(context: Context,
                                           noteId: Long): NotificationCompat.Action {
-        return NotificationCompat.Action(R.drawable.ic_notification_open,
+        return NotificationCompat.Action(R.drawable.ic_open,
                                          context.getString(R.string.note_notification_open_action_label),
                                          getNoteGeofenceLocationPendingIntent(context, noteId))
     }
@@ -252,7 +252,7 @@ class NotificationsUtils {
                                                        noteBody: String,
                                                        noteId: Long): NotificationCompat.Builder? {
         return NotificationCompat.Builder(context, context.getString(R.string.notification_id))
-                .setSmallIcon(R.drawable.ic_notification)
+                .setSmallIcon(R.drawable.ic_logo_notification)
                 .setContentTitle(context.getString(R.string.note_time_reminder_notification_title))
                 .setContentText(getBody(noteBody))
                 .setContentIntent(getOpenNoteNotificationPendingIntent(context, noteId))
@@ -264,14 +264,14 @@ class NotificationsUtils {
 
 
     private fun getOpenNoteAction(context: Context, noteId: Long): NotificationCompat.Action {
-        return NotificationCompat.Action(R.drawable.ic_notification_open,
+        return NotificationCompat.Action(R.drawable.ic_open,
                                          context.getString(R.string.note_notification_open_action_label),
                                          getOpenNoteNotificationPendingIntent(context, noteId))
     }
 
     private fun dismissNotificationsAction(context: Context,
                                            noteId: Long): NotificationCompat.Action {
-        return NotificationCompat.Action(R.drawable.ic_dismiss_notification_action,
+        return NotificationCompat.Action(R.drawable.ic_dismiss,
                                          context.getString(R.string.note_notification_dismiss_action_label),
                                          getDismissNotificationPendingIntent(context, noteId))
     }

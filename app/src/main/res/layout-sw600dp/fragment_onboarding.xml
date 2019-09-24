@@ -36,7 +36,7 @@
                     android:id="@+id/onBoardingImage"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     android:padding="@dimen/onboarding_image_padding" />
 
                 <TextView
@@ -46,7 +46,7 @@
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:padding="@dimen/onboarding_description_padding"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -61,7 +61,7 @@
             android:text="@string/on_boarding_finish_button_label"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

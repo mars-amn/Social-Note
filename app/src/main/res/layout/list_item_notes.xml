@@ -29,6 +29,8 @@
             android:id="@+id/listItemNoteParent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:onClick="@{handlers::onNoteClick}"
+            android:onLongClick="@{handlers::onNoteLongClick}"
             android:orientation="vertical">
 
             <TextView
@@ -41,9 +43,12 @@
                 android:visibility="visible" />
 
             <org.sufficientlysecure.htmltextview.HtmlTextView
+
                 android:id="@+id/listItemNoteBody"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
+                android:onClick="@{handlers::onNoteClick}"
+                android:onLongClick="@{handlers::onNoteLongClick}"
                 android:padding="2dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:textSize="14sp" />

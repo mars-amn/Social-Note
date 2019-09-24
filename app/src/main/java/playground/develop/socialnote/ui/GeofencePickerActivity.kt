@@ -13,6 +13,7 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.afollestad.materialdialogs.DialogCallback
@@ -48,6 +49,7 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         setFullScreen()
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_location_map)
         mBinding.handlers = this
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         if (intent != null && intent.hasExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)) {
             mGeofenceLocation = intent.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
         }
@@ -122,11 +124,10 @@ class GeofencePickerActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.clear()
         mMap.addMarker(MarkerOptions().position(latLng).icon(getMapMarker()))
 
-        val locationCircle = mMap.addCircle(CircleOptions().center(latLng).radius(GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(
-            ContextCompat.getColor(this@GeofencePickerActivity,
-                                   R.color.circle_stroke_color)).fillColor(ContextCompat.getColor(
-            this@GeofencePickerActivity,
-            R.color.circle_map_color)))
+        val locationCircle = mMap.addCircle(CircleOptions().center(latLng).radius(
+            GEOFENCE_REMINDER_MAP_RADIUS).strokeColor(ContextCompat.getColor(this@GeofencePickerActivity,
+                                                                             R.color.circle_stroke_color)).fillColor(
+            ContextCompat.getColor(this@GeofencePickerActivity, R.color.circle_map_color)))
         val valueAnimator = ValueAnimator()
         valueAnimator.repeatCount = ValueAnimator.INFINITE
         valueAnimator.repeatMode = ValueAnimator.RESTART
