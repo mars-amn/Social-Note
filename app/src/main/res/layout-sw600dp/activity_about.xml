@@ -76,7 +76,25 @@
             app:layout_constraintStart_toEndOf="@+id/appVersion"
             app:layout_constraintTop_toTopOf="@+id/aboutAppFacebookButton"
             app:srcCompat="@drawable/ic_about_twitter" />
+        <TextView
+            android:id="@+id/termsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{handlers::onTermsClick}"
+            android:text="@string/terms_label"
+            app:layout_constraintBottom_toTopOf="@+id/privacyPolicy"
+            app:layout_constraintEnd_toEndOf="@+id/privacyPolicy"
+            app:layout_constraintStart_toStartOf="@+id/privacyPolicy" />
 
+        <TextView
+            android:id="@+id/privacyPolicy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{handlers::onPrivacyPolicyClick}"
+            android:text="@string/privacy_policy_label"
+            app:layout_constraintBottom_toTopOf="@+id/licensesText"
+            app:layout_constraintEnd_toEndOf="@+id/licensesText"
+            app:layout_constraintStart_toStartOf="@+id/licensesText" />
         <TextView
             android:id="@+id/licensesText"
             android:layout_width="wrap_content"

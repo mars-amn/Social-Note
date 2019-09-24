@@ -19,6 +19,7 @@ import playground.develop.socialnote.databinding.ActivityAboutBinding
 import playground.develop.socialnote.utils.Constants.Companion.APP_FACEBOOK_URL
 import playground.develop.socialnote.utils.Constants.Companion.APP_TWITTER_ID
 import playground.develop.socialnote.utils.Constants.Companion.APP_TWITTER_URL
+import playground.develop.socialnote.utils.Constants.Companion.TERMS_POLICY_KEY
 
 
 class AboutActivity : AppCompatActivity() {
@@ -31,6 +32,13 @@ class AboutActivity : AppCompatActivity() {
         setupLicensesText()
         setupAppVersionText()
         setupAppLogo()
+    }
+
+    fun onTermsClick(view: View) {
+        startActivity(intentFor<TermsPolicyViewerActivity>(TERMS_POLICY_KEY to "terms_conditions.txt"))
+    }
+    fun onPrivacyPolicyClick(view: View) {
+        startActivity(intentFor<TermsPolicyViewerActivity>(TERMS_POLICY_KEY to "privacy_policy.txt"))
     }
 
     private fun setupAppLogo() {

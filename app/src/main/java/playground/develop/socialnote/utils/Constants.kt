@@ -16,6 +16,7 @@ class Constants {
         const val CONSIDER_REGISTER_KEY = "playground.develop.socialnote.utils.consider_register_key"
         const val USER_COUNTRY_ISO_KEY = "playground.develop.socialnote.utils.user_country_iso_key"
         const val USER_COUNTRY_ISO_ERROR_KEY = "not-available"
+        const val TERMS_POLICY_KEY = "playground.develop.socialnote.utils.terms_policy_key"
         /**
          * Intent & Notification Keys
          */

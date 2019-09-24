@@ -20,6 +20,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".ui.TermsPolicyViewerActivity"
+            android:parentActivityName=".ui.AboutActivity"
+            android:theme="@style/EditorTheme"></activity>
+        <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about_menu_item_label"
             android:parentActivityName=".ui.HomeActivity"

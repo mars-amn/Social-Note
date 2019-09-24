@@ -113,4 +113,6 @@
     <string name="application_settings_menu_title">Application Settings</string>
     <string name="account_menu_title">Account</string>
     <string name="application_menu_title">Application</string>
+    <string name="terms_label">Terms</string>
+    <string name="privacy_policy_label">Privacy Policy</string>
 </resources>
