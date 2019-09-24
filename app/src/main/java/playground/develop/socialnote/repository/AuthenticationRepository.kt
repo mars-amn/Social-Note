@@ -33,7 +33,7 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
             val userProfileChangeRequest = UserProfileChangeRequest.Builder()
                     .setPhotoUri(Uri.parse(twitterImageUrl.replace("_normal", "")))
                     .build()
-            user.updateProfile(userProfileChangeRequest)
+            user!!.updateProfile(userProfileChangeRequest)
                     .addOnSuccessListener {
                         val updatedUser = mAuth.currentUser
                         addNewUserToFirestore(updatedUser!!)

@@ -29,12 +29,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    buildTypes.each{
-        it.buildConfigField  'String' ,"MAP_API_KEY", GOOGLE_MAP_API_KEY
-        it.resValue 'string', "MAP_API_KEY" ,GOOGLE_MAP_API_KEY
-        it.buildConfigField  'String' ,"webClient", WEB_CLIENT
-        it.resValue  'string' ,"facebookAppID", FACEBOOK_APPLICATION_ID
-        it.resValue  'string' ,"facebookProtocolScheme", FACEBOOK_LOGIN_PROTOCOL
+    buildTypes.each {
+        it.buildConfigField 'String', "MAP_API_KEY", GOOGLE_MAP_API_KEY
+        it.resValue 'string', "MAP_API_KEY", GOOGLE_MAP_API_KEY
+        it.buildConfigField 'String', "webClient", WEB_CLIENT
+        it.resValue 'string', "facebookAppID", FACEBOOK_APPLICATION_ID
+        it.resValue 'string', "facebookProtocolScheme", FACEBOOK_LOGIN_PROTOCOL
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -93,15 +93,15 @@ dependencies {
     /**
      * Firebase
      */
-    implementation 'com.google.firebase:firebase-core:17.0.1'
-    implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.0.0'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
-    implementation 'com.google.firebase:firebase-analytics:17.0.1'
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
-    implementation 'com.google.android.gms:play-services-location:16.0.0'
-    implementation 'com.google.firebase:firebase-firestore:20.2.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+    implementation 'com.google.firebase:firebase-firestore:21.1.1'
     implementation 'com.google.firebase:firebase-messaging:20.0.0'
-    implementation 'com.google.firebase:firebase-storage:19.0.0'
+    implementation 'com.google.firebase:firebase-storage:19.0.1'
 
     /**
      * Auth
@@ -123,7 +123,7 @@ dependencies {
     /**
      * Rich Editor
      */
-    implementation 'com.github.irshulx:laser-native-editor:3.0.3'
+    implementation 'com.github.irshulx:laser-native-editor:3.0.4'
 
     /**
      * EventBus
