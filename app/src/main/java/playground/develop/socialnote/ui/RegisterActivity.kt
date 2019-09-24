@@ -31,6 +31,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
+import playground.develop.socialnote.BuildConfig
 import playground.develop.socialnote.R
 import playground.develop.socialnote.databinding.ActivityRegisterBinding
 import playground.develop.socialnote.eventbus.AuthenticationEvent
@@ -144,7 +145,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getSignInOptions(): GoogleSignInOptions? {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.web_api_key))
+                .requestIdToken(BuildConfig.webClient)
                 .requestEmail()
                 .build()
 

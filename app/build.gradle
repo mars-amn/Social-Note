@@ -29,6 +29,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each{
+        it.buildConfigField  'String' ,"MAP_API_KEY", GOOGLE_MAP_API_KEY
+        it.resValue 'string', "MAP_API_KEY" ,GOOGLE_MAP_API_KEY
+        it.buildConfigField  'String' ,"webClient", WEB_CLIENT
+        it.resValue  'string' ,"facebookAppID", FACEBOOK_APPLICATION_ID
+        it.resValue  'string' ,"facebookProtocolScheme", FACEBOOK_LOGIN_PROTOCOL
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8

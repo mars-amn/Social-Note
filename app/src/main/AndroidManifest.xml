@@ -56,7 +56,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/MAP_API_KEY" />
 
         <receiver
             android:name=".receiver.RebootReceiver"
@@ -103,7 +103,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="@string/fb_login_protocol_scheme" />
+                <data android:scheme="@string/facebookProtocolScheme" />
             </intent-filter>
         </activity>
 
@@ -112,7 +112,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebookAppID" />
 
         <service
             android:name=".services.GeofenceService"
