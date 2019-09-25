@@ -34,7 +34,7 @@
             app:dotsCornerRadius="@dimen/onboarding_indicator_radius"
             app:dotsSize="@dimen/onboarding_indicator_size"
             app:dotsSpacing="@dimen/onboarding_indicator_spacing"
-            app:dotsWidthFactor="2.5"
+            app:dotsWidthFactor="1.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/guideline"

@@ -452,24 +452,28 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                                                LOCATION_PERMISSION_REQUEST_CODE,
                                                *locationsPermissions)
         } else {
-            val responseTask = getLocationNetworkTask()!!
-            responseTask.addOnSuccessListener { startMapActivity() }
-                    .addOnFailureListener {
-                        val apiException = it as ApiException
-                        when (apiException.statusCode) {
-                            CommonStatusCodes.RESOLUTION_REQUIRED -> {
-                                try {
-                                    val exception = it as ResolvableApiException
-                                    exception.startResolutionForResult(this,
-                                                                       NETWORK_LOCATION_REQUEST_CODE)
-                                } catch (e: IntentSender.SendIntentException) {
-                                    longToast(R.string.error_msg)
-                                }
-                            }
-                            LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> longToast(R.string.error_msg)
-                        }
-                    }
+            checkIfUserEnabledLocationNetwork()
         }
+    }
+
+    private fun checkIfUserEnabledLocationNetwork() {
+        val responseTask = getLocationNetworkTask()!!
+        responseTask.addOnSuccessListener { startMapActivity() }
+                .addOnFailureListener {
+                    val apiException = it as ApiException
+                    when (apiException.statusCode) {
+                        CommonStatusCodes.RESOLUTION_REQUIRED -> {
+                            try {
+                                val exception = it as ResolvableApiException
+                                exception.startResolutionForResult(this,
+                                                                   NETWORK_LOCATION_REQUEST_CODE)
+                            } catch (e: IntentSender.SendIntentException) {
+                                longToast(R.string.error_msg)
+                            }
+                        }
+                        LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> longToast(R.string.error_msg)
+                    }
+                }
     }
 
     private fun getLocationNetworkTask(): Task<LocationSettingsResponse>? {
@@ -525,7 +529,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            startMapActivity()
+            checkIfUserEnabledLocationNetwork()
         }
     }
 
