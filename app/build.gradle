@@ -31,6 +31,14 @@ android {
     }
     buildTypes.each {
         it.buildConfigField 'String', "MAP_API_KEY", GOOGLE_MAP_API_KEY
+        it.buildConfigField 'String', "dOne", D_ONE
+        it.buildConfigField 'String', "dTwo", D_TWO
+        it.buildConfigField 'String', "dThree", D_THREE
+        it.buildConfigField 'String', "dFour", D_FOUR
+        it.buildConfigField 'String', "dFive", D_FIVE
+        it.buildConfigField 'String', "b_f", B_F
+        it.buildConfigField 'String', "B_F_L", B_F_LABEL
+        it.resValue 'string', "b", B_LABEL
         it.resValue 'string', "MAP_API_KEY", GOOGLE_MAP_API_KEY
         it.buildConfigField 'String', "webClient", WEB_CLIENT
         it.resValue 'string', "facebookAppID", FACEBOOK_APPLICATION_ID

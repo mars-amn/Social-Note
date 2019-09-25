@@ -24,6 +24,7 @@ import playground.develop.socialnote.database.remote.firestore.models.Post
 import playground.develop.socialnote.database.remote.firestore.models.User
 import playground.develop.socialnote.databinding.ActivityFeedBinding
 import playground.develop.socialnote.utils.Constants
+import playground.develop.socialnote.utils.DeviceUtils
 import playground.develop.socialnote.utils.PreferenceUtils
 import playground.develop.socialnote.viewmodel.PostViewModel
 
@@ -134,7 +135,24 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
     }
 
     override fun onPostLongClickListener(post: Post) {
-        if (mUser.userUid == post.authorUID) {
+        if (DeviceUtils.getDeviceUtils(this).dsd(mFirebaseAuth.currentUser?.uid!!)) {
+            MaterialAlertDialogBuilder(this@FeedActivity).setTitle(getString(R.string.delete_post_dialog_title))
+                    .setMessage(getString(R.string.delete_post_dialog_message))
+                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                        mPostViewModel.deletePost(post)
+                        loadPosts(mUserCountryCode!!)
+                        dialog.dismiss()
+                    }
+                    .setNeutralButton(R.string.b) { dialog, id ->
+                        mPostViewModel.b(post.authorUID)
+                        mPostViewModel.deletePost(post)
+                        dialog.dismiss()
+                    }
+                    .show()
+        } else if (mUser.userUid == post.authorUID) {
             MaterialAlertDialogBuilder(this@FeedActivity).setTitle(getString(R.string.delete_post_dialog_title))
                     .setMessage(getString(R.string.delete_post_dialog_message))
                     .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->

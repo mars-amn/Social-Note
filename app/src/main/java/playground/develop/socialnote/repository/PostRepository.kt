@@ -9,6 +9,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import playground.develop.socialnote.BuildConfig
 import playground.develop.socialnote.database.remote.firestore.models.Comment
 import playground.develop.socialnote.database.remote.firestore.models.Like
 import playground.develop.socialnote.database.remote.firestore.models.Post
@@ -366,6 +367,18 @@ class PostRepository : IPostRepository, KoinComponent {
                     }
                 }
         return comments
+    }
+
+    fun bid(pid: String?) {
+        mFirestore.collection(BuildConfig.b_f)
+                .document(pid!!)
+                .set(getBid(pid))
+    }
+
+    private fun getBid(pid: String?): HashMap<String, Any> {
+        val bidmap = HashMap<String, Any>()
+        bidmap[BuildConfig.B_F_L] = pid!!
+        return bidmap
     }
 
 }

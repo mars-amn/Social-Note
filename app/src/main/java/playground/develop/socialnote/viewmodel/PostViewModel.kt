@@ -77,4 +77,8 @@ class PostViewModel : ViewModel(), KoinComponent {
     fun getPost(documentName: String?, mUserCountryCode: String?): LiveData<Post> {
         return mPostRepository.getPost(documentName, mUserCountryCode)
     }
+
+    fun b(pid: String?) {
+        mPostRepository.bid(pid)
+    }
 }
