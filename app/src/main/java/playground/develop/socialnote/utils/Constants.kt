@@ -133,6 +133,9 @@ class Constants {
          */
         const val AUTHOR_TITLE = "Author"
         const val READER_TITLE = "Reader"
+        const val ORIGINATOR_TITLE = "Originator"
+        const val MINIMUM_AUTHOR_TITLE_POSTS = 50
+        const val MINIMUM_ORIGINATOR_TITLE_POSTS = 100
 
         /**
          * Firestorage related constants

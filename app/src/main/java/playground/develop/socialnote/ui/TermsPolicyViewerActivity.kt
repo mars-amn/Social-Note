@@ -27,7 +27,7 @@ class TermsPolicyViewerActivity : AppCompatActivity() {
                 fileId = R.raw.terms_conditions
                 title = "Terms and Conditions"
             }
-            "privacy_policy.txt"->{
+            "privacy_policy.txt" -> {
                 fileId = R.raw.privacy_policy
                 title = "Privacy Policy"
             }

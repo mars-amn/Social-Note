@@ -37,6 +37,7 @@ class AboutActivity : AppCompatActivity() {
     fun onTermsClick(view: View) {
         startActivity(intentFor<TermsPolicyViewerActivity>(TERMS_POLICY_KEY to "terms_conditions.txt"))
     }
+
     fun onPrivacyPolicyClick(view: View) {
         startActivity(intentFor<TermsPolicyViewerActivity>(TERMS_POLICY_KEY to "privacy_policy.txt"))
     }

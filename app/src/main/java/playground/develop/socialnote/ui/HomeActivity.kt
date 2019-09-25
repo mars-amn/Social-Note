@@ -35,6 +35,7 @@ import playground.develop.socialnote.services.SyncingService
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.CONSIDER_REGISTER_KEY
+import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import playground.develop.socialnote.viewmodel.NoteViewModel
 import playground.develop.socialnote.viewmodel.PostViewModel
@@ -140,7 +141,12 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         when (user.userTitle) {
             READER_TITLE -> showReaderTitle(navHeaderBinding)
             AUTHOR_TITLE -> showAuthorTitle(navHeaderBinding)
+            ORIGINATOR_TITLE -> showOriginatorTitle(navHeaderBinding)
         }
+    }
+
+    private fun showOriginatorTitle(navHeaderBinding: NavHeaderLayoutBinding) {
+        navHeaderBinding.navHeaderUserOriginatorTitle.visibility = View.VISIBLE
     }
 
     private fun showAuthorTitle(navHeaderBinding: NavHeaderLayoutBinding) {

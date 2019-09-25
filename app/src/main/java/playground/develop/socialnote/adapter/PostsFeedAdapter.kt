@@ -32,6 +32,7 @@ import playground.develop.socialnote.ui.LikesActivity
 import playground.develop.socialnote.ui.ProfileActivity
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import kotlin.math.ln
 import kotlin.math.pow
@@ -137,17 +138,26 @@ class PostsFeedAdapter(private val listener: PostInteractListener,
             when (post.userTitle) {
                 READER_TITLE -> showReaderTitle()
                 AUTHOR_TITLE -> showAuthorTitle()
+                ORIGINATOR_TITLE -> showOriginatorTitle()
             }
+        }
+
+        private fun showOriginatorTitle() {
+            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
+            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
+            mBinding.listItemFeedUserOriginatorTitle.visibility = View.VISIBLE
         }
 
         private fun showAuthorTitle() {
             mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
+            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
             mBinding.listItemFeedUserAuthorTitle.visibility = View.VISIBLE
         }
 
         private fun showReaderTitle() {
             mBinding.listItemFeedUserReaderTitle.visibility = View.VISIBLE
             mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
+            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
         }
 
         private fun hideLikeCounter() {

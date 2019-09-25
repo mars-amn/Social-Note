@@ -76,6 +76,7 @@
             app:layout_constraintStart_toEndOf="@+id/appVersion"
             app:layout_constraintTop_toTopOf="@+id/aboutAppFacebookButton"
             app:srcCompat="@drawable/ic_about_twitter" />
+
         <TextView
             android:id="@+id/termsText"
             android:layout_width="wrap_content"
@@ -95,6 +96,7 @@
             app:layout_constraintBottom_toTopOf="@+id/licensesText"
             app:layout_constraintEnd_toEndOf="@+id/licensesText"
             app:layout_constraintStart_toStartOf="@+id/licensesText" />
+
         <TextView
             android:id="@+id/licensesText"
             android:layout_width="wrap_content"

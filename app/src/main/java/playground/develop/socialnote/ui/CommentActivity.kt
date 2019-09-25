@@ -73,7 +73,7 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
             loadUser()
             mDocumentName = intent.getStringExtra(FIRESTORE_POST_DOC_INTENT_KEY)
             mAuthorRegisterToken = intent.getStringExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)
-            mPostCountryCode = intent.getStringExtra(Constants.USER_COUNTRY_ISO_KEY)
+            mPostCountryCode = intent.getStringExtra(USER_COUNTRY_ISO_KEY)
             mAdapter = CommentsAdapter(this@CommentActivity, this@CommentActivity)
             mBinding.commentsRecyclerView.adapter = mAdapter
             loadRegistrationToken()

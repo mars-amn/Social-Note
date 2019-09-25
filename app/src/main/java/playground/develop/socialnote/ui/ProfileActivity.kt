@@ -33,6 +33,7 @@ import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_COVER_IMAGES
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_PROFILE_IMAGES
+import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.USER_UID_INTENT_KEY
 import playground.develop.socialnote.utils.PreferenceUtils
@@ -104,7 +105,14 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
         when (user.userTitle) {
             READER_TITLE -> showReaderTitle()
             AUTHOR_TITLE -> showAuthorTitle()
+            ORIGINATOR_TITLE -> showOriginatorTitle()
         }
+    }
+
+    private fun showOriginatorTitle() {
+        mBinding.userProfileTitle.text = getString(R.string.originator_title)
+        mBinding.userProfileTitle.setTextColor(ContextCompat.getColor(this,
+                                                                      R.color.originator_title_color))
     }
 
     private fun showAuthorTitle() {

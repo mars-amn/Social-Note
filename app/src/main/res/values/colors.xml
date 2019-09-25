@@ -11,6 +11,7 @@
     <color name="network_state_text_color">#455a64</color>
     <color name="reader_title_color">#24394E</color>
     <color name="author_title_color">#488FEC</color>
+    <color name="originator_title_color">#01A894</color>
 
     <color name="swipe_accent">@color/colorAccent</color>
     <color name="swipe_accent2">@color/secondaryColor</color>

@@ -6,4 +6,8 @@
     <dimen name="onboarding_button_height">50dp</dimen>
     <dimen name="onboarding_button_margin_top">16dp</dimen>
     <dimen name="onboarding_button_margin_bottom">16dp</dimen>
+
+    <dimen name="nav_header_cover_image_height">400dp</dimen>
+    <dimen name="nav_header_image_width">150dp</dimen>
+    <dimen name="nav_header_image_height">150dp</dimen>
 </resources>

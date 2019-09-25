@@ -48,6 +48,9 @@ import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_USERS_C
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_USER_COUNTRY_CODE
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_USER_POSTS_COUNT
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_USER_TITLE
+import playground.develop.socialnote.utils.Constants.Companion.MINIMUM_AUTHOR_TITLE_POSTS
+import playground.develop.socialnote.utils.Constants.Companion.MINIMUM_ORIGINATOR_TITLE_POSTS
+import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import java.util.*
 import kotlin.collections.ArrayList
@@ -256,7 +259,9 @@ class PostRepository : IPostRepository, KoinComponent {
                         val user = document.result?.toObject(User::class.java)
                         user?.userPostsCount = user?.userPostsCount!!.plus(1)
                         var title = READER_TITLE
-                        if (user.userPostsCount!! >= 20) {
+                        if (user.userPostsCount!! >= MINIMUM_ORIGINATOR_TITLE_POSTS) {
+                            title = ORIGINATOR_TITLE
+                        } else if (user.userPostsCount!! >= MINIMUM_AUTHOR_TITLE_POSTS) {
                             title = AUTHOR_TITLE
                         }
                         post.userTitle = title
