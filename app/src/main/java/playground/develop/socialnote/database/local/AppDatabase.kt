@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import playground.develop.socialnote.database.local.notes.DateConverter
+import playground.develop.socialnote.database.local.converters.DateConverter
 import playground.develop.socialnote.database.local.notes.Note
 import playground.develop.socialnote.database.local.notes.NoteDao
 

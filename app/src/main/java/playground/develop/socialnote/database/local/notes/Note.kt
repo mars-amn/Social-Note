@@ -14,7 +14,8 @@ import java.util.*
 @Entity(tableName = "Notes")
 class Note(@ColumnInfo(name = "note_title") var noteTitle: String?, @ColumnInfo(name = "note_body") var note: String?, @ColumnInfo(
     name = "date_created") var dateCreated: Date?, @ColumnInfo(name = "date_modified") var dateModified: Date?, @Embedded(
-    prefix = "location_") var geofence: NoteGeofence? = null, @Embedded(prefix = "preferred_") var timeReminder: NoteReminder? = null) {
+    prefix = "location_") var geofence: NoteGeofence? = null, @Embedded(prefix = "preferred_") var timeReminder: NoteReminder? = null, @ColumnInfo(
+    name = "note_category_name") var noteCategory: String? = null) {
 
     @PrimaryKey
     @ColumnInfo(name = "note_id")

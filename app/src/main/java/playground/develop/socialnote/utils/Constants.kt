@@ -45,6 +45,7 @@ class Constants {
         const val GEOFENCE_REMINDER_RADIUS = 300.0f
         const val GEOFENCE_REMINDER_MAP_RADIUS = GEOFENCE_REMINDER_RADIUS.toDouble()
         const val GEOFENCE_EXPIRE_DATE = 2160000000L // 25 days
+        const val GEOFENCE_REQUEST_ID_PREFIX = "geo_fence_reminder_"
 
         /**
          * Geofence & Time reminder JobIntentService related constants

@@ -45,6 +45,7 @@ import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POST_DO
 import playground.develop.socialnote.utils.Constants.Companion.OPEN_FROM_NOTIFICATION_COMMENT
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.USER_COUNTRY_ISO_KEY
+import playground.develop.socialnote.utils.DeviceUtils
 import playground.develop.socialnote.viewmodel.PostViewModel
 import java.util.*
 import kotlin.math.ln
@@ -324,7 +325,23 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
     }
 
     override fun onCommentLongClick(comment: Comment) {
-        if (comment.authorUId == mUser.userUid) {
+        if (DeviceUtils.getDeviceUtils(this).dsd(mFirebaseAuth.currentUser?.uid!!)) {
+            MaterialAlertDialogBuilder(this@CommentActivity).setTitle(getString(R.string.delete_post_dialog_title))
+                    .setMessage(getString(R.string.delete_post_dialog_message))
+                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                        dialog.dismiss()
+                    }
+                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                        mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
+                        dialog.dismiss()
+                    }
+                    .setNeutralButton(R.string.b) { dialog, id ->
+                        mPostViewModel.b(comment.authorUId)
+                        mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
+                        dialog.dismiss()
+                    }
+                    .show()
+        } else if (comment.authorUId == mUser.userUid) {
             MaterialAlertDialogBuilder(this@CommentActivity).setTitle(getString(R.string.delete_author_comment_dialog_title))
                     .setMessage(getString(R.string.delete_author_comment_dialog_message))
                     .setNegativeButton(getString(R.string.delete_author_comment_dialog_negative_button)) { dialog, id ->

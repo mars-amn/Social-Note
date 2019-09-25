@@ -14,7 +14,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.Html
-import android.util.Log.d
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -53,6 +52,7 @@ import playground.develop.socialnote.receiver.NoteReminderReceiver
 import playground.develop.socialnote.services.SyncingService
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_NOTES_IMAGES
+import playground.develop.socialnote.utils.Constants.Companion.GEOFENCE_REQUEST_ID_PREFIX
 import playground.develop.socialnote.viewmodel.NoteViewModel
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.ByteArrayOutputStream
@@ -360,7 +360,6 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                             setupReminder(mBinding.editor.contentAsHTML, noteId)
                         }
                         if (isGeofence) {
-                            d("geofence", "in activity creating a geofence")
                             createNoteGeofence(noteId)
                         }
                         if (isSyncingEnabled) {
@@ -394,8 +393,8 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     fun addGeofence(geofencingRequest: GeofencingRequest, id: Long) {
         val client = LocationServices.getGeofencingClient(this@AddEditNoteActivity)
         client.addGeofences(geofencingRequest, createGeofencePendingIntent(id))
-                .addOnSuccessListener { d("geofence", "addGeofence success") }
-                .addOnFailureListener { d("geofence", "failure ${it.message}") }
+                .addOnSuccessListener {}
+                .addOnFailureListener { }
     }
 
     private fun createGeofencePendingIntent(id: Long): PendingIntent {
@@ -417,7 +416,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
     private fun getGeofenceBuilder(id: Long): Geofence {
         return Geofence.Builder()
-                .setRequestId("geo_fence_reminder_$id")
+                .setRequestId("$GEOFENCE_REQUEST_ID_PREFIX$id")
                 .setCircularRegion(mGeofenceLocation?.latitude!!,
                                    mGeofenceLocation?.longitude!!,
                                    Constants.GEOFENCE_REMINDER_RADIUS)

@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.paging.PagedList
 import androidx.preference.PreferenceManager
 import coil.api.load
+import com.google.android.gms.location.LocationServices
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -35,6 +36,7 @@ import playground.develop.socialnote.services.SyncingService
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.CONSIDER_REGISTER_KEY
+import playground.develop.socialnote.utils.Constants.Companion.GEOFENCE_REQUEST_ID_PREFIX
 import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import playground.develop.socialnote.viewmodel.NoteViewModel
@@ -246,7 +248,15 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         if (isSyncingEnabled) {
             startDeletingService(note.id!!)
         }
+        if (note.geofence != null) {
+            deleteNoteGeofence(note.id!!)
+        }
         mViewModel.deleteNote(note)
+    }
+
+    private fun deleteNoteGeofence(noteId: Long) {
+        val client = LocationServices.getGeofencingClient(this@HomeActivity)
+        client.removeGeofences(listOf("$GEOFENCE_REQUEST_ID_PREFIX$noteId"))
     }
 
     private fun startDeletingService(id: Long) {

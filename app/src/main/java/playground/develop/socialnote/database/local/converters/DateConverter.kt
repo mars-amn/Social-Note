@@ -1,4 +1,4 @@
-package playground.develop.socialnote.database.local.notes
+package playground.develop.socialnote.database.local.converters
 
 import androidx.room.TypeConverter
 import java.util.*
