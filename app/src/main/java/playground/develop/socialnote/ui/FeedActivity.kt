@@ -43,15 +43,12 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this@FeedActivity, R.layout.activity_feed)
         mBinding.handlers = this
-
         mAdapter = PostsFeedAdapter(this@FeedActivity, this@FeedActivity, ArrayList<Post>())
         loadUser()
         loadPosts(mUserCountryCode!!)
-        mBinding.userImageView.load(mFirebaseAuth.currentUser?.photoUrl) {
-            transformations(CircleCropTransformation())
-        }
         setupSwipeToRefresh()
     }
+
 
     private fun setupSwipeToRefresh() {
         mBinding.swipeRefresh.setColorSchemeResources(R.color.swipe_accent,
@@ -72,6 +69,9 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
         mPostViewModel.getUser()
                 .observe(this@FeedActivity, Observer { user ->
                     mUser = user
+                    mBinding.userImageView.load(user.userImage) {
+                        transformations(CircleCropTransformation())
+                    }
                 })
     }
 
@@ -147,7 +147,7 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
                         dialog.dismiss()
                     }
                     .setNeutralButton(R.string.b) { dialog, id ->
-                        mPostViewModel.b(post.authorUID)
+                        mPostViewModel.b(post.authorUID, post.post!!)
                         mPostViewModel.deletePost(post)
                         dialog.dismiss()
                     }

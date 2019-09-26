@@ -5,12 +5,18 @@
         android:id="@+id/noteTimeReminderMenuItem"
         android:icon="@drawable/ic_time_reminder"
         android:title="@string/set_time_reminder_menu_item_label"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
     <item
         android:id="@+id/noteGeofenceReminderMenuItem"
         android:icon="@drawable/ic_geofence_reminder"
         android:title="@string/set_location_reminder_menu_item_label"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/addImage"
+        android:icon="@drawable/ic_insert_image"
+        android:title="@string/add_image_menu_title"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/saveNoteMenuItem"
         android:title="@string/save_note_menu_title"

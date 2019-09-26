@@ -9,26 +9,18 @@ import android.content.Intent
 import android.content.IntentSender
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
-import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.preference.PreferenceManager
-import com.flask.colorpicker.ColorPickerView
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder
 import com.github.florent37.singledateandtimepicker.dialog.SingleDateAndTimePickerDialog
-import com.github.irshulx.EditorListener
-import com.github.irshulx.models.EditorTextStyle
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.CommonStatusCodes
 import com.google.android.gms.common.api.ResolvableApiException
@@ -42,7 +34,13 @@ import com.google.firebase.storage.UploadTask
 import org.jetbrains.anko.longToast
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
+import org.wordpress.aztec.Aztec
+import org.wordpress.aztec.AztecAttributes
+import org.wordpress.aztec.AztecText
+import org.wordpress.aztec.ITextFormat
+import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import playground.develop.socialnote.R
+import playground.develop.socialnote.coilloader.CoilImageLoader
 import playground.develop.socialnote.database.local.geofence.NoteGeofence
 import playground.develop.socialnote.database.local.notes.Note
 import playground.develop.socialnote.database.local.reminder.NoteReminder
@@ -59,7 +57,35 @@ import java.io.ByteArrayOutputStream
 import java.util.*
 
 
-class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks {
+class AddEditNoteActivity : AppCompatActivity(), IAztecToolbarClickListener,
+                            EasyPermissions.PermissionCallbacks, AztecText.OnImageTappedListener {
+    override fun onImageTapped(attrs: AztecAttributes, naturalWidth: Int, naturalHeight: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onToolbarHtmlButtonClicked() {
+
+    }
+
+    override fun onToolbarListButtonClicked() {
+    }
+
+    override fun onToolbarMediaButtonClicked(): Boolean {
+        return false
+    }
+
+    override fun onToolbarCollapseButtonClicked() {
+    }
+
+    override fun onToolbarExpandButtonClicked() {
+    }
+
+    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {
+    }
+
+    override fun onToolbarHeadingButtonClicked() {
+    }
+
     private val mFirebaseStorage: FirebaseStorage by inject()
     private val mViewModel: NoteViewModel by inject()
     private lateinit var mBinding: ActivityAddNoteBinding
@@ -92,122 +118,13 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         } else if (isOpenFromNotification()) {
             dismissNoteTimeReminderNotification()
         }
-        if (savedInstanceState != null) {
-            mBinding.editor.render(savedInstanceState.getString(EDITOR_SAVE_STATE_KEY))
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(CreatePostActivity.EDITOR_SAVE_STATE_KEY, mBinding.editor.contentAsHTML)
     }
 
     private fun initEditor() {
-        findViewById<View>(R.id.action_h1).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.H1)
-        }
-
-        findViewById<View>(R.id.action_h2).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.H2)
-        }
-
-        findViewById<View>(R.id.action_h3).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.H3)
-        }
-
-        findViewById<View>(R.id.action_bold).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.BOLD)
-        }
-
-        findViewById<View>(R.id.action_Italic).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC)
-        }
-
-        findViewById<View>(R.id.action_indent).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.INDENT)
-        }
-
-        findViewById<View>(R.id.action_blockquote).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE)
-        }
-
-        findViewById<View>(R.id.action_outdent).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT)
-        }
-
-        findViewById<View>(R.id.action_bulleted).setOnClickListener {
-            mBinding.editor.insertList(false)
-        }
-
-        findViewById<View>(R.id.action_unordered_numbered).setOnClickListener {
-            mBinding.editor.insertList(true)
-        }
-
-        findViewById<View>(R.id.action_hr).setOnClickListener { mBinding.editor.insertDivider() }
-
-
-        findViewById<View>(R.id.action_color).setOnClickListener {
-            ColorPickerDialogBuilder.with(this)
-                    .setTitle(getString(R.string.color_pick_choose_title))
-                    .initialColor(Color.RED)
-                    .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                    .setOnColorSelectedListener { color ->
-                        mBinding.editor.updateTextColor(colorHex(color))
-                    }
-                    .setPositiveButton(getString(R.string.color_picker_positive_button)) { dialog, color, colors ->
-                        mBinding.editor.updateTextColor(colorHex(color))
-                    }
-                    .setNegativeButton(getString(R.string.color_picker_negative_button)) { dialog, which -> }
-                    .build()
-                    .show()
-        }
-
-        findViewById<View>(R.id.action_insert_image).setOnClickListener { mBinding.editor.openImagePicker() }
-
-        findViewById<View>(R.id.action_insert_link).setOnClickListener { mBinding.editor.insertLink() }
-
-
-        findViewById<View>(R.id.action_erase).setOnClickListener { mBinding.editor.clearAllContents() }
-        mBinding.editor.editorListener = object : EditorListener {
-            override fun onRenderMacro(name: String?,
-                                       props: MutableMap<String, Any>?,
-                                       index: Int): View {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onTextChanged(editText: EditText, text: Editable) {
-            }
-
-            override fun onUpload(image: Bitmap, uuid: String) {
-                val baos = ByteArrayOutputStream()
-                image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                val bytes = baos.toByteArray()
-                val coverImageRef = mFirebaseStorage.getReference(FIRESTORE_NOTES_IMAGES)
-                        .child(Date().time.toString())
-                val uploadTask = coverImageRef.putBytes(bytes)
-                uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
-                    if (!task.isSuccessful) {
-                        toast(getString(R.string.failed_upolad_message))
-                    }
-                    return@Continuation coverImageRef.downloadUrl
-                })
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                mBinding.editor.onImageUploadComplete(task.result.toString(), uuid)
-                            }
-                        }
-
-            }
-
-
-        }
-    }
-
-    private fun colorHex(color: Int): String {
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-        return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b)
+        Aztec.with(mBinding.aztec, mBinding.source, mBinding.toolbarEditor, this)
+                .setImageGetter(CoilImageLoader(this))
+        mBinding.aztec.setCalypsoMode(false)
+        mBinding.source.setCalypsoMode(false)
     }
 
     private fun setupToolbar(label: String) {
@@ -221,7 +138,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 .observe(this, Observer<Note> { note ->
                     if (note != null) {
                         mExistedNote = note
-                        mBinding.editor.render(mExistedNote.note.toString())
+                        mBinding.aztec.fromHtml(mExistedNote.note.toString(), true)
                         if (note.geofence != null) {
                             isGeofence = true
                             mGeofenceLocation = LatLng(note.geofence?.noteGeofenceLatitude!!,
@@ -246,7 +163,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         when (item.itemId) {
             R.id.saveNoteMenuItem -> onSaveMenuItemClick()
             android.R.id.home -> {
-                if (stripHtml() == "" || stripHtml().isEmpty()) {
+                if (mBinding.aztec.toFormattedHtml() == "") {
                     navigateUp()
                 } else {
                     showUnsavedNoteDialog()
@@ -260,12 +177,23 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
                 onLocationReminderClick()
             }
+            R.id.addImage -> {
+                startImagePicker()
+            }
         }
         return super.onOptionsItemSelected(item)
     }
 
+    private fun startImagePicker() {
+        val imageIntent = Intent(Intent.ACTION_GET_CONTENT)
+        imageIntent.type = "image/*"
+        val chooser = Intent.createChooser(imageIntent,
+                                           getString(R.string.image_picker_chooser_title))
+        startActivityForResult(chooser, IMAGE_PICKER_REQUEST_CODE)
+    }
+
     private fun onSaveMenuItemClick() {
-        if (stripHtml() == "" || stripHtml().isEmpty()) {
+        if (mBinding.aztec.toFormattedHtml() == "") {
             toast(getString(R.string.empty_editor_msg))
             return
         }
@@ -277,20 +205,9 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         }
     }
 
-    private fun stripHtml(): String {
-        val text = mBinding.editor.contentAsHTML
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
-                    .toString()
-        } else {
-            Html.fromHtml(text)
-                    .toString()
-        }
-    }
-
     private fun updateNote(currentDate: Date) {
         mExistedNote.dateModified = currentDate
-        mExistedNote.note = mBinding.editor.contentAsHTML
+        mExistedNote.note = mBinding.aztec.toFormattedHtml()
         mExistedNote.noteTitle = noteTitle()
         if (isReminder) {
             mExistedNote.timeReminder = getTimeReminder()
@@ -345,7 +262,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
 
     private fun insertNewNote(currentDate: Date) {
-        val note = Note(noteTitle(), mBinding.editor.contentAsHTML, currentDate, currentDate)
+        val note = Note(noteTitle(), mBinding.aztec.toFormattedHtml(), currentDate, currentDate)
         note.id = Date().time
         if (isGeofence) {
             note.geofence = getGeofenceLocation()
@@ -357,7 +274,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                 .observe(this, Observer<Long> { noteId ->
                     if (noteId != null) {
                         if (isReminder) {
-                            setupReminder(mBinding.editor.contentAsHTML, noteId)
+                            setupReminder(mBinding.aztec.toFormattedHtml(), noteId)
                         }
                         if (isGeofence) {
                             createNoteGeofence(noteId)
@@ -499,11 +416,8 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
                     isGeofence = true
                     mGeofenceLocation = data.getParcelableExtra(Constants.NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY)
                 }
-                mBinding.editor.PICK_IMAGE_REQUEST -> {
-                    val uri = data.data!!
-                    val imageStream = contentResolver.openInputStream(uri)!!
-                    val imageBitmap = BitmapFactory.decodeStream(imageStream)
-                    mBinding.editor.insertImage(imageBitmap)
+                IMAGE_PICKER_REQUEST_CODE -> {
+                    insertImageAndUpload(extractImage(data)!!)
                 }
                 NETWORK_LOCATION_REQUEST_CODE -> {
                     val states = LocationSettingsStates.fromIntent(data)
@@ -515,6 +429,46 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
         }
     }
 
+    private fun extractImage(data: Intent): Bitmap? {
+        val uri = data.data!!
+        val imageStream = contentResolver.openInputStream(uri)!!
+        return BitmapFactory.decodeStream(imageStream)
+    }
+
+
+    private fun insertImageAndUpload(image: Bitmap) {
+        val baos = ByteArrayOutputStream()
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val bytes = baos.toByteArray()
+        val coverImageRef = mFirebaseStorage.getReference(FIRESTORE_NOTES_IMAGES)
+                .child(Date().time.toString())
+        val uploadTask = coverImageRef.putBytes(bytes)
+        toast(getString(R.string.uploading_media_msg))
+        uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
+            if (!task.isSuccessful) {
+                toast(getString(R.string.failed_upolad_message))
+            }
+            return@Continuation coverImageRef.downloadUrl
+        })
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val (id, attrs) = generateAttributesForMedia(task.result.toString())
+                        mBinding.aztec.insertImage(BitmapDrawable(resources, image), attrs)
+                        mBinding.toolbarEditor.toggleMediaToolbar()
+                    }
+                }
+
+    }
+
+
+    private fun generateAttributesForMedia(mediaPath: String): Pair<String, AztecAttributes> {
+        val id = Date().time.toString()
+        val attrs = AztecAttributes()
+        attrs.setValue("src", mediaPath)
+        attrs.setValue("id", id)
+        attrs.setValue("uploading", "true")
+        return Pair(id, attrs)
+    }
 
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<out String>,
@@ -564,7 +518,7 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
     }
 
     override fun onBackPressed() {
-        if (stripHtml() == "" || stripHtml().isEmpty()) {
+        if (mBinding.aztec.toFormattedHtml() == "") {
             super.onBackPressed()
         } else {
             showUnsavedNoteDialog()
@@ -573,9 +527,9 @@ class AddEditNoteActivity : AppCompatActivity(), EasyPermissions.PermissionCallb
 
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 252
-        private const val GEOFENCE_NOTE_REMINDER_REQUEST_CODE = 7
-        private const val NETWORK_LOCATION_REQUEST_CODE = 84
-        const val EDITOR_SAVE_STATE_KEY = "EDITOR-SAVE-STATE-KEY"
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 11
+        private const val GEOFENCE_NOTE_REMINDER_REQUEST_CODE = 22
+        private const val NETWORK_LOCATION_REQUEST_CODE = 33
+        const val IMAGE_PICKER_REQUEST_CODE = 44
     }
 }

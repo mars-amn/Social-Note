@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Html
 import android.text.format.DateUtils
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,6 @@ import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 import playground.develop.socialnote.R
 import playground.develop.socialnote.adapter.CommentsAdapter
 import playground.develop.socialnote.database.remote.firestore.models.Comment
@@ -178,7 +178,17 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
     }
 
     private fun bindPostBody(post: String?) {
-        mBinding.postBodyText.setHtml(post!!, HtmlHttpImageGetter(mBinding.postBodyText))
+        mBinding.postBodyText.text = getPostBody(post!!)
+    }
+
+    private fun getPostBody(body: String): String {
+        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            Html.fromHtml(body, Html.FROM_HTML_MODE_LEGACY)
+                    .toString()
+        } else {
+            Html.fromHtml(body)
+                    .toString()
+        }
     }
 
     private fun setupLikeButton(likes: ArrayList<Like>?) {
@@ -336,7 +346,7 @@ class CommentActivity : AppCompatActivity(), CommentsAdapter.CommentListener {
                         dialog.dismiss()
                     }
                     .setNeutralButton(R.string.b) { dialog, id ->
-                        mPostViewModel.b(comment.authorUId)
+                        mPostViewModel.b(comment.authorUId, comment.comment!!)
                         mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
                         dialog.dismiss()
                     }

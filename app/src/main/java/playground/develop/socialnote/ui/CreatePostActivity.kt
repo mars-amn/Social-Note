@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,9 +13,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NavUtils
 import androidx.databinding.DataBindingUtil
 import coil.api.load
-import com.flask.colorpicker.ColorPickerView
-import com.flask.colorpicker.builder.ColorPickerDialogBuilder
-import com.github.irshulx.models.EditorTextStyle
 import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -25,19 +21,49 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import org.jetbrains.anko.toast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.wordpress.aztec.Aztec
+import org.wordpress.aztec.ITextFormat
+import org.wordpress.aztec.toolbar.IAztecToolbarClickListener
 import playground.develop.socialnote.R
 import playground.develop.socialnote.database.remote.firestore.models.Post
 import playground.develop.socialnote.databinding.ActivityCreatePostBinding
+import playground.develop.socialnote.eventbus.SocialPostMessage
+import playground.develop.socialnote.utils.Constants.Companion.BLOCKED_EVENT
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_POST_IMAGES
+import playground.develop.socialnote.utils.Constants.Companion.POST_SUCCESS_EVENT
 import playground.develop.socialnote.utils.PreferenceUtils
 import playground.develop.socialnote.viewmodel.PostViewModel
 import java.io.ByteArrayOutputStream
 import java.util.*
 
-class CreatePostActivity : AppCompatActivity() {
+class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
+    override fun onToolbarHtmlButtonClicked() {
+
+    }
+
+    override fun onToolbarListButtonClicked() {
+    }
+
+    override fun onToolbarMediaButtonClicked(): Boolean {
+        return false
+    }
+
+    override fun onToolbarCollapseButtonClicked() {
+    }
+
+    override fun onToolbarExpandButtonClicked() {
+    }
+
+    override fun onToolbarFormatButtonClicked(format: ITextFormat, isKeyboardShortcut: Boolean) {
+    }
+
+    override fun onToolbarHeadingButtonClicked() {
+    }
 
     private lateinit var mBinding: ActivityCreatePostBinding
     private val mFirebaseAuth: FirebaseAuth by inject()
@@ -51,84 +77,56 @@ class CreatePostActivity : AppCompatActivity() {
         mBinding = DataBindingUtil.setContentView(this@CreatePostActivity,
                                                   R.layout.activity_create_post)
         mBinding.handlers = this
+        registerEventBus()
         initEditor()
         getRegisterToken()
+    }
 
-        if (savedInstanceState != null) {
-            mBinding.editor.render(savedInstanceState.getString(EDITOR_SAVE_STATE_KEY))
+    private fun registerEventBus() {
+        EventBus.getDefault()
+                .register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterEventBus()
+    }
+
+    private fun unregisterEventBus() {
+        EventBus.getDefault()
+                .unregister(this)
+    }
+
+    @Subscribe
+    fun onEvent(event: SocialPostMessage) {
+        if (event.postEventMessage == POST_SUCCESS_EVENT) {
+            finish()
+        } else if (event.postEventMessage == BLOCKED_EVENT) {
+            showBlockDialog()
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(EDITOR_SAVE_STATE_KEY, mBinding.editor.contentAsHTML)
+    override fun onResume() {
+        super.onResume()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            registerEventBus()
+        }
+    }
+
+    private fun showBlockDialog() {
+        MaterialAlertDialogBuilder(this).setTitle(getString(R.string.blocked_dialog_title))
+                .setMessage(getString(R.string.blocked_message))
+                .setPositiveButton(getString(R.string.blocked_dialog_button_label)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .show()
     }
 
     private fun initEditor() {
-        findViewById<View>(R.id.action_h1).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.H1)
-        }
-
-        findViewById<View>(R.id.action_h2).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.H2)
-        }
-
-        findViewById<View>(R.id.action_h3).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.H3)
-        }
-
-        findViewById<View>(R.id.action_bold).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.BOLD)
-        }
-
-        findViewById<View>(R.id.action_Italic).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.ITALIC)
-        }
-
-        findViewById<View>(R.id.action_indent).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.INDENT)
-        }
-
-        findViewById<View>(R.id.action_blockquote).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.BLOCKQUOTE)
-        }
-
-        findViewById<View>(R.id.action_outdent).setOnClickListener {
-            mBinding.editor.updateTextStyle(EditorTextStyle.OUTDENT)
-        }
-
-        findViewById<View>(R.id.action_bulleted).setOnClickListener {
-            mBinding.editor.insertList(false)
-        }
-
-        findViewById<View>(R.id.action_unordered_numbered).setOnClickListener {
-            mBinding.editor.insertList(true)
-        }
-        findViewById<View>(R.id.action_hr).setOnClickListener { mBinding.editor.insertDivider() }
-
-
-        findViewById<View>(R.id.action_color).setOnClickListener {
-            ColorPickerDialogBuilder.with(this)
-                    .setTitle(getString(R.string.color_pick_choose_title))
-                    .initialColor(Color.RED)
-                    .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
-                    .setOnColorSelectedListener { color ->
-                        mBinding.editor.updateTextColor(colorHex(color))
-                    }
-                    .setPositiveButton(getString(R.string.color_picker_positive_button)) { dialog, color, colors ->
-                        mBinding.editor.updateTextColor(colorHex(color))
-                    }
-                    .setNegativeButton(getString(R.string.color_picker_negative_button)) { dialog, which -> }
-                    .build()
-                    .show()
-        }
-
-        findViewById<View>(R.id.action_insert_image).setOnClickListener { startImagePicker() }
-
-        findViewById<View>(R.id.action_insert_link).setOnClickListener { mBinding.editor.insertLink() }
-
-
-        findViewById<View>(R.id.action_erase).setOnClickListener { mBinding.editor.clearAllContents() }
+        Aztec.with(mBinding.aztec, mBinding.source, mBinding.toolbarEditor, this)
+        mBinding.aztec.setCalypsoMode(false)
+        mBinding.source.setCalypsoMode(false)
+        mBinding.aztec.setTextColor(Color.BLACK)
     }
 
     private fun startImagePicker() {
@@ -139,13 +137,6 @@ class CreatePostActivity : AppCompatActivity() {
         startActivityForResult(chooser, PICK_IMAGE_REQUEST_CODE)
     }
 
-    private fun colorHex(color: Int): String {
-        val r = Color.red(color)
-        val g = Color.green(color)
-        val b = Color.blue(color)
-        return String.format(Locale.getDefault(), "#%02X%02X%02X", r, g, b)
-    }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.post_menu, menu)
         return super.onCreateOptionsMenu(menu)
@@ -154,15 +145,17 @@ class CreatePostActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.postMenuItem -> createNewPost()
+            R.id.addImage -> startImagePicker()
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun createNewPost() {
-        if (stripHtml() == "" || stripHtml().isEmpty()) {
+        if (mBinding.aztec.toFormattedHtml() == "") {
             toast(getString(R.string.empty_post_message))
             return
         }
+        toast(getString(R.string.posting_proccess_msg))
         if (mSelectedImage != null) {
             postWithImage()
         } else {
@@ -175,7 +168,6 @@ class CreatePostActivity : AppCompatActivity() {
         val post = getPost()
         post.imageUrl = ""
         mPostViewModel.createPost(post, mUserCountryCode!!)
-        finish()
     }
 
     private val mUserCountryCode: String?
@@ -199,7 +191,7 @@ class CreatePostActivity : AppCompatActivity() {
         })
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val body = mBinding.editor.contentAsHTML
+                        val body = mBinding.aztec.toFormattedHtml()
                         val authorId = mFirebaseAuth.currentUser?.uid
                         val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
                         val categoryName = ""
@@ -214,13 +206,12 @@ class CreatePostActivity : AppCompatActivity() {
                                         imageUrl = task.result.toString(),
                                         countryCode = mUserCountryCode)
                         mPostViewModel.createPost(post, mUserCountryCode!!)
-                        finish()
                     }
                 }
     }
 
     private fun getPost(): Post {
-        val body = mBinding.editor.contentAsHTML
+        val body = mBinding.aztec.toFormattedHtml()
         val authorId = mFirebaseAuth.currentUser?.uid
         val authorImage = mFirebaseAuth.currentUser?.photoUrl.toString()
         val categoryName = ""
@@ -234,17 +225,6 @@ class CreatePostActivity : AppCompatActivity() {
                     Timestamp(Date()),
                     countryCode = mUserCountryCode)
 
-    }
-
-    private fun stripHtml(): String {
-        val text = mBinding.editor.contentAsHTML
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Html.fromHtml(text, Html.FROM_HTML_MODE_LEGACY)
-                    .toString()
-        } else {
-            Html.fromHtml(text)
-                    .toString()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -281,7 +261,7 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (stripHtml() == "" || stripHtml().isEmpty()) {
+        if (mBinding.aztec.toFormattedHtml() == "") {
             super.onBackPressed()
         } else {
             showPostAlertDialog()
@@ -307,7 +287,6 @@ class CreatePostActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EDITOR_SAVE_STATE_KEY = "EDITOR-SAVE-STATE-KEY"
-        const val PICK_IMAGE_REQUEST_CODE = 7
+        const val PICK_IMAGE_REQUEST_CODE = 72
     }
 }

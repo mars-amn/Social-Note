@@ -116,4 +116,8 @@
     <string name="application_menu_title">Aplicación</string>
     <string name="terms_label">Términos y Condiciones</string>
     <string name="privacy_policy_label">Política de privacidad</string>
+    <string name="posting_proccess_msg">Publicando ..</string>
+    <string name="blocked_message">Usted violó nuestros términos de servicios y condiciones, o agredió a otros usuarios de la comunidad al compartir o escribir palabras abusivas directa o indirectamente en una publicación o comentario, lo cual es totalmente inaceptable y no podemos permitirnos acciones que puedan dañar a nuestros miembros de la comunidad. Si desea recuperar sus permisos, contáctenos en nuestra página de Facebook o cuenta de Twitter.</string>
+    <string name="blocked_dialog_button_label">OK, descartar</string>
+    <string name="blocked_dialog_title">cuenta bloqueada</string>
 </resources>

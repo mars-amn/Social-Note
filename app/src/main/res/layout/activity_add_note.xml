@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:aztec="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,63 +9,88 @@
             type="playground.develop.socialnote.ui.AddEditNoteActivity" />
     </data>
 
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:focusableInTouchMode="true">
 
-        <HorizontalScrollView
-            android:id="@+id/tools"
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/noteTitleInputText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#e6e6e6"
-            android:scrollbars="none">
+            android:background="@color/white"
+            android:hint="@string/text_title_label"
+            android:padding="@dimen/title_text_padding"
+            android:textColor="@color/text_title_color"
+            android:textColorHint="@color/text_color_hint"
+            aztec:layout_constraintEnd_toEndOf="parent"
+            aztec:layout_constraintStart_toStartOf="parent"
+            aztec:layout_constraintTop_toTopOf="parent" />
 
-            <include layout="@layout/editor_toolbar" />
 
-
-        </HorizontalScrollView>
-
-        <ScrollView
+        <RelativeLayout
+            android:id="@+id/editorParent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="40dp"
-            android:scrollbars="vertical">
+            android:layout_marginTop="50dp"
+            aztec:layout_constraintTop_toBottomOf="@id/noteTitleInputText">
 
-            <LinearLayout
+
+            <org.wordpress.aztec.toolbar.AztecToolbar
+                android:id="@+id/toolbarEditor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/aztec_format_bar_height"
+                android:layout_alignParentBottom="true">
+
+            </org.wordpress.aztec.toolbar.AztecToolbar>
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical">
+                android:layout_above="@+id/toolbarEditor"
+                android:layout_alignParentTop="true"
+                android:fillViewport="true">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/noteTitleInputText"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:hint="@string/text_title_label"
-                    android:padding="@dimen/title_text_padding"
-                    android:textColor="@color/text_title_color"
-                    android:textColorHint="@color/text_color_hint" />
+                    android:layout_height="wrap_content">
 
-                <com.github.irshulx.Editor
-                    android:id="@+id/editor"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="20dp"
-                    android:paddingBottom="100dp"
-                    app:auto_focus="true"
-                    app:placeholder="Start writing here"
-                    app:render_type="Editor" />
-            </LinearLayout>
-        </ScrollView>
-    </RelativeLayout>
+                    <org.wordpress.aztec.AztecText
+                        android:id="@+id/aztec"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:hint="Note"
+                        android:imeOptions="flagNoExtractUi"
+                        android:padding="4dp"
+                        android:scrollbars="vertical"
+                        aztec:backgroundColor="#fff"
+                        aztec:historyEnable="true"
+                        aztec:historySize="10"
+                        aztec:textColor="#000" />
 
+                    <org.wordpress.aztec.source.SourceViewEditText
+                        android:id="@+id/source"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textNoSuggestions|textMultiLine"
+                        android:padding="4dp"
+                        android:scrollbars="vertical"
+
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        aztec:codeBackgroundColor="@android:color/transparent"
+                        aztec:codeTextColor="@android:color/white" />
+
+                </FrameLayout>
+
+            </ScrollView>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

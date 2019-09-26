@@ -59,7 +59,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/postParent"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="@dimen/list_item_feed_parent_margin"
             app:cardCornerRadius="@dimen/list_item_feed_parent_corner_radius"
             app:cardElevation="@dimen/list_item_feed_parent_elevation"
@@ -93,11 +93,16 @@
                     app:layout_constraintStart_toEndOf="@id/postAuthorImage"
                     app:layout_constraintTop_toBottomOf="@id/postAuthorName" />
 
-                <org.sufficientlysecure.htmltextview.HtmlTextView
+                <TextView
                     android:id="@+id/postBodyText"
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/post_body_margin"
+                    android:padding="4dp"
+                    android:scrollbars="vertical"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@id/postImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -119,8 +124,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/postImage">
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
                         android:id="@+id/postLikesCounter"
@@ -241,6 +245,7 @@
             android:id="@+id/commentsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -252,4 +257,5 @@
             tools:listitem="@layout/list_item_comment_right" />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
+
 </layout>

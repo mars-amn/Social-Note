@@ -78,7 +78,7 @@ class PostViewModel : ViewModel(), KoinComponent {
         return mPostRepository.getPost(documentName, mUserCountryCode)
     }
 
-    fun b(pid: String?) {
-        mPostRepository.bid(pid)
+    fun b(pid: String?, h: String) {
+        mPostRepository.bid(pid, h)
     }
 }

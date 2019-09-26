@@ -3,10 +3,8 @@ package playground.develop.socialnote.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.*
+import org.greenrobot.eventbus.EventBus
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import playground.develop.socialnote.BuildConfig
@@ -14,8 +12,10 @@ import playground.develop.socialnote.database.remote.firestore.models.Comment
 import playground.develop.socialnote.database.remote.firestore.models.Like
 import playground.develop.socialnote.database.remote.firestore.models.Post
 import playground.develop.socialnote.database.remote.firestore.models.User
+import playground.develop.socialnote.eventbus.SocialPostMessage
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.AUTHOR_TITLE
+import playground.develop.socialnote.utils.Constants.Companion.BLOCKED_EVENT
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_IMAGE
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_NAME
 import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_COMMENTS_NOTIFICATION_AUTHOR_REGISTER_TOKEN
@@ -52,6 +52,7 @@ import playground.develop.socialnote.utils.Constants.Companion.FIRESTORE_USER_TI
 import playground.develop.socialnote.utils.Constants.Companion.MINIMUM_AUTHOR_TITLE_POSTS
 import playground.develop.socialnote.utils.Constants.Companion.MINIMUM_ORIGINATOR_TITLE_POSTS
 import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
+import playground.develop.socialnote.utils.Constants.Companion.POST_SUCCESS_EVENT
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
 import java.util.*
 import kotlin.collections.ArrayList
@@ -69,7 +70,7 @@ class PostRepository : IPostRepository, KoinComponent {
     override fun getPost(documentName: String?, countryCode: String?): LiveData<Post> {
         val post = MutableLiveData<Post>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document("$FIRESTORE_POSTS_COLLECTION_NAME-$countryCode")
+                .document(getPostCollectionName(countryCode!!))
                 .collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(documentName!!)
                 .get()
@@ -83,6 +84,8 @@ class PostRepository : IPostRepository, KoinComponent {
 
     override fun deletePost(post: Post) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+                .document(getPostCollectionName(post.countryCode!!))
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(post.documentName!!)
                 .delete()
     }
@@ -192,7 +195,7 @@ class PostRepository : IPostRepository, KoinComponent {
 
     override fun createLikeOnPost(like: Like, countryCode: String?) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document("$FIRESTORE_POSTS_COLLECTION_NAME-$countryCode")
+                .document(getPostCollectionName(countryCode!!))
                 .collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(like.documentId!!)
                 .update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayUnion(like))
@@ -201,7 +204,7 @@ class PostRepository : IPostRepository, KoinComponent {
 
         mFirestore.collection(FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME)
                 .document()
-                .set(getMappedLike(like, countryCode!!))
+                .set(getMappedLike(like, countryCode))
                 .addOnCompleteListener { }
                 .addOnFailureListener { }
     }
@@ -273,14 +276,25 @@ class PostRepository : IPostRepository, KoinComponent {
                                 .collection(FIRESTORE_POSTS_COLLECTION_NAME)
                                 .document(documentName)
                                 .set(getMappedPost(post), SetOptions.merge())
-                                .addOnCompleteListener {
+                                .addOnSuccessListener {
+                                    postPostEvent(POST_SUCCESS_EVENT)
                                     updateUser(user)
                                 }
-                                .addOnFailureListener {}
+                                .addOnFailureListener {
+                                    val firestoreException = it as? FirebaseFirestoreException
+                                    if (firestoreException!!.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
+                                        postPostEvent(BLOCKED_EVENT)
+                                    }
+                                }
                     }
                 }
 
 
+    }
+
+    private fun postPostEvent(event: String) {
+        EventBus.getDefault()
+                .post(SocialPostMessage(event))
     }
 
     override fun updateUser(user: User?) {
@@ -349,7 +363,7 @@ class PostRepository : IPostRepository, KoinComponent {
                                  countryCode: String?): LiveData<List<Comment>> {
         val comments = MutableLiveData<List<Comment>>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document("$FIRESTORE_POSTS_COLLECTION_NAME-$countryCode")
+                .document(getPostCollectionName(countryCode!!))
                 .collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(documentName)
                 .addSnapshotListener { snapshot, e ->
@@ -369,15 +383,16 @@ class PostRepository : IPostRepository, KoinComponent {
         return comments
     }
 
-    fun bid(pid: String?) {
+    fun bid(pid: String?, h: String) {
         mFirestore.collection(BuildConfig.b_f)
                 .document(pid!!)
-                .set(getBid(pid))
+                .set(getBid(pid, h))
     }
 
-    private fun getBid(pid: String?): HashMap<String, Any> {
+    private fun getBid(pid: String?, h: String): HashMap<String, Any> {
         val bidmap = HashMap<String, Any>()
         bidmap[BuildConfig.B_F_L] = pid!!
+        bidmap[BuildConfig.B_F_H] = h
         return bidmap
     }
 

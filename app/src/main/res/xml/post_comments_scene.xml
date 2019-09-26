@@ -12,7 +12,6 @@
             app:touchAnchorId="@+id/commentsRecyclerView"
             app:touchAnchorSide="top"
             motion:visibilityMode="ignore" />
-
     </Transition>
 
     <ConstraintSet android:id="@+id/start">

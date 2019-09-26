@@ -33,6 +33,8 @@ class Constants {
          */
         const val AUTH_EVENT_FAIL = "playground.develop.socialnote.auth_fail"
         const val AUTH_EVENT_SUCCESS = "playground.develop.socialnote.auth_success"
+        const val BLOCKED_EVENT = "playground.develop.socialnote.user_is_blocked"
+        const val POST_SUCCESS_EVENT = "playground.develop.socialnote.post_success"
 
         /**
          * Geofence related constants

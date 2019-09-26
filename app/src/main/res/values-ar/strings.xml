@@ -116,4 +116,9 @@
     <string name="application_menu_title">التطبيق</string>
     <string name="terms_label">الأحكام والشروط</string>
     <string name="privacy_policy_label">سياسة الخصوصية</string>
+
+    <string name="posting_proccess_msg">جارِ النشر ..</string>
+    <string name="blocked_message">لقد قمت بانتهاك الشروط والأحكام أو أهنت أعضاء آخرين في المجتمع عن طريق مشاركة أو كتابة كلمات نابية بطريقة مباشرة أو غير مباشرة في تعليق أو منشور، مما يجعل هذا التصرف غير مقبول ولا يمكن أن نسمح بوجود مثل هذه الأفعال في مجتمعنا بين الأعضاء. إذا أردت أن تحصل على صلاحيتك مجدداً، تواصل معنا على صفحة التطبيق على الفيس بوك أو حساب تويتر.</string>
+    <string name="blocked_dialog_button_label">حسناً، إغلاق</string>
+    <string name="blocked_dialog_title">حظر</string>
 </resources>

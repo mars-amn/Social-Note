@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:aztec="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,61 +15,108 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <HorizontalScrollView
-            android:id="@+id/tools"
+
+        <!--        <ImageView-->
+        <!--            android:id="@+id/postImage"-->
+        <!--            android:layout_width="120dp"-->
+        <!--            android:layout_height="120dp"-->
+        <!--            android:visibility="visible"-->
+        <!--            app:layout_constraintBottom_toTopOf="@id/tools"-->
+        <!--            app:layout_constraintStart_toStartOf="parent" />-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/removeSelectedImageButton"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+        <!--            android:onClick="@{handlers::onRemoveImageClick}"-->
+        <!--            android:visibility="gone"-->
+        <!--            app:layout_constraintEnd_toEndOf="@id/postImage"-->
+        <!--            app:layout_constraintTop_toTopOf="@id/postImage"-->
+        <!--            app:srcCompat="@drawable/ic_remove" />-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="#e6e6e6"
-            android:scrollbars="none"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:layout_height="match_parent">
 
-            <include
-                android:id="@+id/toolbarEditor"
-                layout="@layout/editor_toolbar" />
+            <ImageView
+                android:id="@+id/postImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/toolbarEditor"
+                app:layout_constraintStart_toStartOf="parent" />
 
-
-        </HorizontalScrollView>
-
-        <ImageView
-            android:id="@+id/postImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toTopOf="@id/tools"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ImageButton
-            android:id="@+id/removeSelectedImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:onClick="@{handlers::onRemoveImageClick}"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="@id/postImage"
-            app:layout_constraintTop_toTopOf="@id/postImage"
-            app:srcCompat="@drawable/ic_remove" />
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scrollbars="vertical"
-            app:layout_constraintBottom_toTopOf="@id/postImage"
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <com.github.irshulx.Editor
-                android:id="@+id/editor"
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/removeSelectedImageButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="100dp"
-                app:placeholder="Start writing here..."
-                app:render_type="Editor" />
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="@{handlers::onRemoveImageClick}"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@id/postImage"
+                app:layout_constraintTop_toTopOf="@id/postImage"
+                app:srcCompat="@drawable/ic_remove" />
 
-        </ScrollView>
+            <org.wordpress.aztec.toolbar.AztecToolbar
+                android:id="@+id/toolbarEditor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/aztec_format_bar_height"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </org.wordpress.aztec.toolbar.AztecToolbar>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_above="@+id/toolbarEditor"
+                android:layout_alignParentTop="true"
+                android:fillViewport="true"
+                app:layout_constraintBottom_toTopOf="@id/postImage"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <org.wordpress.aztec.AztecText
+                        android:id="@+id/aztec"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:hint="Note"
+                        android:imeOptions="flagNoExtractUi"
+                        android:padding="4dp"
+                        android:scrollbars="vertical"
+                        aztec:backgroundColor="#fff"
+                        aztec:historyEnable="true"
+                        aztec:historySize="10"
+                        aztec:textColor="#000" />
+
+                    <org.wordpress.aztec.source.SourceViewEditText
+                        android:id="@+id/source"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="top|start"
+                        android:imeOptions="flagNoExtractUi"
+                        android:inputType="textNoSuggestions|textMultiLine"
+                        android:padding="4dp"
+                        android:scrollbars="vertical"
+                        android:textSize="16sp"
+                        android:visibility="gone"
+                        aztec:codeBackgroundColor="@android:color/transparent"
+                        aztec:codeTextColor="@android:color/white" />
+
+                </FrameLayout>
+
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

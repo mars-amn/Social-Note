@@ -259,7 +259,7 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
                         dialog.dismiss()
                     }
                     .setNeutralButton(R.string.b) { dialog, id ->
-                        mPostViewModel.b(post.authorUID)
+                        mPostViewModel.b(post.authorUID, post.post!!)
                         mPostViewModel.deletePost(post)
                         dialog.dismiss()
                     }

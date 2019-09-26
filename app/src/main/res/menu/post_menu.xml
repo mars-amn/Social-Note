@@ -2,7 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/addImage"
+        android:icon="@drawable/ic_insert_image"
+        android:title="@string/add_image_menu_title"
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/postMenuItem"
         android:title="@string/post_menu_item_label"
         app:showAsAction="always" />
+
 </menu>
