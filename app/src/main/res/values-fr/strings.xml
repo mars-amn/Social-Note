@@ -25,10 +25,6 @@
     <string name="empty_editor_msg">Rien à sauver</string>
     <string name="register_label_text">Inscrivez-vous pour pouvoir partager des messages et synchroniser vos notes avec le cloud..</string>
 
-    <string name="web_api_key">key</string>
-    <string name="facebook_app_id">key</string>
-    <string name="fb_login_protocol_scheme">key</string>
-
     <string name="auth_failed_msg">Authentification échouée!</string>
     <string name="create_note_shortcut_short_label">Créer une nouvelle note</string>
     <string name="create_note_shortcut_long_label">Tapez pour créer une nouvelle note</string>
@@ -90,10 +86,7 @@
     <string name="empty_header_text">Vous n\'êtes pas connecté, cliquez ici pour vous connecter!</string>
     <string name="post_menu_item_label">Publier</string>
     <string name="failed_upolad_message">Échec du téléchargement de l\'image</string>
-    <string name="color_pick_choose_title">Sélectionner</string>
     <string name="empty_post_message">Rien à partager!</string>
-    <string name="color_picker_positive_button">Ok</string>
-    <string name="color_picker_negative_button">Annuler</string>
     <string name="comments_toolbar_label">Cmmentaires</string>
     <string name="post_alert_dialog_message">Voulez-vous jeter le message?</string>
     <string name="post_alert_dialog_title">Travail non sauvegardé</string>

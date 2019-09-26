@@ -25,10 +25,6 @@
     <string name="empty_editor_msg">Nothing to save</string>
     <string name="register_label_text">Register to be able to share posts and sync your notes to the cloud ..</string>
 
-    <string name="web_api_key">key</string>
-    <string name="facebook_app_id">key</string>
-    <string name="fb_login_protocol_scheme">key</string>
-
     <string name="auth_failed_msg">Authentication Failed!</string>
     <string name="create_note_shortcut_short_label">Create a new Note</string>
     <string name="create_note_shortcut_long_label">Tap to create a new Note</string>
@@ -90,10 +86,7 @@
     <string name="empty_header_text">You\'re not signed in, Click here to sign in!</string>
     <string name="post_menu_item_label">Post</string>
     <string name="failed_upolad_message">Failed uploading image</string>
-    <string name="color_pick_choose_title">Pick</string>
     <string name="empty_post_message">Nothing to share!</string>
-    <string name="color_picker_positive_button">Ok</string>
-    <string name="color_picker_negative_button">Cancel</string>
     <string name="comments_toolbar_label">Comments</string>
     <string name="post_alert_dialog_message">Do you want to discard the post?</string>
     <string name="post_alert_dialog_title">Unsaved work</string>

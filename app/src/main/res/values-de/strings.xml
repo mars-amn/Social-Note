@@ -25,10 +25,6 @@
     <string name="empty_editor_msg">Nichts zu speichern</string>
     <string name="register_label_text">Registrieren Sie sich, um Beiträge zu teilen und Ihre Notizen mit der Wolken zu synchronisieren.</string>
 
-    <string name="web_api_key">key</string>
-    <string name="facebook_app_id">key</string>
-    <string name="fb_login_protocol_scheme">key</string>
-
     <string name="auth_failed_msg">Authentifizierung fehlgeschlagen!</string>
     <string name="create_note_shortcut_short_label">Erstellen Sie eine neue Notiz</string>
     <string name="create_note_shortcut_long_label">Tippen Sie hier, um eine neue Notiz zu erstellen</string>
@@ -90,10 +86,7 @@
     <string name="empty_header_text">Sie sind nicht angemeldet. Klicken Sie hier, um sich anzumelden.</string>
     <string name="post_menu_item_label">Veröffentlichen</string>
     <string name="failed_upolad_message">Fehler beim Hochladen des Bildes</string>
-    <string name="color_pick_choose_title">Wählen</string>
     <string name="empty_post_message">Nichts zu teilen!</string>
-    <string name="color_picker_positive_button">Ok</string>
-    <string name="color_picker_negative_button">Aufheben</string>
     <string name="comments_toolbar_label">Bemerkungen</string>
     <string name="post_alert_dialog_message">Möchten Sie den Beitrag verwerfen?</string>
     <string name="post_alert_dialog_title">Nicht gespeicherte Arbeit</string>

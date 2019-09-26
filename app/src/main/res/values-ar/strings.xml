@@ -25,10 +25,6 @@
     <string name="empty_editor_msg">لا توجد أي مدخلات للحفظ</string>
     <string name="register_label_text">قم بتسجيل الدخول لحفظ المذكرات ومشاركة المنشورات</string>
 
-    <string name="web_api_key">key</string>
-    <string name="facebook_app_id">key</string>
-    <string name="fb_login_protocol_scheme">key</string>
-
     <string name="auth_failed_msg">فشلت عملية التسجيل</string>
     <string name="create_note_shortcut_short_label">قم بإنشاء مذكرة جديدة</string>
     <string name="create_note_shortcut_long_label">اضغط لإنشاء مذكرة جديدة</string>
@@ -90,10 +86,7 @@
     <string name="empty_header_text">أنت لم تقم بتسجيل الدخول، اضغط هنا للتسجيل</string>
     <string name="post_menu_item_label">نشر</string>
     <string name="failed_upolad_message">حصل خطأ أثناء رفع الصورة</string>
-    <string name="color_pick_choose_title">اختر</string>
     <string name="empty_post_message">لا يوجد أي شء تقوم بمشاركته</string>
-    <string name="color_picker_positive_button">حسناً</string>
-    <string name="color_picker_negative_button">إلغاء</string>
     <string name="comments_toolbar_label">التعليقات</string>
     <string name="post_alert_dialog_message">هل تريد ان تقوم بتجاهل المنشور؟</string>
     <string name="post_alert_dialog_title">تعديلات المنشور</string>

@@ -25,10 +25,6 @@
     <string name="empty_editor_msg">Nada que salvar</string>
     <string name="register_label_text">Regístrese para compartir publicaciones y sincronizar sus notas con la nube.</string>
 
-    <string name="web_api_key">key</string>
-    <string name="facebook_app_id">key</string>
-    <string name="fb_login_protocol_scheme">key</string>
-
     <string name="auth_failed_msg">Autenticación fallida!</string>
     <string name="create_note_shortcut_short_label">Crear una nueva nota</string>
     <string name="create_note_shortcut_long_label">Toque para crear una nueva nota</string>
@@ -90,10 +86,7 @@
     <string name="empty_header_text">No has iniciado sesión, haz clic aquí para iniciar sesión.</string>
     <string name="post_menu_item_label">publicar</string>
     <string name="failed_upolad_message">Error al cargar la imagen</string>
-    <string name="color_pick_choose_title">Recoger</string>
     <string name="empty_post_message">Nada que compartir!</string>
-    <string name="color_picker_positive_button">Ok</string>
-    <string name="color_picker_negative_button">Cancelar</string>
     <string name="comments_toolbar_label">Comentarios</string>
     <string name="post_alert_dialog_message">Quieres descartar la publicación?</string>
     <string name="post_alert_dialog_title">Trabajo no guardado</string>
