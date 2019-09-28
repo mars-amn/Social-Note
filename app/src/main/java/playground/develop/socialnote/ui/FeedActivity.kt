@@ -112,9 +112,9 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
     }
 
     override fun onCommentButtonClick(post: Post) {
-        startActivity(intentFor<CommentActivity>(Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
-                                                 Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken,
-                                                 Constants.USER_COUNTRY_ISO_KEY to post.countryCode))
+        startActivity(intentFor<PostDetailsActivity>(Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
+                                                     Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken,
+                                                     Constants.USER_COUNTRY_ISO_KEY to post.countryCode))
     }
 
     fun onUserImageClick(view: View) {

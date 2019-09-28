@@ -46,8 +46,6 @@
     <dimen name="list_item_feed_user_title_margin">16dp</dimen>
     <dimen name="add_note_fab_margin">16dp</dimen>
     <dimen name="feed_recyclerview_margin_top">8dp</dimen>
-    <dimen name="comment_input_parent_margin_start">8dp</dimen>
-    <dimen name="comment_input_parent_margin_bottom">8dp</dimen>
     <dimen name="comment_input_padding">4dp</dimen>
     <dimen name="user_profile_cover_image_height">400dp</dimen>
     <dimen name="user_profile_name_title_background_height">60dp</dimen>

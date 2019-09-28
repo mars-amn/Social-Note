@@ -52,7 +52,6 @@
     <string name="settings_menu_item_label">Paramètres</string>
     <string name="feed_menu_item_label">Des postes</string>
     <string name="create_post_label">Publiez ce que vous avez en tête</string>
-    <string name="comment_submit_button_label">Soumettre</string>
     <string name="notification_post_channel_id">Social-Posts</string>
     <string name="notification_social_posts_channel_name">Social Posts</string>
     <string name="open_post_notification_action_label">Post ouvert</string>

@@ -52,7 +52,6 @@
     <string name="settings_menu_item_label">Settings</string>
     <string name="feed_menu_item_label">Posts</string>
     <string name="create_post_label">Post what\'s in your mind</string>
-    <string name="comment_submit_button_label">Submit</string>
     <string name="notification_post_channel_id">Social-Posts</string>
     <string name="notification_social_posts_channel_name">Social Posts</string>
     <string name="open_post_notification_action_label">Open Post</string>

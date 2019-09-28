@@ -16,7 +16,7 @@ import playground.develop.socialnote.receiver.GeofenceReminderReceiver
 import playground.develop.socialnote.receiver.NoteReminderReceiver
 import playground.develop.socialnote.receiver.NotificationReceiver
 import playground.develop.socialnote.ui.AddEditNoteActivity
-import playground.develop.socialnote.ui.CommentActivity
+import playground.develop.socialnote.ui.PostDetailsActivity
 import playground.develop.socialnote.utils.Constants.Companion.ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN
 import playground.develop.socialnote.utils.Constants.Companion.ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN
 import playground.develop.socialnote.utils.Constants.Companion.DISMISS_NOTE_GEOFENCE_NOTIFICATION
@@ -111,7 +111,7 @@ class NotificationsUtils {
                                          documentId: String,
                                          token: String,
                                          countryCode: String?): PendingIntent? {
-        val openIntent = Intent(context, CommentActivity::class.java)
+        val openIntent = Intent(context, PostDetailsActivity::class.java)
         openIntent.putExtra(OPEN_FROM_NOTIFICATION_COMMENT, true)
         openIntent.putExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, token)
         openIntent.putExtra(FIRESTORE_POST_DOC_INTENT_KEY, documentId)
@@ -148,7 +148,7 @@ class NotificationsUtils {
                                             token: String,
                                             countryCode: String?): PendingIntent? {
 
-        val commentIntent = Intent(context, CommentActivity::class.java)
+        val commentIntent = Intent(context, PostDetailsActivity::class.java)
         commentIntent.putExtra(FIRESTORE_POST_DOC_INTENT_KEY, documentId)
         commentIntent.putExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY, token)
         commentIntent.putExtra(USER_COUNTRY_ISO_KEY, countryCode)

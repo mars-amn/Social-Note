@@ -45,7 +45,7 @@
         <activity android:name=".ui.ProfileActivity" />
         <activity android:name=".ui.LikesActivity" />
         <activity
-            android:name=".ui.CommentActivity"
+            android:name=".ui.PostDetailsActivity"
             android:label="@string/comments_toolbar_label"
             android:parentActivityName=".ui.FeedActivity"
             android:theme="@style/EditorTheme" />

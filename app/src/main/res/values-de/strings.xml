@@ -52,7 +52,6 @@
     <string name="settings_menu_item_label">die Einstellungen</string>
     <string name="feed_menu_item_label">Beiträge</string>
     <string name="create_post_label">Veröffentlichen Sie, was Ihnen in den Sinn kommt</string>
-    <string name="comment_submit_button_label">einreichen</string>
     <string name="notification_post_channel_id">Social-Posts</string>
     <string name="notification_social_posts_channel_name">Social Posts</string>
     <string name="open_post_notification_action_label">Post öffnen</string>

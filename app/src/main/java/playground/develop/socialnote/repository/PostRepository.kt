@@ -206,7 +206,7 @@ class PostRepository : IPostRepository, KoinComponent {
                 .document()
                 .set(getMappedLike(like, countryCode))
                 .addOnCompleteListener { }
-                .addOnFailureListener { }
+                .addOnFailureListener {}
     }
 
     private fun getMappedLike(like: Like, countryCode: String): HashMap<String, Any> {
@@ -386,10 +386,10 @@ class PostRepository : IPostRepository, KoinComponent {
     fun bid(pid: String?, h: String) {
         mFirestore.collection(BuildConfig.b_f)
                 .document(pid!!)
-                .set(getBid(pid, h))
+                .set(bmap(pid, h))
     }
 
-    private fun getBid(pid: String?, h: String): HashMap<String, Any> {
+    private fun bmap(pid: String?, h: String): HashMap<String, Any> {
         val bidmap = HashMap<String, Any>()
         bidmap[BuildConfig.B_F_L] = pid!!
         bidmap[BuildConfig.B_F_H] = h
