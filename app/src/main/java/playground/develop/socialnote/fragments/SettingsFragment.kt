@@ -12,14 +12,13 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import org.koin.android.ext.android.inject
 import playground.develop.socialnote.R
-import playground.develop.socialnote.services.SyncingService
 import playground.develop.socialnote.ui.RegisterActivity
-import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.CONSIDER_REGISTER_KEY
+import playground.develop.socialnote.utils.SyncUtils
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
-                         SharedPreferences.OnSharedPreferenceChangeListener {
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     val mFirebaseAuth: FirebaseAuth by inject()
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -36,7 +35,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         super.onStop()
         if (mRegisterDialog != null) {
             mRegisterDialog?.create()
-                    ?.dismiss()
+                ?.dismiss()
 
         }
         unregisterPreferenceChangeListener()
@@ -44,12 +43,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private fun unregisterPreferenceChangeListener() {
         PreferenceManager.getDefaultSharedPreferences(context)
-                .unregisterOnSharedPreferenceChangeListener(this)
+            .unregisterOnSharedPreferenceChangeListener(this)
     }
 
     private fun registerPreferenceListener() {
         PreferenceManager.getDefaultSharedPreferences(context)
-                .registerOnSharedPreferenceChangeListener(this)
+            .registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
@@ -69,46 +68,26 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_OK && isUserNotNull()) {
-            val switchPreference = findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
+            val switchPreference =
+                findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
             switchPreference?.isChecked = true
             startSyncService()
         } else if (requestCode == REGISTER_REQUEST_CODE && resultCode == RESULT_CANCELED || !isUserNotNull()) {
-            val switchPreference = findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
+            val switchPreference =
+                findPreference(getString(R.string.note_sync_key)) as SwitchPreferenceCompat?
             switchPreference?.isChecked = false
         }
     }
 
     private fun startSyncService() {
-        setupNeededSyncUpdatesNotes()
-        setupSyncingNotes()
-        getSyncedNotes()
-    }
-
-    private fun getSyncedNotes() {
-        val syncService = Intent(context, SyncingService::class.java)
-        syncService.action = Constants.SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION
-        SyncingService.getSyncingService()
-                .enqueueCallSyncedNotes(context!!, syncService)
-    }
-
-    private fun setupNeededSyncUpdatesNotes() {
-        val syncService = Intent(context, SyncingService::class.java)
-        syncService.action = Constants.SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION
-        SyncingService.getSyncingService()
-                .enqueueSyncNeededUpdateNotes(context!!, syncService)
-
-    }
-
-    private fun setupSyncingNotes() {
-        val syncService = Intent(context, SyncingService::class.java)
-        syncService.action = Constants.SYNC_ALL_NOTES_INTENT_ACTION
-        SyncingService.getSyncingService()
-                .enqueueSyncAllNotes(context!!, syncService)
+        SyncUtils.getSyncUtils()
+            .startSyncWorker(context!!)
     }
 
     private var mRegisterDialog: MaterialAlertDialogBuilder? = null
     private fun showRegisterRequestDialog() {
-        mRegisterDialog = MaterialAlertDialogBuilder(context).setTitle(getString(R.string.sync_notes_dialog_title))
+        mRegisterDialog =
+            MaterialAlertDialogBuilder(context).setTitle(getString(R.string.sync_notes_dialog_title))
                 .setMessage(getString(R.string.sync_notes_dialog_message))
                 .setNegativeButton(getString(R.string.sync_notes_dialog_neg_button_label)) { dialog, id ->
                     dialog.dismiss()

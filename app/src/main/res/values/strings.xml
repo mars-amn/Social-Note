@@ -114,4 +114,8 @@
     <string name="blocked_dialog_title">Blocked</string>
     <string name="uploading_media_msg">Uploading image .. please wait</string>
     <string name="add_image_menu_title">Add Image</string>
+    <string name="empty_post_list_msg">No one shared any posts, be the first one</string>
+    <string name="date_create_note">Date Created: %s</string>
+    <string name="date_modified_note">Date Modified: %s</string>
+    <string name="skip_register_label">or skip for now</string>
 </resources>

@@ -15,6 +15,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.transitionseverywhere.extra.Scale
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.longToast
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import playground.develop.socialnote.R
@@ -84,6 +85,8 @@ class FeedActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListener 
                         mBinding.feedRecyclerView.adapter = mAdapter
                         hideLoadingView()
                         mBinding.swipeRefresh.isRefreshing = false
+                    } else {
+                        longToast(getString(R.string.empty_post_list_msg))
                     }
                 })
     }

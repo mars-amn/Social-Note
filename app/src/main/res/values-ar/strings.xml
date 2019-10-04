@@ -113,4 +113,13 @@
     <string name="blocked_message">لقد قمت بانتهاك الشروط والأحكام أو أهنت أعضاء آخرين في المجتمع عن طريق مشاركة أو كتابة كلمات نابية بطريقة مباشرة أو غير مباشرة في تعليق أو منشور، مما يجعل هذا التصرف غير مقبول ولا يمكن أن نسمح بوجود مثل هذه الأفعال في مجتمعنا بين الأعضاء. إذا أردت أن تحصل على صلاحيتك مجدداً، تواصل معنا على صفحة التطبيق على الفيس بوك أو حساب تويتر.</string>
     <string name="blocked_dialog_button_label">حسناً، إغلاق</string>
     <string name="blocked_dialog_title">حظر</string>
+
+    <string name="uploading_media_msg">جارِ التحميل .. برجاء الإنتظار</string>
+    <string name="add_image_menu_title">أضف صورة</string>
+    <string name="empty_post_list_msg">لم يشارك بأحد بأي منشور، كن أنت الأول وشارك</string>
+
+    <string name="date_create_note">تاريخ الإنشاء: %s</string>
+    <string name="date_modified_note">تاريخ التعديل: %s</string>
+    <string name="skip_register_label">تخطي الآن</string>
+
 </resources>

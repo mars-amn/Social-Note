@@ -112,4 +112,11 @@
     <string name="blocked_message">Usted violó nuestros términos de servicios y condiciones, o agredió a otros usuarios de la comunidad al compartir o escribir palabras abusivas directa o indirectamente en una publicación o comentario, lo cual es totalmente inaceptable y no podemos permitirnos acciones que puedan dañar a nuestros miembros de la comunidad. Si desea recuperar sus permisos, contáctenos en nuestra página de Facebook o cuenta de Twitter.</string>
     <string name="blocked_dialog_button_label">OK, descartar</string>
     <string name="blocked_dialog_title">cuenta bloqueada</string>
+    <string name="uploading_media_msg">Subiendo imagen .. por favor espere</string>
+    <string name="add_image_menu_title">Añadir imagen</string>
+    <string name="empty_post_list_msg">Nadie compartió ninguna publicación, sé el primero</string>
+
+    <string name="date_create_note">Date Created: %s</string>
+    <string name="date_modified_note">Date Modified: %s</string>
+    <string name="skip_register_label">o saltar por ahora</string>
 </resources>

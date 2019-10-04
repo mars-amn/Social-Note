@@ -63,9 +63,9 @@
                 android:id="@+id/listItemNoteCreateAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:layout_margin="2dp"
-                android:text="@{`Date Created: `+@string/format(note.dateCreated)}"
+                android:text="@{@string/date_create_note(@string/format(note.dateCreated))}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textSize="12sp" />
 
@@ -73,9 +73,9 @@
                 android:id="@+id/listItemNoteModifiedAt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:layout_margin="2dp"
-                android:text="@{`Date Modified: `+@string/format(note.dateModified)}"
+                android:text="@{@string/date_modified_note(@string/format(note.dateCreated))}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textSize="12sp" />
         </LinearLayout>

@@ -112,4 +112,12 @@
     <string name="blocked_message">Sie haben gegen unsere Nutzungsbedingungen verstoßen oder andere Benutzer in der Gemeinschaft angegriffen, indem Sie in einem Beitrag oder Kommentar direkt oder indirekt beleidigende Wörter geschrieben oder geteilt haben. Dies ist völlig inakzeptabel und wir können uns keine Handlungen leisten, die unseren Gemeinschaft-Mitgliedern schaden könnten. Wenn Sie Ihre Erlaubnis zurückerhalten möchten, kontaktieren Sie uns bitte auf unserer Facebook-Seite oder unserem Twitter-Konto.</string>
     <string name="blocked_dialog_button_label">OK, entlassen</string>
     <string name="blocked_dialog_title">Verstopft</string>
+
+    <string name="uploading_media_msg">Bild wird hochgeladen .. bitte warten</string>
+    <string name="add_image_menu_title">Bild hinzufügen</string>
+    <string name="empty_post_list_msg">Niemand hat Beiträge geteilt, seien Sie der Erste</string>
+
+    <string name="date_create_note">Datum erstellt: %s</string>
+    <string name="date_modified_note">Datum geändert: %s</string>
+    <string name="skip_register_label">oder jetzt überspringen</string>
 </resources>

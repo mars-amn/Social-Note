@@ -187,11 +187,11 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
     }
 
     private fun bindPostBody(post: String?) {
-        mBinding.postBodyText.text = getPostBody(post!!)
+        mBinding.postBodyText.setHtml(post!!)
     }
 
     private fun getPostBody(body: String): String {
-        return if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             Html.fromHtml(body, Html.FROM_HTML_MODE_LEGACY)
                     .toString()
         } else {

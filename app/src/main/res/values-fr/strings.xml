@@ -112,4 +112,12 @@
     <string name="blocked_message">Vous avez violé nos conditions de service et nos conditions, ou agressé d\'autres utilisateurs de la communauté en partageant ou en écrivant directement ou indirectement un langage abusif dans un message ou un commentaire, ce qui est totalement inacceptable et que nous ne pouvons pas permettre de tels actes qui pourraient nuire à notre propriété. membres de la communauté. Si vous souhaitez récupérer vos autorisations, contactez-nous sur notre page Facebook ou notre compte Twitter.</string>
     <string name="blocked_dialog_button_label">OK, Rejeter</string>
     <string name="blocked_dialog_title">Bloqué</string>
+
+    <string name="uploading_media_msg">chargement de l\'image .. veuillez patienter</string>
+    <string name="add_image_menu_title">Ajouter une image</string>
+    <string name="empty_post_list_msg">Personne n\'a partagé de posts, soyez le premier</string>
+
+    <string name="date_create_note">Date Created: %s</string>
+    <string name="date_modified_note">Date Modified: %s</string>
+    <string name="skip_register_label">ou sauter pour l\'instant</string>
 </resources>

@@ -7,7 +7,6 @@ import androidx.lifecycle.Observer
 import org.koin.android.ext.android.inject
 import playground.develop.socialnote.R
 import playground.develop.socialnote.adapter.LikesAdapter
-import playground.develop.socialnote.database.remote.firestore.models.Like
 import playground.develop.socialnote.databinding.ActivityLikesBinding
 import playground.develop.socialnote.utils.Constants.Companion.USER_COUNTRY_ISO_KEY
 import playground.develop.socialnote.utils.Constants.Companion.USER_LIKES_INTENT_KEY
@@ -32,7 +31,7 @@ class LikesActivity : AppCompatActivity() {
     private fun loadUserLikes(documentName: String?, postCountryCode: String?) {
         mPostViewModel.loadPost(documentName, postCountryCode!!)
                 .observe(this@LikesActivity, Observer { post ->
-                    val adapter = LikesAdapter(this@LikesActivity, post?.likes as List<Like>)
+                    val adapter = LikesAdapter(this@LikesActivity, post?.likes!!)
                     mBinding.userLikesRecyclerView.adapter = adapter
                 })
     }

@@ -18,7 +18,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".ui.TermsPolicyViewerActivity"
             android:parentActivityName=".ui.AboutActivity"
@@ -42,7 +43,9 @@
                 android:resource="@xml/app_shortcuts" />
         </activity>
         <activity android:name=".ui.OnBoardingActivity" />
-        <activity android:name=".ui.ProfileActivity" />
+        <activity
+            android:name=".ui.ProfileActivity"
+            android:noHistory="true" />
         <activity android:name=".ui.LikesActivity" />
         <activity
             android:name=".ui.PostDetailsActivity"
@@ -127,7 +130,7 @@
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service
-            android:name=".services.SyncingService"
+            android:name=".services.InstantSyncService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
         <service

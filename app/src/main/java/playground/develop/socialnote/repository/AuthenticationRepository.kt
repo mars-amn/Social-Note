@@ -1,7 +1,6 @@
 package playground.develop.socialnote.repository
 
 import android.net.Uri
-import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
@@ -122,7 +121,6 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
                 .document(user.uid)
                 .set(getMappedUser(user))
                 .addOnFailureListener { e ->
-                    Log.d("facebookLogin", "add user :" + e.message!!)
                 }
     }
 

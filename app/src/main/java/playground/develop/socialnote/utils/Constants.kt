@@ -6,6 +6,7 @@ package playground.develop.socialnote.utils
 class Constants {
 
     companion object {
+        const val SYNC_TAG = "playground.develop.socialnote.unique_sync_tag"
         const val APP_FACEBOOK_URL = "https://www.facebook.com/flyingsocialnote"
         const val APP_TWITTER_ID = 1172239785076899840
         const val APP_TWITTER_URL = "https://twitter.com/social_note"
@@ -13,17 +14,22 @@ class Constants {
         const val APP_PREFERENCE_NAME = "playground.develop.socialnote"
         const val FIRST_LAUNCH_KEY = "playground.develop.socialnote.utils.first_launch_key"
         const val SKIP_REGISTER_KEY = "playground.develop.socialnote.utils.skip_register_key"
-        const val CONSIDER_REGISTER_KEY = "playground.develop.socialnote.utils.consider_register_key"
+        const val CONSIDER_REGISTER_KEY =
+            "playground.develop.socialnote.utils.consider_register_key"
         const val USER_COUNTRY_ISO_KEY = "playground.develop.socialnote.utils.user_country_iso_key"
         const val USER_COUNTRY_ISO_ERROR_KEY = "not-available"
         const val TERMS_POLICY_KEY = "playground.develop.socialnote.utils.terms_policy_key"
         /**
          * Intent & Notification Keys
          */
-        const val NOTE_NOTIFICATION_TEXT_INTENT_KEY = "playground.develop.socialnote.note_notification_body_intent_key"
-        const val ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN = "playground.develop.socialnote.notification_open_activity"
-        const val NOTE_TIME_REMINDER_ACTION = "playground.develop.socialnote.open_note_notification_action"
-        const val DISMISS_NOTE_TIME_REMINDER_NOTIFICATION = "playground.develop.socialnote.dimiss_notification"
+        const val NOTE_NOTIFICATION_TEXT_INTENT_KEY =
+            "playground.develop.socialnote.note_notification_body_intent_key"
+        const val ACTIVITY_NOTE_TIMER_NOTIFICATION_OPEN =
+            "playground.develop.socialnote.notification_open_activity"
+        const val NOTE_TIME_REMINDER_ACTION =
+            "playground.develop.socialnote.open_note_notification_action"
+        const val DISMISS_NOTE_TIME_REMINDER_NOTIFICATION =
+            "playground.develop.socialnote.dimiss_notification"
         const val NOTE_INTENT_KEY = "playground.develop.socialnote.note_intent_key"
         const val NOTE_INTENT_ID = "playground.develop.socialnote.note_intent_id_key"
 
@@ -39,11 +45,16 @@ class Constants {
         /**
          * Geofence related constants
          */
-        const val ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN = "playground.develop.socialnote.geofence_notification_open_activity"
-        const val DISMISS_NOTE_GEOFENCE_NOTIFICATION = "playground.develop.socialnote.dimiss_geofence_notification"
-        const val NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY = "playground.develop.socialnote.note_geofence_latlng_intent_key"
-        const val NOTE_GEOFENCE_REMINDER_ACTION = "playground.develop.socialnote.note_geofence_action"
-        const val NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY = "playground.develop.socialnote.note_geofence_id"
+        const val ACTIVITY_NOTE_GEOFENCE_NOTIFICATION_OPEN =
+            "playground.develop.socialnote.geofence_notification_open_activity"
+        const val DISMISS_NOTE_GEOFENCE_NOTIFICATION =
+            "playground.develop.socialnote.dimiss_geofence_notification"
+        const val NOTE_GEOFENCE_REMINDER_LATLNG_INTENT_KEY =
+            "playground.develop.socialnote.note_geofence_latlng_intent_key"
+        const val NOTE_GEOFENCE_REMINDER_ACTION =
+            "playground.develop.socialnote.note_geofence_action"
+        const val NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY =
+            "playground.develop.socialnote.note_geofence_id"
         const val GEOFENCE_REMINDER_RADIUS = 300.0f
         const val GEOFENCE_REMINDER_MAP_RADIUS = GEOFENCE_REMINDER_RADIUS.toDouble()
         const val GEOFENCE_EXPIRE_DATE = 2160000000L // 25 days
@@ -54,7 +65,8 @@ class Constants {
          */
         const val RE_ADD_GEOFNECES_INTENT_ACTION = "playground.develop.socialnote.re_add_geofences"
         const val GEOFENCE_RETRIEVER_INTENT_JOB_ID = 3
-        const val RE_ADD_TIME_REMINDER_INTENT_ACTION = "playground.develop.socialnote.re_add_time_reminders"
+        const val RE_ADD_TIME_REMINDER_INTENT_ACTION =
+            "playground.develop.socialnote.re_add_time_reminders"
         const val TIME_REMINDER_INTENT_JOB_ID = 10
 
         /**
@@ -62,8 +74,10 @@ class Constants {
          */
         const val SYNC_UPDATE_NOTE_INTENT_ACTION = "playground.develop.socialnote.sync_update_note"
         const val SYNC_ALL_NOTES_INTENT_ACTION = "playground.develop.socialnote.sync_all_notes"
-        const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION = "playground.develop.socialnote.sync_notes_need_update"
-        const val SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION = "playground.develop.socialnote.get_notes_remote_populate_room"
+        const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION =
+            "playground.develop.socialnote.sync_notes_need_update"
+        const val SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION =
+            "playground.develop.socialnote.get_notes_remote_populate_room"
         const val SYNC_NEW_NOTE_INTENT_ACTION = "playground.develop.socialnote.sync_new_note"
         const val SYNC_DELETE_NOTE_INTENT_ACTION = "playground.develop.socialnote.sync_delete_note"
         const val SYNC_NOTE_ID_INTENT_KEY = "playground.develop.socialnote.sync_note_id_intent_key"
@@ -84,10 +98,14 @@ class Constants {
         /**
          * Firebase post related constants
          */
-        const val FIRESTORE_POST_DOC_INTENT_KEY = "playground.develop.socialnote.post_document_name_key"
-        const val FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY = "playground.develop.socialnote.post_author_register_key"
-        const val OPEN_FROM_NOTIFICATION_COMMENT = "playground.develop.socialnote.open_from_notification"
-        const val DISMISS_POST_COMMENT_NOTIFICATION_ACTION = "playground.develop.socialnote.dismiss_post_comment_notification"
+        const val FIRESTORE_POST_DOC_INTENT_KEY =
+            "playground.develop.socialnote.post_document_name_key"
+        const val FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY =
+            "playground.develop.socialnote.post_author_register_key"
+        const val OPEN_FROM_NOTIFICATION_COMMENT =
+            "playground.develop.socialnote.open_from_notification"
+        const val DISMISS_POST_COMMENT_NOTIFICATION_ACTION =
+            "playground.develop.socialnote.dismiss_post_comment_notification"
         const val USER_LIKES_INTENT_KEY = "playground.develop.socialnote.user_likes_intent_key"
         const val FIRESTORE_POSTS_COLLECTION_NAME = "Posts"
         const val FIRESTORE_POSTS_POST_BODY = "post"

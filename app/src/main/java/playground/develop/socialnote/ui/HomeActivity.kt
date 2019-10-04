@@ -32,21 +32,22 @@ import playground.develop.socialnote.database.remote.firestore.models.User
 import playground.develop.socialnote.databinding.ActivityHomeBinding
 import playground.develop.socialnote.databinding.EmptyHeaderBinding
 import playground.develop.socialnote.databinding.NavHeaderLayoutBinding
-import playground.develop.socialnote.services.SyncingService
+import playground.develop.socialnote.services.InstantSyncService
 import playground.develop.socialnote.utils.Constants
 import playground.develop.socialnote.utils.Constants.Companion.AUTHOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.CONSIDER_REGISTER_KEY
 import playground.develop.socialnote.utils.Constants.Companion.GEOFENCE_REQUEST_ID_PREFIX
 import playground.develop.socialnote.utils.Constants.Companion.ORIGINATOR_TITLE
 import playground.develop.socialnote.utils.Constants.Companion.READER_TITLE
+import playground.develop.socialnote.utils.PreferenceUtils
 import playground.develop.socialnote.viewmodel.NoteViewModel
 import playground.develop.socialnote.viewmodel.PostViewModel
 import java.util.concurrent.TimeUnit
 
 
 class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener,
-                     NavigationView.OnNavigationItemSelectedListener,
-                     PagedNoteListAdapter.LongClickListener {
+    NavigationView.OnNavigationItemSelectedListener,
+    PagedNoteListAdapter.LongClickListener {
 
     private lateinit var adapter: PagedNoteListAdapter
     private lateinit var mBinding: ActivityHomeBinding
@@ -104,19 +105,21 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     private fun setupUserHeader() {
         if (mFirebaseAuth.currentUser != null) {
             mPostViewModel.getUser()
-                    .observe(this@HomeActivity, Observer { user ->
-                        showUserHeader(user)
-                    })
+                .observe(this@HomeActivity, Observer { user ->
+                    showUserHeader(user)
+                })
         } else {
             showEmptyHeader()
         }
     }
 
     private fun showEmptyHeader() {
-        val navHeaderBinding: EmptyHeaderBinding = DataBindingUtil.inflate(layoutInflater,
-                                                                           R.layout.empty_header,
-                                                                           mBinding.navigationView,
-                                                                           false)
+        val navHeaderBinding: EmptyHeaderBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.empty_header,
+            mBinding.navigationView,
+            false
+        )
         mBinding.navigationView.addHeaderView(navHeaderBinding.root)
         navHeaderBinding.handlers = this
         navHeaderBinding.emptyHeaderView.load(R.drawable.register_background) {
@@ -129,12 +132,14 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun showUserHeader(user: User?) {
-        val navHeaderBinding: NavHeaderLayoutBinding = DataBindingUtil.inflate(layoutInflater,
-                                                                               R.layout.nav_header_layout,
-                                                                               mBinding.navigationView,
-                                                                               false)
-        mBinding.navigationView.addHeaderView(navHeaderBinding.root)
+        val navHeaderBinding: NavHeaderLayoutBinding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.nav_header_layout,
+            mBinding.navigationView,
+            false
+        )
         navHeaderBinding.user = user!!
+        mBinding.navigationView.addHeaderView(navHeaderBinding.root)
         navHeaderBinding.handlers = this
         showUserTitle(user, navHeaderBinding)
     }
@@ -172,11 +177,13 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         get() {
             mBinding.navigationView.itemIconTintList = null
             setSupportActionBar(mBinding.toolbar)
-            return object : ActionBarDrawerToggle(this,
-                                                  mBinding.drawerLayout,
-                                                  mBinding.toolbar,
-                                                  R.string.nav_drawer_open,
-                                                  R.string.nav_drawer_close) {
+            return object : ActionBarDrawerToggle(
+                this,
+                mBinding.drawerLayout,
+                mBinding.toolbar,
+                R.string.nav_drawer_open,
+                R.string.nav_drawer_close
+            ) {
                 override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                     super.onDrawerSlide(drawerView, slideOffset)
 
@@ -195,24 +202,14 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun loadNotes() {
         mViewModel.loadPagedNotes()
-                .observe(this, Observer<PagedList<Note>> { list ->
-                    if (list.isNotEmpty()) {
-                        addNotesToRecyclerView(list)
-                    } else {
-                        hideRecyclerView()
-                    }
-                    if (isSyncingEnabled) {
-                        hideRecyclerView()
-                        getSyncedNotes()
-                    }
-                })
-    }
-
-    private fun getSyncedNotes() {
-        val syncService = Intent(this@HomeActivity, SyncingService::class.java)
-        syncService.action = Constants.SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION
-        SyncingService.getSyncingService()
-                .enqueueCallSyncedNotes(this@HomeActivity, syncService)
+            .observe(this, Observer<PagedList<Note>> { list ->
+                if (list.isNotEmpty()) {
+                    hideRecyclerView()
+                    addNotesToRecyclerView(list)
+                } else {
+                    hideRecyclerView()
+                }
+            })
     }
 
     private fun addNotesToRecyclerView(list: PagedList<Note>) {
@@ -260,11 +257,11 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun startDeletingService(id: Long) {
-        val syncService = Intent(this@HomeActivity, SyncingService::class.java)
+        val syncService = Intent(this@HomeActivity, InstantSyncService::class.java)
         syncService.action = Constants.SYNC_DELETE_NOTE_INTENT_ACTION
         syncService.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, id)
-        SyncingService.getSyncingService()
-                .enqueueSyncDeleteNote(this@HomeActivity, syncService)
+        InstantSyncService.getSyncingService()
+            .enqueueSyncDeleteNote(this@HomeActivity, syncService)
     }
 
     private fun setupSearchView() {
@@ -279,7 +276,8 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         val searchSubject = BehaviorSubject.create<String>()
         searchSubject.onNext(newText!!)
         mDisposables.add(searchSubject.debounce(700, TimeUnit.MILLISECONDS).observeOn(
-            AndroidSchedulers.mainThread()).subscribe { query ->
+            AndroidSchedulers.mainThread()
+        ).subscribe { query ->
             searchNotes(query)
         })
         return false
@@ -287,11 +285,11 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun searchNotes(query: String?) {
         mViewModel.searchForNote("%$query%")
-                .observe(this@HomeActivity, Observer<PagedList<Note>> { list ->
-                    if (list.isNotEmpty()) {
-                        applySearchResults(list)
-                    }
-                })
+            .observe(this@HomeActivity, Observer<PagedList<Note>> { list ->
+                if (list.isNotEmpty()) {
+                    applySearchResults(list)
+                }
+            })
     }
 
     private fun applySearchResults(list: PagedList<Note>) {
@@ -329,20 +327,25 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun showUserLogoutDialog() {
         MaterialAlertDialogBuilder(this).setTitle(getString(R.string.logout_dialog_tite))
-                .setMessage(getString(R.string.logout_dialog_message))
-                .setNegativeButton(getString(R.string.logout_dialog_negative_button)) { dialog, id ->
-                    dialog.dismiss()
-                }
-                .setPositiveButton(getString(R.string.logout_dialog_positivit_button)) { dialog, id ->
-                    dialog.dismiss()
-                    logoutUser()
-                }
-                .show()
+            .setMessage(getString(R.string.logout_dialog_message))
+            .setNegativeButton(getString(R.string.logout_dialog_negative_button)) { dialog, id ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(getString(R.string.logout_dialog_positivit_button)) { dialog, id ->
+                dialog.dismiss()
+                logoutUser()
+            }
+            .show()
     }
 
     private fun logoutUser() {
+        disableNoteSync()
         mFirebaseAuth.signOut()
         recreate()
+    }
+
+    private fun disableNoteSync() {
+        PreferenceUtils.getPreferenceUtils().disableNoteSync(this)
     }
 
     private fun userIsLoggedIn(): Boolean {
@@ -361,7 +364,8 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         when {
             mBinding.searchView.isSearchOpen -> mBinding.searchView.closeSearch()
             mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(
-                GravityCompat.START)
+                GravityCompat.START
+            )
             else -> super.onBackPressed()
         }
     }
