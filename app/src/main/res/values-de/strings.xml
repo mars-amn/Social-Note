@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">Social Note</string>
     <string name="save_note_menu_title">SPAREN</string>
+    <string name="note_create_label">Notiz</string>
+
     <string name="add_note_label">Erstellen Sie eine Notiz</string>
     <string name="format">%1$td/%1$tm/%1$tY</string>
     <string name="delete_note_dialog_title">Notiz löschen</string>

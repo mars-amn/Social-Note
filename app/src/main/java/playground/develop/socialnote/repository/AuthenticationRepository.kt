@@ -30,56 +30,59 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
             twitterImageUrl = result.user?.photoUrl.toString()
             val user = result.user
             val userProfileChangeRequest = UserProfileChangeRequest.Builder()
-                    .setPhotoUri(Uri.parse(twitterImageUrl.replace("_normal", "")))
-                    .build()
+                .setPhotoUri(Uri.parse(twitterImageUrl.replace("_normal", "")))
+                .build()
             user!!.updateProfile(userProfileChangeRequest)
-                    .addOnSuccessListener {
-                        val updatedUser = mAuth.currentUser
-                        addNewUserToFirestore(updatedUser!!)
-                    }
+                .addOnSuccessListener {
+                    val updatedUser = mAuth.currentUser
+                    addNewUserToFirestore(updatedUser!!)
+                }
         }
     }
 
     override fun registerFacebookUser(credential: AuthCredential) {
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        if (task.result?.additionalUserInfo?.isNewUser!!) {
-                            var facebookUserId: String? = null
-                            for (profile in task.result?.user?.providerData!!) {
-                                if (FacebookAuthProvider.PROVIDER_ID == profile.providerId) {
-                                    facebookUserId = profile.uid
-                                }
-                            }
-                            if (facebookUserId != null) {
-                                val user = task.result?.user
-                                val imageUrl = "https://graph.facebook.com/$facebookUserId/picture?height=500"
-                                val userProfileChangeRequest = UserProfileChangeRequest.Builder()
-                                        .setPhotoUri(Uri.parse("https://graph.facebook.com/$facebookUserId/picture?height=500"))
-                                        .build()
-                                user?.updateProfile(userProfileChangeRequest)
-                                addNewUserToFirestore(user!!, imageUrl)
-                            } else {
-                                addNewUserToFirestore(task.result?.user!!)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result?.additionalUserInfo?.isNewUser!!) {
+                        var facebookUserId: String? = null
+                        for (profile in task.result?.user?.providerData!!) {
+                            if (FacebookAuthProvider.PROVIDER_ID == profile.providerId) {
+                                facebookUserId = profile.uid
                             }
                         }
-                        postAuthEvent(AUTH_EVENT_SUCCESS)
-                    } else {
-                        postAuthEvent(AUTH_EVENT_FAIL)
+                        if (facebookUserId != null) {
+                            val user = task.result?.user
+                            val imageUrl =
+                                "https://graph.facebook.com/$facebookUserId/picture?height=500"
+                            val userProfileChangeRequest = UserProfileChangeRequest.Builder()
+                                .setPhotoUri(Uri.parse("https://graph.facebook.com/$facebookUserId/picture?height=500"))
+                                .build()
+                            user?.updateProfile(userProfileChangeRequest)
+                            addNewUserToFirestore(user!!, imageUrl)
+                        } else {
+                            addNewUserToFirestore(task.result?.user!!)
+                        }
                     }
+                    postAuthEvent(AUTH_EVENT_SUCCESS)
+                } else {
+                    postAuthEvent(AUTH_EVENT_FAIL)
                 }
-                .addOnFailureListener { e ->
-                }
+            }
+            .addOnFailureListener { e ->
+            }
     }
 
     private fun addNewUserToFirestore(user: FirebaseUser, imageUrl: String) {
         mFirestore.collection(Constants.FIRESTORE_USERS_COLLECTION_NAME)
-                .document(user.uid)
-                .set(getMappedUser(user, imageUrl))
+            .document(user.uid)
+            .set(getMappedUser(user, imageUrl))
     }
 
-    private fun getMappedUser(user: FirebaseUser,
-                              imageUrl: String): java.util.HashMap<String, Any> {
+    private fun getMappedUser(
+        user: FirebaseUser,
+        imageUrl: String
+    ): java.util.HashMap<String, Any> {
         val userMap = HashMap<String, Any>()
         userMap[Constants.FIRESTORE_USER_UID] = user.uid
         userMap[Constants.FIRESTORE_USER_IMAGE_URL] = imageUrl
@@ -104,24 +107,24 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
     private fun authWithFirebase(account: GoogleSignInAccount?) {
         val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        if (task.result?.additionalUserInfo?.isNewUser!!) {
-                            addNewUserToFirestore(task.result?.user!!)
-                        }
-                        postAuthEvent(AUTH_EVENT_SUCCESS)
-                    } else {
-                        postAuthEvent(AUTH_EVENT_FAIL)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (task.result?.additionalUserInfo?.isNewUser!!) {
+                        addNewUserToFirestore(task.result?.user!!)
                     }
+                    postAuthEvent(AUTH_EVENT_SUCCESS)
+                } else {
+                    postAuthEvent(AUTH_EVENT_FAIL)
                 }
+            }
     }
 
     private fun addNewUserToFirestore(user: FirebaseUser) {
         mFirestore.collection(Constants.FIRESTORE_USERS_COLLECTION_NAME)
-                .document(user.uid)
-                .set(getMappedUser(user))
-                .addOnFailureListener { e ->
-                }
+            .document(user.uid)
+            .set(getMappedUser(user))
+            .addOnFailureListener { e ->
+            }
     }
 
     private fun getMappedUser(user: FirebaseUser): HashMap<String, Any> {
@@ -132,22 +135,30 @@ class AuthenticationRepository : IAuthenticationRepository, KoinComponent {
         userMap[Constants.FIRESTORE_USER_TITLE] = "Reader"
         userMap[Constants.FIRESTORE_USER_POSTS_COUNT] = 0
         userMap[Constants.FIRESTORE_USER_COVER_IMAGE] = getRandomImage()
+        userMap[Constants.EXTRA_DATABASE_FIELD] = ""
+        userMap[Constants.EXTRA_DATABASE_FIELD_ONE] = ""
+        userMap[Constants.EXTRA_DATABASE_FIELD_TWO] = ""
+        userMap[Constants.EXTRA_DATABASE_FIELD_THREE] = ""
+        userMap[Constants.EXTRA_DATABASE_FIELD_FOUR] = false
+        userMap[Constants.EXTRA_DATABASE_FIELD_FIVE] = false
         return userMap
     }
 
     private fun postAuthEvent(event: String) {
         EventBus.getDefault()
-                .post(AuthenticationEvent(event))
+            .post(AuthenticationEvent(event))
     }
 
     private fun getRandomImage() = images[Random().nextInt(images.size)]
 
-    private val images = arrayOf("http://bit.ly/2PhvwfN",
-                                 "http://bit.ly/2HpJ2aH",
-                                 "http://bit.ly/327HLNz",
-                                 "http://bit.ly/2Pd352y",
-                                 "http://bit.ly/2MFbiKO",
-                                 "http://bit.ly/341m7wh",
-                                 "http://bit.ly/2U6i0dL",
-                                 "http://bit.ly/2KZJ5fy")
+    private val images = arrayOf(
+        "http://bit.ly/2PhvwfN",
+        "http://bit.ly/2HpJ2aH",
+        "http://bit.ly/327HLNz",
+        "http://bit.ly/2Pd352y",
+        "http://bit.ly/2MFbiKO",
+        "http://bit.ly/341m7wh",
+        "http://bit.ly/2U6i0dL",
+        "http://bit.ly/2KZJ5fy"
+    )
 }

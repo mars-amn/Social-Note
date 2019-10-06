@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="title_text_padding">4dp</dimen>
+    <dimen name="title_text_padding">8dp</dimen>
     <dimen name="network_error_label_margin">8dp</dimen>
     <dimen name="network_retry_button_margin">32dp</dimen>
     <dimen name="comment_image_width">40dp</dimen>

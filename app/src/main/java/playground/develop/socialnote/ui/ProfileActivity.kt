@@ -72,27 +72,27 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     private val mUserCountryCode: String?
         get() {
             return PreferenceUtils.getPreferenceUtils()
-                    .getUserCountryCode(this)
+                .getUserCountryCode(this)
         }
 
     private fun loadUser() {
         hideProfileUtilsButtons()
         val userUid = intent.getStringExtra(USER_UID_INTENT_KEY)
         mPostViewModel.getUser(userUid)
-                .observe(this@ProfileActivity, Observer { user ->
-                    showUserDetails(user)
-                })
+            .observe(this@ProfileActivity, Observer { user ->
+                showUserDetails(user)
+            })
         loadUserPosts(userUid)
     }
 
     private fun loadUserPosts(userUid: String?) {
         mPostViewModel.getUserPosts(userUid, mUserCountryCode!!)
-                .observe(this@ProfileActivity, Observer { posts ->
-                    if (posts.isNotEmpty()) {
-                        mAdapter.addPosts(posts)
-                        mBinding.userPostsRecyclerView.adapter = mAdapter
-                    }
-                })
+            .observe(this@ProfileActivity, Observer { posts ->
+                if (posts.isNotEmpty()) {
+                    mAdapter.addPosts(posts)
+                    mBinding.userPostsRecyclerView.adapter = mAdapter
+                }
+            })
     }
 
     private fun showUserDetails(user: User) {
@@ -112,20 +112,32 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
 
     private fun showOriginatorTitle() {
         mBinding.userProfileTitle.text = getString(R.string.originator_title)
-        mBinding.userProfileTitle.setTextColor(ContextCompat.getColor(this,
-                                                                      R.color.originator_title_color))
+        mBinding.userProfileTitle.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.originator_title_color
+            )
+        )
     }
 
     private fun showAuthorTitle() {
         mBinding.userProfileTitle.text = getString(R.string.author_title)
-        mBinding.userProfileTitle.setTextColor(ContextCompat.getColor(this,
-                                                                      R.color.author_title_color))
+        mBinding.userProfileTitle.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.author_title_color
+            )
+        )
     }
 
     private fun showReaderTitle() {
         mBinding.userProfileTitle.text = getString(R.string.reader_title)
-        mBinding.userProfileTitle.setTextColor(ContextCompat.getColor(this,
-                                                                      R.color.reader_title_color))
+        mBinding.userProfileTitle.setTextColor(
+            ContextCompat.getColor(
+                this,
+                R.color.reader_title_color
+            )
+        )
     }
 
     private fun hideProfileUtilsButtons() {
@@ -135,20 +147,20 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
 
     private fun loadCurrentUser() {
         mPostViewModel.getUser()
-                .observe(this@ProfileActivity, Observer { user ->
-                    showUserDetails(user)
-                })
+            .observe(this@ProfileActivity, Observer { user ->
+                showUserDetails(user)
+            })
         loadUserPosts()
     }
 
     private fun loadUserPosts() {
         mPostViewModel.getUserPosts(mAuth.currentUser?.uid, mUserCountryCode!!)
-                .observe(this@ProfileActivity, Observer { posts ->
-                    if (posts.isNotEmpty()) {
-                        mAdapter.addPosts(posts)
-                        mBinding.userPostsRecyclerView.adapter = mAdapter
-                    }
-                })
+            .observe(this@ProfileActivity, Observer { posts ->
+                if (posts.isNotEmpty()) {
+                    mAdapter.addPosts(posts)
+                    mBinding.userPostsRecyclerView.adapter = mAdapter
+                }
+            })
     }
 
     fun onChangeCoverImageClick(view: View) {
@@ -158,8 +170,10 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     private fun startImagePickChooser(requestCode: Int) {
         val imageIntent = Intent(ACTION_GET_CONTENT)
         imageIntent.type = "image/*"
-        val chooser = Intent.createChooser(imageIntent,
-                                           getString(R.string.image_picker_chooser_title))
+        val chooser = Intent.createChooser(
+            imageIntent,
+            getString(R.string.image_picker_chooser_title)
+        )
         startActivityForResult(chooser, requestCode)
     }
 
@@ -183,7 +197,7 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val bytes = baos.toByteArray()
         val coverImageRef = mFirebaseStorage.getReference(where)
-                .child(mUser.userUid!! + where)
+            .child(mUser.userUid!! + where)
         val uploadTask = coverImageRef.putBytes(bytes)
         uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
@@ -191,19 +205,19 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
             }
             return@Continuation coverImageRef.downloadUrl
         })
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        when (where) {
-                            FIRESTORE_COVER_IMAGES -> {
-                                updateUserCoverImage(task.result.toString())
-                            }
-                            FIRESTORE_PROFILE_IMAGES -> {
-                                updateUserProfileImage(task.result.toString())
-                            }
-
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    when (where) {
+                        FIRESTORE_COVER_IMAGES -> {
+                            updateUserCoverImage(task.result.toString())
                         }
+                        FIRESTORE_PROFILE_IMAGES -> {
+                            updateUserProfileImage(task.result.toString())
+                        }
+
                     }
                 }
+            }
     }
 
     private fun updateUserCoverImage(imageUrl: String) {
@@ -232,9 +246,13 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     }
 
     override fun onCommentButtonClick(post: Post) {
-        startActivity(intentFor<PostDetailsActivity>(Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
-                                                     Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken,
-                                                     Constants.USER_COUNTRY_ISO_KEY to post.countryCode))
+        startActivity(
+            intentFor<PostDetailsActivity>(
+                Constants.FIRESTORE_POST_DOC_INTENT_KEY to post.documentName,
+                Constants.FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY to post.registerToken,
+                Constants.USER_COUNTRY_ISO_KEY to post.countryCode
+            )
+        )
     }
 
     override fun onLikeButtonClick(like: Like, postCountryCode: String) {
@@ -250,32 +268,32 @@ class ProfileActivity : AppCompatActivity(), PostsFeedAdapter.PostInteractListen
     override fun onPostLongClickListener(post: Post) {
         if (DeviceUtils.getDeviceUtils(this).dsd(mAuth.currentUser?.uid!!)) {
             MaterialAlertDialogBuilder(this@ProfileActivity).setTitle(getString(R.string.delete_post_dialog_title))
-                    .setMessage(getString(R.string.delete_post_dialog_message))
-                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
-                        mPostViewModel.deletePost(post)
-                        dialog.dismiss()
-                    }
-                    .setNeutralButton(R.string.b) { dialog, id ->
-                        mPostViewModel.b(post.authorUID, post.post!!)
-                        mPostViewModel.deletePost(post)
-                        dialog.dismiss()
-                    }
-                    .show()
+                .setMessage(getString(R.string.delete_post_dialog_message))
+                .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                    mPostViewModel.deletePost(post)
+                    dialog.dismiss()
+                }
+                .setNeutralButton(R.string.b) { dialog, id ->
+                    mPostViewModel.b(post.authorUID, post.post!!)
+                    mPostViewModel.deletePost(post)
+                    dialog.dismiss()
+                }
+                .show()
         } else if (mUser.userUid == post.authorUID) {
             MaterialAlertDialogBuilder(this@ProfileActivity).setTitle(getString(R.string.delete_post_dialog_title))
-                    .setMessage(getString(R.string.delete_post_dialog_message))
-                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
-                        mPostViewModel.deletePost(post)
-                        loadUserPosts()
-                        dialog.dismiss()
-                    }
-                    .show()
+                .setMessage(getString(R.string.delete_post_dialog_message))
+                .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                    mPostViewModel.deletePost(post)
+                    loadUserPosts()
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 

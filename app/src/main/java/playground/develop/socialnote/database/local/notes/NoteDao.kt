@@ -8,7 +8,8 @@ import io.reactivex.Single
 /**
  * Created by AbdullahAtta on 7/19/2019.
  */
-@Dao interface NoteDao {
+@Dao
+interface NoteDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNote(note: Note): Single<Long>

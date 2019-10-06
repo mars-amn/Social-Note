@@ -10,15 +10,24 @@ import java.util.*
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-data class Comment(var commentAuthorToken: String? = null,
-                   var authorRegisterToken: String? = null,
-                   var documentId: String? = null,
-                   var comment: String? = null,
-                   var authorImage: String? = null,
-                   var authorName: String? = null,
-                   var authorUId: String? = null,
-                   private var dateCreated: Timestamp? = null,
-                   var authorTitle: String? = null) {
+data class Comment(
+    var commentAuthorToken: String? = null,
+    var authorRegisterToken: String? = null,
+    var documentId: String? = null,
+    var comment: String? = null,
+    var authorImage: String? = null,
+    var authorName: String? = null,
+    var authorUId: String? = null,
+    private var dateCreated: Timestamp? = null,
+    var authorTitle: String? = null,
+    /***/
+    var field: String? = null,
+    var fieldOne: String? = null,
+    var fieldTwo: String? = null,
+    var fieldThree: String? = null,
+    var fieldFour: Boolean? = null,
+    var fieldFive: Boolean? = null
+) {
 
     fun getDateCreated(): Date {
         return dateCreated!!.toDate()

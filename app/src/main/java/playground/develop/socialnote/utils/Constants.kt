@@ -148,6 +148,13 @@ class Constants {
         const val FIRESTORE_USER_TITLE = "userTitle"
         const val FIRESTORE_USER_COVER_IMAGE = "coverImage"
 
+        const val EXTRA_DATABASE_FIELD = "field"
+        const val EXTRA_DATABASE_FIELD_ONE = "fieldOne"
+        const val EXTRA_DATABASE_FIELD_TWO = "fieldTwo"
+        const val EXTRA_DATABASE_FIELD_THREE = "fieldThree"
+        const val EXTRA_DATABASE_FIELD_FOUR = "fieldFour"
+        const val EXTRA_DATABASE_FIELD_FIVE = "fieldFive"
+
         const val USER_UID_INTENT_KEY = "playground.develop.socialnote.user_uid_intent_key"
         /**
          * Title related constants

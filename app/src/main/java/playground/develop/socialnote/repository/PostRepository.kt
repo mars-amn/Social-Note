@@ -71,9 +71,7 @@ class PostRepository : IPostRepository, KoinComponent {
         val post = MutableLiveData<Post>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(countryCode!!))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(documentName!!)
-                .get()
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(documentName!!).get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         post.value = task.result?.toObject(Post::class.java)
@@ -85,27 +83,30 @@ class PostRepository : IPostRepository, KoinComponent {
     override fun deletePost(post: Post) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(post.countryCode!!))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(post.documentName!!)
-                .delete()
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(post.documentName!!).delete()
     }
 
     override fun deleteComment(comment: Comment, countryCode: String) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(countryCode))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(comment.documentId!!)
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(comment.documentId!!)
                 .update(FIRESTORE_POSTS_POST_COMMENTS, FieldValue.arrayRemove(comment))
-                .addOnCompleteListener { }
-                .addOnFailureListener { }
+                .addOnCompleteListener { }.addOnFailureListener { }
+    }
+
+    override fun removeLike(like: Like, countryCode: String) {
+        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
+                .document(getPostCollectionName(countryCode))
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(like.documentId!!)
+                .update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayRemove(like))
+                .addOnCompleteListener { }.addOnFailureListener { }
     }
 
     override fun getUserPosts(): LiveData<List<Post>> {
         val posts = MutableLiveData<List<Post>>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .whereEqualTo(FIRESTORE_POSTS_POST_AUTHOR_ID, mAuth.currentUser?.uid)
-                .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
-                .get()
+                .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING).get()
                 .addOnCompleteListener { querySnapshot ->
                     if (querySnapshot.isSuccessful) {
                         val postsList = ArrayList<Post>()
@@ -114,8 +115,7 @@ class PostRepository : IPostRepository, KoinComponent {
                         }
                         posts.value = postsList
                     }
-                }
-                .addOnFailureListener { }
+                }.addOnFailureListener { }
         return posts
     }
 
@@ -125,8 +125,7 @@ class PostRepository : IPostRepository, KoinComponent {
                 .document(getPostCollectionName(countryCode))
                 .collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .whereEqualTo(FIRESTORE_POSTS_POST_AUTHOR_ID, userUid)
-                .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
-                .get()
+                .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING).get()
                 .addOnCompleteListener { querySnapshot ->
                     if (querySnapshot.isSuccessful) {
                         val postsList = ArrayList<Post>()
@@ -137,16 +136,13 @@ class PostRepository : IPostRepository, KoinComponent {
                     } else {
 
                     }
-                }
-                .addOnFailureListener { }
+                }.addOnFailureListener { }
         return posts
     }
 
     override fun getUser(userUid: String?): LiveData<User> {
         val user = MutableLiveData<User>()
-        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-                .document(userUid!!)
-                .get()
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME).document(userUid!!).get()
                 .addOnCompleteListener { document ->
                     if (document.isSuccessful) {
                         user.value = document.result?.toObject(User::class.java)
@@ -157,10 +153,8 @@ class PostRepository : IPostRepository, KoinComponent {
 
     override fun getUser(): LiveData<User> {
         val user = MutableLiveData<User>()
-        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-                .document(mAuth.currentUser?.uid!!)
-                .get()
-                .addOnCompleteListener { document ->
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME).document(mAuth.currentUser?.uid!!)
+                .get().addOnCompleteListener { document ->
                     if (document.isSuccessful) {
                         user.value = document.result?.toObject(User::class.java)
                     }
@@ -172,9 +166,7 @@ class PostRepository : IPostRepository, KoinComponent {
         val post = MutableLiveData<Post>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(postCountryCode))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(documentName!!)
-                .get()
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(documentName!!).get()
                 .addOnCompleteListener { document ->
                     if (document.isSuccessful) {
                         post.value = document.result?.toObject(Post::class.java)
@@ -183,29 +175,16 @@ class PostRepository : IPostRepository, KoinComponent {
         return post
     }
 
-    override fun removeLike(like: Like, countryCode: String) {
-        mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(getPostCollectionName(countryCode))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(like.documentId!!)
-                .update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayRemove(like))
-                .addOnCompleteListener { }
-                .addOnFailureListener { }
-    }
 
     override fun createLikeOnPost(like: Like, countryCode: String?) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(countryCode!!))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(like.documentId!!)
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(like.documentId!!)
                 .update(FIRESTORE_POSTS_POST_LIKES, FieldValue.arrayUnion(like))
-                .addOnCompleteListener { }
-                .addOnFailureListener { }
+                .addOnCompleteListener { }.addOnFailureListener { }
 
-        mFirestore.collection(FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME)
-                .document()
-                .set(getMappedLike(like, countryCode))
-                .addOnCompleteListener { }
+        mFirestore.collection(FIRESTORE_LIKES_NOTIFICATION_COLLECTION_NAME).document()
+                .set(getMappedLike(like, countryCode)).addOnCompleteListener { }
                 .addOnFailureListener {}
     }
 
@@ -217,22 +196,24 @@ class PostRepository : IPostRepository, KoinComponent {
         likeMap[FIRESTORE_LIKES_NOTIFICATION_DOCUMENT_ID] = like.documentId!!
         likeMap[FIRESTORE_LIKES_NOTIFICATION_USER_ID] = like.userLikerUId!!
         likeMap[FIRESTORE_LIKES_NOTIFICATION_COUNTRY_CODE] = countryCode
+        likeMap[Constants.EXTRA_DATABASE_FIELD] = ""
+        likeMap[Constants.EXTRA_DATABASE_FIELD_ONE] = ""
+        likeMap[Constants.EXTRA_DATABASE_FIELD_TWO] = ""
+        likeMap[Constants.EXTRA_DATABASE_FIELD_THREE] = ""
+        likeMap[Constants.EXTRA_DATABASE_FIELD_FOUR] = false
+        likeMap[Constants.EXTRA_DATABASE_FIELD_FIVE] = false
         return likeMap
     }
 
     override fun createComment(documentName: String, comment: Comment, countryCode: String) {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(countryCode))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(documentName)
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(documentName)
                 .update(FIRESTORE_POSTS_POST_COMMENTS, FieldValue.arrayUnion(comment))
-                .addOnCompleteListener { }
-                .addOnFailureListener { }
+                .addOnCompleteListener { }.addOnFailureListener { }
 
-        mFirestore.collection(FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME)
-                .document()
-                .set(getMappedComment(comment, countryCode))
-                .addOnCompleteListener { }
+        mFirestore.collection(FIRESTORE_COMMENTS_NOTIFICATION_COLLECTION_NAME).document()
+                .set(getMappedComment(comment, countryCode)).addOnCompleteListener { }
                 .addOnFailureListener { }
     }
 
@@ -248,17 +229,21 @@ class PostRepository : IPostRepository, KoinComponent {
         commentMap[FIRESTORE_COMMENTS_NOTIFICATION_COMMENTER_AUTHOR_TOKEN] = comment.commentAuthorToken!!
         commentMap[FIRESTORE_COMMENTS_POST_COMMENT_AUTHOR_COUNTRY_CODE] = countryCode
         commentMap[FIRESTORE_USER_TITLE] = comment.authorTitle!!
+        commentMap[Constants.EXTRA_DATABASE_FIELD] = ""
+        commentMap[Constants.EXTRA_DATABASE_FIELD_ONE] = ""
+        commentMap[Constants.EXTRA_DATABASE_FIELD_TWO] = ""
+        commentMap[Constants.EXTRA_DATABASE_FIELD_THREE] = ""
+        commentMap[Constants.EXTRA_DATABASE_FIELD_FOUR] = false
+        commentMap[Constants.EXTRA_DATABASE_FIELD_FIVE] = false
         return commentMap
     }
 
     override fun createNewPost(post: Post, countryCode: String) {
         val documentName = "${post.authorUID}${Date().time}"
         post.documentName = documentName
-        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-                .document(mAuth.currentUser?.uid!!)
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME).document(mAuth.currentUser?.uid!!)
 
-                .get()
-                .addOnCompleteListener { document ->
+                .get().addOnCompleteListener { document ->
                     if (document.isSuccessful) {
                         val user = document.result?.toObject(User::class.java)
                         user?.userPostsCount = user?.userPostsCount!!.plus(1)
@@ -273,14 +258,11 @@ class PostRepository : IPostRepository, KoinComponent {
 
                         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                                 .document(getPostCollectionName(countryCode))
-                                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                                .document(documentName)
-                                .set(getMappedPost(post), SetOptions.merge())
-                                .addOnSuccessListener {
+                                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(documentName)
+                                .set(getMappedPost(post), SetOptions.merge()).addOnSuccessListener {
                                     postPostEvent(POST_SUCCESS_EVENT)
                                     updateUser(user)
-                                }
-                                .addOnFailureListener {
+                                }.addOnFailureListener {
                                     val firestoreException = it as? FirebaseFirestoreException
                                     if (firestoreException!!.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
                                         postPostEvent(BLOCKED_EVENT)
@@ -293,13 +275,11 @@ class PostRepository : IPostRepository, KoinComponent {
     }
 
     private fun postPostEvent(event: String) {
-        EventBus.getDefault()
-                .post(SocialPostMessage(event))
+        EventBus.getDefault().post(SocialPostMessage(event))
     }
 
     override fun updateUser(user: User?) {
-        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-                .document(user?.userUid!!)
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME).document(user?.userUid!!)
                 .update(getMappedUser(user = user))
     }
 
@@ -315,8 +295,7 @@ class PostRepository : IPostRepository, KoinComponent {
     }
 
     private fun decreaseUserPostsCount(authorUId: String?) {
-        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME)
-                .document(authorUId!!)
+        mFirestore.collection(FIRESTORE_USERS_COLLECTION_NAME).document(authorUId!!)
                 .update(FIRESTORE_USER_POSTS_COUNT, FieldValue.increment(-1))
     }
 
@@ -332,6 +311,12 @@ class PostRepository : IPostRepository, KoinComponent {
         postMap[FIRESTORE_POSTS_POST_REGISTER_TOKEN] = post.registerToken!!
         postMap[FIRESTORE_USER_TITLE] = post.userTitle!!
         postMap[FIRESTORE_USER_COUNTRY_CODE] = post.countryCode!!
+        postMap[Constants.EXTRA_DATABASE_FIELD] = ""
+        postMap[Constants.EXTRA_DATABASE_FIELD_ONE] = ""
+        postMap[Constants.EXTRA_DATABASE_FIELD_TWO] = ""
+        postMap[Constants.EXTRA_DATABASE_FIELD_THREE] = ""
+        postMap[Constants.EXTRA_DATABASE_FIELD_FOUR] = false
+        postMap[Constants.EXTRA_DATABASE_FIELD_FIVE] = false
         if (post.imageUrl != null) {
             postMap[FIRESTORE_POSTS_POST_IMAGE_URL] = post.imageUrl!!
         }
@@ -343,8 +328,7 @@ class PostRepository : IPostRepository, KoinComponent {
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(countryCode))
                 .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING)
-                .get()
+                .orderBy(FIRESTORE_POSTS_POST_DATE_CREATED, Query.Direction.DESCENDING).get()
                 .addOnCompleteListener { querySnapshot ->
                     if (querySnapshot.isSuccessful) {
                         val postsList = ArrayList<Post>()
@@ -357,15 +341,15 @@ class PostRepository : IPostRepository, KoinComponent {
         return posts
     }
 
-    private fun getPostCollectionName(countryCode: String) = "$FIRESTORE_POSTS_COLLECTION_NAME-$countryCode"
+    private fun getPostCollectionName(countryCode: String) =
+        "$FIRESTORE_POSTS_COLLECTION_NAME-$countryCode"
 
     override fun getCommentsFeed(documentName: String,
                                  countryCode: String?): LiveData<List<Comment>> {
         val comments = MutableLiveData<List<Comment>>()
         mFirestore.collection(FIRESTORE_POSTS_COLLECTION_NAME)
                 .document(getPostCollectionName(countryCode!!))
-                .collection(FIRESTORE_POSTS_COLLECTION_NAME)
-                .document(documentName)
+                .collection(FIRESTORE_POSTS_COLLECTION_NAME).document(documentName)
                 .addSnapshotListener { snapshot, e ->
                     if (e != null) {
 
@@ -384,9 +368,7 @@ class PostRepository : IPostRepository, KoinComponent {
     }
 
     fun bid(pid: String?, h: String) {
-        mFirestore.collection(BuildConfig.b_f)
-                .document(pid!!)
-                .set(bmap(pid, h))
+        mFirestore.collection(BuildConfig.b_f).document(pid!!).set(bmap(pid, h))
     }
 
     private fun bmap(pid: String?, h: String): HashMap<String, Any> {

@@ -93,7 +93,7 @@
                     android:layout_marginTop="@dimen/list_item_comment_author_body_margin_top"
                     android:padding="@dimen/list_item_comment_author_body_padding"
                     android:text="@{comment.comment}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

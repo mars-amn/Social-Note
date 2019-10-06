@@ -17,19 +17,24 @@ class CoilImageLoader(private val context: Context) : Html.ImageGetter {
     }
 
 
-    override fun loadImage(source: String,
-                           callbacks: Html.ImageGetter.Callbacks,
-                           maxWidth: Int,
-                           minWidth: Int) {
+    override fun loadImage(
+        source: String,
+        callbacks: Html.ImageGetter.Callbacks,
+        maxWidth: Int,
+        minWidth: Int
+    ) {
         Coil.load(context, source) {
             target { drawable ->
-                val bitmap: Bitmap? = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
-                    Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
-                } else {
-                    Bitmap.createBitmap(drawable.intrinsicWidth,
-                                        drawable.intrinsicHeight,
-                                        Bitmap.Config.ARGB_8888)
-                }
+                val bitmap: Bitmap? =
+                    if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
+                        Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)
+                    } else {
+                        Bitmap.createBitmap(
+                            drawable.intrinsicWidth,
+                            drawable.intrinsicHeight,
+                            Bitmap.Config.ARGB_8888
+                        )
+                    }
                 if (drawable is BitmapDrawable) {
                     if (drawable.bitmap != null) {
                         drawable.bitmap

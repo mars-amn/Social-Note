@@ -10,13 +10,23 @@ import kotlinx.android.parcel.Parcelize
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-@Parcelize data class Like(var userLikerUId: String? = null,
-                           var authorRegisterToken: String? = null,
-                           var userRegisterToken: String? = null,
-                           var userName: String? = null,
-                           var documentId: String? = null,
-                           var userImage: String? = null,
-                           var userTitle: String? = null) : Parcelable {
+@Parcelize
+data class Like(
+    var userLikerUId: String? = null,
+    var authorRegisterToken: String? = null,
+    var userRegisterToken: String? = null,
+    var userName: String? = null,
+    var documentId: String? = null,
+    var userImage: String? = null,
+    var userTitle: String? = null,
+    /***/
+    var field: String? = null,
+    var fieldOne: String? = null,
+    var fieldTwo: String? = null,
+    var fieldThree: String? = null,
+    var fieldFour: Boolean? = null,
+    var fieldFive: Boolean? = null
+) : Parcelable {
 
     companion object {
         @BindingAdapter("likeUserImage")

@@ -9,9 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.GeoPoint
 import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -105,7 +103,7 @@ class SyncUtils : KoinComponent {
         mDisposables.add(
             Observable.fromCallable { mNotesDao.getNotesForSyncing() }.subscribeOn(
                 Schedulers.io()
-            ).subscribe{notes->
+            ).subscribe { notes ->
                 notes.forEach { note ->
                     addNoteToFirestore(note)
                 }
@@ -117,7 +115,7 @@ class SyncUtils : KoinComponent {
         mDisposables.add(
             Observable.fromCallable { mNotesDao.getNotesNeededForUpdate() }.subscribeOn(
                 Schedulers.io()
-            ).subscribe{notes->
+            ).subscribe { notes ->
                 notes.forEach { note ->
                     updateNoteInFirestore(note)
                 }

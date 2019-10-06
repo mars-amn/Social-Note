@@ -1,14 +1,16 @@
 <resources>
     <string name="app_name">Social Note</string>
     <string name="save_note_menu_title">حفظ</string>
-    <string name="add_note_label">أنشئ مذكرة</string>
+    <string name="add_note_label">إنشاء</string>
+    <string name="note_create_label">المذكرة</string>
+
     <string name="format">%1$td/%1$tm/%1$tY</string>
     <string name="delete_note_dialog_title">مسح المذكرة</string>
     <string name="delete_note_dialog_message">هل تريد القيام بمسح هذه المذكرة؟</string>
     <string name="delete_note_dialog_positive_button_label">نعم</string>
     <string name="delete_note_dialog_negative_button_label">انصراف</string>
     <string name="menu_item_search_label">بحث</string>
-    <string name="edit_note_toolbar_label">تعديل مذكرة</string>
+    <string name="edit_note_toolbar_label">تعديل</string>
     <string name="text_title_label">العنوان</string>
     <string name="search_view_hint_label">بحث</string>
     <string name="back_button_dialog_title">تعديلات غير محفوظة</string>
@@ -51,7 +53,7 @@
     <string name="sync_notes_dialog_pos_button_label">حسناً</string>
     <string name="settings_menu_item_label">الإعدادات</string>
     <string name="feed_menu_item_label">المنشورات</string>
-    <string name="create_post_label">اكتب ما قد يخطر على بالك</string>
+    <string name="create_post_label">اكتب ما قد يخطر ببالك</string>
     <string name="notification_post_channel_id">Social-Posts</string>
     <string name="notification_social_posts_channel_name">Social Posts</string>
     <string name="open_post_notification_action_label">افتح المنشور</string>
@@ -73,7 +75,7 @@
     <string name="set_location_reminder_menu_item_label">تذكير بالموقع</string>
     <string name="on_boarding_first_card_description">قم بحفظ مذكرات عن طريق المزامنة في قاعدة البيانات السحابية</string>
     <string name="on_boarding_second_card_description">احصل على إشعار عندما تقوم بالدخول لموقع معين</string>
-    <string name="on_boarding_third_card_description">قم بمشاركة ما يخطر على بالك من خطط، أفكار وقصائد وقم بالانخراط في المجتمع</string>
+    <string name="on_boarding_third_card_description">قم بمشاركة ما يخطر بالك من خطط، أفكار وقصائد وقم بالانخراط في المجتمع</string>
     <string name="delete_author_comment_dialog_title">مسح التعليق</string>
     <string name="delete_author_comment_dialog_message">هل تريد مسح هذا التعليق؟</string>
     <string name="delete_author_comment_dialog_negative_button">لا</string>
@@ -91,7 +93,7 @@
     <string name="post_alert_dialog_title">تعديلات المنشور</string>
     <string name="image_picker_chooser_title">اختر الصورة عبر </string>
     <string name="country_picker_dialog_title">اختر بلداً</string>
-    <string name="country_picker_dialog_message">نحن نوصي بأني يقوم المستخدم بتقديم اسم بلده للاستفادة القصوى من التطبيق، وكذلك تقوم بمساعدتنا لتقديم محتوى مناسب لك</string>
+    <string name="country_picker_dialog_message">نحن نوصي بأن يقوم المستخدم بتقديم اسم بلده للاستفادة القصوى من التطبيق، وكذلك تقوم بمساعدتنا لتقديم محتوى مناسب لك</string>
     <string name="comment_notification_title">قام بالتعليق على منشور خاص بك</string>
     <string name="like_notification_title">أُعجب بمنشورك</string>
     <string name="logout_menu_item_label">تسجيل الخروج</string>

@@ -54,15 +54,16 @@
 
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/listItemFeedBodyText"
-                android:layout_width="wrap_content"
-                app:autoSizeTextType="uniform"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/post_body_margin"
                 android:maxLines="7"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-                android:textSize="16sp"
                 android:onClick="@{handlers::onCommentButtonClick}"
                 android:onLongClick="@{handlers::onPostLongClick}"
+                android:padding="4dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                android:textSize="16sp"
+                app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/listItemFeedAuthorImage" />

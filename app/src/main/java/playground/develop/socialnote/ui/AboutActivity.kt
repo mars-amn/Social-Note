@@ -55,7 +55,8 @@ class AboutActivity : AppCompatActivity() {
     }
 
     private fun setupLicensesText() {
-        mBinding.licensesText.paintFlags = mBinding.licensesText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        mBinding.licensesText.paintFlags =
+            mBinding.licensesText.paintFlags or Paint.UNDERLINE_TEXT_FLAG
     }
 
     fun onLicensesClick(view: View) {
@@ -88,8 +89,10 @@ class AboutActivity : AppCompatActivity() {
         var twitterIntent: Intent? = null
         try {
             if (getTwitterApplicationInfo().enabled) {
-                twitterIntent = Intent(Intent.ACTION_VIEW,
-                                       Uri.parse("twitter://user?user_id=$APP_TWITTER_ID"))
+                twitterIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("twitter://user?user_id=$APP_TWITTER_ID")
+                )
                 twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         } catch (e: PackageManager.NameNotFoundException) {

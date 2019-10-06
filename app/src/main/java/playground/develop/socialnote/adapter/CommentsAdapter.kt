@@ -23,16 +23,18 @@ import kotlin.properties.Delegates
  * Created by AbdullahAtta on 26-Aug-19.
  */
 class CommentsAdapter(private val context: Context, private val mCommentListener: CommentListener) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>(), AutoUpdatableAdapter {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), AutoUpdatableAdapter {
 
-    private val images = arrayOf("http://bit.ly/2PhvwfN",
-                                 "http://bit.ly/2HpJ2aH",
-                                 "http://bit.ly/327HLNz",
-                                 "http://bit.ly/2Pd352y",
-                                 "http://bit.ly/2MFbiKO",
-                                 "http://bit.ly/341m7wh",
-                                 "http://bit.ly/2U6i0dL",
-                                 "http://bit.ly/2KZJ5fy")
+    private val images = arrayOf(
+        "http://bit.ly/2PhvwfN",
+        "http://bit.ly/2HpJ2aH",
+        "http://bit.ly/327HLNz",
+        "http://bit.ly/2Pd352y",
+        "http://bit.ly/2MFbiKO",
+        "http://bit.ly/341m7wh",
+        "http://bit.ly/2U6i0dL",
+        "http://bit.ly/2KZJ5fy"
+    )
 
     interface CommentListener {
         fun onCommentLongClick(comment: Comment)
@@ -93,14 +95,15 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
     }
 
     inner class RightCommentsViewHolder(private val mBinding: ListItemCommentRightBinding) :
-            RecyclerView.ViewHolder(mBinding.root) {
+        RecyclerView.ViewHolder(mBinding.root) {
         init {
             mBinding.handlers = this
         }
 
         fun bindRightComment(comment: Comment) {
             mBinding.comment = comment
-            mBinding.listItemCommentDate.text = DateUtils.getRelativeTimeSpanString(comment.getDateCreated().time)
+            mBinding.listItemCommentDate.text =
+                DateUtils.getRelativeTimeSpanString(comment.getDateCreated().time)
             mBinding.listItemCommentRightImage.load(getRandomImage()) {
                 crossfade(true)
             }
@@ -147,14 +150,15 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
     }
 
     inner class LeftCommentsViewHolder(private val mBinding: ListItemCommentLeftBinding) :
-            RecyclerView.ViewHolder(mBinding.root) {
+        RecyclerView.ViewHolder(mBinding.root) {
         init {
             mBinding.handlers = this
         }
 
         fun bindLeftComment(comment: Comment) {
             mBinding.comment = comment
-            mBinding.listItemCommentDate.text = DateUtils.getRelativeTimeSpanString(comment.getDateCreated().time)
+            mBinding.listItemCommentDate.text =
+                DateUtils.getRelativeTimeSpanString(comment.getDateCreated().time)
             mBinding.listItemCommentLeftImage.load(getRandomImage()) {
                 crossfade(true)
             }

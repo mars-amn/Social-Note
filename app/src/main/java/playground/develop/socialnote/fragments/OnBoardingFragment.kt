@@ -35,9 +35,11 @@ class OnBoardingFragment : Fragment() {
     }
 
     private lateinit var mBinding: FragmentOnboardingBinding
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         mBinding = FragmentOnboardingBinding.inflate(inflater, container, false)
         mBinding.handlers = this
         mBinding.onBoardingImage.load(drawable!!) {
@@ -66,16 +68,18 @@ class OnBoardingFragment : Fragment() {
     }
 
     private fun saveUserFirstLaunch() {
-        val editor = context?.getSharedPreferences(Constants.APP_PREFERENCE_NAME,
-                                                   AppCompatActivity.MODE_PRIVATE)!!.edit()
+        val editor = context?.getSharedPreferences(
+            Constants.APP_PREFERENCE_NAME,
+            AppCompatActivity.MODE_PRIVATE
+        )!!.edit()
         editor.putBoolean(Constants.FIRST_LAUNCH_KEY, true)
         editor.apply()
     }
 
     private fun applyAnimation() {
         val set = TransitionSet().addTransition(Scale(0.7f))
-                .addTransition(Fade())
-                .setInterpolator(FastOutLinearInInterpolator())
+            .addTransition(Fade())
+            .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.fragmentParent, set)
     }
 
@@ -91,7 +95,8 @@ class OnBoardingFragment : Fragment() {
         }
 
         private const val DRAWABLE_KEY = "playground.develop.socialnote.fragments.drawable_key"
-        private const val DESCRIPTION_KEY = "playground.develop.socialnote.fragments.description_key"
+        private const val DESCRIPTION_KEY =
+            "playground.develop.socialnote.fragments.description_key"
         private const val FRAGMENT_INDEX_KEY = "playground.develop.socialnote.fragments.index_key"
     }
 }
