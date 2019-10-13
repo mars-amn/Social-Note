@@ -42,6 +42,7 @@ most of the vector icons used in the project are obtained from [Material Design 
 * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
 * [Anko](https://github.com/Kotlin/anko)
 * [Coil](https://github.com/coil-kt/coil)
+* [AztecEditor](https://github.com/wordpress-mobile/AztecEditor-Android)
 * [EventBus](https://github.com/greenrobot/EventBus)
 * [Lottie](https://github.com/airbnb/lottie-android)
 * [Open Source Notices](https://developers.google.com/android/guides/opensource)
