@@ -5,7 +5,11 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import playground.develop.socialnote.R
 import playground.develop.socialnote.database.remote.firestore.models.Like
 import playground.develop.socialnote.databinding.ListItemUserLikesBinding
 import playground.develop.socialnote.ui.ProfileActivity
@@ -17,8 +21,7 @@ import playground.develop.socialnote.utils.Constants.Companion.USER_UID_INTENT_K
 /**
  * Created by AbdullahAtta on 06-Sep-19.
  */
-class LikesAdapter(private val context: Context, private val mLikes: List<Like>) :
-    RecyclerView.Adapter<LikesAdapter.LikesViewHolder>() {
+class LikesAdapter(private val context: Context, private val mLikes: List<Like>) : RecyclerView.Adapter<LikesAdapter.LikesViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LikesViewHolder {
         val inflater = LayoutInflater.from(context)
@@ -33,8 +36,7 @@ class LikesAdapter(private val context: Context, private val mLikes: List<Like>)
     override fun getItemCount(): Int = mLikes.size
 
 
-    inner class LikesViewHolder(private val mBinding: ListItemUserLikesBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+    inner class LikesViewHolder(private val mBinding: ListItemUserLikesBinding) : RecyclerView.ViewHolder(mBinding.root) {
 
         init {
             mBinding.handlers = this
@@ -42,33 +44,20 @@ class LikesAdapter(private val context: Context, private val mLikes: List<Like>)
 
         fun bind(like: Like) {
             mBinding.like = like
-            setUserTitle(like)
+            setUserTitle(like.userTitle!!)
         }
 
-        private fun setUserTitle(like: Like) {
-            when (like.userTitle) {
-                AUTHOR_TITLE -> showAuthorTitle()
-                READER_TITLE -> showReaderTitle()
-                ORIGINATOR_TITLE -> showOriginatorTitle()
+        private fun setUserTitle(title: String) {
+            when (title) {
+                READER_TITLE -> setTitle(R.string.reader_title, R.color.reader_title_color)
+                AUTHOR_TITLE -> setTitle(R.string.author_title, R.color.author_title_color)
+                ORIGINATOR_TITLE -> setTitle(R.string.originator_title, R.color.originator_title_color)
             }
         }
 
-        private fun showOriginatorTitle() {
-            mBinding.listItemUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemUserReaderTitle.visibility = View.GONE
-            mBinding.listItemUserOriginatorTitle.visibility = View.VISIBLE
-        }
-
-        private fun showReaderTitle() {
-            mBinding.listItemUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemUserOriginatorTitle.visibility = View.GONE
-            mBinding.listItemUserReaderTitle.visibility = View.VISIBLE
-        }
-
-        private fun showAuthorTitle() {
-            mBinding.listItemUserAuthorTitle.visibility = View.VISIBLE
-            mBinding.listItemUserReaderTitle.visibility = View.GONE
-            mBinding.listItemUserOriginatorTitle.visibility = View.GONE
+        private fun setTitle(@StringRes title: Int, @ColorRes color: Int) {
+            mBinding.listItemUserTitle.text = context.getString(title)
+            mBinding.listItemUserTitle.setTextColor(ContextCompat.getColor(context, color))
         }
 
         fun onLikeUserImageClick(view: View) {

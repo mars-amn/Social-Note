@@ -73,11 +73,7 @@ class Constants {
          * Sync related constants
          */
         const val SYNC_UPDATE_NOTE_INTENT_ACTION = "playground.develop.socialnote.sync_update_note"
-        const val SYNC_ALL_NOTES_INTENT_ACTION = "playground.develop.socialnote.sync_all_notes"
-        const val SYNC_NEEDED_UPDATES_NOTES_INTENT_ACTION =
-            "playground.develop.socialnote.sync_notes_need_update"
-        const val SYNC_CALL_NOTES_POPULATE_ROOM_INTENT_ACTION =
-            "playground.develop.socialnote.get_notes_remote_populate_room"
+
         const val SYNC_NEW_NOTE_INTENT_ACTION = "playground.develop.socialnote.sync_new_note"
         const val SYNC_DELETE_NOTE_INTENT_ACTION = "playground.develop.socialnote.sync_delete_note"
         const val SYNC_NOTE_ID_INTENT_KEY = "playground.develop.socialnote.sync_note_id_intent_key"

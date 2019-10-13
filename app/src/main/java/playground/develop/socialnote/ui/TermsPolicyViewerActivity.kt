@@ -25,11 +25,9 @@ class TermsPolicyViewerActivity : AppCompatActivity() {
         when (fileName) {
             "terms_conditions.txt" -> {
                 fileId = R.raw.terms_conditions
-                title = "Terms and Conditions"
             }
             "privacy_policy.txt" -> {
                 fileId = R.raw.privacy_policy
-                title = "Privacy Policy"
             }
         }
         val inputStream = resources.openRawResource(fileId)

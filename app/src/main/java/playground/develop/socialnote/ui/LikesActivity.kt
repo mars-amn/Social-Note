@@ -29,11 +29,11 @@ class LikesActivity : AppCompatActivity() {
 
     private fun loadUserLikes(documentName: String?, postCountryCode: String?) {
         mPostViewModel.loadPost(documentName, postCountryCode!!)
-                .observe(this@LikesActivity, Observer { post ->
-                    if (post.likes != null){
+            .observe(this@LikesActivity, Observer { post ->
+                if (post.likes != null) {
                     val adapter = LikesAdapter(this@LikesActivity, post?.likes!!)
                     mBinding.userLikesRecyclerView.adapter = adapter
                 }
-    })
-}
+            })
+    }
 }

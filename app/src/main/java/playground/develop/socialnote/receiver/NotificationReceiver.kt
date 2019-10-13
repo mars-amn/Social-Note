@@ -13,13 +13,7 @@ class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
         if (intent?.action == DISMISS_POST_COMMENT_NOTIFICATION_ACTION) {
-            dismissCommentNotification(
-                context!!,
-                intent.getIntExtra(
-                    DISMISS_POST_COMMENT_NOTIFICATION_ACTION,
-                    -1
-                )
-            )
+            dismissCommentNotification(context!!, intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1))
         }
     }
 

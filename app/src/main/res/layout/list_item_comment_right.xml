@@ -100,47 +100,15 @@
                     app:layout_constraintTop_toBottomOf="@id/listItemCommentAuthorImage" />
 
                 <TextView
-                    android:id="@+id/listItemFeedUserAuthorTitle"
+                    android:id="@+id/listItemCommentUserTitle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/list_item_feed_user_title_margin"
                     android:gravity="center"
-                    android:text="@string/author_title"
-                    android:textColor="@color/author_title_color"
-                    android:visibility="gone"
                     app:layout_constraintBaseline_toBaselineOf="@id/listItemCommentAuthorName"
                     app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorName"
                     app:layout_constraintStart_toEndOf="@+id/listItemCommentAuthorName"
                     app:layout_constraintTop_toTopOf="@+id/listItemCommentAuthorName" />
-
-                <TextView
-                    android:id="@+id/listItemFeedUserReaderTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_item_feed_user_title_margin"
-                    android:gravity="center"
-                    android:text="@string/reader_title"
-                    android:textColor="@color/reader_title_color"
-                    android:visibility="gone"
-                    app:layout_constraintBaseline_toBaselineOf="@id/listItemCommentAuthorName"
-                    app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorName"
-                    app:layout_constraintStart_toEndOf="@+id/listItemCommentAuthorName"
-                    app:layout_constraintTop_toTopOf="@+id/listItemCommentAuthorName" />
-
-                <TextView
-                    android:id="@+id/listItemFeedUserOriginatorTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/list_item_feed_user_title_margin"
-                    android:gravity="center"
-                    android:text="@string/originator_title"
-                    android:textColor="@color/originator_title_color"
-                    android:visibility="gone"
-                    app:layout_constraintBaseline_toBaselineOf="@id/listItemCommentAuthorName"
-                    app:layout_constraintBottom_toBottomOf="@id/listItemCommentAuthorName"
-                    app:layout_constraintStart_toEndOf="@+id/listItemCommentAuthorName"
-                    app:layout_constraintTop_toTopOf="@+id/listItemCommentAuthorName" />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>

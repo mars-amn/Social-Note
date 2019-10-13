@@ -89,10 +89,8 @@ class AboutActivity : AppCompatActivity() {
         var twitterIntent: Intent? = null
         try {
             if (getTwitterApplicationInfo().enabled) {
-                twitterIntent = Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("twitter://user?user_id=$APP_TWITTER_ID")
-                )
+                twitterIntent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=$APP_TWITTER_ID"))
                 twitterIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
         } catch (e: PackageManager.NameNotFoundException) {

@@ -21,12 +21,7 @@ class GeofenceService : JobIntentService(), KoinComponent {
     private val mNotesDao by inject<NoteDao>()
 
     fun enqueueQueryingAndAddingGeofencesJob(applicationContext: Context?, intent: Intent) {
-        enqueueWork(
-            applicationContext!!,
-            GeofenceService::class.java,
-            Constants.GEOFENCE_RETRIEVER_INTENT_JOB_ID,
-            intent
-        )
+        enqueueWork(applicationContext!!, GeofenceService::class.java, Constants.GEOFENCE_RETRIEVER_INTENT_JOB_ID, intent)
     }
 
     override fun onHandleWork(intent: Intent) {
@@ -44,10 +39,8 @@ class GeofenceService : JobIntentService(), KoinComponent {
     }
 
     private fun createGeofences(note: Note) {
-        val latLong = LatLng(
-            note.geofence?.noteGeofenceLatitude!!,
-            note.geofence?.noteGeofenceLongitude!!
-        )
+        val latLong =
+            LatLng(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
         addGeofence(createGeofenceRequest(createAGeofencing(latLong, note.id!!)), note.id!!)
     }
 
@@ -61,30 +54,20 @@ class GeofenceService : JobIntentService(), KoinComponent {
         val intent = Intent(applicationContext, GeofenceReminderReceiver::class.java)
         intent.action = Constants.NOTE_GEOFENCE_REMINDER_ACTION
         intent.putExtra(Constants.NOTE_GEOFENCE_REMINDER_ID_INTENT_KEY, id)
-        return PendingIntent.getBroadcast(
-            applicationContext,
-            id.toInt(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
+        return PendingIntent
+            .getBroadcast(applicationContext, id.toInt(), intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
     }
 
     private fun createGeofenceRequest(geofence: Geofence): GeofencingRequest {
         return GeofencingRequest.Builder()
-            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
-            .addGeofence(geofence)
+            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER).addGeofence(geofence)
             .build()
     }
 
     private fun createAGeofencing(latLng: LatLng, id: Long): Geofence {
-        return Geofence.Builder()
-            .setRequestId("geo_fence_reminder$id")
-            .setCircularRegion(
-                latLng.latitude,
-                latLng.longitude,
-                Constants.GEOFENCE_REMINDER_RADIUS
-            )
+        return Geofence.Builder().setRequestId("geo_fence_reminder$id")
+            .setCircularRegion(latLng.latitude, latLng.longitude, Constants.GEOFENCE_REMINDER_RADIUS)
             .setExpirationDuration(Constants.GEOFENCE_EXPIRE_DATE)
             .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT)
             .build()

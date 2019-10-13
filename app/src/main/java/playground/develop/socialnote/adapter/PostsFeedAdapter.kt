@@ -9,8 +9,11 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ShareCompat
+import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator
 import androidx.recyclerview.widget.RecyclerView
@@ -41,9 +44,7 @@ import kotlin.math.pow
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class PostsFeedAdapter(private val listener: PostInteractListener, private val context: Context,
-                       private var mPostsFeed: List<Post>) :
-        RecyclerView.Adapter<PostsFeedAdapter.PostsFeedViewHolder>(), KoinComponent {
+class PostsFeedAdapter(private val listener: PostInteractListener, private val context: Context, private var mPostsFeed: List<Post>) : RecyclerView.Adapter<PostsFeedAdapter.PostsFeedViewHolder>(), KoinComponent {
 
     private val mFirebaseAuth: FirebaseAuth by inject()
     val likedArray = ArrayList<String>()
@@ -86,8 +87,7 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
         notifyDataSetChanged()
     }
 
-    inner class PostsFeedViewHolder(private val mBinding: ListItemFeedBinding) :
-            RecyclerView.ViewHolder(mBinding.root) {
+    inner class PostsFeedViewHolder(private val mBinding: ListItemFeedBinding) : RecyclerView.ViewHolder(mBinding.root) {
 
         init {
             mBinding.handlers = this
@@ -99,8 +99,8 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
             setUserTitle(post)
             bindPostImage(post)
             mBinding.listItemFeedBodyText.setHtml(post.post!!)
-            mBinding.listItemFeedDate.text = DateUtils
-                    .getRelativeTimeSpanString(post.getDateCreated().time)
+            mBinding.listItemFeedDate.text =
+                DateUtils.getRelativeTimeSpanString(post.getDateCreated().time)
             if (likedArray.contains(post.documentName!!)) {
                 showLikedButton()
             }
@@ -133,28 +133,16 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
 
         private fun setUserTitle(post: Post) {
             when (post.userTitle) {
-                READER_TITLE -> showReaderTitle()
-                AUTHOR_TITLE -> showAuthorTitle()
-                ORIGINATOR_TITLE -> showOriginatorTitle()
+                READER_TITLE -> setTitle(R.string.reader_title, R.color.reader_title_color)
+                AUTHOR_TITLE -> setTitle(R.string.author_title, R.color.author_title_color)
+                ORIGINATOR_TITLE -> setTitle(R.string.originator_title, R.color.originator_title_color)
             }
         }
 
-        private fun showOriginatorTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.VISIBLE
-        }
 
-        private fun showAuthorTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.VISIBLE
-        }
-
-        private fun showReaderTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.VISIBLE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
+        private fun setTitle(@StringRes title: Int, @ColorRes color: Int) {
+            mBinding.listItemFeedUserTitle.text = context.getString(title)
+            mBinding.listItemFeedUserTitle.setTextColor(ContextCompat.getColor(context, color))
         }
 
         private fun hideLikeCounter() {
@@ -182,7 +170,7 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
 
         private fun applyAnimation() {
             val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
-                    .setInterpolator(FastOutLinearInInterpolator())
+                .setInterpolator(FastOutLinearInInterpolator())
             TransitionManager.beginDelayedTransition(mBinding.listItemFeedPostParent, set)
         }
 
@@ -200,7 +188,8 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
             } else {
                 setupLikesCounter("1")
             }
-            val like = Like(mFirebaseAuth.currentUser?.uid, post.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, post.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
+            val like =
+                Like(mFirebaseAuth.currentUser?.uid, post.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, post.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
             listener.onLikeButtonClick(like, post.countryCode!!)
             likedArray.add(post.documentName!!)
         }
@@ -219,7 +208,8 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
             } else {
                 hideLikeCounter()
             }
-            val like = Like(mFirebaseAuth.currentUser?.uid, post.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, post.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
+            val like =
+                Like(mFirebaseAuth.currentUser?.uid, post.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, post.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
             listener.onUnLikeButtonClick(like, post.countryCode!!)
             likedArray.remove(post.documentName!!)
         }
@@ -228,8 +218,8 @@ class PostsFeedAdapter(private val listener: PostInteractListener, private val c
             val post = mPostsFeed[adapterPosition]
 
             ShareCompat.IntentBuilder.from(context as AppCompatActivity).setType("text/plain")
-                    .setText("Checkout what ${post.authorName} posted on Social Note \n\n" + "${getPost(post.post!!)}")
-                    .setChooserTitle(context.getString(R.string.share_title)).startChooser()
+                .setText("Checkout what ${post.authorName} posted on Social Note \n\n" + "${getPost(post.post!!)}")
+                .setChooserTitle(context.getString(R.string.share_title)).startChooser()
         }
 
         @Suppress("DEPRECATION")

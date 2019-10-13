@@ -11,15 +11,11 @@ import playground.develop.socialnote.R
 class PreferenceUtils {
 
     fun getUserCountryCode(context: Context): String? {
-        val preferences = context.getSharedPreferences(
-            Constants.APP_PREFERENCE_NAME,
-            AppCompatActivity.MODE_PRIVATE
-        )
+        val preferences = context
+            .getSharedPreferences(Constants.APP_PREFERENCE_NAME, AppCompatActivity.MODE_PRIVATE)
 
-        return preferences.getString(
-            Constants.USER_COUNTRY_ISO_KEY,
-            Constants.USER_COUNTRY_ISO_ERROR_KEY
-        )
+        return preferences
+            .getString(Constants.USER_COUNTRY_ISO_KEY, Constants.USER_COUNTRY_ISO_ERROR_KEY)
     }
 
     fun disableNoteSync(context: Context) {

@@ -17,8 +17,7 @@ import playground.develop.socialnote.utils.Constants.Companion.CONSIDER_REGISTER
 import playground.develop.socialnote.utils.SyncUtils
 
 
-class SettingsFragment : PreferenceFragmentCompat(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     val mFirebaseAuth: FirebaseAuth by inject()
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -34,8 +33,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onStop() {
         super.onStop()
         if (mRegisterDialog != null) {
-            mRegisterDialog?.create()
-                ?.dismiss()
+            mRegisterDialog?.create()?.dismiss()
 
         }
         unregisterPreferenceChangeListener()
@@ -80,22 +78,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun startSyncService() {
-        SyncUtils.getSyncUtils()
-            .startSyncWorker(context!!)
+        SyncUtils.getSyncUtils().startSyncWorker(context!!)
     }
 
     private var mRegisterDialog: MaterialAlertDialogBuilder? = null
     private fun showRegisterRequestDialog() {
-        mRegisterDialog =
-            MaterialAlertDialogBuilder(context).setTitle(getString(R.string.sync_notes_dialog_title))
-                .setMessage(getString(R.string.sync_notes_dialog_message))
-                .setNegativeButton(getString(R.string.sync_notes_dialog_neg_button_label)) { dialog, id ->
-                    dialog.dismiss()
-                }
-                .setPositiveButton(getString(R.string.sync_notes_dialog_pos_button_label)) { dialog, id ->
-                    dialog.dismiss()
-                    startRegisterActivity()
-                }
+        mRegisterDialog = MaterialAlertDialogBuilder(context)
+            .setTitle(getString(R.string.sync_notes_dialog_title))
+            .setMessage(getString(R.string.sync_notes_dialog_message))
+            .setNegativeButton(getString(R.string.sync_notes_dialog_neg_button_label)) { dialog, id ->
+                dialog.dismiss()
+            }
+            .setPositiveButton(getString(R.string.sync_notes_dialog_pos_button_label)) { dialog, id ->
+                dialog.dismiss()
+                startRegisterActivity()
+            }
         mRegisterDialog?.show()
     }
 

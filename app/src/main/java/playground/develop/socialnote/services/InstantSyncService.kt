@@ -25,21 +25,11 @@ class InstantSyncService : JobIntentService(), KoinComponent {
     private val mDisposables = CompositeDisposable()
 
     fun enqueueSyncNewNoteService(context: Context, intent: Intent) {
-        enqueueWork(
-            context,
-            InstantSyncService::class.java,
-            Constants.SYNC_NOTE_SERVICE_JOB_ID,
-            intent
-        )
+        enqueueWork(context, InstantSyncService::class.java, Constants.SYNC_NOTE_SERVICE_JOB_ID, intent)
     }
 
     fun enqueueSyncDeleteNote(context: Context, intent: Intent) {
-        enqueueWork(
-            context,
-            InstantSyncService::class.java,
-            Constants.SYNC_NOTE_SERVICE_JOB_ID,
-            intent
-        )
+        enqueueWork(context, InstantSyncService::class.java, Constants.SYNC_NOTE_SERVICE_JOB_ID, intent)
     }
 
     override fun onHandleWork(intent: Intent) {
@@ -53,12 +43,7 @@ class InstantSyncService : JobIntentService(), KoinComponent {
                     val noteId = intent.getLongExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, -1)
                     syncNewNote(noteId)
                 }
-                Constants.SYNC_DELETE_NOTE_INTENT_ACTION -> deleteSyncNote(
-                    intent.getLongExtra(
-                        Constants.SYNC_NOTE_ID_INTENT_KEY,
-                        -1
-                    )
-                )
+                Constants.SYNC_DELETE_NOTE_INTENT_ACTION -> deleteSyncNote(intent.getLongExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, -1))
             }
         } else {
             return
@@ -71,40 +56,32 @@ class InstantSyncService : JobIntentService(), KoinComponent {
     }
 
     private fun syncNewNote(noteId: Long) {
-        mDisposables.add(Observable.fromCallable { mNotesDao.getNoteForSync(noteId) }.subscribeOn(
-            Schedulers.io()
-        ).subscribe { note ->
+        mDisposables.add(Observable.fromCallable {
+            mNotesDao.getNoteForSync(noteId)
+        }.subscribeOn(Schedulers.io()).subscribe { note ->
             addNoteToFirestore(note!!)
-        }
-        )
+        })
     }
 
     private fun updateSyncNote(noteId: Long) {
-        mDisposables.add(
-            Observable.fromCallable { mNotesDao.getNoteForSync(noteId) }.subscribeOn(
-                Schedulers.io()
-            ).subscribe { note ->
-                updateNoteInFirestore(note!!)
-            }
-        )
+        mDisposables.add(Observable.fromCallable {
+            mNotesDao.getNoteForSync(noteId)
+        }.subscribeOn(Schedulers.io()).subscribe { note ->
+            updateNoteInFirestore(note!!)
+        })
     }
 
     private fun updateNoteInFirestore(note: Note) {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
             .document(mFirebaseAuth.currentUser?.uid!!)
             .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-            .document(getDocumentName(note.id!!))
-            .update(getMappedNote(note))
-            .addOnSuccessListener {
+            .document(getDocumentName(note.id!!)).update(getMappedNote(note)).addOnSuccessListener {
                 note.isSynced = true
                 note.isNeedUpdate = false
-                mDisposables.add(
-                    Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
-                        Schedulers.io()
-                    ).subscribe()
-                )
-            }
-            .addOnFailureListener {}
+                mDisposables.add(Observable.fromCallable {
+                    mNotesDao.updateNote(note)
+                }.subscribeOn(Schedulers.io()).subscribe())
+            }.addOnFailureListener {}
     }
 
 
@@ -116,17 +93,12 @@ class InstantSyncService : JobIntentService(), KoinComponent {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
             .document(mFirebaseAuth.currentUser?.uid!!)
             .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-            .document(getDocumentName(note.id!!))
-            .set(getMappedNote(note))
-            .addOnSuccessListener {
+            .document(getDocumentName(note.id!!)).set(getMappedNote(note)).addOnSuccessListener {
                 note.isSynced = true
-                mDisposables.add(
-                    Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
-                        Schedulers.io()
-                    ).subscribe()
-                )
-            }
-            .addOnFailureListener { }
+                mDisposables.add(Observable.fromCallable {
+                    mNotesDao.updateNote(note)
+                }.subscribeOn(Schedulers.io()).subscribe())
+            }.addOnFailureListener { }
     }
 
 
@@ -135,10 +107,7 @@ class InstantSyncService : JobIntentService(), KoinComponent {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
             .document(mFirebaseAuth.currentUser?.uid!!)
             .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-            .document(documentName)
-            .delete()
-            .addOnSuccessListener { }
-            .addOnFailureListener { }
+            .document(documentName).delete().addOnSuccessListener { }.addOnFailureListener { }
     }
 
     private fun getDocumentName(id: Long): String {
@@ -157,10 +126,8 @@ class InstantSyncService : JobIntentService(), KoinComponent {
         noteMap[Constants.FIRESTORE_SYNCED_NOTE_DATE_MODIFIED] = note.dateModified!!
         noteMap[Constants.FIRESTORE_SYNCED_NOTE_IS_SYNCED] = true
         if (note.geofence != null) {
-            noteMap[Constants.FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER] = GeoPoint(
-                note.geofence?.noteGeofenceLatitude!!,
-                note.geofence?.noteGeofenceLongitude!!
-            )
+            noteMap[Constants.FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER] =
+                GeoPoint(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
         }
         if (note.timeReminder != null) {
             noteMap[Constants.FIRESTORE_SYNCED_NOTE_TIME_REMINDER] =

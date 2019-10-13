@@ -30,16 +30,14 @@ class NoteRepository : INoteRepository, KoinComponent {
         val factory: DataSource.Factory<Int, Note> = mNotesDao.getNotes()
         val mNotesList = MutableLiveData<PagedList<Note>>()
 
-        val notesList = RxPagedListBuilder(
-            factory,
-            PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(
-                true
-            ).build()
-        ).buildFlowable(BackpressureStrategy.LATEST)
+        val notesList =
+            RxPagedListBuilder(factory, PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(true).build())
+                .buildFlowable(BackpressureStrategy.LATEST)
 
-        mDisposables.add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            mNotesList.value = it
-        })
+        mDisposables
+            .add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+                mNotesList.value = it
+            })
         return mNotesList
     }
 
@@ -47,46 +45,38 @@ class NoteRepository : INoteRepository, KoinComponent {
         val factory: DataSource.Factory<Int, Note> = mNotesDao.searchNotes(query)
         val notes = MutableLiveData<PagedList<Note>>()
 
-        val notesList = RxPagedListBuilder(
-            factory,
-            PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(
-                true
-            ).build()
-        ).buildFlowable(BackpressureStrategy.LATEST)
+        val notesList =
+            RxPagedListBuilder(factory, PagedList.Config.Builder().setPageSize(20).setEnablePlaceholders(true).build())
+                .buildFlowable(BackpressureStrategy.LATEST)
 
-        mDisposables.add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
-            notes.value = it
-        })
+        mDisposables
+            .add(notesList.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe {
+                notes.value = it
+            })
         return notes
     }
 
     override fun insertNote(note: Note): LiveData<Long> {
         val id = MutableLiveData<Long>()
-        mDisposables.add(mNotesDao.insertNote(note).subscribeOn(Schedulers.io()).observeOn(
-            AndroidSchedulers.mainThread()
-        ).subscribeWith(object :
-            DisposableSingleObserver<Long>() {
-            override fun onSuccess(t: Long) {
-                id.value = t
-            }
+        mDisposables
+            .add(mNotesDao.insertNote(note).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribeWith(object : DisposableSingleObserver<Long>() {
+                override fun onSuccess(t: Long) {
+                    id.value = t
+                }
 
-            override fun onError(e: Throwable) {
-            }
+                override fun onError(e: Throwable) {
+                }
 
-        })
-        )
+            }))
         return id
     }
 
     override fun getNote(noteId: Long): LiveData<Note> {
         val note = MutableLiveData<Note>()
-        mDisposables.add(Flowable.fromPublisher(
-            mNotesDao.getNote(noteId).subscribeOn(Schedulers.io()).observeOn(
-                AndroidSchedulers.mainThread()
-            )
-        ).subscribe {
-            note.value = it
-        })
+        mDisposables
+            .add(Flowable.fromPublisher(mNotesDao.getNote(noteId).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())).subscribe {
+                note.value = it
+            })
         return note
     }
 
@@ -111,9 +101,9 @@ class NoteRepository : INoteRepository, KoinComponent {
 
     override fun getAllNoteGeofences(): List<Note> {
         var noteGeofencesList = ArrayList<Note>()
-        mDisposables.add(Observable.fromCallable { mNotesDao.getAllGeofencesNotes() }.subscribeOn(
-            Schedulers.io()
-        ).subscribe {
+        mDisposables.add(Observable.fromCallable {
+            mNotesDao.getAllGeofencesNotes()
+        }.subscribeOn(Schedulers.io()).subscribe {
             noteGeofencesList.addAll(it)
         })
         return noteGeofencesList

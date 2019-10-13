@@ -31,25 +31,18 @@ class SyncUtils : KoinComponent {
     private val mFirebaseAuth by inject<FirebaseAuth>()
 
     fun startSyncWorker(context: Context) {
-        val constraintsBuilder = Constraints.Builder()
-            .setRequiresCharging(true)
-
-        val syncRequest = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.DAYS)
-            .setConstraints(constraintsBuilder.build())
-            .build()
+        val constraintsBuilder = Constraints.Builder().setRequiresCharging(false)
+        val syncRequest =
+            PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.DAYS).addTag(Constants.SYNC_TAG)
+                .setConstraints(constraintsBuilder.build()).build()
         WorkManager.getInstance(context)
-            .enqueueUniquePeriodicWork(
-                Constants.SYNC_TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                syncRequest
-            )
+            .enqueueUniquePeriodicWork(Constants.SYNC_TAG, ExistingPeriodicWorkPolicy.KEEP, syncRequest)
     }
 
     fun loadNotesFromFirestore() {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
             .document(FirebaseAuth.getInstance().currentUser?.uid!!)
-            .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-            .get()
+            .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME).get()
             .addOnCompleteListener { query ->
                 val syncedNotes = ArrayList<SyncedNote>()
                 val localList = ArrayList<Note>()
@@ -63,12 +56,8 @@ class SyncUtils : KoinComponent {
                             val noteReminder = syncedNote.timeReminder
                             val geoLocation = syncedNote.geofenceLocation
 
-                            val note = Note(
-                                syncedNote.noteTitle,
-                                syncedNote.noteBody,
-                                syncedNote.getDateCreated(),
-                                syncedNote.getDateModified()
-                            )
+                            val note =
+                                Note(syncedNote.noteTitle, syncedNote.noteBody, syncedNote.getDateCreated(), syncedNote.getDateModified())
                             note.id = syncedNote.noteId
                             note.isSynced = syncedNote.isSynced
                             if (noteReminder != null) {
@@ -76,86 +65,66 @@ class SyncUtils : KoinComponent {
 
                             }
                             if (geoLocation != null) {
-                                note.geofence = NoteGeofence(
-                                    syncedNote.geofenceLocation?.latitude,
-                                    syncedNote.geofenceLocation?.longitude
-                                )
+                                note.geofence =
+                                    NoteGeofence(syncedNote.geofenceLocation?.latitude, syncedNote.geofenceLocation?.longitude)
                             }
                             localList.add(note)
                         }
                         populateLocalDatabase(localList)
                     }
                 }
-            }
-            .addOnFailureListener {
-            }
+            }.addOnFailureListener {}
     }
 
     private fun populateLocalDatabase(list: ArrayList<Note>) {
-        mDisposables.add(
-            Observable.fromCallable { mNotesDao.insertSyncedNotes(list) }.subscribeOn(
-                Schedulers.io()
-            ).subscribe()
-        )
+        mDisposables.add(Observable.fromCallable {
+            mNotesDao.insertSyncedNotes(list)
+        }.subscribeOn(Schedulers.io()).subscribe())
     }
 
     fun addNotesToFirestore() {
-        mDisposables.add(
-            Observable.fromCallable { mNotesDao.getNotesForSyncing() }.subscribeOn(
-                Schedulers.io()
-            ).subscribe { notes ->
-                notes.forEach { note ->
-                    addNoteToFirestore(note)
-                }
+        mDisposables.add(Observable.fromCallable {
+            mNotesDao.getNotesForSyncing()
+        }.subscribeOn(Schedulers.io()).subscribe { notes ->
+            notes.forEach { note ->
+                addNoteToFirestore(note)
             }
-        )
+        })
     }
 
     fun syncNeedNoteUpdatesToFirestore() {
-        mDisposables.add(
-            Observable.fromCallable { mNotesDao.getNotesNeededForUpdate() }.subscribeOn(
-                Schedulers.io()
-            ).subscribe { notes ->
-                notes.forEach { note ->
-                    updateNoteInFirestore(note)
-                }
+        mDisposables.add(Observable.fromCallable {
+            mNotesDao.getNotesNeededForUpdate()
+        }.subscribeOn(Schedulers.io()).subscribe { notes ->
+            notes.forEach { note ->
+                updateNoteInFirestore(note)
             }
-        )
+        })
     }
 
     private fun updateNoteInFirestore(note: Note) {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
             .document(mFirebaseAuth.currentUser?.uid!!)
             .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-            .document(getDocumentName(note.id!!))
-            .update(getMappedNote(note))
-            .addOnSuccessListener {
+            .document(getDocumentName(note.id!!)).update(getMappedNote(note)).addOnSuccessListener {
                 note.isSynced = true
                 note.isNeedUpdate = false
-                mDisposables.add(
-                    Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
-                        Schedulers.io()
-                    ).subscribe()
-                )
-            }
-            .addOnFailureListener {}
+                mDisposables.add(Observable.fromCallable {
+                    mNotesDao.updateNote(note)
+                }.subscribeOn(Schedulers.io()).subscribe())
+            }.addOnFailureListener {}
     }
 
     private fun addNoteToFirestore(note: Note) {
         mFirestore.collection(Constants.FIRESTORE_SYNCED_NOTES_COLLECTION_NAME)
             .document(mFirebaseAuth.currentUser?.uid!!)
             .collection(Constants.FIRESTORE_USER_SYNCED_NOTES_COLLECTION_NAME)
-            .document(getDocumentName(note.id!!))
-            .set(getMappedNote(note))
-            .addOnSuccessListener {
+            .document(getDocumentName(note.id!!)).set(getMappedNote(note)).addOnSuccessListener {
                 note.isSynced = true
-                mDisposables.add(
-                    Observable.fromCallable { mNotesDao.updateNote(note) }.subscribeOn(
-                        Schedulers.io()
-                    ).subscribe()
-                )
-            }
-            .addOnFailureListener { }
+                mDisposables.add(Observable.fromCallable {
+                    mNotesDao.updateNote(note)
+                }.subscribeOn(Schedulers.io()).subscribe())
+            }.addOnFailureListener { }
     }
 
     private fun getMappedNote(note: Note): HashMap<String, Any> {
@@ -167,10 +136,8 @@ class SyncUtils : KoinComponent {
         noteMap[Constants.FIRESTORE_SYNCED_NOTE_DATE_MODIFIED] = note.dateModified!!
         noteMap[Constants.FIRESTORE_SYNCED_NOTE_IS_SYNCED] = true
         if (note.geofence != null) {
-            noteMap[Constants.FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER] = GeoPoint(
-                note.geofence?.noteGeofenceLatitude!!,
-                note.geofence?.noteGeofenceLongitude!!
-            )
+            noteMap[Constants.FIRESTORE_SYNCED_NOTE_LOCATION_REMINDER] =
+                GeoPoint(note.geofence?.noteGeofenceLatitude!!, note.geofence?.noteGeofenceLongitude!!)
         }
         if (note.timeReminder != null) {
             noteMap[Constants.FIRESTORE_SYNCED_NOTE_TIME_REMINDER] =

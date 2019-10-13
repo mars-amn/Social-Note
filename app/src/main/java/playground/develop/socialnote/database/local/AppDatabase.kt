@@ -21,11 +21,8 @@ abstract class AppDatabase : RoomDatabase() {
         fun getDatabase(context: Context): AppDatabase? {
             if (sInstance == null) {
                 synchronized(AppDatabase::class) {
-                    sInstance = Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java,
-                        "notes.db"
-                    )
+                    sInstance = Room
+                        .databaseBuilder(context.applicationContext, AppDatabase::class.java, "notes.db")
                         .build()
                 }
             }

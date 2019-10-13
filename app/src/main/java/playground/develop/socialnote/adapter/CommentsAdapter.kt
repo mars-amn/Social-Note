@@ -6,8 +6,12 @@ import android.text.format.DateUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
+import playground.develop.socialnote.R
 import playground.develop.socialnote.database.remote.firestore.models.Comment
 import playground.develop.socialnote.databinding.ListItemCommentLeftBinding
 import playground.develop.socialnote.databinding.ListItemCommentRightBinding
@@ -22,19 +26,10 @@ import kotlin.properties.Delegates
 /**
  * Created by AbdullahAtta on 26-Aug-19.
  */
-class CommentsAdapter(private val context: Context, private val mCommentListener: CommentListener) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>(), AutoUpdatableAdapter {
+class CommentsAdapter(private val context: Context, private val mCommentListener: CommentListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), AutoUpdatableAdapter {
 
-    private val images = arrayOf(
-        "http://bit.ly/2PhvwfN",
-        "http://bit.ly/2HpJ2aH",
-        "http://bit.ly/327HLNz",
-        "http://bit.ly/2Pd352y",
-        "http://bit.ly/2MFbiKO",
-        "http://bit.ly/341m7wh",
-        "http://bit.ly/2U6i0dL",
-        "http://bit.ly/2KZJ5fy"
-    )
+    private val images =
+        arrayOf("http://bit.ly/2PhvwfN", "http://bit.ly/2HpJ2aH", "http://bit.ly/327HLNz", "http://bit.ly/2Pd352y", "http://bit.ly/2MFbiKO", "http://bit.ly/341m7wh", "http://bit.ly/2U6i0dL", "http://bit.ly/2KZJ5fy")
 
     interface CommentListener {
         fun onCommentLongClick(comment: Comment)
@@ -94,8 +89,7 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
         }
     }
 
-    inner class RightCommentsViewHolder(private val mBinding: ListItemCommentRightBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+    inner class RightCommentsViewHolder(private val mBinding: ListItemCommentRightBinding) : RecyclerView.ViewHolder(mBinding.root) {
         init {
             mBinding.handlers = this
         }
@@ -112,28 +106,15 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
 
         private fun setUserTitle(title: String) {
             when (title) {
-                READER_TITLE -> showReaderTitle()
-                AUTHOR_TITLE -> showAuthorTitle()
-                ORIGINATOR_TITLE -> showOriginatorTitle()
+                READER_TITLE -> setTitle(R.string.reader_title, R.color.reader_title_color)
+                AUTHOR_TITLE -> setTitle(R.string.author_title, R.color.author_title_color)
+                ORIGINATOR_TITLE -> setTitle(R.string.originator_title, R.color.originator_title_color)
             }
         }
 
-        private fun showOriginatorTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.VISIBLE
-        }
-
-        private fun showAuthorTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.VISIBLE
-        }
-
-        private fun showReaderTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.VISIBLE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
+        private fun setTitle(@StringRes title: Int, @ColorRes color: Int) {
+            mBinding.listItemCommentUserTitle.text = context.getString(title)
+            mBinding.listItemCommentUserTitle.setTextColor(ContextCompat.getColor(context, color))
         }
 
         fun onUserImageClick(view: View) {
@@ -149,8 +130,7 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
         }
     }
 
-    inner class LeftCommentsViewHolder(private val mBinding: ListItemCommentLeftBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+    inner class LeftCommentsViewHolder(private val mBinding: ListItemCommentLeftBinding) : RecyclerView.ViewHolder(mBinding.root) {
         init {
             mBinding.handlers = this
         }
@@ -167,28 +147,15 @@ class CommentsAdapter(private val context: Context, private val mCommentListener
 
         private fun setUserTitle(title: String) {
             when (title) {
-                READER_TITLE -> showReaderTitle()
-                AUTHOR_TITLE -> showAuthorTitle()
-                ORIGINATOR_TITLE -> showOriginatorTitle()
+                READER_TITLE -> setTitle(R.string.reader_title, R.color.reader_title_color)
+                AUTHOR_TITLE -> setTitle(R.string.author_title, R.color.author_title_color)
+                ORIGINATOR_TITLE -> setTitle(R.string.originator_title, R.color.originator_title_color)
             }
         }
 
-        private fun showOriginatorTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.VISIBLE
-        }
-
-        private fun showAuthorTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.VISIBLE
-        }
-
-        private fun showReaderTitle() {
-            mBinding.listItemFeedUserReaderTitle.visibility = View.VISIBLE
-            mBinding.listItemFeedUserAuthorTitle.visibility = View.GONE
-            mBinding.listItemFeedUserOriginatorTitle.visibility = View.GONE
+        private fun setTitle(@StringRes title: Int, @ColorRes color: Int) {
+            mBinding.listItemCommentUserTitle.text = context.getString(title)
+            mBinding.listItemCommentUserTitle.setTextColor(ContextCompat.getColor(context, color))
         }
 
         fun onUserImageClick(view: View) {

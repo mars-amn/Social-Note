@@ -76,10 +76,8 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
     private var mSelectedImage: Bitmap? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(
-            this@CreatePostActivity,
-            R.layout.activity_create_post
-        )
+        mBinding =
+            DataBindingUtil.setContentView(this@CreatePostActivity, R.layout.activity_create_post)
         mBinding.handlers = this
         registerEventBus()
         initEditor()
@@ -88,17 +86,15 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     private fun loadUser() {
-        mPostViewModel.getUser()
-            .observe(this, Observer { user ->
-                if (user != null) {
-                    mUser = user
-                }
-            })
+        mPostViewModel.getUser().observe(this, Observer { user ->
+            if (user != null) {
+                mUser = user
+            }
+        })
     }
 
     private fun registerEventBus() {
-        EventBus.getDefault()
-            .register(this)
+        EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
@@ -107,8 +103,7 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     private fun unregisterEventBus() {
-        EventBus.getDefault()
-            .unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 
     @Subscribe
@@ -132,8 +127,7 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
             .setMessage(getString(R.string.blocked_message))
             .setPositiveButton(getString(R.string.blocked_dialog_button_label)) { dialog, id ->
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     private fun initEditor() {
@@ -146,10 +140,8 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
     private fun startImagePicker() {
         val imageIntent = Intent(Intent.ACTION_GET_CONTENT)
         imageIntent.type = "image/*"
-        val chooser = Intent.createChooser(
-            imageIntent,
-            getString(R.string.image_picker_chooser_title)
-        )
+        val chooser =
+            Intent.createChooser(imageIntent, getString(R.string.image_picker_chooser_title))
         startActivityForResult(chooser, PICK_IMAGE_REQUEST_CODE)
     }
 
@@ -188,44 +180,33 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
 
     private val mUserCountryCode: String?
         get() {
-            return PreferenceUtils.getPreferenceUtils()
-                .getUserCountryCode(this)
+            return PreferenceUtils.getPreferenceUtils().getUserCountryCode(this)
         }
 
     private fun postWithImage() {
         val baos = ByteArrayOutputStream()
         mSelectedImage!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val bytes = baos.toByteArray()
-        val postImageRef = mFirebaseStorage.getReference(FIRESTORE_POST_IMAGES)
-            .child(Date().time.toString())
+        val postImageRef =
+            mFirebaseStorage.getReference(FIRESTORE_POST_IMAGES).child(Date().time.toString())
         val uploadTask = postImageRef.putBytes(bytes)
         uploadTask.continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> { task ->
             if (!task.isSuccessful) {
                 toast(getString(R.string.failed_upolad_message))
             }
             return@Continuation postImageRef.downloadUrl
-        })
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val body = mBinding.aztec.toFormattedHtml()
-                    val authorId = mFirebaseAuth.currentUser?.uid
-                    val authorImage = mUser.userImage
-                    val categoryName = ""
-                    val authorName = mFirebaseAuth.currentUser?.displayName
-                    val post = Post(
-                        mRegisterToken,
-                        body,
-                        authorName,
-                        categoryName,
-                        authorId,
-                        authorImage,
-                        Timestamp(Date()),
-                        imageUrl = task.result.toString(),
-                        countryCode = mUserCountryCode
-                    )
-                    mPostViewModel.createPost(post, mUserCountryCode!!)
-                }
+        }).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val body = mBinding.aztec.toFormattedHtml()
+                val authorId = mFirebaseAuth.currentUser?.uid
+                val authorImage = mUser.userImage
+                val categoryName = ""
+                val authorName = mFirebaseAuth.currentUser?.displayName
+                val post =
+                    Post(mRegisterToken, body, authorName, categoryName, authorId, authorImage, Timestamp(Date()), imageUrl = task.result.toString(), countryCode = mUserCountryCode)
+                mPostViewModel.createPost(post, mUserCountryCode!!)
             }
+        }
     }
 
     private fun getPost(): Post {
@@ -234,16 +215,7 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
         val authorImage = mUser.userImage
         val categoryName = ""
         val authorName = mFirebaseAuth.currentUser?.displayName
-        return Post(
-            mRegisterToken,
-            body,
-            authorName,
-            categoryName,
-            authorId,
-            authorImage,
-            Timestamp(Date()),
-            countryCode = mUserCountryCode
-        )
+        return Post(mRegisterToken, body, authorName, categoryName, authorId, authorImage, Timestamp(Date()), countryCode = mUserCountryCode)
 
     }
 
@@ -274,8 +246,7 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
     }
 
     private fun getRegisterToken() {
-        FirebaseInstanceId.getInstance()
-            .instanceId.addOnSuccessListener { instanceIdResult ->
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener { instanceIdResult ->
             mRegisterToken = instanceIdResult.token
         }
     }
@@ -297,8 +268,7 @@ class CreatePostActivity : AppCompatActivity(), IAztecToolbarClickListener {
             }
             .setNegativeButton(getString(R.string.back_button_dialog_negative_button_label)) { dialog, id ->
                 dialog.dismiss()
-            }
-            .show()
+            }.show()
     }
 
     private fun navigateUp() {

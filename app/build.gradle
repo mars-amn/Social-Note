@@ -25,8 +25,8 @@ android {
         applicationId "playground.develop.socialnote"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 5
-        versionName "v-0.0050"
+        versionCode 6
+        versionName "v-0.0060"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary true

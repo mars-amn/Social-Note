@@ -11,8 +11,7 @@ import playground.develop.socialnote.utils.SyncUtils
 /**
  * Created by AbdullahAtta on 30-Sep-19.
  */
-class SyncWorker(appContext: Context, workerParameters: WorkerParameters) :
-    Worker(appContext, workerParameters), KoinComponent {
+class SyncWorker(appContext: Context, workerParameters: WorkerParameters) : Worker(appContext, workerParameters), KoinComponent {
 
     override fun doWork(): Result {
         if (PreferenceUtils.getPreferenceUtils().isUserEnableSync(applicationContext) && FirebaseAuth.getInstance().currentUser != null) {

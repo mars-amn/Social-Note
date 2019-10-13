@@ -23,7 +23,7 @@
         <activity
             android:name=".ui.TermsPolicyViewerActivity"
             android:parentActivityName=".ui.AboutActivity"
-            android:theme="@style/EditorTheme"></activity>
+            android:theme="@style/EditorTheme" />
         <activity
             android:name=".ui.AboutActivity"
             android:label="@string/about_menu_item_label"
@@ -43,8 +43,7 @@
                 android:resource="@xml/app_shortcuts" />
         </activity>
         <activity android:name=".ui.OnBoardingActivity" />
-        <activity
-            android:name=".ui.ProfileActivity"/>
+        <activity android:name=".ui.ProfileActivity" />
         <activity android:name=".ui.LikesActivity" />
         <activity
             android:name=".ui.PostDetailsActivity"

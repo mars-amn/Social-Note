@@ -50,21 +50,8 @@ class FMService : FirebaseMessagingService() {
         notifyAuthor(comment!!, title, documentId!!, token!!, postCountryCode)
     }
 
-    private fun notifyAuthor(
-        text: String,
-        title: String,
-        documentId: String,
-        token: String,
-        countryCode: String?
-    ) {
+    private fun notifyAuthor(text: String, title: String, documentId: String, token: String, countryCode: String?) {
         NotificationsUtils.getNotificationUtils()
-            .sendPostInteractNotification(
-                applicationContext,
-                text,
-                title,
-                documentId,
-                token,
-                countryCode
-            )
+            .sendPostInteractNotification(applicationContext, text, title, documentId, token, countryCode)
     }
 }

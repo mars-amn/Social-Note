@@ -69,8 +69,8 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
     private var mPostCountryCode: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil
-                .setContentView(this@PostDetailsActivity, R.layout.activity_post_details)
+        mBinding =
+            DataBindingUtil.setContentView(this@PostDetailsActivity, R.layout.activity_post_details)
         mBinding.handlers = this
 
         if (intent != null && intent.hasExtra(FIRESTORE_POST_DOC_INTENT_KEY) && intent.hasExtra(FIRESTORE_POST_AUTHOR_REGISTER_TOKEN_KEY)) {
@@ -208,33 +208,33 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
     fun onPostLongClick(view: View): Boolean {
         if (DeviceUtils.getDeviceUtils(this).dsd(mFirebaseAuth.currentUser?.uid!!)) {
             MaterialAlertDialogBuilder(this@PostDetailsActivity)
-                    .setTitle(getString(R.string.delete_post_dialog_title))
-                    .setMessage(getString(R.string.delete_post_dialog_message))
-                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
-                        mPostViewModel.deletePost(mPost!!)
-                        dialog.dismiss()
-                        finish()
-                    }.setNeutralButton(R.string.b) { dialog, id ->
-                        mPostViewModel.b(mPost?.authorUID, mPost?.post!!)
-                        mPostViewModel.deletePost(mPost!!)
-                        dialog.dismiss()
-                        finish()
-                    }.show()
+                .setTitle(getString(R.string.delete_post_dialog_title))
+                .setMessage(getString(R.string.delete_post_dialog_message))
+                .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                    mPostViewModel.deletePost(mPost!!)
+                    dialog.dismiss()
+                    finish()
+                }.setNeutralButton(R.string.b) { dialog, id ->
+                    mPostViewModel.b(mPost?.authorUID, mPost?.post!!)
+                    mPostViewModel.deletePost(mPost!!)
+                    dialog.dismiss()
+                    finish()
+                }.show()
         } else if (mUser.userUid == mPost?.authorUID) {
             MaterialAlertDialogBuilder(this@PostDetailsActivity)
-                    .setTitle(getString(R.string.delete_post_dialog_title))
-                    .setMessage(getString(R.string.delete_post_dialog_message))
-                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
-                        mPostViewModel.deletePost(mPost!!)
-                        dialog.dismiss()
-                        finish()
-                    }.show()
+                .setTitle(getString(R.string.delete_post_dialog_title))
+                .setMessage(getString(R.string.delete_post_dialog_message))
+                .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                    mPostViewModel.deletePost(mPost!!)
+                    dialog.dismiss()
+                    finish()
+                }.show()
         }
         return false
     }
@@ -249,7 +249,8 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
     }
 
     fun onLikeButtonClick(view: View) {
-        val like = Like(mFirebaseAuth.currentUser?.uid, mPost!!.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, mPost!!.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
+        val like =
+            Like(mFirebaseAuth.currentUser?.uid, mPost!!.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, mPost!!.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
         mPostViewModel.createLikeOnPost(like, mPost?.countryCode)
         if (mPost?.likes != null) {
             setupLikesCounter(mPost?.likes?.size?.plus(1))
@@ -273,7 +274,8 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
     }
 
     fun onUnLikeButtonClick(view: View) {
-        val like = Like(mFirebaseAuth.currentUser?.uid, mPost!!.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, mPost!!.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
+        val like =
+            Like(mFirebaseAuth.currentUser?.uid, mPost!!.registerToken, mRegisterToken, mFirebaseAuth.currentUser?.displayName, mPost!!.documentName, mFirebaseAuth.currentUser?.photoUrl.toString())
         mPostViewModel.removeLikePost(like, mPost?.countryCode!!)
         setupLikesCounter(mPost?.likes?.size?.minus(1))
         showLikeButton()
@@ -281,8 +283,8 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
 
     fun onSharePostClick(view: View) {
         ShareCompat.IntentBuilder.from(this).setType("text/plain")
-                .setText("Checkout what ${mPost?.authorName} posted on Social Note \n\n" + "${getPost(mPost?.post!!)}")
-                .setChooserTitle(R.string.share_title).startChooser()
+            .setText("Checkout what ${mPost?.authorName} posted on Social Note \n\n" + "${getPost(mPost?.post!!)}")
+            .setChooserTitle(R.string.share_title).startChooser()
     }
 
     @Suppress("DEPRECATION")
@@ -305,9 +307,9 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
         val dismissIntent = Intent(this@PostDetailsActivity, NotificationReceiver::class.java)
         dismissIntent.action = DISMISS_POST_COMMENT_NOTIFICATION_ACTION
         dismissIntent
-                .putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1))
+            .putExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, intent.getIntExtra(DISMISS_POST_COMMENT_NOTIFICATION_ACTION, -1))
         PendingIntent
-                .getBroadcast(this@PostDetailsActivity, 0, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            .getBroadcast(this@PostDetailsActivity, 0, dismissIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         sendBroadcast(dismissIntent)
     }
 
@@ -316,22 +318,22 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
 
     private fun loadPostComments() {
         mPostViewModel.getComments(mDocumentName!!, mPost?.countryCode)
-                .observe(this, Observer { comments ->
-                    if (comments.isNotEmpty()) {
-                        mAdapter.mComments = comments
-                        if (comments[comments.lastIndex].authorUId == mFirebaseAuth.currentUser?.uid) {
-                            mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
-                        }
-
-                    } else {
-                        mAdapter.mComments = ArrayList<Comment>()
+            .observe(this, Observer { comments ->
+                if (comments.isNotEmpty()) {
+                    mAdapter.mComments = comments
+                    if (comments[comments.lastIndex].authorUId == mFirebaseAuth.currentUser?.uid) {
+                        mBinding.commentsRecyclerView.scrollToPosition(comments.size - 1)
                     }
-                })
+
+                } else {
+                    mAdapter.mComments = ArrayList<Comment>()
+                }
+            })
     }
 
     private fun applyAnimation(view: ViewGroup) {
         val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
-                .setInterpolator(FastOutLinearInInterpolator())
+            .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(view, set)
     }
 
@@ -346,7 +348,8 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
         val authorUId = mFirebaseAuth.currentUser?.uid.toString()
         val authorImage = mUser.userImage
 
-        val comment = Comment(mRegisterToken, mAuthorRegisterToken, mDocumentName, commentBody, authorImage, authorName, authorUId, Timestamp(Date()), mUser.userTitle)
+        val comment =
+            Comment(mRegisterToken, mAuthorRegisterToken, mDocumentName, commentBody, authorImage, authorName, authorUId, Timestamp(Date()), mUser.userTitle)
         mPostViewModel.createComment(mDocumentName!!, comment, mPost?.countryCode!!)
         mBinding.commentInputEditText.setText("")
     }
@@ -360,30 +363,30 @@ class PostDetailsActivity : AppCompatActivity(), CommentsAdapter.CommentListener
     override fun onCommentLongClick(comment: Comment) {
         if (DeviceUtils.getDeviceUtils(this).dsd(mFirebaseAuth.currentUser?.uid!!)) {
             MaterialAlertDialogBuilder(this@PostDetailsActivity)
-                    .setTitle(getString(R.string.delete_post_dialog_title))
-                    .setMessage(getString(R.string.delete_post_dialog_message))
-                    .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
-                        mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
-                        dialog.dismiss()
-                    }.setNeutralButton(R.string.b) { dialog, id ->
-                        mPostViewModel.b(comment.authorUId, comment.comment!!)
-                        mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
-                        dialog.dismiss()
-                    }.show()
+                .setTitle(getString(R.string.delete_post_dialog_title))
+                .setMessage(getString(R.string.delete_post_dialog_message))
+                .setNegativeButton(getString(R.string.delete_post_dialog_negative_button)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(getString(R.string.delete_post_dialog_positive_button)) { dialog, id ->
+                    mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
+                    dialog.dismiss()
+                }.setNeutralButton(R.string.b) { dialog, id ->
+                    mPostViewModel.b(comment.authorUId, comment.comment!!)
+                    mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
+                    dialog.dismiss()
+                }.show()
         } else if (comment.authorUId == mUser.userUid) {
             MaterialAlertDialogBuilder(this@PostDetailsActivity)
-                    .setTitle(getString(R.string.delete_author_comment_dialog_title))
-                    .setMessage(getString(R.string.delete_author_comment_dialog_message))
-                    .setNegativeButton(getString(R.string.delete_author_comment_dialog_negative_button)) { dialog, id ->
-                        dialog.dismiss()
-                    }
-                    .setPositiveButton(getString(R.string.delete_author_comment_dialog_positive_button)) { dialog, id ->
-                        mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
-                        dialog.dismiss()
-                    }.show()
+                .setTitle(getString(R.string.delete_author_comment_dialog_title))
+                .setMessage(getString(R.string.delete_author_comment_dialog_message))
+                .setNegativeButton(getString(R.string.delete_author_comment_dialog_negative_button)) { dialog, id ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton(getString(R.string.delete_author_comment_dialog_positive_button)) { dialog, id ->
+                    mPostViewModel.deleteComment(comment, mPost?.countryCode!!)
+                    dialog.dismiss()
+                }.show()
         }
     }
 }

@@ -69,11 +69,12 @@ class RegisterActivity : AppCompatActivity() {
             return preferences.getBoolean(Constants.SKIP_REGISTER_KEY, false)
         }
 
+
     private fun setupFacebookRegister() {
         mCallbackManager = CallbackManager.Factory.create()
         mBinding.facebookLoginButton.setPermissions("email", "public_profile")
-        mBinding.facebookLoginButton.registerCallback(mCallbackManager,
-            object : FacebookCallback<LoginResult> {
+        mBinding.facebookLoginButton
+            .registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
                 override fun onSuccess(loginResult: LoginResult) {
                     registerFacebookUser(loginResult.accessToken)
                 }
@@ -98,20 +99,16 @@ class RegisterActivity : AppCompatActivity() {
             pendingResultTask.addOnSuccessListener { authResult ->
                 mAuthViewModel.loginTwitterUser(authResult)
                 askUserForCountryName()
+            }.addOnFailureListener {
+                toast(getString(R.string.error_msg))
             }
-                .addOnFailureListener {
-                    toast(getString(R.string.error_msg))
-                }
         } else {
-            mFirebaseAuth.startActivityForSignInWithProvider(
-                this@RegisterActivity,
-                provider.build()
-            )
+            mFirebaseAuth
+                .startActivityForSignInWithProvider(this@RegisterActivity, provider.build())
                 .addOnSuccessListener { authResult ->
                     mAuthViewModel.loginTwitterUser(authResult)
                     askUserForCountryName()
-                }
-                .addOnFailureListener {
+                }.addOnFailureListener {
                     toast(getString(R.string.error_msg))
                 }
         }
@@ -122,8 +119,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun registerEventBus() {
-        EventBus.getDefault()
-            .register(this)
+        EventBus.getDefault().register(this)
     }
 
     override fun onStop() {
@@ -132,15 +128,12 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun unregisterEventBus() {
-        EventBus.getDefault()
-            .unregister(this)
+        EventBus.getDefault().unregister(this)
     }
 
     private fun setupFullScreen() {
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_FULLSCREEN,
-            WindowManager.LayoutParams.FLAG_FULLSCREEN
-        )
+        window
+            .setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
     }
 
     fun onGoogleClick(view: View) {
@@ -151,9 +144,7 @@ class RegisterActivity : AppCompatActivity() {
 
     private fun getSignInOptions(): GoogleSignInOptions? {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(BuildConfig.webClient)
-            .requestEmail()
-            .build()
+            .requestIdToken(BuildConfig.webClient).requestEmail().build()
 
     }
 
@@ -179,9 +170,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun askUserForCountryNameAndSetResults() {
-        val countryBuilder = CountryPicker.Builder()
-            .with(this)
-            .listener { country ->
+        val countryBuilder = CountryPicker.Builder().with(this).listener { country ->
                 saveUserCountryCode(country)
                 setResult(RESULT_OK)
                 finish()
@@ -192,8 +181,7 @@ class RegisterActivity : AppCompatActivity() {
                 dialog.dismiss()
                 val picker = countryBuilder.build()
                 picker.showBottomSheet(this)
-            }
-            .show()
+            }.show()
     }
 
     private fun saveUserCountryCode(country: Country) {
@@ -222,18 +210,13 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun setupSyncWorker() {
-        SyncUtils.getSyncUtils()
-            .startSyncWorker(this)
+        SyncUtils.getSyncUtils().startSyncWorker(this)
     }
 
     private fun askUserForCountryName() {
-        val countryBuilder = CountryPicker.Builder()
-            .with(this)
-            .listener { country ->
-                val editor = getSharedPreferences(
-                    Constants.APP_PREFERENCE_NAME,
-                    MODE_PRIVATE
-                ).edit()
+        val countryBuilder = CountryPicker.Builder().with(this).listener { country ->
+                val editor =
+                    getSharedPreferences(Constants.APP_PREFERENCE_NAME, MODE_PRIVATE).edit()
                 editor.putString(Constants.USER_COUNTRY_ISO_KEY, country.code)
                 editor.apply()
                 startHomeActivity()
@@ -244,8 +227,7 @@ class RegisterActivity : AppCompatActivity() {
                 dialog.dismiss()
                 val picker = countryBuilder.build()
                 picker.showBottomSheet(this)
-            }
-            .show()
+            }.show()
     }
 
     private fun setupRegisterScreen() {
@@ -257,8 +239,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun applyAnimation() {
-        val set = TransitionSet().addTransition(Scale(0.7f))
-            .addTransition(Fade())
+        val set = TransitionSet().addTransition(Scale(0.7f)).addTransition(Fade())
             .setInterpolator(FastOutLinearInInterpolator())
         TransitionManager.beginDelayedTransition(mBinding.parent, set)
     }

@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -45,9 +49,7 @@ import playground.develop.socialnote.viewmodel.PostViewModel
 import java.util.concurrent.TimeUnit
 
 
-class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener,
-    NavigationView.OnNavigationItemSelectedListener,
-    PagedNoteListAdapter.LongClickListener {
+class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener, NavigationView.OnNavigationItemSelectedListener, PagedNoteListAdapter.LongClickListener {
 
     private lateinit var adapter: PagedNoteListAdapter
     private lateinit var mBinding: ActivityHomeBinding
@@ -104,22 +106,17 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun setupUserHeader() {
         if (mFirebaseAuth.currentUser != null) {
-            mPostViewModel.getUser()
-                .observe(this@HomeActivity, Observer { user ->
-                    showUserHeader(user)
-                })
+            mPostViewModel.getUser().observe(this@HomeActivity, Observer { user ->
+                showUserHeader(user)
+            })
         } else {
             showEmptyHeader()
         }
     }
 
     private fun showEmptyHeader() {
-        val navHeaderBinding: EmptyHeaderBinding = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.empty_header,
-            mBinding.navigationView,
-            false
-        )
+        val navHeaderBinding: EmptyHeaderBinding = DataBindingUtil
+            .inflate(layoutInflater, R.layout.empty_header, mBinding.navigationView, false)
         mBinding.navigationView.addHeaderView(navHeaderBinding.root)
         navHeaderBinding.handlers = this
         navHeaderBinding.emptyHeaderView.load(R.drawable.register_background) {
@@ -132,12 +129,8 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun showUserHeader(user: User?) {
-        val navHeaderBinding: NavHeaderLayoutBinding = DataBindingUtil.inflate(
-            layoutInflater,
-            R.layout.nav_header_layout,
-            mBinding.navigationView,
-            false
-        )
+        val navHeaderBinding: NavHeaderLayoutBinding = DataBindingUtil
+            .inflate(layoutInflater, R.layout.nav_header_layout, mBinding.navigationView, false)
         navHeaderBinding.user = user!!
         mBinding.navigationView.addHeaderView(navHeaderBinding.root)
         navHeaderBinding.handlers = this
@@ -146,22 +139,16 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
 
     private fun showUserTitle(user: User, navHeaderBinding: NavHeaderLayoutBinding) {
         when (user.userTitle) {
-            READER_TITLE -> showReaderTitle(navHeaderBinding)
-            AUTHOR_TITLE -> showAuthorTitle(navHeaderBinding)
-            ORIGINATOR_TITLE -> showOriginatorTitle(navHeaderBinding)
+            READER_TITLE -> setTitle(navHeaderBinding.navHeaderUserTitle, R.string.reader_title, R.color.reader_title_color)
+            AUTHOR_TITLE -> setTitle(navHeaderBinding.navHeaderUserTitle, R.string.author_title, R.color.author_title_color)
+            ORIGINATOR_TITLE -> setTitle(navHeaderBinding.navHeaderUserTitle, R.string.originator_title, R.color.originator_title_color)
         }
     }
 
-    private fun showOriginatorTitle(navHeaderBinding: NavHeaderLayoutBinding) {
-        navHeaderBinding.navHeaderUserOriginatorTitle.visibility = View.VISIBLE
-    }
+    private fun setTitle(userTitleView: TextView, @StringRes title: Int, @ColorRes color: Int) {
+        userTitleView.text = getString(title)
+        userTitleView.setTextColor(ContextCompat.getColor(this, color))
 
-    private fun showAuthorTitle(navHeaderBinding: NavHeaderLayoutBinding) {
-        navHeaderBinding.navHeaderUserAuthorTitle.visibility = View.VISIBLE
-    }
-
-    private fun showReaderTitle(navHeaderBinding: NavHeaderLayoutBinding) {
-        navHeaderBinding.navHeaderUserReaderTitle.visibility = View.VISIBLE
     }
 
     fun onProfileImageClick(view: View) {
@@ -177,13 +164,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         get() {
             mBinding.navigationView.itemIconTintList = null
             setSupportActionBar(mBinding.toolbar)
-            return object : ActionBarDrawerToggle(
-                this,
-                mBinding.drawerLayout,
-                mBinding.toolbar,
-                R.string.nav_drawer_open,
-                R.string.nav_drawer_close
-            ) {
+            return object : ActionBarDrawerToggle(this, mBinding.drawerLayout, mBinding.toolbar, R.string.nav_drawer_open, R.string.nav_drawer_close) {
                 override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                     super.onDrawerSlide(drawerView, slideOffset)
 
@@ -201,15 +182,14 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     }
 
     private fun loadNotes() {
-        mViewModel.loadPagedNotes()
-            .observe(this, Observer<PagedList<Note>> { list ->
-                if (list.isNotEmpty()) {
-                    hideRecyclerView()
-                    addNotesToRecyclerView(list)
-                } else {
-                    hideRecyclerView()
-                }
-            })
+        mViewModel.loadPagedNotes().observe(this, Observer<PagedList<Note>> { list ->
+            if (list.isNotEmpty()) {
+                hideRecyclerView()
+                addNotesToRecyclerView(list)
+            } else {
+                hideRecyclerView()
+            }
+        })
     }
 
     private fun addNotesToRecyclerView(list: PagedList<Note>) {
@@ -260,8 +240,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
         val syncService = Intent(this@HomeActivity, InstantSyncService::class.java)
         syncService.action = Constants.SYNC_DELETE_NOTE_INTENT_ACTION
         syncService.putExtra(Constants.SYNC_NOTE_ID_INTENT_KEY, id)
-        InstantSyncService.getSyncingService()
-            .enqueueSyncDeleteNote(this@HomeActivity, syncService)
+        InstantSyncService.getSyncingService().enqueueSyncDeleteNote(this@HomeActivity, syncService)
     }
 
     private fun setupSearchView() {
@@ -275,11 +254,10 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     override fun onQueryTextChange(newText: String?): Boolean {
         val searchSubject = BehaviorSubject.create<String>()
         searchSubject.onNext(newText!!)
-        mDisposables.add(searchSubject.debounce(700, TimeUnit.MILLISECONDS).observeOn(
-            AndroidSchedulers.mainThread()
-        ).subscribe { query ->
-            searchNotes(query)
-        })
+        mDisposables
+            .add(searchSubject.debounce(700, TimeUnit.MILLISECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe { query ->
+                searchNotes(query)
+            })
         return false
     }
 
@@ -330,12 +308,10 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
             .setMessage(getString(R.string.logout_dialog_message))
             .setNegativeButton(getString(R.string.logout_dialog_negative_button)) { dialog, id ->
                 dialog.dismiss()
-            }
-            .setPositiveButton(getString(R.string.logout_dialog_positivit_button)) { dialog, id ->
+            }.setPositiveButton(getString(R.string.logout_dialog_positivit_button)) { dialog, id ->
                 dialog.dismiss()
                 logoutUser()
-            }
-            .show()
+            }.show()
     }
 
     private fun logoutUser() {
@@ -363,9 +339,7 @@ class HomeActivity : AppCompatActivity(), MaterialSearchView.OnQueryTextListener
     override fun onBackPressed() {
         when {
             mBinding.searchView.isSearchOpen -> mBinding.searchView.closeSearch()
-            mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(
-                GravityCompat.START
-            )
+            mBinding.drawerLayout.isDrawerOpen(GravityCompat.START) -> mBinding.drawerLayout.closeDrawer(GravityCompat.START)
             else -> super.onBackPressed()
         }
     }

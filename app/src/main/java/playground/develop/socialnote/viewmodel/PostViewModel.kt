@@ -78,6 +78,12 @@ class PostViewModel : ViewModel(), KoinComponent {
         return mPostRepository.getPost(documentName, mUserCountryCode)
     }
 
+    /**
+     * add the user to the block list in firebase firestore collection
+     * a rule is written to prevent the user from creating any new posts
+     * @param pid is userUid
+     * @param h is what the post about
+     */
     fun b(pid: String?, h: String) {
         mPostRepository.bid(pid, h)
     }

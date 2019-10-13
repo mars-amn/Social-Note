@@ -22,8 +22,7 @@ import kotlin.collections.ArrayList
 /**
  * Created by AbdullahAtta on 7/23/2019.
  */
-class PagedNoteListAdapter(private val listener: LongClickListener, private val context: Context) :
-    PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
+class PagedNoteListAdapter(private val listener: LongClickListener, private val context: Context) : PagedListAdapter<Note, PagedNoteListAdapter.NotesViewHolder>(NotesDiffCallback()) {
 
     val backgroundColors = context.resources.getIntArray(R.array.recyclerViewBackgroundColors)
         .toCollection(ArrayList())
@@ -41,8 +40,7 @@ class PagedNoteListAdapter(private val listener: LongClickListener, private val 
     var previousRandomColor = 0
     var colorBeforePrevious = 1
 
-    inner class NotesViewHolder(var mBinding: ListItemNotesBinding) :
-        RecyclerView.ViewHolder(mBinding.root) {
+    inner class NotesViewHolder(var mBinding: ListItemNotesBinding) : RecyclerView.ViewHolder(mBinding.root) {
 
         init {
             mBinding.handlers = this
@@ -50,10 +48,8 @@ class PagedNoteListAdapter(private val listener: LongClickListener, private val 
 
         fun bind(note: Note?) {
             mBinding.note = note
-            mBinding.listItemNoteBody.setHtml(
-                note?.note!!,
-                HtmlHttpImageGetter(mBinding.listItemNoteBody)
-            )
+            mBinding.listItemNoteBody
+                .setHtml(note?.note!!, HtmlHttpImageGetter(mBinding.listItemNoteBody))
             if (note.noteTitle == null || note.noteTitle == "") {
                 mBinding.listItemNoteTitle.visibility = View.GONE
             }
@@ -74,7 +70,8 @@ class PagedNoteListAdapter(private val listener: LongClickListener, private val 
 
 
         fun onNoteLongClick(view: View): Boolean {
-            MaterialAlertDialogBuilder(context).setTitle(context.getString(R.string.delete_note_dialog_title))
+            MaterialAlertDialogBuilder(context)
+                .setTitle(context.getString(R.string.delete_note_dialog_title))
                 .setMessage(context.getString(R.string.delete_note_dialog_message))
                 .setPositiveButton(context.getString(R.string.delete_note_dialog_positive_button_label)) { dialog, _ ->
                     deleteNote()
@@ -82,8 +79,7 @@ class PagedNoteListAdapter(private val listener: LongClickListener, private val 
                 }
                 .setNegativeButton(context.getString(R.string.delete_note_dialog_negative_button_label)) { dialog, _ ->
                     dialog.dismiss()
-                }
-                .show()
+                }.show()
 
             return true
         }

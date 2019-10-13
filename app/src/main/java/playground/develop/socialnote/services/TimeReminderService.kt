@@ -18,12 +18,7 @@ class TimeReminderService : JobIntentService(), KoinComponent {
     private val mNotesDao by inject<NoteDao>()
 
     fun enqueueReminderNotes(context: Context, intent: Intent) {
-        enqueueWork(
-            context,
-            TimeReminderService::class.java,
-            Constants.TIME_REMINDER_INTENT_JOB_ID,
-            intent
-        )
+        enqueueWork(context, TimeReminderService::class.java, Constants.TIME_REMINDER_INTENT_JOB_ID, intent)
     }
 
     override fun onHandleWork(intent: Intent) {
@@ -44,25 +39,16 @@ class TimeReminderService : JobIntentService(), KoinComponent {
     private fun addNoteToAlarmManager(note: Note) {
         if (note.timeReminder?.timeReminder!! >= Date().time) {
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            val alarmIntent = Intent(
-                applicationContext,
-                NoteReminderReceiver::class.java
-            ).let { intent ->
-                intent.action = Constants.NOTE_TIME_REMINDER_ACTION
-                intent.putExtra(Constants.NOTE_INTENT_KEY, note.id)
-                intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, note.note)
-                PendingIntent.getBroadcast(
-                    applicationContext,
-                    note.id?.toInt()!!,
-                    intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                )
-            }
-            alarmManager.setExact(
-                AlarmManager.RTC_WAKEUP,
-                note.timeReminder?.timeReminder!!,
-                alarmIntent
-            )
+            val alarmIntent =
+                Intent(applicationContext, NoteReminderReceiver::class.java).let { intent ->
+                    intent.action = Constants.NOTE_TIME_REMINDER_ACTION
+                    intent.putExtra(Constants.NOTE_INTENT_KEY, note.id)
+                    intent.putExtra(Constants.NOTE_NOTIFICATION_TEXT_INTENT_KEY, note.note)
+                    PendingIntent
+                        .getBroadcast(applicationContext, note.id?.toInt()!!, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                }
+            alarmManager
+                .setExact(AlarmManager.RTC_WAKEUP, note.timeReminder?.timeReminder!!, alarmIntent)
         }
     }
 
